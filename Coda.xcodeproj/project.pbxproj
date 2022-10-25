@@ -63,6 +63,7 @@
 		9595C45D2908343C004726AD /* Coda */ = {
 			isa = PBXGroup;
 			children = (
+				9595C47C290838C0004726AD /* GoogleService-Info.plist */,
 				9595C46E2908345D004726AD /* Utils */,
 				9595C46D29083459004726AD /* Views */,
 				9595C46C29083452004726AD /* Models */,
@@ -85,7 +86,6 @@
 		9595C46C29083452004726AD /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				9595C47C290838C0004726AD /* GoogleService-Info.plist */,
 				9595C46F29083487004726AD /* BubbleType.swift */,
 				9595C4712908349F004726AD /* UserInfo.swift */,
 			);
