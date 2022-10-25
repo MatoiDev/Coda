@@ -11,6 +11,12 @@
 		9595C4612908343C004726AD /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9595C4602908343C004726AD /* ContentView.swift */; };
 		9595C4632908343D004726AD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9595C4622908343D004726AD /* Assets.xcassets */; };
 		9595C4662908343D004726AD /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9595C4652908343D004726AD /* Preview Assets.xcassets */; };
+		9595C47029083487004726AD /* BubbleType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9595C46F29083487004726AD /* BubbleType.swift */; };
+		9595C4722908349F004726AD /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9595C4712908349F004726AD /* UserInfo.swift */; };
+		9595C477290834EB004726AD /* DataBubble.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9595C476290834EB004726AD /* DataBubble.swift */; };
+		9595C47929083505004726AD /* InputSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9595C47829083505004726AD /* InputSheet.swift */; };
+		9595C47B29083529004726AD /* RegistrationPageMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9595C47A29083529004726AD /* RegistrationPageMain.swift */; };
+		9595C47D290838C0004726AD /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9595C47C290838C0004726AD /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -19,6 +25,12 @@
 		9595C4602908343C004726AD /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		9595C4622908343D004726AD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9595C4652908343D004726AD /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		9595C46F29083487004726AD /* BubbleType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubbleType.swift; sourceTree = "<group>"; };
+		9595C4712908349F004726AD /* UserInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfo.swift; sourceTree = "<group>"; };
+		9595C476290834EB004726AD /* DataBubble.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataBubble.swift; sourceTree = "<group>"; };
+		9595C47829083505004726AD /* InputSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputSheet.swift; sourceTree = "<group>"; };
+		9595C47A29083529004726AD /* RegistrationPageMain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationPageMain.swift; sourceTree = "<group>"; };
+		9595C47C290838C0004726AD /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,6 +63,9 @@
 		9595C45D2908343C004726AD /* Coda */ = {
 			isa = PBXGroup;
 			children = (
+				9595C46E2908345D004726AD /* Utils */,
+				9595C46D29083459004726AD /* Views */,
+				9595C46C29083452004726AD /* Models */,
 				9595C45E2908343C004726AD /* CodaApp.swift */,
 				9595C4602908343C004726AD /* ContentView.swift */,
 				9595C4622908343D004726AD /* Assets.xcassets */,
@@ -65,6 +80,57 @@
 				9595C4652908343D004726AD /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		9595C46C29083452004726AD /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				9595C47C290838C0004726AD /* GoogleService-Info.plist */,
+				9595C46F29083487004726AD /* BubbleType.swift */,
+				9595C4712908349F004726AD /* UserInfo.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		9595C46D29083459004726AD /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				9595C474290834C9004726AD /* Main */,
+				9595C473290834C3004726AD /* Additions */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		9595C46E2908345D004726AD /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		9595C473290834C3004726AD /* Additions */ = {
+			isa = PBXGroup;
+			children = (
+				9595C475290834D6004726AD /* Registration Page */,
+			);
+			path = Additions;
+			sourceTree = "<group>";
+		};
+		9595C474290834C9004726AD /* Main */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
+		9595C475290834D6004726AD /* Registration Page */ = {
+			isa = PBXGroup;
+			children = (
+				9595C476290834EB004726AD /* DataBubble.swift */,
+				9595C47829083505004726AD /* InputSheet.swift */,
+				9595C47A29083529004726AD /* RegistrationPageMain.swift */,
+			);
+			path = "Registration Page";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -127,6 +193,7 @@
 			files = (
 				9595C4662908343D004726AD /* Preview Assets.xcassets in Resources */,
 				9595C4632908343D004726AD /* Assets.xcassets in Resources */,
+				9595C47D290838C0004726AD /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -137,8 +204,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9595C47929083505004726AD /* InputSheet.swift in Sources */,
+				9595C4722908349F004726AD /* UserInfo.swift in Sources */,
+				9595C47B29083529004726AD /* RegistrationPageMain.swift in Sources */,
+				9595C477290834EB004726AD /* DataBubble.swift in Sources */,
 				9595C4612908343C004726AD /* ContentView.swift in Sources */,
 				9595C45F2908343C004726AD /* CodaApp.swift in Sources */,
+				9595C47029083487004726AD /* BubbleType.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
