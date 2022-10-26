@@ -8,8 +8,10 @@
 import SwiftUI
 
 struct RegistrationPageMain: View {
+    @EnvironmentObject var authState : AuthenticationState
+    @State private var authType : AuthentificationType = .login
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        InputSheet(authType: .constant(.register))
     }
 }
 

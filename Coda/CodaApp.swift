@@ -6,14 +6,18 @@
 //
 
 import SwiftUI
+import Firebase
 
 @main
 struct CodaApp: App {
-    @StateObject var user: UserInfo = UserInfo()
+    init() {
+        FirebaseApp.configure()
+    }
+    @StateObject var authState: AuthenticationState = AuthenticationState.shared
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .environmentObject(user)
+                .environmentObject(authState)
         }
     }
 }

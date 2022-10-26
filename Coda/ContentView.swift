@@ -8,9 +8,17 @@
 import SwiftUI
 
 struct ContentView: View {
+    @EnvironmentObject var authState : AuthenticationState
     var body: some View {
-        Text("Hello, world!")
-            .padding()
+        Group {
+            if authState.loggedInUser == nil {
+                RegistrationPageMain()
+            } else {
+                Text("Login succes!")
+            }
+        }.animation(.easeInOut)
+            .transition(.move(edge: .bottom))
+        
     }
 }
 
