@@ -11,7 +11,15 @@ struct RegistrationPageMain: View {
     @EnvironmentObject var authState : AuthenticationState
     @State private var authType : AuthentificationType = .login
     var body: some View {
-        InputSheet(authType: .constant(.register))
+        ZStack {
+            Image("WallpaperRegistration").edgesIgnoringSafeArea(.top)
+            VStack {
+                InputSheet(authType: .constant(.register))
+                    
+            }
+            
+        }
+        
     }
 }
 

@@ -17,6 +17,8 @@ class AuthenticationState: NSObject, ObservableObject {
     @Published var loggedInUser: User? // Тут храниться текущий зарегистрированный пользователь (аккаунт)
     @Published var isAuthenticating = false // Определяет, авторизируется ли в настоящее время человек
     @Published var error: NSError? // Обработчик ошибок
+    @Published var successfullyLoggedIn : Bool = false // Вошёл ли пользователь в систему
+    @Published var errorHandler : String = "" // Лог ошибок
     
     static let shared = AuthenticationState()
     
@@ -39,45 +41,69 @@ class AuthenticationState: NSObject, ObservableObject {
     }
     
     func signUpWith(email: String, password: String, passwordConfirmation: String) -> Void { // Зарегистрироваться
-        // TODO
+        guard password == passwordConfirmation else {
+            self.errorHandler = "Passwords are not equal!"
+            return
+        }
+        auth.createUser(withEmail: email, password: password) { authResult, error in
+            if let error = error {
+                self.errorHandler = error.localizedDescription
+            } else {
+                self.successfullyLoggedIn = true
+                self.loggedInUser = self.auth.currentUser
+            }
+        }
     }
     
     func signInWith(email: String, password: String) -> Void { // Войти с помощью почты
-        // TODO
+        auth.signIn(withEmail: email, password: password) {authResult, error in
+            if let error = error {
+                self.errorHandler = error.localizedDescription
+            } else {
+                self.successfullyLoggedIn = true
+                self.loggedInUser = self.auth.currentUser
+            }
+        }
     }
+    
     
     func signInWithGitHub() -> Void { // Войти с помощью GitHub
         self.provider.scopes = ["user:email", "repo"]
         
         provider.getCredentialWith(nil) { credential, error in
-            if error != nil {
-                // Handle error.
+            if let error = error {
+                self.errorHandler = error.localizedDescription
             }
-            if credential != nil {
-                Auth.auth().signIn(with: credential!) { authResult, error in
-                    if error != nil {
-                        // Handle error.
+            if let credential = credential {
+                Auth.auth().signIn(with: credential) { authResult, error in
+                    if let error = error {
+                        self.errorHandler = error.localizedDescription
+
                     }
                     // User is signed in.
                     // IdP data available in authResult.additionalUserInfo.profile.
-                    
+
                     guard let oauthCredential = authResult?.credential as? OAuthCredential else { return }
                     // GitHub OAuth access token can also be retrieved by:
                     // oauthCredential.accessToken
                     // GitHub OAuth ID token can be retrieved by calling:
                     // oauthCredential.idToken
+                    self.successfullyLoggedIn = true
+                    self.loggedInUser = self.auth.currentUser
                 }
             }
         }
         
     }
     
-    private func handleSignOut() -> Void {
-        let firebaseAuth = Auth.auth()
+    func signOut() -> Void {
         do {
-            try firebaseAuth.signOut()
+            try auth.signOut()
+            self.loggedInUser = nil
+            self.successfullyLoggedIn = false
         } catch let signOutError as NSError {
             print("Error signing out: %@", signOutError.localizedDescription)
         }
     }
+    
 }

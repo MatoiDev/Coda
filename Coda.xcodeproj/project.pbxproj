@@ -7,12 +7,31 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		951367102909C9CE00FD7C78 /* RegisterBubble.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9513670F2909C9CE00FD7C78 /* RegisterBubble.swift */; };
+		951367132909D5B000FD7C78 /* Blur.swift in Sources */ = {isa = PBXBuildFile; fileRef = 951367122909D5B000FD7C78 /* Blur.swift */; };
+		95170552290AD634008C137F /* githubLogoWhite.json in Resources */ = {isa = PBXBuildFile; fileRef = 95170551290AD634008C137F /* githubLogoWhite.json */; };
+		95170554290AEC3F008C137F /* RobotoMono-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 95170553290AEC3F008C137F /* RobotoMono-Medium.ttf */; };
+		95170556290AEEE2008C137F /* RobotoMono-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 95170555290AEEE2008C137F /* RobotoMono-Bold.ttf */; };
+		9519B04A29087C6100504B03 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 9519B04929087C6100504B03 /* FirebaseAuth */; };
+		9519B04C29087C6100504B03 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 9519B04B29087C6100504B03 /* FirebaseFirestore */; };
+		9519B04E29087C6100504B03 /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 9519B04D29087C6100504B03 /* FirebaseFirestoreSwift */; };
+		9519B05229087DBA00504B03 /* AuthentificationState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9519B05129087DBA00504B03 /* AuthentificationState.swift */; };
+		9519B05529087E1800504B03 /* LoginOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9519B05429087E1800504B03 /* LoginOption.swift */; };
+		952BCF71290949D50046FB02 /* AuthentificationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 952BCF70290949D50046FB02 /* AuthentificationType.swift */; };
+		952BCF7329094A820046FB02 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 952BCF7229094A820046FB02 /* Extensions.swift */; };
+		952BCF7529095A7D0046FB02 /* SecuredDataBubble.swift in Sources */ = {isa = PBXBuildFile; fileRef = 952BCF7429095A7D0046FB02 /* SecuredDataBubble.swift */; };
+		952BCF79290968380046FB02 /* LoginBubble.swift in Sources */ = {isa = PBXBuildFile; fileRef = 952BCF78290968380046FB02 /* LoginBubble.swift */; };
+		952BCF7B2909750F0046FB02 /* GitHubLoginButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 952BCF7A2909750F0046FB02 /* GitHubLoginButton.swift */; };
+		952BCF7F29097C640046FB02 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 952BCF7E29097C640046FB02 /* Lottie */; };
+		952BCF84290981DA0046FB02 /* githubLogo.json in Resources */ = {isa = PBXBuildFile; fileRef = 952BCF83290981DA0046FB02 /* githubLogo.json */; };
+		952BCF86290981EA0046FB02 /* dragToGithub.json in Resources */ = {isa = PBXBuildFile; fileRef = 952BCF85290981EA0046FB02 /* dragToGithub.json */; };
+		952BCF88290981F90046FB02 /* macOnMatrix.json in Resources */ = {isa = PBXBuildFile; fileRef = 952BCF87290981F90046FB02 /* macOnMatrix.json */; };
+		952BCF8A290982CF0046FB02 /* LottieAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 952BCF89290982CF0046FB02 /* LottieAnimation.swift */; };
+		952BCF8C290989B00046FB02 /* progress.json in Resources */ = {isa = PBXBuildFile; fileRef = 952BCF8B290989B00046FB02 /* progress.json */; };
 		9595C45F2908343C004726AD /* CodaApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9595C45E2908343C004726AD /* CodaApp.swift */; };
 		9595C4612908343C004726AD /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9595C4602908343C004726AD /* ContentView.swift */; };
 		9595C4632908343D004726AD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9595C4622908343D004726AD /* Assets.xcassets */; };
 		9595C4662908343D004726AD /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9595C4652908343D004726AD /* Preview Assets.xcassets */; };
-		9595C47029083487004726AD /* BubbleType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9595C46F29083487004726AD /* BubbleType.swift */; };
-		9595C4722908349F004726AD /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9595C4712908349F004726AD /* UserInfo.swift */; };
 		9595C477290834EB004726AD /* DataBubble.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9595C476290834EB004726AD /* DataBubble.swift */; };
 		9595C47929083505004726AD /* InputSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9595C47829083505004726AD /* InputSheet.swift */; };
 		9595C47B29083529004726AD /* RegistrationPageMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9595C47A29083529004726AD /* RegistrationPageMain.swift */; };
@@ -20,13 +39,29 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		9513670F2909C9CE00FD7C78 /* RegisterBubble.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterBubble.swift; sourceTree = "<group>"; };
+		951367122909D5B000FD7C78 /* Blur.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Blur.swift; sourceTree = "<group>"; };
+		95170551290AD634008C137F /* githubLogoWhite.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = githubLogoWhite.json; sourceTree = "<group>"; };
+		95170553290AEC3F008C137F /* RobotoMono-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "RobotoMono-Medium.ttf"; sourceTree = "<group>"; };
+		95170555290AEEE2008C137F /* RobotoMono-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "RobotoMono-Bold.ttf"; sourceTree = "<group>"; };
+		9519B05129087DBA00504B03 /* AuthentificationState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthentificationState.swift; sourceTree = "<group>"; };
+		9519B05429087E1800504B03 /* LoginOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginOption.swift; sourceTree = "<group>"; };
+		952BCF70290949D50046FB02 /* AuthentificationType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthentificationType.swift; sourceTree = "<group>"; };
+		952BCF7229094A820046FB02 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		952BCF7429095A7D0046FB02 /* SecuredDataBubble.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecuredDataBubble.swift; sourceTree = "<group>"; };
+		952BCF78290968380046FB02 /* LoginBubble.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginBubble.swift; sourceTree = "<group>"; };
+		952BCF7A2909750F0046FB02 /* GitHubLoginButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitHubLoginButton.swift; sourceTree = "<group>"; };
+		952BCF7C290976DA0046FB02 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		952BCF83290981DA0046FB02 /* githubLogo.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = githubLogo.json; sourceTree = "<group>"; };
+		952BCF85290981EA0046FB02 /* dragToGithub.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = dragToGithub.json; sourceTree = "<group>"; };
+		952BCF87290981F90046FB02 /* macOnMatrix.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = macOnMatrix.json; sourceTree = "<group>"; };
+		952BCF89290982CF0046FB02 /* LottieAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottieAnimation.swift; sourceTree = "<group>"; };
+		952BCF8B290989B00046FB02 /* progress.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = progress.json; sourceTree = "<group>"; };
 		9595C45B2908343C004726AD /* Coda.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Coda.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9595C45E2908343C004726AD /* CodaApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodaApp.swift; sourceTree = "<group>"; };
 		9595C4602908343C004726AD /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		9595C4622908343D004726AD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9595C4652908343D004726AD /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		9595C46F29083487004726AD /* BubbleType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubbleType.swift; sourceTree = "<group>"; };
-		9595C4712908349F004726AD /* UserInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfo.swift; sourceTree = "<group>"; };
 		9595C476290834EB004726AD /* DataBubble.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataBubble.swift; sourceTree = "<group>"; };
 		9595C47829083505004726AD /* InputSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputSheet.swift; sourceTree = "<group>"; };
 		9595C47A29083529004726AD /* RegistrationPageMain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationPageMain.swift; sourceTree = "<group>"; };
@@ -38,12 +73,82 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9519B04A29087C6100504B03 /* FirebaseAuth in Frameworks */,
+				9519B04C29087C6100504B03 /* FirebaseFirestore in Frameworks */,
+				9519B04E29087C6100504B03 /* FirebaseFirestoreSwift in Frameworks */,
+				952BCF7F29097C640046FB02 /* Lottie in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		951367112909D59E00FD7C78 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				951367122909D5B000FD7C78 /* Blur.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		95170550290ACB3E008C137F /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				95170553290AEC3F008C137F /* RobotoMono-Medium.ttf */,
+				95170555290AEEE2008C137F /* RobotoMono-Bold.ttf */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
+		9519B04F29087C8600504B03 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				95170550290ACB3E008C137F /* Fonts */,
+				952BCF80290981B30046FB02 /* Animations */,
+				952BCF7229094A820046FB02 /* Extensions.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		9519B05029087C8E00504B03 /* Main */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
+		9519B05329087E0900504B03 /* Enums */ = {
+			isa = PBXGroup;
+			children = (
+				9519B05429087E1800504B03 /* LoginOption.swift */,
+				952BCF70290949D50046FB02 /* AuthentificationType.swift */,
+			);
+			path = Enums;
+			sourceTree = "<group>";
+		};
+		952BCF762909680F0046FB02 /* Bubbles */ = {
+			isa = PBXGroup;
+			children = (
+				9595C476290834EB004726AD /* DataBubble.swift */,
+				952BCF7429095A7D0046FB02 /* SecuredDataBubble.swift */,
+				952BCF78290968380046FB02 /* LoginBubble.swift */,
+				9513670F2909C9CE00FD7C78 /* RegisterBubble.swift */,
+			);
+			path = Bubbles;
+			sourceTree = "<group>";
+		};
+		952BCF80290981B30046FB02 /* Animations */ = {
+			isa = PBXGroup;
+			children = (
+				952BCF8B290989B00046FB02 /* progress.json */,
+				952BCF87290981F90046FB02 /* macOnMatrix.json */,
+				952BCF85290981EA0046FB02 /* dragToGithub.json */,
+				95170551290AD634008C137F /* githubLogoWhite.json */,
+				952BCF83290981DA0046FB02 /* githubLogo.json */,
+			);
+			path = Animations;
+			sourceTree = "<group>";
+		};
 		9595C4522908343C004726AD = {
 			isa = PBXGroup;
 			children = (
@@ -63,8 +168,9 @@
 		9595C45D2908343C004726AD /* Coda */ = {
 			isa = PBXGroup;
 			children = (
+				952BCF7C290976DA0046FB02 /* Info.plist */,
 				9595C47C290838C0004726AD /* GoogleService-Info.plist */,
-				9595C46E2908345D004726AD /* Utils */,
+				9519B04F29087C8600504B03 /* Utils */,
 				9595C46D29083459004726AD /* Views */,
 				9595C46C29083452004726AD /* Models */,
 				9595C45E2908343C004726AD /* CodaApp.swift */,
@@ -86,8 +192,8 @@
 		9595C46C29083452004726AD /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				9595C46F29083487004726AD /* BubbleType.swift */,
-				9595C4712908349F004726AD /* UserInfo.swift */,
+				9519B05329087E0900504B03 /* Enums */,
+				9519B05129087DBA00504B03 /* AuthentificationState.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -95,40 +201,29 @@
 		9595C46D29083459004726AD /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				9595C474290834C9004726AD /* Main */,
+				9519B05029087C8E00504B03 /* Main */,
 				9595C473290834C3004726AD /* Additions */,
+				951367112909D59E00FD7C78 /* Components */,
 			);
 			path = Views;
-			sourceTree = "<group>";
-		};
-		9595C46E2908345D004726AD /* Utils */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Utils;
 			sourceTree = "<group>";
 		};
 		9595C473290834C3004726AD /* Additions */ = {
 			isa = PBXGroup;
 			children = (
+				952BCF89290982CF0046FB02 /* LottieAnimation.swift */,
 				9595C475290834D6004726AD /* Registration Page */,
 			);
 			path = Additions;
 			sourceTree = "<group>";
 		};
-		9595C474290834C9004726AD /* Main */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Main;
-			sourceTree = "<group>";
-		};
 		9595C475290834D6004726AD /* Registration Page */ = {
 			isa = PBXGroup;
 			children = (
-				9595C476290834EB004726AD /* DataBubble.swift */,
-				9595C47829083505004726AD /* InputSheet.swift */,
 				9595C47A29083529004726AD /* RegistrationPageMain.swift */,
+				9595C47829083505004726AD /* InputSheet.swift */,
+				952BCF7A2909750F0046FB02 /* GitHubLoginButton.swift */,
+				952BCF762909680F0046FB02 /* Bubbles */,
 			);
 			path = "Registration Page";
 			sourceTree = "<group>";
@@ -149,6 +244,12 @@
 			dependencies = (
 			);
 			name = Coda;
+			packageProductDependencies = (
+				9519B04929087C6100504B03 /* FirebaseAuth */,
+				9519B04B29087C6100504B03 /* FirebaseFirestore */,
+				9519B04D29087C6100504B03 /* FirebaseFirestoreSwift */,
+				952BCF7E29097C640046FB02 /* Lottie */,
+			);
 			productName = Coda;
 			productReference = 9595C45B2908343C004726AD /* Coda.app */;
 			productType = "com.apple.product-type.application";
@@ -177,6 +278,10 @@
 				Base,
 			);
 			mainGroup = 9595C4522908343C004726AD;
+			packageReferences = (
+				9519B04829087C6100504B03 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				952BCF7D29097C640046FB02 /* XCRemoteSwiftPackageReference "lottie-ios" */,
+			);
 			productRefGroup = 9595C45C2908343C004726AD /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -192,7 +297,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				9595C4662908343D004726AD /* Preview Assets.xcassets in Resources */,
+				95170556290AEEE2008C137F /* RobotoMono-Bold.ttf in Resources */,
+				95170552290AD634008C137F /* githubLogoWhite.json in Resources */,
 				9595C4632908343D004726AD /* Assets.xcassets in Resources */,
+				952BCF8C290989B00046FB02 /* progress.json in Resources */,
+				952BCF84290981DA0046FB02 /* githubLogo.json in Resources */,
+				952BCF86290981EA0046FB02 /* dragToGithub.json in Resources */,
+				952BCF88290981F90046FB02 /* macOnMatrix.json in Resources */,
+				95170554290AEC3F008C137F /* RobotoMono-Medium.ttf in Resources */,
 				9595C47D290838C0004726AD /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -205,12 +317,20 @@
 			buildActionMask = 2147483647;
 			files = (
 				9595C47929083505004726AD /* InputSheet.swift in Sources */,
-				9595C4722908349F004726AD /* UserInfo.swift in Sources */,
+				952BCF79290968380046FB02 /* LoginBubble.swift in Sources */,
+				952BCF7B2909750F0046FB02 /* GitHubLoginButton.swift in Sources */,
 				9595C47B29083529004726AD /* RegistrationPageMain.swift in Sources */,
 				9595C477290834EB004726AD /* DataBubble.swift in Sources */,
+				9519B05529087E1800504B03 /* LoginOption.swift in Sources */,
+				951367102909C9CE00FD7C78 /* RegisterBubble.swift in Sources */,
 				9595C4612908343C004726AD /* ContentView.swift in Sources */,
+				952BCF7329094A820046FB02 /* Extensions.swift in Sources */,
+				952BCF71290949D50046FB02 /* AuthentificationType.swift in Sources */,
+				952BCF8A290982CF0046FB02 /* LottieAnimation.swift in Sources */,
+				952BCF7529095A7D0046FB02 /* SecuredDataBubble.swift in Sources */,
+				951367132909D5B000FD7C78 /* Blur.swift in Sources */,
 				9595C45F2908343C004726AD /* CodaApp.swift in Sources */,
-				9595C47029083487004726AD /* BubbleType.swift in Sources */,
+				9519B05229087DBA00504B03 /* AuthentificationState.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -342,6 +462,7 @@
 				DEVELOPMENT_TEAM = WXWB9U632D;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Coda/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -371,6 +492,7 @@
 				DEVELOPMENT_TEAM = WXWB9U632D;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Coda/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -411,6 +533,48 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		9519B04829087C6100504B03 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 9.0.0;
+			};
+		};
+		952BCF7D29097C640046FB02 /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/airbnb/lottie-ios.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		9519B04929087C6100504B03 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9519B04829087C6100504B03 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		9519B04B29087C6100504B03 /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9519B04829087C6100504B03 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+		9519B04D29087C6100504B03 /* FirebaseFirestoreSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9519B04829087C6100504B03 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestoreSwift;
+		};
+		952BCF7E29097C640046FB02 /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 952BCF7D29097C640046FB02 /* XCRemoteSwiftPackageReference "lottie-ios" */;
+			productName = Lottie;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 9595C4532908343C004726AD /* Project object */;
 }

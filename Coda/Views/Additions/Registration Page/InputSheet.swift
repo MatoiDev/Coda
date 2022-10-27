@@ -22,25 +22,81 @@ struct InputSheet: View {
     @Binding var authType : AuthentificationType
     
     var body: some View {
-        VStack {
-            // MARK: Email Field
-            DataBubble(text: self.$email, editHandler: self.$emailCompleted)
+        ZStack {
+            // MARK: - View
+            ScrollView { }
+            .backgroundBlur(radius: 25, opaque: true)
+            .clipShape(RoundedRectangle(cornerRadius: 45))
+            .frame(width: UIScreen.main.bounds.width - 10, height: 422)
+            .overlay {
+                RoundedRectangle(cornerRadius: 45).strokeBorder(Color.black, lineWidth: 1)
+                .opacity(0.5)            }
+            .overlay {
+                VStack {
+                    VStack {
+                        Text("Coda")
+                            .font(.custom("RobotoMono-Bold", size: 72))
+                            .foregroundColor(.primary)
+                            
+                        Text(self.authType == .login ? "Log in" : "Create an account")
+                            .font(.custom("RobotoMono-Medium", size: 36))
+                            .minimumScaleFactor(0.05)
+                            .lineLimit(1)
+                            .padding(.horizontal, 32)
+                            .foregroundColor(.secondary)
+                    }
+                    
+                    Spacer()
+                        .frame(height: 25)
+                    
+                    // MARK: - Email Field
+                    DataBubble(text: self.$email, editHandler: self.$emailCompleted)
+                    Spacer()
+                        .frame(height: 25)
+                    // MARK: - Password Field
+                    SecuredDataBubble(withPlaceHolder: "Password", text: self.$password, editHandler: self.$passwordCompleted)
+                    Spacer()
+                        .frame(height: 25)
+                    // MARK: Confirm Password
+                    if self.authType == .register {
+                        SecuredDataBubble(withPlaceHolder: "Confirm password", text: self.$passwordConfirm, editHandler: self.$passwordConfirmed)
+                        Spacer()
+                            .frame(height: 25)
+                    }
+                    
+                    // MARK: Login Button
+                    if emailCompleted, passwordCompleted, authType == .register ? passwordConfirmed : true  {
+                        RegisterBubble(withEmail: self.email, password: self.password, confirmation: self.passwordConfirm)
+                        Spacer()
+                            .frame(height: 25)
+                    } else {
+                        // MARK: - Buttons devider
+                        HStack {
+                            RoundedRectangle(cornerRadius: 1)
+                                .frame(width: UIScreen.main.bounds.width / 4, height: 2)
+                                
+                            Text("Or")
+                                .frame(width: UIScreen.main.bounds.width / 16, height: 8, alignment: .center)
+                                
+                            RoundedRectangle(cornerRadius: 1)
+                                .frame(width: UIScreen.main.bounds.width / 4, height: 2)
+                                
+                        }.frame(width: UIScreen.main.bounds.width - 50, alignment: .center)
+                            .foregroundColor(.secondary)
+                            .opacity(0.5)
+                        Spacer()
+                            .frame(height: 15)
+                        // MARK: - Github Button
+                        GitHubLoginButton()
+                    }
+                }
+            }.padding(.vertical, 16)
             
-            // MARK: Password Field
-            SecuredDataBubble(withPlaceHolder: "Password", text: self.$password, editHandler: self.$passwordCompleted)
-            
-            // MARK: Confirm Password
-            if self.authType == .register {
-                SecuredDataBubble(withPlaceHolder: "Confirm password", text: self.$passwordConfirm, editHandler: self.$passwordConfirmed)
-            }
-            // MARK: Login Button
-            if emailCompleted, passwordCompleted, authType == .register ? passwordConfirmed : true  {
-                    LoginBubble()
-            }
-            Divider()
-            GitHubLoginButton()
-            // MARK: Github Button
-        }
+        }.frame(maxHeight: .infinity)
+            .ignoresSafeArea()
+            .padding(.vertical, 16)
+        
+        
     }
 }
 

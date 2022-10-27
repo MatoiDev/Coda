@@ -15,6 +15,9 @@ struct ContentView: View {
                 RegistrationPageMain()
             } else {
                 Text("Login succes!")
+                Button("Log out") {
+                    authState.signOut()
+                }
             }
         }.animation(.easeInOut)
             .transition(.move(edge: .bottom))

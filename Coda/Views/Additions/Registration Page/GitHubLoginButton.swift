@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Lottie
 
 struct GitHubLoginButton: View {
     @EnvironmentObject var authState : AuthenticationState
@@ -13,11 +14,9 @@ struct GitHubLoginButton: View {
         Button {
             authState.signInWithGitHub()
         } label: {
-            Image("GitHubLogo32")
-                .resizable()
+            LottieAnimation(named: "githubLogoWhite", loop: true)
                 .frame(width: 50, height: 50)
         }
-
     }
 }
 
