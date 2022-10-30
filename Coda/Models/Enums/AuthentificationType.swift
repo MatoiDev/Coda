@@ -13,10 +13,10 @@ enum AuthentificationType : String {
     case register
     
     var text : String {
-        self.rawValue.capitalized
+        self == .register ? "Log in" : "Create one"
     }
     
     var footerText: String {
-        self == .login ? "Already have an accound?" : "Don't have an account?"
+        self == .register ? "Already have an accound?" : "Don't have an account?"
     }
 }

@@ -14,13 +14,15 @@ struct ContentView: View {
             if authState.loggedInUser == nil {
                 RegistrationPageMain()
             } else {
-                Text("Login succes!")
-                Button("Log out") {
-                    authState.signOut()
-                }
+//                Text("Login succes!")
+//                Button("Log out") {
+//                    authState.signOut()
+//                }
+            AppView()
             }
-        }.animation(.easeInOut)
-            .transition(.move(edge: .bottom))
+        }
+        .animation(.easeInOut)
+        .transition(.move(edge: .bottom))
         
     }
 }

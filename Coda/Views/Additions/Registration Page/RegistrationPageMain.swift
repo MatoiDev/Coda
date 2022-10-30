@@ -14,13 +14,37 @@ struct RegistrationPageMain: View {
         ZStack {
             Image("WallpaperRegistration").edgesIgnoringSafeArea(.top)
             VStack {
-                InputSheet(authType: .constant(.register))
-                    
+                InputSheet(authType: self.$authType)
+                
             }
+            VStack {
+                HStack {
+                    Text(authType.footerText)
+                        .font(.custom("RobotoMono-Medium", size: 15))
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.01)
+                    Button {
+                        self.authType = self.authType == .login ? .register : .login
+                    } label: {
+                        Text(self.authType.text)
+                            .font(.custom("RobotoMono-Medium", size: 15))
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.01)
+                    }
+
+                }
+            }
+            .frame(maxHeight: .infinity, alignment: .bottom)
+            .padding(.vertical, 40)
             
+            if self.authState.showLoading {
+//                LottieAnimation(named: "progress", loop: true)
+                ProgressView()
+            }
         }
         
     }
+    
 }
 
 struct RegistrationPageMain_Previews: PreviewProvider {

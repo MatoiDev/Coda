@@ -28,9 +28,12 @@ struct RegisterBubble: View {
             } label: {
                 ZStack {
                     RoundedRectangle(cornerRadius: 15)
-                        .foregroundColor(.purple)
+                        .foregroundStyle(.ultraThickMaterial)
+                        .overlay {
+                            RoundedRectangle(cornerRadius: 15).strokeBorder(LinearGradient(colors: [Color("Register2").opacity(0.7), Color("Register1").opacity(0.7)], startPoint: .topLeading, endPoint: .bottomTrailing), lineWidth: 1)
+                        }
                     Text("Register")
-                        .font(.largeTitle)
+                        .font(.custom("RobotoMono-Medium", size: 20))
                         .foregroundColor(.primary)
                 }
                 
@@ -40,8 +43,8 @@ struct RegisterBubble: View {
                 Text(authState.errorHandler)
                     .frame(height: 10)
                     .foregroundColor(.red)
-                    .font(.system(size: 300))  // 1
-                    .minimumScaleFactor(0.04)
+                    .font(.custom("RobotoMono-Medium", size: 300))  // 1
+                    .minimumScaleFactor(0.035)
             }
         }
     }
