@@ -19,6 +19,15 @@
       }
     },
     {
+      "identity" : "bottomsheet?ysclid=l935zwimuh580061758",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Wouter125/BottomSheet?ysclid=l935zwimuh580061758",
+      "state" : {
+        "revision" : "44ab4103c63b07777bef40b91d5a21c3a12dbda4",
+        "version" : "1.4.5"
+      }
+    },
+    {
       "identity" : "firebase-ios-sdk",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/firebase/firebase-ios-sdk",

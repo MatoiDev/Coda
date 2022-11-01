@@ -18,6 +18,13 @@
 		9519B04E29087C6100504B03 /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 9519B04D29087C6100504B03 /* FirebaseFirestoreSwift */; };
 		9519B05229087DBA00504B03 /* AuthentificationState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9519B05129087DBA00504B03 /* AuthentificationState.swift */; };
 		9519B05529087E1800504B03 /* LoginOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9519B05429087E1800504B03 /* LoginOption.swift */; };
+		951DBBED291034B700FAB2E3 /* ProfileSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 951DBBEC291034B700FAB2E3 /* ProfileSheet.swift */; };
+		951DBBF0291038E500FAB2E3 /* BottomSheet in Frameworks */ = {isa = PBXBuildFile; productRef = 951DBBEF291038E500FAB2E3 /* BottomSheet */; };
+		951DBBF22910394C00FAB2E3 /* BottomSheetPositions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 951DBBF12910394C00FAB2E3 /* BottomSheetPositions.swift */; };
+		951DBBF42910431700FAB2E3 /* PLanguages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 951DBBF32910431700FAB2E3 /* PLanguages.swift */; };
+		951DBBF72910461000FAB2E3 /* Project.swift in Sources */ = {isa = PBXBuildFile; fileRef = 951DBBF62910461000FAB2E3 /* Project.swift */; };
+		951DBBF929104A1400FAB2E3 /* RobotoMono-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 951DBBF829104A1400FAB2E3 /* RobotoMono-Light.ttf */; };
+		951DBBFB2910611500FAB2E3 /* RobotoMono-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 951DBBFA2910611500FAB2E3 /* RobotoMono-SemiBold.ttf */; };
 		952BCF71290949D50046FB02 /* AuthentificationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 952BCF70290949D50046FB02 /* AuthentificationType.swift */; };
 		952BCF7329094A820046FB02 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 952BCF7229094A820046FB02 /* Extensions.swift */; };
 		952BCF7529095A7D0046FB02 /* SecuredDataBubble.swift in Sources */ = {isa = PBXBuildFile; fileRef = 952BCF7429095A7D0046FB02 /* SecuredDataBubble.swift */; };
@@ -29,6 +36,7 @@
 		952BCF88290981F90046FB02 /* macOnMatrix.json in Resources */ = {isa = PBXBuildFile; fileRef = 952BCF87290981F90046FB02 /* macOnMatrix.json */; };
 		952BCF8A290982CF0046FB02 /* LottieAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 952BCF89290982CF0046FB02 /* LottieAnimation.swift */; };
 		952BCF8C290989B00046FB02 /* progress.json in Resources */ = {isa = PBXBuildFile; fileRef = 952BCF8B290989B00046FB02 /* progress.json */; };
+		95421D092911914000980E52 /* ProjectCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95421D082911914000980E52 /* ProjectCell.swift */; };
 		9595C45F2908343C004726AD /* CodaApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9595C45E2908343C004726AD /* CodaApp.swift */; };
 		9595C4612908343C004726AD /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9595C4602908343C004726AD /* ContentView.swift */; };
 		9595C4632908343D004726AD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9595C4622908343D004726AD /* Assets.xcassets */; };
@@ -55,6 +63,12 @@
 		95170555290AEEE2008C137F /* RobotoMono-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "RobotoMono-Bold.ttf"; sourceTree = "<group>"; };
 		9519B05129087DBA00504B03 /* AuthentificationState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthentificationState.swift; sourceTree = "<group>"; };
 		9519B05429087E1800504B03 /* LoginOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginOption.swift; sourceTree = "<group>"; };
+		951DBBEC291034B700FAB2E3 /* ProfileSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSheet.swift; sourceTree = "<group>"; };
+		951DBBF12910394C00FAB2E3 /* BottomSheetPositions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetPositions.swift; sourceTree = "<group>"; };
+		951DBBF32910431700FAB2E3 /* PLanguages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PLanguages.swift; sourceTree = "<group>"; };
+		951DBBF62910461000FAB2E3 /* Project.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Project.swift; sourceTree = "<group>"; };
+		951DBBF829104A1400FAB2E3 /* RobotoMono-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "RobotoMono-Light.ttf"; sourceTree = "<group>"; };
+		951DBBFA2910611500FAB2E3 /* RobotoMono-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "RobotoMono-SemiBold.ttf"; sourceTree = "<group>"; };
 		952BCF70290949D50046FB02 /* AuthentificationType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthentificationType.swift; sourceTree = "<group>"; };
 		952BCF7229094A820046FB02 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		952BCF7429095A7D0046FB02 /* SecuredDataBubble.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecuredDataBubble.swift; sourceTree = "<group>"; };
@@ -66,6 +80,7 @@
 		952BCF87290981F90046FB02 /* macOnMatrix.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = macOnMatrix.json; sourceTree = "<group>"; };
 		952BCF89290982CF0046FB02 /* LottieAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottieAnimation.swift; sourceTree = "<group>"; };
 		952BCF8B290989B00046FB02 /* progress.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = progress.json; sourceTree = "<group>"; };
+		95421D082911914000980E52 /* ProjectCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectCell.swift; sourceTree = "<group>"; };
 		9595C45B2908343C004726AD /* Coda.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Coda.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9595C45E2908343C004726AD /* CodaApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodaApp.swift; sourceTree = "<group>"; };
 		9595C4602908343C004726AD /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -89,6 +104,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				951DBBF0291038E500FAB2E3 /* BottomSheet in Frameworks */,
 				9519B04A29087C6100504B03 /* FirebaseAuth in Frameworks */,
 				9519B04C29087C6100504B03 /* FirebaseFirestore in Frameworks */,
 				9519B04E29087C6100504B03 /* FirebaseFirestoreSwift in Frameworks */,
@@ -103,6 +119,8 @@
 			isa = PBXGroup;
 			children = (
 				95F1CD39290EE573000A3080 /* ProfileView.swift */,
+				951DBBEC291034B700FAB2E3 /* ProfileSheet.swift */,
+				95421D082911914000980E52 /* ProjectCell.swift */,
 			);
 			path = "Profile Page";
 			sourceTree = "<group>";
@@ -142,6 +160,8 @@
 		95170550290ACB3E008C137F /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
+				951DBBFA2910611500FAB2E3 /* RobotoMono-SemiBold.ttf */,
+				951DBBF829104A1400FAB2E3 /* RobotoMono-Light.ttf */,
 				95170553290AEC3F008C137F /* RobotoMono-Medium.ttf */,
 				95170555290AEEE2008C137F /* RobotoMono-Bold.ttf */,
 			);
@@ -173,8 +193,18 @@
 				9519B05429087E1800504B03 /* LoginOption.swift */,
 				952BCF70290949D50046FB02 /* AuthentificationType.swift */,
 				95F1CD37290EDCFA000A3080 /* Tab.swift */,
+				951DBBF12910394C00FAB2E3 /* BottomSheetPositions.swift */,
+				951DBBF32910431700FAB2E3 /* PLanguages.swift */,
 			);
 			path = Enums;
+			sourceTree = "<group>";
+		};
+		951DBBF52910460100FAB2E3 /* Projects */ = {
+			isa = PBXGroup;
+			children = (
+				951DBBF62910461000FAB2E3 /* Project.swift */,
+			);
+			path = Projects;
 			sourceTree = "<group>";
 		};
 		952BCF762909680F0046FB02 /* Bubbles */ = {
@@ -242,6 +272,7 @@
 		9595C46C29083452004726AD /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				951DBBF52910460100FAB2E3 /* Projects */,
 				9519B05329087E0900504B03 /* Enums */,
 				9519B05129087DBA00504B03 /* AuthentificationState.swift */,
 				37C715763F3521CCCF09C230 /* TabItem.swift */,
@@ -262,8 +293,8 @@
 		9595C473290834C3004726AD /* Additions */ = {
 			isa = PBXGroup;
 			children = (
-				95F1CD34290EDC6C000A3080 /* TabBar */,
 				952BCF89290982CF0046FB02 /* LottieAnimation.swift */,
+				95F1CD34290EDC6C000A3080 /* TabBar */,
 				9595C475290834D6004726AD /* Registration Page */,
 				37C713F9E592C35860CB69E3 /* Profile Page */,
 				37C719752794896027422A4B /* Chat Page */,
@@ -313,6 +344,7 @@
 				9519B04B29087C6100504B03 /* FirebaseFirestore */,
 				9519B04D29087C6100504B03 /* FirebaseFirestoreSwift */,
 				952BCF7E29097C640046FB02 /* Lottie */,
+				951DBBEF291038E500FAB2E3 /* BottomSheet */,
 			);
 			productName = Coda;
 			productReference = 9595C45B2908343C004726AD /* Coda.app */;
@@ -345,6 +377,7 @@
 			packageReferences = (
 				9519B04829087C6100504B03 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				952BCF7D29097C640046FB02 /* XCRemoteSwiftPackageReference "lottie-ios" */,
+				951DBBEE291038E500FAB2E3 /* XCRemoteSwiftPackageReference "BottomSheet" */,
 			);
 			productRefGroup = 9595C45C2908343C004726AD /* Products */;
 			projectDirPath = "";
@@ -365,6 +398,8 @@
 				95170552290AD634008C137F /* githubLogoWhite.json in Resources */,
 				9595C4632908343D004726AD /* Assets.xcassets in Resources */,
 				952BCF8C290989B00046FB02 /* progress.json in Resources */,
+				951DBBFB2910611500FAB2E3 /* RobotoMono-SemiBold.ttf in Resources */,
+				951DBBF929104A1400FAB2E3 /* RobotoMono-Light.ttf in Resources */,
 				952BCF84290981DA0046FB02 /* githubLogo.json in Resources */,
 				952BCF86290981EA0046FB02 /* dragToGithub.json in Resources */,
 				952BCF88290981F90046FB02 /* macOnMatrix.json in Resources */,
@@ -383,12 +418,15 @@
 				95F1CD36290EDC8D000A3080 /* CodaTabBar.swift in Sources */,
 				9595C47929083505004726AD /* InputSheet.swift in Sources */,
 				952BCF79290968380046FB02 /* LoginBubble.swift in Sources */,
+				95421D092911914000980E52 /* ProjectCell.swift in Sources */,
 				952BCF7B2909750F0046FB02 /* GitHubLoginButton.swift in Sources */,
 				95F1CD3C290EE57B000A3080 /* ChatView.swift in Sources */,
 				9595C47B29083529004726AD /* RegistrationPageMain.swift in Sources */,
 				95F1CD33290EDC61000A3080 /* AppView.swift in Sources */,
+				951DBBED291034B700FAB2E3 /* ProfileSheet.swift in Sources */,
 				9595C477290834EB004726AD /* DataBubble.swift in Sources */,
 				9519B05529087E1800504B03 /* LoginOption.swift in Sources */,
+				951DBBF22910394C00FAB2E3 /* BottomSheetPositions.swift in Sources */,
 				951367102909C9CE00FD7C78 /* RegisterBubble.swift in Sources */,
 				95F1CD3E290EE586000A3080 /* SearchView.swift in Sources */,
 				9595C4612908343C004726AD /* ContentView.swift in Sources */,
@@ -401,8 +439,10 @@
 				95F1CD38290EDCFA000A3080 /* Tab.swift in Sources */,
 				9595C45F2908343C004726AD /* CodaApp.swift in Sources */,
 				9519B05229087DBA00504B03 /* AuthentificationState.swift in Sources */,
+				951DBBF42910431700FAB2E3 /* PLanguages.swift in Sources */,
 				95F1CD40290EE58F000A3080 /* HomeView.swift in Sources */,
 				37C71976C935813CE712F5EC /* TabItem.swift in Sources */,
+				951DBBF72910461000FAB2E3 /* Project.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -615,6 +655,14 @@
 				minimumVersion = 9.0.0;
 			};
 		};
+		951DBBEE291038E500FAB2E3 /* XCRemoteSwiftPackageReference "BottomSheet" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Wouter125/BottomSheet?ysclid=l935zwimuh580061758";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
 		952BCF7D29097C640046FB02 /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/airbnb/lottie-ios.git";
@@ -640,6 +688,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 9519B04829087C6100504B03 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseFirestoreSwift;
+		};
+		951DBBEF291038E500FAB2E3 /* BottomSheet */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 951DBBEE291038E500FAB2E3 /* XCRemoteSwiftPackageReference "BottomSheet" */;
+			productName = BottomSheet;
 		};
 		952BCF7E29097C640046FB02 /* Lottie */ = {
 			isa = XCSwiftPackageProductDependency;
