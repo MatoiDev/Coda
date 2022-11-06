@@ -5,19 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e73295e2-0254-495e-9ac4-9f931d21ceeb" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Coda/Assets.xcassets/BackgroundColor1.colorset/Contents.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Coda/Assets.xcassets/BackgroundColor2.colorset/Contents.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Coda/Assets.xcassets/BackgroundColor3.colorset/Contents.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Coda/Assets.xcassets/lov.imageset/Contents.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Coda/Assets.xcassets/lov.imageset/золотойМальчик.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Coda/Utils/Fonts/RobotoMono-Light.ttf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Coda/Utils/Fonts/RobotoMono-SemiBold.ttf" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Coda.xcodeproj/project.pbxproj" beforeDir="false" afterPath="$PROJECT_DIR$/Coda.xcodeproj/project.pbxproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Coda.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved" beforeDir="false" afterPath="$PROJECT_DIR$/Coda.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Coda.xcodeproj/project.xcworkspace/xcuserdata/worm.xcuserdatad/UserInterfaceState.xcuserstate" beforeDir="false" afterPath="$PROJECT_DIR$/Coda.xcodeproj/project.xcworkspace/xcuserdata/worm.xcuserdatad/UserInterfaceState.xcuserstate" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Coda/Info.plist" beforeDir="false" afterPath="$PROJECT_DIR$/Coda/Info.plist" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Coda/Views/Additions/Profile Page/ProfileView.swift" beforeDir="false" afterPath="$PROJECT_DIR$/Coda/Views/Additions/Profile Page/ProfileView.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Coda.xcodeproj/xcuserdata/worm.xcuserdatad/xcdebugger/Breakpoints_v2.xcbkptlist" beforeDir="false" afterPath="$PROJECT_DIR$/Coda.xcodeproj/xcuserdata/worm.xcuserdatad/xcdebugger/Breakpoints_v2.xcbkptlist" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Coda.xcodeproj/xcuserdata/worm.xcuserdatad/xcschemes/xcschememanagement.plist" beforeDir="false" afterPath="$PROJECT_DIR$/Coda.xcodeproj/xcuserdata/worm.xcuserdatad/xcschemes/xcschememanagement.plist" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Coda/Models/AuthentificationState.swift" beforeDir="false" afterPath="$PROJECT_DIR$/Coda/Models/AuthentificationState.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Coda/Utils/Extensions.swift" beforeDir="false" afterPath="$PROJECT_DIR$/Coda/Utils/Extensions.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Coda/Views/Additions/Profile Page/ProfileSheet.swift" beforeDir="false" afterPath="$PROJECT_DIR$/Coda/Views/Additions/Profile Page/ProfileSheet.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Coda/Views/Additions/Registration Page/GitHubLoginButton.swift" beforeDir="false" afterPath="$PROJECT_DIR$/Coda/Views/Additions/Registration Page/GitHubLoginButton.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Coda/Views/Additions/Registration Page/RegistrationPageMain.swift" beforeDir="false" afterPath="$PROJECT_DIR$/Coda/Views/Additions/Registration Page/RegistrationPageMain.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Coda/Views/Main/AppView.swift" beforeDir="false" afterPath="$PROJECT_DIR$/Coda/Views/Main/AppView.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Coda/Views/Main/ContentView.swift" beforeDir="false" afterPath="$PROJECT_DIR$/Coda/Views/Main/ContentView.swift" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -78,6 +77,8 @@
       <updated>1667145372009</updated>
       <workItem from="1667145373142" duration="8825000" />
       <workItem from="1667317767759" duration="182000" />
+      <workItem from="1667498677984" duration="1000" />
+      <workItem from="1667551500887" duration="9000" />
     </task>
     <servers />
   </component>

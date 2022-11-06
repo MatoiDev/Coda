@@ -38,7 +38,6 @@ struct RegistrationPageMain: View {
             .padding(.vertical, 40)
             
             if self.authState.showLoading {
-//                LottieAnimation(named: "progress", loop: true)
                 ProgressView()
             }
         }

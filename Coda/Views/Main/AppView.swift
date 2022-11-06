@@ -6,12 +6,58 @@
 //
 
 import SwiftUI
+import FirebaseFirestore
 
 struct AppView: View {
+    
+    @ObservedObject private var fsmanager : FSManager = FSManager()
+    @AppStorage("IsUserExists") var userExists : Bool = false
+    @State var showView : Bool = false
+    //    init() {
+    //        self.fsmanager.isUserExist()
+    //    }
     var body: some View {
-        CodaTabBar()
+        
+        Group {
+            if self.showView {
+                if self.userExists {
+                    // MARK: - TabBar
+                    CodaTabBar()
+                }
+                else {
+                    // MARK: - Data Editor
+                    DataEditor()
+                }
+            } else {
+                // MARK: - View while user is determining
+                ProgressView()
+            }
+            
+        }.task {
+            if !self.userExists {
+                self.fsmanager.isUserExist()
+                DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(500)) {
+                    withAnimation {
+                        self.showView = true
+                    }
+                    
+                }
+            } else {
+                withAnimation {
+                    self.showView = true
+                }
+            }
+            
+            
+        }
+        
+        
     }
+    
+    
+    
 }
+
 
 struct AppView_Previews: PreviewProvider {
     static var previews: some View {

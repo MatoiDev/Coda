@@ -12,6 +12,7 @@ import FirebaseAuth
 import Firebase
 
 
+
 class AuthenticationState: NSObject, ObservableObject {
 
     @Published var loggedInUser: User? // Тут храниться текущий зарегистрированный пользователь (аккаунт)
@@ -20,8 +21,24 @@ class AuthenticationState: NSObject, ObservableObject {
     @Published var successfullyLoggedIn: Bool = false // Вошёл ли пользователь в систему
     @Published var errorHandler: String = "" // Лог ошибок
     @Published var showLoading: Bool = false // Для анимации при входе
+    
+    @AppStorage("UserEmail") private var userEmail : String = ""
+    @AppStorage("UserID") var userID : String = ""
+    @AppStorage("IsUserExists") var userExists : Bool = false
+    
+    @ObservedObject var fsmanager : FSManager = FSManager()
 
     static let shared = AuthenticationState()
+    
+    
+    private enum CodingKeys: String, CodingKey {
+        case loggedInUser
+        case isAuthenticating
+        case error
+        case successfullyLoggedIn
+        case errorHandler
+        case showLoading
+      }
 
     private let auth = Auth.auth() // Экземпляр FirebaseAuth, отвечает за аутентификацию
     var provider = OAuthProvider(providerID: "github.com") // Провайдер, необходим для авторизации через GitHub
@@ -63,6 +80,14 @@ class AuthenticationState: NSObject, ObservableObject {
             } else {
                 self.successfullyLoggedIn = true
                 self.loggedInUser = self.auth.currentUser
+                
+                self.userEmail = email
+                
+                if let uid : String = self.loggedInUser?.uid {
+                    self.userID = uid
+                }
+                
+                
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                     withAnimation {
                         self.showLoading = false
@@ -86,6 +111,13 @@ class AuthenticationState: NSObject, ObservableObject {
             } else {
                 self.successfullyLoggedIn = true
                 self.loggedInUser = self.auth.currentUser
+                
+                self.userEmail = email
+                
+                if let uid : String = self.loggedInUser?.uid {
+                    self.userID = uid
+                }
+                
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                     withAnimation {
                         self.showLoading = false
@@ -131,6 +163,15 @@ class AuthenticationState: NSObject, ObservableObject {
                     // oauthCredential.idToken
                     self.successfullyLoggedIn = true
                     self.loggedInUser = self.auth.currentUser
+                    
+                    if let mail = self.loggedInUser?.email {
+                        self.userEmail = mail
+                    }
+                    
+                    if let uid : String = self.loggedInUser?.uid {
+                        self.userID = uid
+                    }
+                    
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                         withAnimation {
                             self.showLoading = false
@@ -139,14 +180,17 @@ class AuthenticationState: NSObject, ObservableObject {
                 }
             }
         }
-
     }
 
     func signOut() -> Void {
         do {
             try auth.signOut()
+            
             self.loggedInUser = nil
             self.successfullyLoggedIn = false
+            self.userID = ""
+            self.userEmail = ""
+            self.userExists = false
         } catch let signOutError as NSError {
             print("Error signing out: %@", signOutError.localizedDescription)
         }

@@ -6,19 +6,19 @@
 //
 
 import SwiftUI
+import Firebase
+import Combine
 
 struct ContentView: View {
     @EnvironmentObject var authState : AuthenticationState
+    @AppStorage("UserID") var userID : String = ""
+    
     var body: some View {
         Group {
-            if authState.loggedInUser == nil {
+            if userID == "" {
                 RegistrationPageMain()
             } else {
-//                Text("Login succes!")
-//                Button("Log out") {
-//                    authState.signOut()
-//                }
-            AppView()
+                AppView()
             }
         }
         .animation(.easeInOut)

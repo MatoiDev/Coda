@@ -17,6 +17,8 @@ struct ProfileSheet: View {
     var reputation : Int
     var mates : Int
     
+    @EnvironmentObject var authState : AuthenticationState
+    
     @State var showProjects: Bool = false
     
     @Binding var headerPosition : CGFloat
@@ -53,9 +55,9 @@ struct ProfileSheet: View {
                     }
                     .offset(x: UIScreen.main.bounds.width / 3.8, y: 80 - 20 * bottomSheetTranslationProrated)
                     .padding(.horizontal, 32)
-                    .offset(y: 150)
+//                    .offset(y: 150)
                     Button {
-                        print("Settings button has pressed!")
+                        self.authState.signOut()
                     } label: {
                         Image(systemName: "gear")
                             .font(.largeTitle)
