@@ -11,6 +11,7 @@ struct CodaTabBar: View {
 
     @State var selectedTab: Tab = .home
     @State var circleColor: Color = .cyan
+    @AppStorage("UserID") private var userID : String = ""
 
     var body: some View {
         ZStack(alignment: .bottom) {
@@ -23,7 +24,7 @@ struct CodaTabBar: View {
                 case .chat:
                     ChatView()
                 case .profile:
-                    ProfileView()
+                    ProfileView(with: self.userID)
                 }
             }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)

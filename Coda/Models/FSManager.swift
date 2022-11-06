@@ -10,15 +10,12 @@ import SwiftUI
 import Combine
 import FirebaseCore
 import FirebaseFirestore
-
-
-
-
+import Firebase
 
 class FSManager: ObservableObject {
     @AppStorage("UserID") private var userID : String = ""
     @AppStorage("IsUserExists") var userExists : Bool = false
-    
+    @AppStorage("userData") var userData : String = ""
     
     private let db = Firestore.firestore()
     
@@ -26,10 +23,10 @@ class FSManager: ObservableObject {
     
     func isUserExist(/*show view: inout Binding<Bool>*/) {
         let docRef = db.collection("Users").document(self.userID)
-//        var res: Bool = false
+        //        var res: Bool = false
         docRef.getDocument { (document, error) in
             if let document = document, document.exists {
-//                let dataDescription = document.data().map(String.init(describing:)) ?? "nil"
+                //                let dataDescription = document.data().map(String.init(describing:)) ?? "nil"
                 self.userExists = true
                 
             } else {
@@ -60,5 +57,33 @@ class FSManager: ObservableObject {
         }
         
     }
+    
+    func getUsersData(withID id: String)/* -> Dictionary<String, Any>?*/ {
+//        var res : Dictionary<String, Any>? = nil
+//        var semaphore : DispatchSemaphore = DispatchSemaphore(value: 1)
+        
+        /* semaphore.wait(until: DISPATCH_QUEUE_SEMAPHORE(withTimeLapse: CGFloat(0.5))
+        __Reply__clock_get_attributes_t {
+            __getAttr__ { return nil }
+        }
+         semaphore.signal()
+         */
+        
+        if id != "", self.userData == "" {
+            print("But here")
+            let docRef = db.collection("Users").document(id)
+            docRef.getDocument { (document, error) in
+                if let document = document, document.exists {
+                    
+                    let dataDescription = document.data().map(String.init(describing:)) ?? "nil"
+                    self.userData = dataDescription
+                }
+            }
+        }
+        
+//        return res
+        
+    }
+    
     
 }

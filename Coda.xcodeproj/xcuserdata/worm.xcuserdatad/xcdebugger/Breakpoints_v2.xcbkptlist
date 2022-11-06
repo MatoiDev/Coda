@@ -30,8 +30,8 @@
             filePath = "Coda/Models/AuthentificationState.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "165"
-            endingLineNumber = "165"
+            startingLineNumber = "166"
+            endingLineNumber = "166"
             landmarkName = "signInWithGitHub()"
             landmarkType = "7">
          </BreakpointContent>
@@ -62,8 +62,8 @@
             filePath = "Coda/Models/FSManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "27"
-            endingLineNumber = "27"
+            startingLineNumber = "24"
+            endingLineNumber = "24"
             landmarkName = "isUserExist()"
             landmarkType = "7">
          </BreakpointContent>

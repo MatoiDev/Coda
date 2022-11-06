@@ -8,10 +8,7 @@
 import SwiftUI
 import BottomSheet
 
-enum BottomSheetPosition: CGFloat, CaseIterable {
-    case top = 1
-    case bottom = 0.8
-}
+
 
 var projects : [Project] = [
     Project(image: "violet", name: "Violet", description: "The maid for your iPhone"),
@@ -21,13 +18,47 @@ var projects : [Project] = [
     
 ]
 
+func stringToDict(string dict: String) -> Dictionary<String, String> {
+    let dict: String = String(String(dict.dropFirst()).dropLast())
+    var res: Dictionary<String, String> = Dictionary<String, String>()
+
+    for item in dict.split(separator: ",") {
+        let items = item.split(separator: ":")
+        var key = String(String(items[0].dropFirst()).dropLast())
+        if key[key.startIndex] == "\"" {
+            key = String(key.dropFirst())
+        }
+
+        var value: String = String(items[1])
+        if value[value.startIndex] == " " {
+            value = String(value.dropFirst())
+        }
+        res[key] = value
+    }
+    return res
+}
+
 
 struct ProfileView: View {
     @State var bottomSheetPosition: BottomSheetPosition = .bottom
     @State var bottomSheetTranslation : CGFloat = BottomSheetPosition.bottom.rawValue
+    
+    private var fsmanager: FSManager = FSManager()
+    
+    var userID: String
+    
+    @AppStorage("userData") var userData : String = ""
+    
+    init(with userID: String) {
+        self.userID = userID
+        fsmanager.getUsersData(withID: self.userID)
+        print(stringToDict(string: self.userData)["surname"])
+    }
+    
     var bottomSheetTranslationProrated : CGFloat {
         (bottomSheetTranslation - BottomSheetPosition.bottom.rawValue) / (BottomSheetPosition.top.rawValue - BottomSheetPosition.bottom.rawValue)
     }
+    
     var body: some View {
         
         GeometryReader { geometry in
@@ -81,6 +112,6 @@ struct ProfileView: View {
 
 struct ProfileView_Previews: PreviewProvider {
     static var previews: some View {
-        ProfileView()
+        ProfileView(with: "LHJxR0mupXXymhdLdIoKkit6boB3")
     }
 }

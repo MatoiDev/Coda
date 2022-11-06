@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 
-//enum BottomSheetPosition: CGFloat, CaseIterable {
-//    case top = 1
-//    case bottom = 0.8
-//}
+enum BottomSheetPosition: CGFloat, CaseIterable {
+    case top = 1
+    case bottom = 0.8
+}

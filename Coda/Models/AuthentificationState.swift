@@ -25,6 +25,7 @@ class AuthenticationState: NSObject, ObservableObject {
     @AppStorage("UserEmail") private var userEmail : String = ""
     @AppStorage("UserID") var userID : String = ""
     @AppStorage("IsUserExists") var userExists : Bool = false
+    @AppStorage("userData") var userData : String = ""
     
     @ObservedObject var fsmanager : FSManager = FSManager()
 
@@ -188,9 +189,14 @@ class AuthenticationState: NSObject, ObservableObject {
             
             self.loggedInUser = nil
             self.successfullyLoggedIn = false
-            self.userID = ""
+            
             self.userEmail = ""
             self.userExists = false
+            
+            self.userID = ""
+            self.userData = ""
+            
+            
         } catch let signOutError as NSError {
             print("Error signing out: %@", signOutError.localizedDescription)
         }
