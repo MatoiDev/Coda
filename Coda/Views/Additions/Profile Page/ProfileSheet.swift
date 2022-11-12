@@ -12,10 +12,10 @@ struct ProfileSheet: View {
     var username: String
     var realName: String
     var realSurname: String
-    var mainLanguage: PLanguages
+    var mainLanguage: String
     var projects : [Project]
-    var reputation : Int
-    var mates : Int
+    var reputation : String
+    var mates : String
     
     @EnvironmentObject var authState : AuthenticationState
     
@@ -32,49 +32,51 @@ struct ProfileSheet: View {
         ScrollView {
             VStack {
                 // MARK: - Name & surname labels
-                HStack {
+                ZStack {
                     HStack {
-                        Spacer()
-                            .frame(width: UIScreen.main.bounds.width / 12 * bottomSheetTranslationProrated)
-                        VStack(alignment: bottomSheetTranslationProrated >= 1 ? .leading : .center) {
-                            Spacer()
-                            Text(self.username)
-                                .foregroundColor(.primary)
-                                .font(.custom("RobotoMono-Bold", size: 20))
-                            HStack(alignment: .top) {
-                                Text("\(self.realName) \(self.realSurname)")
-                                    .font(.custom("RobotoMono-Light", size: 15).bold())
+                            VStack(alignment: bottomSheetTranslationProrated >= 1 ? .leading : .center) {
+                                Spacer()
+                                
+            
+                                    Text(self.username)
+                                        .foregroundColor(.primary)
+                                    .font(.custom("RobotoMono-Bold", size: 20))
+                                    .minimumScaleFactor(0.01)
                                     .lineLimit(1)
-                            }.foregroundColor(.secondary)
                             
-                            Spacer()
-                            Spacer()
-                        }
-                        .padding(.horizontal, 8)
-                        Spacer()
-                    }
-                    .offset(x: UIScreen.main.bounds.width / 3.8, y: 80 - 20 * bottomSheetTranslationProrated)
-                    .padding(.horizontal, 32)
-//                    .offset(y: 150)
-                    Button {
-                        self.authState.signOut()
-                    } label: {
-                        Image(systemName: "gear")
-                            .font(.largeTitle)
-                            .symbolVariant(.fill)
-                            .foregroundColor(.primary)
-                            .padding()
+                                
+                                HStack(alignment: .top) {
+                                    Text("\(self.realName) \(self.realSurname)")
+                                        .font(.custom("RobotoMono-Light", size: 15).bold())
+                                        .lineLimit(1)
+                                }.foregroundColor(.secondary)
+                                
+                                Spacer()
+                                Spacer()
+                            }
                             .padding(.horizontal, 8)
-                            .offset(y: 50 * bottomSheetTranslationProrated)
                     }
-
-                }
-                
-                // MARK: - Reputations & mates
-                HStack {
+                    .offset(x: bottomSheetTranslationProrated * 32, y: 80 - 20 * bottomSheetTranslationProrated)
+                    .padding(.horizontal, 32)
+                    
+                    HStack {
+                        Button {
+                            self.authState.signOut()
+                        } label: {
+                            Image(systemName: "gear")
+                                .font(.largeTitle)
+                                .symbolVariant(.fill)
+                                .foregroundColor(.primary)
+                                .padding()
+                                .padding(.horizontal, 8)
+                                .offset(y: 50 * bottomSheetTranslationProrated)
+                    }
+                    }.frame(maxWidth:.infinity, alignment: .trailing)
                     
                 }
+                
             }
+            
             
             
             
@@ -91,7 +93,7 @@ struct ProfileSheet: View {
                     ZStack {
                         ScrollView {}
                             .clipShape(Rectangle())
-                            
+                        
                             .background(.ultraThinMaterial)
                             .clipped()
                             .frame(width: UIScreen.main.bounds.width - 30, height: 40, alignment: .center)
@@ -107,7 +109,7 @@ struct ProfileSheet: View {
                     }
                     
                 }
-
+                
                 // MARK: - Projects scroller
                 if self.showProjects {
                     VStack {
@@ -119,8 +121,8 @@ struct ProfileSheet: View {
                                         ProjectCell(withProject: project)
                                             .rotation3DEffect(Angle(degrees:
                                                                         (Double(geom.frame(in: .global).minX) - 40) / -30
-                                                                ), axis: (x: 0, y: 10, z: 0))
-                                            
+                                                                   ), axis: (x: 0, y: 10, z: 0))
+                                        
                                     }.frame(width: 250, height: 250)
                                 }
                             }.padding(40)
@@ -135,7 +137,7 @@ struct ProfileSheet: View {
             }
             .offset(y: 80 + 20 * bottomSheetTranslationProrated)
             
-
+            
         }.background(.ultraThinMaterial)
             .background(Color("BackgroundColor1"))
             .clipShape(RoundedRectangle(cornerRadius: 40))
@@ -147,12 +149,12 @@ struct ProfileSheet: View {
 
 struct ProfileSheet_Previews: PreviewProvider {
     static var previews: some View {
-        ProfileSheet(username: "MatoiDev", realName: "Matvey", realSurname: "Titor", mainLanguage: .swift, projects: [
+        ProfileSheet(username: "MatoiDev", realName: "Matvey", realSurname: "Titor", mainLanguage: PLanguages.swift.rawValue, projects: [
             Project(image: "violet", name: "Violet", description: "The maid for your iPhone"),
             Project(image: "1", name: "Matoi", description: "The notes' tint color customizer"),
             Project(image: "2", name: "Lolla", description: "MACH -O Files Dumper"),
-            Project(image: "3", name: "Guraa", description: "Simple tool to develop your tweaks!")
+            Project(image: "3", name: "Gura", description: "Simple tool to develop your tweaks!")
             
-        ], reputation: 103117, mates: 245, headerPosition: .constant(1.0))
+        ], reputation: "103117", mates: "245", headerPosition: .constant(0.8))
     }
 }

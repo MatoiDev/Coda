@@ -24,6 +24,7 @@ struct CodaTabBar: View {
                 case .chat:
                     ChatView()
                 case .profile:
+                    // Вход в на свою страницу профиля по своему id
                     ProfileView(with: self.userID)
                 }
             }

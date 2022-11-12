@@ -36,6 +36,9 @@
 		952BCF8A290982CF0046FB02 /* LottieAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 952BCF89290982CF0046FB02 /* LottieAnimation.swift */; };
 		952BCF8C290989B00046FB02 /* progress.json in Resources */ = {isa = PBXBuildFile; fileRef = 952BCF8B290989B00046FB02 /* progress.json */; };
 		95421D092911914000980E52 /* ProjectCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95421D082911914000980E52 /* ProjectCell.swift */; };
+		954ADF45291FBF32001300EA /* AvatarImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 954ADF44291FBF32001300EA /* AvatarImageView.swift */; };
+		954ADF47291FBFFF001300EA /* AvatarImageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 954ADF46291FBFFF001300EA /* AvatarImageModel.swift */; };
+		954ADF49291FC237001300EA /* ImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 954ADF48291FC237001300EA /* ImageCache.swift */; };
 		958B69C92912F42500D45110 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 958B69C82912F42500D45110 /* FirebaseAnalytics */; };
 		958B69CB2912F42500D45110 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 958B69CA2912F42500D45110 /* FirebaseAuth */; };
 		958B69CD2912F42500D45110 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 958B69CC2912F42500D45110 /* FirebaseDatabase */; };
@@ -53,6 +56,8 @@
 		9595C47929083505004726AD /* InputSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9595C47829083505004726AD /* InputSheet.swift */; };
 		9595C47B29083529004726AD /* RegistrationPageMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9595C47A29083529004726AD /* RegistrationPageMain.swift */; };
 		9595C47D290838C0004726AD /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9595C47C290838C0004726AD /* GoogleService-Info.plist */; };
+		95AA82782919A4AD00B7975C /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95AA82772919A4AD00B7975C /* ImagePicker.swift */; };
+		95AA827A2919B21600B7975C /* ImageCropper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95AA82792919B21600B7975C /* ImageCropper.swift */; };
 		95F1CD33290EDC61000A3080 /* AppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95F1CD32290EDC61000A3080 /* AppView.swift */; };
 		95F1CD36290EDC8D000A3080 /* CodaTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95F1CD35290EDC8D000A3080 /* CodaTabBar.swift */; };
 		95F1CD38290EDCFA000A3080 /* Tab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95F1CD37290EDCFA000A3080 /* Tab.swift */; };
@@ -91,6 +96,9 @@
 		952BCF89290982CF0046FB02 /* LottieAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottieAnimation.swift; sourceTree = "<group>"; };
 		952BCF8B290989B00046FB02 /* progress.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = progress.json; sourceTree = "<group>"; };
 		95421D082911914000980E52 /* ProjectCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectCell.swift; sourceTree = "<group>"; };
+		954ADF44291FBF32001300EA /* AvatarImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarImageView.swift; sourceTree = "<group>"; };
+		954ADF46291FBFFF001300EA /* AvatarImageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarImageModel.swift; sourceTree = "<group>"; };
+		954ADF48291FC237001300EA /* ImageCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCache.swift; sourceTree = "<group>"; };
 		9595C45B2908343C004726AD /* Coda.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Coda.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9595C45E2908343C004726AD /* CodaApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodaApp.swift; sourceTree = "<group>"; };
 		9595C4602908343C004726AD /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -100,6 +108,8 @@
 		9595C47829083505004726AD /* InputSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputSheet.swift; sourceTree = "<group>"; };
 		9595C47A29083529004726AD /* RegistrationPageMain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationPageMain.swift; sourceTree = "<group>"; };
 		9595C47C290838C0004726AD /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		95AA82772919A4AD00B7975C /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
+		95AA82792919B21600B7975C /* ImageCropper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCropper.swift; sourceTree = "<group>"; };
 		95F1CD32290EDC61000A3080 /* AppView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppView.swift; sourceTree = "<group>"; };
 		95F1CD35290EDC8D000A3080 /* CodaTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodaTabBar.swift; sourceTree = "<group>"; };
 		95F1CD37290EDCFA000A3080 /* Tab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tab.swift; sourceTree = "<group>"; };
@@ -137,6 +147,7 @@
 				95F1CD39290EE573000A3080 /* ProfileView.swift */,
 				951DBBEC291034B700FAB2E3 /* ProfileSheet.swift */,
 				95421D082911914000980E52 /* ProjectCell.swift */,
+				954ADF44291FBF32001300EA /* AvatarImageView.swift */,
 			);
 			path = "Profile Page";
 			sourceTree = "<group>";
@@ -301,6 +312,8 @@
 				9519B05129087DBA00504B03 /* AuthentificationState.swift */,
 				37C715763F3521CCCF09C230 /* TabItem.swift */,
 				9526C79E29143FA90005C285 /* FSManager.swift */,
+				954ADF46291FBFFF001300EA /* AvatarImageModel.swift */,
+				954ADF48291FC237001300EA /* ImageCache.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -318,6 +331,8 @@
 		9595C473290834C3004726AD /* Additions */ = {
 			isa = PBXGroup;
 			children = (
+				95AA82792919B21600B7975C /* ImageCropper.swift */,
+				95AA82772919A4AD00B7975C /* ImagePicker.swift */,
 				952BCF89290982CF0046FB02 /* LottieAnimation.swift */,
 				9526C7A0291441C50005C285 /* Data Editor */,
 				95F1CD34290EDC6C000A3080 /* TabBar */,
@@ -450,7 +465,9 @@
 				95F1CD36290EDC8D000A3080 /* CodaTabBar.swift in Sources */,
 				9595C47929083505004726AD /* InputSheet.swift in Sources */,
 				952BCF79290968380046FB02 /* LoginBubble.swift in Sources */,
+				954ADF45291FBF32001300EA /* AvatarImageView.swift in Sources */,
 				95421D092911914000980E52 /* ProjectCell.swift in Sources */,
+				954ADF49291FC237001300EA /* ImageCache.swift in Sources */,
 				952BCF7B2909750F0046FB02 /* GitHubLoginButton.swift in Sources */,
 				95F1CD3C290EE57B000A3080 /* ChatView.swift in Sources */,
 				9595C47B29083529004726AD /* RegistrationPageMain.swift in Sources */,
@@ -458,6 +475,7 @@
 				951DBBED291034B700FAB2E3 /* ProfileSheet.swift in Sources */,
 				9595C477290834EB004726AD /* DataBubble.swift in Sources */,
 				9519B05529087E1800504B03 /* LoginOption.swift in Sources */,
+				95AA827A2919B21600B7975C /* ImageCropper.swift in Sources */,
 				951DBBF22910394C00FAB2E3 /* BottomSheetPositions.swift in Sources */,
 				951367102909C9CE00FD7C78 /* RegisterBubble.swift in Sources */,
 				9526C7A2291441E60005C285 /* DataEditor.swift in Sources */,
@@ -470,8 +488,10 @@
 				952BCF8A290982CF0046FB02 /* LottieAnimation.swift in Sources */,
 				952BCF7529095A7D0046FB02 /* SecuredDataBubble.swift in Sources */,
 				951367132909D5B000FD7C78 /* Blur.swift in Sources */,
+				95AA82782919A4AD00B7975C /* ImagePicker.swift in Sources */,
 				95F1CD38290EDCFA000A3080 /* Tab.swift in Sources */,
 				9595C45F2908343C004726AD /* CodaApp.swift in Sources */,
+				954ADF47291FBFFF001300EA /* AvatarImageModel.swift in Sources */,
 				9519B05229087DBA00504B03 /* AuthentificationState.swift in Sources */,
 				951DBBF42910431700FAB2E3 /* PLanguages.swift in Sources */,
 				95F1CD40290EE58F000A3080 /* HomeView.swift in Sources */,
@@ -533,7 +553,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -587,7 +607,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;

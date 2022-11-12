@@ -13,6 +13,7 @@ import Firebase
 
 
 
+
 class AuthenticationState: NSObject, ObservableObject {
 
     @Published var loggedInUser: User? // Тут храниться текущий зарегистрированный пользователь (аккаунт)
