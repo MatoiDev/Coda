@@ -43,7 +43,6 @@ struct ProfileSheet: View {
                                     .font(.custom("RobotoMono-Bold", size: 20))
                                     .minimumScaleFactor(0.01)
                                     .lineLimit(1)
-                            
                                 
                                 HStack(alignment: .top) {
                                     Text("\(self.realName) \(self.realSurname)")

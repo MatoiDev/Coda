@@ -51,6 +51,7 @@ struct ProfileView: View {
     @State var bottomSheetTranslation : CGFloat = BottomSheetPosition.bottom.rawValue
     @State private var avatar: UIImage = UIImage(named: "default")!
     @State private var avatarTranslation : CGFloat = 0
+
     
     private var fsmanager: FSManager = FSManager()
     @State private var loadAvatar : Bool = true
@@ -73,13 +74,13 @@ struct ProfileView: View {
     
     // MARK: - Bottom Sheet Position
     var bottomSheetTranslationProrated : CGFloat {
-        (bottomSheetTranslation - BottomSheetPosition.bottom.rawValue) / (BottomSheetPosition.top.rawValue - BottomSheetPosition.bottom.rawValue)
+        return (bottomSheetTranslation - BottomSheetPosition.bottom.rawValue) / (BottomSheetPosition.top.rawValue - BottomSheetPosition.bottom.rawValue)
     }
     
     // MARK: - Star Dynamic X Position
     var starPositionX : CGFloat {
-        if bottomSheetTranslationProrated <= 0.5 { return bottomSheetTranslationProrated * 30 - 2 }
-        return 30 * (1 - bottomSheetTranslationProrated)
+        if bottomSheetTranslationProrated <= 0.5 { return -bottomSheetTranslationProrated * UIScreen.main.bounds.width / 2 }
+        return -UIScreen.main.bounds.width / 2 * (1 - bottomSheetTranslationProrated) + 30
     
     }
     
@@ -90,7 +91,7 @@ struct ProfileView: View {
             let screenHeight = geometry.size.height + geometry.safeAreaInsets.top + geometry.safeAreaInsets.bottom
             
             ZStack {
-//                Image("")
+
                 // MARK: - Bottom Sheet View
                 BottomSheetView(position: $bottomSheetPosition) {
                     
@@ -98,44 +99,51 @@ struct ProfileView: View {
                     // MARK: - Profile Sheet init
                     ProfileSheet(username: self.userDataFormatted["username"] ?? "username", realName: self.userDataFormatted["name"] ?? "name" , realSurname: self.userDataFormatted["surname"] ?? "surname", mainLanguage: self.userDataFormatted["language"] ?? PLanguages.swift.rawValue, projects: projects, reputation: self.userDataFormatted["reputation"] ?? "0", mates: self.userDataFormatted["mates"] ?? "0", headerPosition: self.$bottomSheetTranslation)
                 }
+                // MARK: - On Dr(u)g
                 .onBottomSheetDrag { translation in
                     withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
                         self.bottomSheetTranslation = translation / screenHeight
                         self.avatarTranslation = self.bottomSheetTranslationProrated
                     }
-
                 }
                 
                 .overlay {
                     // MARK: - Reputation and language stat
-                    HStack {
-                        // MARK: - star
-                        Image(systemName: self.bottomSheetPosition == .bottom ? "star.fill" : "star")
-                            .rotationEffect(Angle(degrees: 1080 * bottomSheetTranslationProrated))
-                            .offset(x: -10 * starPositionX, y: 84 * bottomSheetTranslationProrated)
-                            .offset(x: self.bottomSheetPosition == .top ? 30 : 0)
+                    ZStack {
                         HStack {
-                            // MARK: - reputation
-                            Text(self.userDataFormatted["reputation"] ?? "777")
-                                .offset(x: -10 * starPositionX, y: 84 * bottomSheetTranslationProrated)
-                                .offset(x: self.bottomSheetPosition == .top ? 30 : 0)
-                            if self.bottomSheetTranslationProrated == 1 {
-                                // MARK: - separator
-                                Text("|")
-                                    .offset(x: -10 * starPositionX, y: 84 * bottomSheetTranslationProrated)
-                                    .offset(x: self.bottomSheetPosition == .top ? 30 : 0)
-                                    .opacity(self.bottomSheetTranslationProrated < 1 ? self.bottomSheetTranslationProrated - 0.8 : 1)
-                            }
-                            // MARK: - language
-                            Text(self.userDataFormatted["language"] ?? "Objective-C")
-                                .offset(y: 84)
-                                .offset(x: self.bottomSheetPosition == .top ? 30 : 250 * (1 - bottomSheetTranslationProrated))
-                                .opacity(self.bottomSheetTranslationProrated < 1 ? self.bottomSheetTranslationProrated - 0.8 : 1)
-                                .font(.custom("RobotoMono-SemiBold", size: 14))
-                        }
-                    }.font(.custom("RobotoMono-SemiBold", size: 30 - 14 * bottomSheetTranslationProrated))
-                        .foregroundColor(self.bottomSheetPosition == .top ? .secondary : .primary)
-                        .frame(maxHeight: .infinity, alignment: .top)
+                            // MARK: - Star
+                            Image(systemName: self.bottomSheetPosition == .bottom ? "star.fill" : "star")
+                                .rotationEffect(Angle(degrees: 1080 * bottomSheetTranslationProrated))
+                            // MARK: - Reputation | Language
+                                HStack {
+                                    // MARK: - Reputation
+                                    Text(self.userDataFormatted["reputation"] ?? "0")
+                                        .font(.custom("RobotoMono-SemiBold", size: 30 - 10 * bottomSheetTranslationProrated))
+                                    // MARK: - Separator
+                                    if !(self.bottomSheetTranslationProrated != 1) {
+                                        Text("|")
+                                            .font(.custom("RobotoMono-SemiBold", size: 25))
+                                            .opacity(self.bottomSheetTranslationProrated < 1 ? 0 : 1)
+                                            .offset(y: -2)
+                                    }
+                                    // MARK: - Language
+                                    if self.bottomSheetTranslationProrated > 0.5 {
+                                        Text(language)
+                                            .offset(x: self.bottomSheetTranslationProrated != 1 ? 2500 * (1 - bottomSheetTranslationProrated) : 250 * (1 - bottomSheetTranslationProrated))
+                                            
+                                    }
+                                }
+                                
+                                .font(.custom("RobotoMono-SemiBold", size: 20))
+                                .minimumScaleFactor(0.01)
+                                .foregroundColor(self.bottomSheetTranslationProrated != 0 ? .secondary : .primary)
+                                .lineLimit(1)
+                            
+                        }.offset(x: starPositionX, y: 70 * bottomSheetTranslationProrated)
+                        .frame(maxWidth: 300, maxHeight: .infinity, alignment: .top)
+                        .padding(8)
+                        .font(.custom("RobotoMono-SemiBold", size: 30 - 14 * bottomSheetTranslationProrated))
+                    }
                         
                     
                     // MARK: - Logo
@@ -143,14 +151,18 @@ struct ProfileView: View {
                         HStack {
             
                             AvatarImageView(urlString: self.userDataFormatted["avatarURL"], translation: self.$avatarTranslation)
-                            Spacer()
+                            
                         }.padding(.horizontal, 32)
                         
                     }.frame(maxHeight: .infinity, alignment: .top)
-                        .offset(x: geometry.size.width / 4.48 * (1 - bottomSheetTranslationProrated), y: 125 * (1 - bottomSheetTranslationProrated))
+                        .offset(x: -geometry.size.width / 3.2 * bottomSheetTranslationProrated, y: 125 * (1 - bottomSheetTranslationProrated))
                 }
             }
         }
+    }
+    
+    var language: String {
+        self.userDataFormatted["language"] ?? "Swift"
     }
 }
 
