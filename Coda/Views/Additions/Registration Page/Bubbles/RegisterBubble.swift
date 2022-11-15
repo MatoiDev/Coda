@@ -30,7 +30,7 @@ struct RegisterBubble: View {
                     RoundedRectangle(cornerRadius: 15)
                         .foregroundStyle(.ultraThickMaterial)
                         .overlay {
-                            RoundedRectangle(cornerRadius: 15).strokeBorder(LinearGradient(colors: [Color("Register2").opacity(0.7), Color("Register1").opacity(0.7)], startPoint: .topLeading, endPoint: .bottomTrailing), lineWidth: 1)
+                            RoundedRectangle(cornerRadius: 15).strokeBorder(LinearGradient(colors: [Color("Register2").opacity(0.7), .cyan], startPoint: .topLeading, endPoint: .bottomTrailing), lineWidth: 1)
                         }
                     Text("Register")
                         .font(.custom("RobotoMono-Medium", size: 20))

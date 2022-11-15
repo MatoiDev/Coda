@@ -15,6 +15,8 @@
 		95170556290AEEE2008C137F /* RobotoMono-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 95170555290AEEE2008C137F /* RobotoMono-Bold.ttf */; };
 		9519B05229087DBA00504B03 /* AuthentificationState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9519B05129087DBA00504B03 /* AuthentificationState.swift */; };
 		9519B05529087E1800504B03 /* LoginOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9519B05429087E1800504B03 /* LoginOption.swift */; };
+		951CC6DE2924191E00096222 /* ContinueBubble.swift in Sources */ = {isa = PBXBuildFile; fileRef = 951CC6DD2924191E00096222 /* ContinueBubble.swift */; };
+		951CC6E029241B4300096222 /* DataEditorInputBubble.swift in Sources */ = {isa = PBXBuildFile; fileRef = 951CC6DF29241B4300096222 /* DataEditorInputBubble.swift */; };
 		951DBBED291034B700FAB2E3 /* ProfileSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 951DBBEC291034B700FAB2E3 /* ProfileSheet.swift */; };
 		951DBBF0291038E500FAB2E3 /* BottomSheet in Frameworks */ = {isa = PBXBuildFile; productRef = 951DBBEF291038E500FAB2E3 /* BottomSheet */; };
 		951DBBF22910394C00FAB2E3 /* BottomSheetPositions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 951DBBF12910394C00FAB2E3 /* BottomSheetPositions.swift */; };
@@ -76,6 +78,8 @@
 		95170555290AEEE2008C137F /* RobotoMono-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "RobotoMono-Bold.ttf"; sourceTree = "<group>"; };
 		9519B05129087DBA00504B03 /* AuthentificationState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthentificationState.swift; sourceTree = "<group>"; };
 		9519B05429087E1800504B03 /* LoginOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginOption.swift; sourceTree = "<group>"; };
+		951CC6DD2924191E00096222 /* ContinueBubble.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContinueBubble.swift; sourceTree = "<group>"; };
+		951CC6DF29241B4300096222 /* DataEditorInputBubble.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataEditorInputBubble.swift; sourceTree = "<group>"; };
 		951DBBEC291034B700FAB2E3 /* ProfileSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSheet.swift; sourceTree = "<group>"; };
 		951DBBF12910394C00FAB2E3 /* BottomSheetPositions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetPositions.swift; sourceTree = "<group>"; };
 		951DBBF32910431700FAB2E3 /* PLanguages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PLanguages.swift; sourceTree = "<group>"; };
@@ -226,6 +230,15 @@
 			path = Enums;
 			sourceTree = "<group>";
 		};
+		951CC6E129241B4800096222 /* Bubbles */ = {
+			isa = PBXGroup;
+			children = (
+				951CC6DD2924191E00096222 /* ContinueBubble.swift */,
+				951CC6DF29241B4300096222 /* DataEditorInputBubble.swift */,
+			);
+			path = Bubbles;
+			sourceTree = "<group>";
+		};
 		951DBBF52910460100FAB2E3 /* Projects */ = {
 			isa = PBXGroup;
 			children = (
@@ -237,6 +250,7 @@
 		9526C7A0291441C50005C285 /* Data Editor */ = {
 			isa = PBXGroup;
 			children = (
+				951CC6E129241B4800096222 /* Bubbles */,
 				9526C7A1291441E60005C285 /* DataEditor.swift */,
 			);
 			path = "Data Editor";
@@ -490,10 +504,12 @@
 				951367132909D5B000FD7C78 /* Blur.swift in Sources */,
 				95AA82782919A4AD00B7975C /* ImagePicker.swift in Sources */,
 				95F1CD38290EDCFA000A3080 /* Tab.swift in Sources */,
+				951CC6DE2924191E00096222 /* ContinueBubble.swift in Sources */,
 				9595C45F2908343C004726AD /* CodaApp.swift in Sources */,
 				954ADF47291FBFFF001300EA /* AvatarImageModel.swift in Sources */,
 				9519B05229087DBA00504B03 /* AuthentificationState.swift in Sources */,
 				951DBBF42910431700FAB2E3 /* PLanguages.swift in Sources */,
+				951CC6E029241B4300096222 /* DataEditorInputBubble.swift in Sources */,
 				95F1CD40290EE58F000A3080 /* HomeView.swift in Sources */,
 				37C71976C935813CE712F5EC /* TabItem.swift in Sources */,
 				951DBBF72910461000FAB2E3 /* Project.swift in Sources */,

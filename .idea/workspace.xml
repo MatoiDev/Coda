@@ -7,13 +7,14 @@
     <list default="true" id="e73295e2-0254-495e-9ac4-9f931d21ceeb" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Coda.xcodeproj/project.xcworkspace/xcuserdata/worm.xcuserdatad/UserInterfaceState.xcuserstate" beforeDir="false" afterPath="$PROJECT_DIR$/Coda.xcodeproj/project.xcworkspace/xcuserdata/worm.xcuserdatad/UserInterfaceState.xcuserstate" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Coda/Views/Main/AppView.swift" beforeDir="false" afterPath="$PROJECT_DIR$/Coda/Views/Main/AppView.swift" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="iphoneos_" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="iphonesimulator_D7671687-329D-4967-8150-04AA4D7EAAEC" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
@@ -70,6 +71,7 @@
       <workItem from="1667498677984" duration="1000" />
       <workItem from="1667551500887" duration="9000" />
       <workItem from="1668294142972" duration="353000" />
+      <workItem from="1668537196176" duration="528000" />
     </task>
     <servers />
   </component>

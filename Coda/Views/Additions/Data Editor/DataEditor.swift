@@ -12,6 +12,7 @@ struct DataEditor: View {
     @AppStorage("UserID") private var userID : String = ""
     @AppStorage("UserEmail") private var userEmail : String = ""
     @AppStorage("IsUserExists") var isUserExists : Bool = false
+    @AppStorage("ShowPV") var showPV: Bool = false
     
     @State var username: String = ""
     @State var name: String = ""
@@ -23,6 +24,10 @@ struct DataEditor: View {
     @State var id: String  = ""
     @State var language: PLanguages = .swift
     
+    @State private var usernameIsOK: Bool = false
+    @State private var firstNameIsOK: Bool = false
+    @State private var secondNameIsOK: Bool = false
+    
     @State var imageCropperPresent: Bool = false
     
     @State private var pickImage: Bool = false
@@ -33,85 +38,85 @@ struct DataEditor: View {
     
     var body: some View {
         
-        NavigationView {
-            VStack {
-                
-                Button {
-                    self.pickImage.toggle()
-                } label: {
-                    if let avatar = self.avatar {
-                        Image(uiImage: avatar)
-                            .resizable()
-                            .frame(width: 150, height: 150, alignment: .center)
-
-                    } else {
-                        Image("").resizable()
-                            .frame(width: 150, height: 150, alignment: .center)
-                    }
-                    
-                    
-                }
-                .frame(width: 150, height: 150)
-                .clipShape(Circle())
+        // MARK: - View
+        ScrollView { }
+                .backgroundBlur(radius: 25, opaque: true)
+                .clipShape(RoundedRectangle(cornerRadius: 45))
+                .frame(width: UIScreen.main.bounds.width - 10, height: 422)
                 .overlay {
-                    Circle().stroke(Color.white, lineWidth: 2)
-                }
-                .sheet(isPresented: self.$pickImage, onDismiss: {
+                    RoundedRectangle(cornerRadius: 45).strokeBorder(LinearGradient(colors: [Color("Register2").opacity(0.7), Color.black.opacity(0.7)], startPoint: .top, endPoint: .bottom), lineWidth: 1)
+                            .opacity(0.5)            }
+                .overlay {
+            
+            
+            ZStack {
+                VStack {
                     
-                }) {
-                    ImagePicker(sourceType: .photoLibrary, onImagePicked: { result in
-                        switch result {
-                        case .success(let img):
-                            withAnimation {
-                                self.imageCropperPresent.toggle()
-                            }
-                            
-                            self.avatar = img
-                        case .failure(let err):
-                            // alert
-                            print(err)
-                        }
-                    })
-                    
-                    
-                }
-                .fullScreenCover(isPresented: self.$imageCropperPresent) {
-                    if let avatar = avatar {
-                        ImageCropper(shown: self.$imageCropperPresent, image: avatar, croppedImage: self.$avatar)
+                    Button {
+                        self.pickImage.toggle()
+                    } label: {
+                        if let avatar = self.avatar {
+                            Image(uiImage: avatar)
+                                .resizable()
+                                .frame(width: 150, height: 150, alignment: .center)
+
+                        } else {
+                            Image("").resizable()
+                                .frame(width: 150, height: 150, alignment: .center)
+                        }   
                     }
+                    .frame(width: 150, height: 150)
+                    .clipShape(Circle())
+                    .overlay {
+                        Circle().strokeBorder(LinearGradient(colors: [Color("Register2").opacity(0.7), .cyan], startPoint: .topLeading, endPoint: .bottomTrailing), lineWidth: 1)
+                    }
+                    .sheet(isPresented: self.$pickImage, onDismiss: {
                         
-                }
-            
-
-                
-                
-                Text("This is data editor")
-                
-                TextField("Username", text: self.$username)
-                    .disableAutocorrection(true)
-                TextField("First name", text: self.$name)
-                    .disableAutocorrection(true)
-                TextField("Last name", text: self.$surname)
-                    .disableAutocorrection(true)
-            
-                Button("Continue") {
+                    }) {
+                        ImagePicker(sourceType: .photoLibrary, onImagePicked: { result in
+                            switch result {
+                            case .success(let img):
+                                withAnimation {
+                                    self.imageCropperPresent.toggle()
+                                }
+                                
+                                self.avatar = img
+                            case .failure(let err):
+                                // alert
+                                print(err)
+                            }
+                        })
+                    }
+                    .fullScreenCover(isPresented: self.$imageCropperPresent) {
+                        if let avatar = avatar {
+                            ImageCropper(shown: self.$imageCropperPresent, image: avatar, croppedImage: self.$avatar)
+                        }
+                            
+                    }
+                    DataEditorInputBubble(withPlaceholder: "Username", editable: self.$username, handler: self.$usernameIsOK)
+                    DataEditorInputBubble(withPlaceholder: "First name", editable: self.$name, handler: self.$firstNameIsOK)
+                    DataEditorInputBubble(withPlaceholder: "Last name", editable: self.$surname, handler: self.$secondNameIsOK)
+                    if self.usernameIsOK, self.firstNameIsOK, self.secondNameIsOK {
+                        ContinueBubble {
+                            self.id = self.userID
+                            self.email = self.userEmail
+                            fsmanager.createUser(withID: self.id, email: self.email, username: self.username, name: self.name, surname: self.surname, image: self.avatar, language: self.language.rawValue)
+                        }
+                    }
                     
-                    self.id = self.userID
-                    self.email = self.userEmail
-                    fsmanager.createUser(withID: self.id, email: self.email, username: self.username, name: self.name, surname: self.surname, image: self.avatar, language: self.language.rawValue)
-                }
-
-            }.padding()
+                }.padding()
+                Spacer()
+            }
         
-        Spacer()
+        
         }
         
     }
+}
 
 
-//struct DataEditor_Previews: PreviewProvider {
-//    static var previews: some View {
-//        DataEditor()
-//    }
-//}
+struct DataEditor_Previews: PreviewProvider {
+    static var previews: some View {
+        DataEditor()
+    }
 }

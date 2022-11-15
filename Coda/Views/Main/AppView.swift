@@ -26,11 +26,19 @@ struct AppView: View {
                 }
                 else {
                     // MARK: - Data Editor
-                    DataEditor()
+                    ZStack {
+                        Image("WallpaperRegistration").edgesIgnoringSafeArea(.top)
+                        DataEditor()
+                    }
+    
                 }
             } else {
                 // MARK: - View while user is determining
-                ProgressView()
+                ZStack {
+                    Image("WallpaperRegistration").edgesIgnoringSafeArea(.top)
+                    ProgressView()
+                }
+
             }
             
         }.task {
