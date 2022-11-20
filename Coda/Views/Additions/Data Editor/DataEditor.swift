@@ -42,7 +42,7 @@ struct DataEditor: View {
         ScrollView { }
                 .backgroundBlur(radius: 25, opaque: true)
                 .clipShape(RoundedRectangle(cornerRadius: 45))
-                .frame(width: UIScreen.main.bounds.width - 10, height: 422)
+                .frame(width: UIScreen.main.bounds.width - 10, height: 500)
                 .overlay {
                     RoundedRectangle(cornerRadius: 45).strokeBorder(LinearGradient(colors: [Color("Register2").opacity(0.7), Color.black.opacity(0.7)], startPoint: .top, endPoint: .bottom), lineWidth: 1)
                             .opacity(0.5)            }
@@ -96,6 +96,7 @@ struct DataEditor: View {
                     DataEditorInputBubble(withPlaceholder: "Username", editable: self.$username, handler: self.$usernameIsOK)
                     DataEditorInputBubble(withPlaceholder: "First name", editable: self.$name, handler: self.$firstNameIsOK)
                     DataEditorInputBubble(withPlaceholder: "Last name", editable: self.$surname, handler: self.$secondNameIsOK)
+                    ChooseLanguageButton(language: self.$language)
                     if self.usernameIsOK, self.firstNameIsOK, self.secondNameIsOK {
                         ContinueBubble {
                             self.id = self.userID

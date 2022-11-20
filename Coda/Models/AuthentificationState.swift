@@ -24,9 +24,10 @@ class AuthenticationState: NSObject, ObservableObject {
     @Published var showLoading: Bool = false // Для анимации при входе
     
     @AppStorage("UserEmail") private var userEmail : String = ""
-    @AppStorage("UserID") var userID : String = ""
-    @AppStorage("IsUserExists") var userExists : Bool = false
-    @AppStorage("userData") var userData : String = ""
+    @AppStorage("UserID") private var userID : String = ""
+    @AppStorage("IsUserExists") private var userExists : Bool = false
+    @AppStorage("userData") private var userData : String = ""
+    @AppStorage("ShowPV") private var showPV: Bool = false
     
     @ObservedObject var fsmanager : FSManager = FSManager()
 
@@ -185,6 +186,7 @@ class AuthenticationState: NSObject, ObservableObject {
     }
 
     func signOut() -> Void {
+        self.showPV = true
         do {
             try auth.signOut()
             
@@ -196,10 +198,16 @@ class AuthenticationState: NSObject, ObservableObject {
             
             self.userID = ""
             self.userData = ""
+            DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(500)) {
+                self.showPV = false
+            }
             
             
         } catch let signOutError as NSError {
             print("Error signing out: %@", signOutError.localizedDescription)
+            DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(500)) {
+                self.showPV = false
+            }
         }
     }
 

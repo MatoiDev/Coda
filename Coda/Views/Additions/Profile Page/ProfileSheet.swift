@@ -19,7 +19,8 @@ struct ProfileSheet: View {
     
     @EnvironmentObject var authState : AuthenticationState
     
-    @State var showProjects: Bool = false
+    @State var showInfoSheet: Bool = false
+    @State var showSettings: Bool = false
     
     @Binding var headerPosition : CGFloat
     
@@ -60,7 +61,7 @@ struct ProfileSheet: View {
                     
                     HStack {
                         Button {
-                            self.authState.signOut()
+                            self.showSettings.toggle()
                         } label: {
                             Image(systemName: "gear")
                                 .font(.largeTitle)
@@ -69,7 +70,11 @@ struct ProfileSheet: View {
                                 .padding()
                                 .padding(.horizontal, 8)
                                 .offset(y: 50 * bottomSheetTranslationProrated)
-                    }
+                        }
+                        .fullScreenCover(isPresented: self.$showSettings) {
+                            ProfileSettingsMain()
+                        }
+
                     }.frame(maxWidth:.infinity, alignment: .trailing)
                     
                 }
@@ -79,38 +84,29 @@ struct ProfileSheet: View {
             
             
             
-            // MARK: - Projects show button
+            // MARK: - More Information button
             VStack {
                 Divider()
                     .frame(width: UIScreen.main.bounds.width - 60)
-                Button {
-                    withAnimation(.spring(response: 0.3, dampingFraction: 0.5)) {
-                        self.showProjects.toggle()
-                    }
-                    
-                } label: {
-                    ZStack {
-                        ScrollView {}
-                            .clipShape(Rectangle())
-                        
-                            .background(.ultraThinMaterial)
-                            .clipped()
-                            .frame(width: UIScreen.main.bounds.width - 30, height: 40, alignment: .center)
-                            .background(.ultraThinMaterial)
-                            .overlay {
-                                HStack {
-                                    Text("Projects")
-                                        .foregroundColor(Color.primary)
-                                        .font(.custom("RobotoMono-Bold", size: 15))
-                                    Spacer()
-                                }.padding(.horizontal, 16)
-                            }.cornerRadius(15)
-                    }
-                    
+                ProfileActionCell(withText: "More information") {
+                    self.showInfoSheet.toggle()
                 }
+                .sheet(isPresented: self.$showInfoSheet) {
+                        MoreInfoSheet()
+                }
+                Divider()
+                    .frame(width: UIScreen.main.bounds.width - 60)
+                HStack {
+                    Image(systemName: "pin")
+                    Text("Pinned")
+                }.foregroundColor(Color.primary)
+                    .font(.custom("RobotoMono-Bold", size: 17))
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.horizontal, 32)
+                    .padding(.vertical, 16)
+                
                 
                 // MARK: - Projects scroller
-                if self.showProjects {
                     VStack {
                         Divider()
                         ScrollView(.horizontal, showsIndicators: false) {
@@ -124,21 +120,21 @@ struct ProfileSheet: View {
                                         
                                     }.frame(width: 250, height: 250)
                                 }
-                            }.padding(40)
-                            Spacer()
+                            }.padding(.horizontal, 40)
+                                .padding(.vertical, 8)
+                            
                         }   .frame(width: UIScreen.main.bounds.width, height: 266)
-                            .background(Color.secondary)
                             .animation(.easeInOut)
                             .transition(.move(edge: .bottom))
                         Divider()
                     }
-                }
+                
             }
             .offset(y: 80 + 20 * bottomSheetTranslationProrated)
             
             
-        }.background(.ultraThinMaterial)
-            .background(Color("BackgroundColor1"))
+        }
+            .background(Color("AdditionDarkBackground"))
             .clipShape(RoundedRectangle(cornerRadius: 40))
             .frame(height: UIScreen.main.bounds.height * 1.2, alignment: .bottom)
             .ignoresSafeArea()

@@ -17,6 +17,7 @@ class FSManager: ObservableObject {
     @AppStorage("UserID") private var userID : String = ""
     @AppStorage("IsUserExists") var userExists : Bool = false
     @AppStorage("userData") var userData : String = ""
+    @AppStorage("ShowPV") var showPV: Bool = false
     
     private let db = Firestore.firestore()
     
@@ -70,8 +71,10 @@ class FSManager: ObservableObject {
     }
     
     func createUser(withID id: String, email : String, username: String, name: String, surname: String, mates: Int = 0, reputation : Int = 0, image: UIImage?, language: PLanguages.RawValue) {
+        self.showPV = true
         guard let image = image else {
             print("Image didn't load")
+            self.showPV = false
             return
         }
 
@@ -93,13 +96,16 @@ class FSManager: ObservableObject {
                 ]) { err in
                     if let err = err {
                         print("Error writing document: \(err)")
+                        self.showPV = false
                     } else {
                         print("Document successfully written!")
                         self.userExists = true
+                        self.showPV = false
                     }
                 }
             case .failure(let err):
                 print(err)
+                self.showPV = false
             }
         }
         
