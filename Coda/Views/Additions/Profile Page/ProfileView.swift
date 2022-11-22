@@ -11,14 +11,15 @@ import BottomSheet
 
 
 var projects : [Project] = [
-    Project(image: "violet", name: "Violet", description: "The maid for your iPhone"),
-    Project(image: "1", name: "Matoi", description: "The notes' tint color customizer"),
-    Project(image: "2", name: "Lolla", description: "MACH -O Files Dumper"),
-    Project(image: "3", name: "Guraa", description: "Simple tool to develop your tweaks!")
+    Project(image: "deCard", name: "deCard", description: "Simple Apple Pay cards customizer that has UI"),
+    Project(image: "Chorder", name: "Chorder", description: "A useful determinant of guitar chords"),
+    Project(image: "Violet", name: "Violet", description: "The maid for your iPhone"),
+    Project(image: "Matoi", name: "Matoi", description: "Notes tintColor customizer")
     
 ]
 
 func stringToDict(string dict: String) -> Dictionary<String, String> {
+    print(dict)
     let dict: String = String(String(dict.dropFirst()).dropLast())
     var res: Dictionary<String, String> = Dictionary<String, String>()
 
@@ -51,23 +52,25 @@ struct ProfileView: View {
     @State var bottomSheetTranslation : CGFloat = BottomSheetPosition.bottom.rawValue
     @State private var avatar: UIImage = UIImage(named: "default")!
     @State private var avatarTranslation : CGFloat = 0
-
     
+    @AppStorage("UserEmail") private var userEmail : String = ""
+    @AppStorage("UserUsername") var userUsername: String = ""
+    @AppStorage("UserFirstName") var userFirstName: String = ""
+    @AppStorage("UserLastName") var userLastName: String = ""
+    @AppStorage("UserMates") var userMates: String = ""
+    @AppStorage("avatarURL") var avatarURL: String = ""
+    @AppStorage("UserReputation") var userReputation: String = ""
+    @AppStorage("UserLanguage") var userLanguage: PLanguages.RawValue = ""
+    
+    @AppStorage("UserID") private var userID : String = ""
+        
     private var fsmanager: FSManager = FSManager()
     @State private var loadAvatar : Bool = true
-    
-    var userID: String
-    
-    private var userDataFormatted : Dictionary<String, String> = Dictionary<String, String>()
-    
-    @AppStorage("userData") var userData : String = ""
-    
+
     init(with userID: String) {
         
         self.userID = userID
         fsmanager.getUsersData(withID: self.userID)
-        userDataFormatted = stringToDict(string: self.userData)
-        
         self.loadAvatar = true
         
     }
@@ -97,7 +100,7 @@ struct ProfileView: View {
                     
                 } content: {
                     // MARK: - Profile Sheet init
-                    ProfileSheet(username: self.userDataFormatted["username"] ?? "username", realName: self.userDataFormatted["name"] ?? "name" , realSurname: self.userDataFormatted["surname"] ?? "surname", mainLanguage: self.userDataFormatted["language"] ?? PLanguages.swift.rawValue, projects: projects, reputation: self.userDataFormatted["reputation"] ?? "0", mates: self.userDataFormatted["mates"] ?? "0", headerPosition: self.$bottomSheetTranslation)
+                    ProfileSheet(username: self.userUsername, realName: self.userFirstName , realSurname: self.userLastName, mainLanguage: self.userLanguage, projects: projects, reputation: self.userReputation, mates: self.userMates, headerPosition: self.$bottomSheetTranslation)
                 }
                 // MARK: - On Dr(u)g
                 .onBottomSheetDrag { translation in
@@ -117,7 +120,7 @@ struct ProfileView: View {
                             // MARK: - Reputation | Language
                                 HStack {
                                     // MARK: - Reputation
-                                    Text(self.userDataFormatted["reputation"] ?? "0")
+                                    Text(self.userReputation)
                                         .font(.custom("RobotoMono-SemiBold", size: 30 - 10 * bottomSheetTranslationProrated))
                                     // MARK: - Separator
                                     if !(self.bottomSheetTranslationProrated != 1) {
@@ -150,7 +153,7 @@ struct ProfileView: View {
                     VStack {
                         HStack {
             
-                            AvatarImageView(urlString: self.userDataFormatted["avatarURL"], translation: self.$avatarTranslation)
+                            AvatarImageView(urlString: self.avatarURL, translation: self.$avatarTranslation)
                             
                         }.padding(.horizontal, 32)
                         
@@ -162,7 +165,7 @@ struct ProfileView: View {
     }
     
     var language: String {
-        self.userDataFormatted["language"] ?? "Swift"
+        self.userLanguage
     }
 }
 

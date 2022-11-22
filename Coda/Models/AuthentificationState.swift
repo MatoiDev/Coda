@@ -26,7 +26,6 @@ class AuthenticationState: NSObject, ObservableObject {
     @AppStorage("UserEmail") private var userEmail : String = ""
     @AppStorage("UserID") private var userID : String = ""
     @AppStorage("IsUserExists") private var userExists : Bool = false
-    @AppStorage("userData") private var userData : String = ""
     @AppStorage("ShowPV") private var showPV: Bool = false
     
     @ObservedObject var fsmanager : FSManager = FSManager()
@@ -197,7 +196,7 @@ class AuthenticationState: NSObject, ObservableObject {
             self.userExists = false
             
             self.userID = ""
-            self.userData = ""
+            
             DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(500)) {
                 self.showPV = false
             }
