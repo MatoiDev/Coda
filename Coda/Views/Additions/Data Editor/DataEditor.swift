@@ -31,7 +31,7 @@ struct DataEditor: View {
     @State var imageCropperPresent: Bool = false
     
     @State private var pickImage: Bool = false
-    @State var avatar : UIImage? = nil
+    @State private var avatar : UIImage? = nil
     
     private let fsmanager : FSManager = FSManager()
     
