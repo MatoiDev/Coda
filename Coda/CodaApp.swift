@@ -18,6 +18,7 @@ struct CodaApp: App {
         WindowGroup {
             ContentView()
                 .environmentObject(authState)
+                
         }
     }
 }

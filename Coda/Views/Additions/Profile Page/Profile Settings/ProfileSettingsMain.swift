@@ -7,11 +7,33 @@
 
 import SwiftUI
 
+
+struct IFooterTextForMainSettings: View {
+    private(set) var text: String
+    init(withText text: String) {
+        self.text = text
+    }
+    var body: some View {
+        if #available(iOS 16, *) {
+            Text(self.text)
+                .font(.custom("RobotoMono-SemiBold", size: 11))
+                .lineLimit(10)
+                .kerning(0.01) // ios 16 and above
+                .lineSpacing(0.3)
+        } else {
+            Text(self.text)
+                .font(.custom("RobotoMono-SemiBold", size: 11))
+                .lineLimit(10)
+                .lineSpacing(0.3)
+        }
+    }
+}
+
 struct ProfileSettingsMain: View {
     @Environment(\.dismiss) var dissmiss
     @EnvironmentObject private var authState : AuthenticationState
     
-    private var avatarImage : AvatarImageModel!
+    private var avatarImage : CachedImageModel!
     
     @State private var imageCropperPresent: Bool = false
     @State private var pickImage: Bool = false
@@ -23,11 +45,12 @@ struct ProfileSettingsMain: View {
     @State private var avatarurl: String = ""
     @State private var language: PLanguages.RawValue = ""
     @State private var bio: String = ""
-    
+    @State private var projects: [String] = []
     @State var avatar : UIImage? = nil
     
-    @AppStorage("IsUserExists") private var userExists : Bool = false
+    @State private var editMode: EditMode = .inactive
     
+    @AppStorage("IsUserExists") private var userExists : Bool = false
     
     @AppStorage("UserEmail") private var userEmail : String = ""
     @AppStorage("UserUsername") var userUsername: String = ""
@@ -35,21 +58,41 @@ struct ProfileSettingsMain: View {
     @AppStorage("UserLastName") var userLastName: String = ""
     @AppStorage("UserMates") var userMates: String = ""
     @AppStorage("avatarURL") var avatarURL: String = ""
-    @AppStorage("UserReputation") var userReputation: String = ""
     @AppStorage("UserLanguage") var userLanguage: PLanguages.RawValue = ""
     @AppStorage("UserBio") var userBio : String = ""
+    @AppStorage("UserProjects") var userProjects : [String] = []
     
     @AppStorage("UserID") private var userID : String = ""
+    
     
     
     private var fsmanager: FSManager = FSManager()
     
     init() {
         self.username = self.userUsername
-        self.avatarImage = AvatarImageModel(urlString: self.avatarURL)
+        self.avatarImage = CachedImageModel(urlString: self.avatarURL)
+        UITableView.appearance().sectionFooterHeight = 0
+        
+    }
     
-                   UITableView.appearance().sectionFooterHeight = 0
-
+    private func move(from source: IndexSet, to destination: Int) {
+        self.projects.move(fromOffsets: source, toOffset: destination)
+    }
+    
+    private func removeRows(at offsets: IndexSet) {
+        self.projects.remove(atOffsets: offsets)
+    }
+    
+    private func setProjects() async {
+        
+        while true {
+            if self.projects == [] {
+                self.projects = self.userProjects
+                return
+            }
+        }
+        
+        
     }
     
     var body: some View {
@@ -112,9 +155,18 @@ struct ProfileSettingsMain: View {
                                 }
                         }.listRowBackground(Color.clear)
                     }
-                    Section(header: Text("Profile").foregroundColor(.cyan).font(.custom("RobotoMono-SemiBold", size: 13)), footer: Text("Enter your new username, first name, last name, or edit a profile photo.")) {
+                    
+                    // MARK: - Profile info
+                    Section(header: Text("Profile").foregroundColor(.cyan).font(.custom("RobotoMono-SemiBold", size: 13)),
+                            footer: Text("Enter your new username, first name, last name, or edit a profile photo.")
+                        .font(.custom("RobotoMono-SemiBold", size: 11))
+                        .lineLimit(10)
+                        .lineSpacing(0.3)
+                        
+                    ) {
                         
                         TextField(self.username == "" ? "Username" : self.username, text: self.$username)
+                            .textContentType(.nickname)
                             .onAppear {
                                 self.username = self.userUsername
                             }
@@ -127,12 +179,101 @@ struct ProfileSettingsMain: View {
                                 self.lastName = self.userLastName
                             }
                     }
-                    Section(footer: Text("Any details such as your age, occupation or city. Example: 23 y.o. Web programmer from St. Petersburg.")) {
+                    .textContentType(.name)
+                    .keyboardType(.default)
+                    .autocapitalization(.none)
+                    .disableAutocorrection(true)
+                    .lineLimit(1)
+                    .minimumScaleFactor(1)
+                    .font(.custom("RobotoMono-SemiBold", size: 16))
+                    
+                    
+                    // MARK: - Bio
+                    Section(footer:
+                            Text("Any details such as your age, occupation or city. Example: 23 y.o. Web programmer from St. Petersburg.")
+                                .font(.custom("RobotoMono-SemiBold", size: 11))
+                                .lineLimit(10)
+                                .lineSpacing(0.3)) {
                         TextField(self.bio == "" ? "Bio" : self.bio, text: self.$bio)
+                                .textContentType(.name)
+                                .keyboardType(.default)
+                                .autocapitalization(.none)
+                                .disableAutocorrection(true)
+                                .lineLimit(1)
+                                .minimumScaleFactor(0.8)
+                                .font(.custom("RobotoMono-SemiBold", size: 16))
                             .onAppear {
                                 self.bio = self.userBio
                             }
                     }
+                    
+                    // MARK: - Projects
+                    
+                    Section(header: Text("Pinned projects").foregroundColor(.cyan).font(.custom("RobotoMono-SemiBold", size: 13))) {
+                        
+                        if self.projects.count > 0 {
+                            ForEach(0..<self.projects.count, id: \.self) { ind in
+                                NavigationLink {
+                                    
+                                    let id = self.projects[ind]
+                                    ProjectEditor(with: id, projects: self.$projects, index: ind)
+                                    
+                                } label: {
+                                    let name = "\(self.projects[ind])".split(separator: ":")[1]
+                                    Text(name)
+                                        
+                                }
+                                
+                                
+                            }
+                            .onMove(perform: move)
+                            .onDelete(perform: self.removeRows)
+                            if self.editMode == .inactive {
+                                Button {
+                                    self.editMode = .active
+                                    print("1")
+                                } label: {
+                                    HStack {
+                                        
+                                            Image(systemName: "square.and.pencil")
+                                            Text("Edit")
+                                        
+
+                                    }
+                                    .foregroundColor(Color.blue)
+                                    .font(.custom("RobotoMono-SemiBold", size: 15))
+
+                                }
+                            }
+                        } else {
+                            Text("There are now pinned projects!")
+                        }
+                        
+                        
+                    }
+                     .lineLimit(1)
+                     .minimumScaleFactor(1)
+                     .font(.custom("RobotoMono-SemiBold", size: 16))
+                    
+                    // MARK: - Pin a project
+                    Section {
+                        NavigationLink {
+                            ProjectEditor(with: "", projects: self.$projects)
+                        } label: {
+                            Text("Pin a project")
+                                .foregroundColor(Color.blue)
+                                .font(.custom("RobotoMono-Medium", size: 15))
+                            
+                            
+                        }
+                    }.onTapGesture {
+                        print("Hitted")
+                    }
+                    
+                    
+                    
+                    
+                    // MARK: - Log Out
                     Section {
                         Button {
                             self.showPV.toggle()
@@ -151,6 +292,7 @@ struct ProfileSettingsMain: View {
                         }
                     }
                 }
+                .environment(\.editMode, self.$editMode)
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
                     ToolbarItem(placement: .principal) {
@@ -163,6 +305,22 @@ struct ProfileSettingsMain: View {
                 .toolbar{
                     ToolbarItem(placement: .navigationBarTrailing) {
                         Button {
+                            self.editMode = .inactive
+                        } label: {
+                            HStack {
+                                if self.editMode == .active {
+                                    Image(systemName: "square.and.pencil")
+                                } else {
+                                    Text("")
+                                }
+                            }
+                            .foregroundColor(Color.green)
+                            .font(.custom("RobotoMono-Medium", size: 15))
+                            
+                        }
+                    }
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        Button {
                             self.saveSettings()
                         } label: {
                             Text("Done")
@@ -172,9 +330,9 @@ struct ProfileSettingsMain: View {
                         }
                         
                     }
+                    
+                   
                 }
-                
-                
                 .toolbar {
                     ToolbarItem(placement: .navigationBarLeading) {
                         Button {
@@ -183,8 +341,7 @@ struct ProfileSettingsMain: View {
                             HStack {
                                 Image(systemName: "chevron.backward")
                                 Text("Back")
-                                
-                                
+
                             }.foregroundColor(Color("Register2"))
                                 .font(.custom("RobotoMono-Bold", size: 17))
                             
@@ -198,16 +355,26 @@ struct ProfileSettingsMain: View {
                 }
             }
             
+        }.task {
+            await self.setProjects()
         }
+
+        
     }
     private func saveSettings() {
-        self.fsmanager.updateUser(withID: self.userID, email: self.userEmail,
+        
+        self.fsmanager.updateUser(withID: self.userID,
+                                  email: self.userEmail,
                                   username: self.username == "" ? self.userUsername : self.username,
                                   name: self.firstName == "" ? self.userFirstName : self.firstName,
                                   surname: self.lastName == "" ? self.userLastName : self.lastName,
                                   image: self.avatar, language:
                                     self.language == "" ? self.userLanguage : self.language,
-                                  bio: self.bio)
+                                  bio: self.bio,
+                                  projects: self.projects)
+        self.userProjects = self.projects
+        
+        self.fsmanager.getUsersData(withID: self.userID)
         self.dissmiss.callAsFunction()
     }
 }

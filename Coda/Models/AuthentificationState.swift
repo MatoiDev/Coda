@@ -27,6 +27,19 @@ class AuthenticationState: NSObject, ObservableObject {
     @AppStorage("UserID") private var userID : String = ""
     @AppStorage("IsUserExists") private var userExists : Bool = false
     @AppStorage("ShowPV") private var showPV: Bool = false
+
+    @AppStorage("UserUsername") var userUsername: String = ""
+    @AppStorage("UserFirstName") var userFirstName: String = ""
+    @AppStorage("UserLastName") var userLastName: String = ""
+    @AppStorage("UserMates") var userMates: String = ""
+    @AppStorage("avatarURL") var avatarURL: String = ""
+    @AppStorage("UserReputation") var userReputation: String = ""
+    @AppStorage("UserLanguage") var userLanguage: PLanguages.RawValue = ""
+    @AppStorage("UserBio") var userBio : String = ""
+    @AppStorage("UserProjects") var userProjects : [String] = []
+    
+    @AppStorage("LoginUserID") var loginUserID: String = ""
+    
     
     @ObservedObject var fsmanager : FSManager = FSManager()
 
@@ -46,6 +59,25 @@ class AuthenticationState: NSObject, ObservableObject {
     var provider = OAuthProvider(providerID: "github.com") // Провайдер, необходим для авторизации через GitHub
 
 
+    private func resetOwnInfo() -> Void {
+        
+        self.userEmail  = ""
+        self.userID  = ""
+        self.userExists = false
+        self.showPV = false
+        self.userUsername = ""
+        self.userFirstName = ""
+        self.userLastName = ""
+        self.userMates = ""
+        self.avatarURL = ""
+        self.userReputation = ""
+        self.userLanguage = ""
+        self.userBio = ""
+        self.userProjects = []
+        self.loginUserID = ""
+        
+    }
+    
     func login(with loginOption: LoginOption) {
         self.isAuthenticating = true
         self.error = nil
@@ -86,7 +118,8 @@ class AuthenticationState: NSObject, ObservableObject {
                 self.userEmail = email
                 
                 if let uid : String = self.loggedInUser?.uid {
-                    self.userID = uid
+                    self.userID = uid // ID текущего пользователя (может использоваться при переходе на страницу другого пользователья)
+                    self.loginUserID = uid // ID только зарегистрированного пользователя/пользователя, сделавшего вход
                 }
                 
                 
@@ -117,7 +150,8 @@ class AuthenticationState: NSObject, ObservableObject {
                 self.userEmail = email
                 
                 if let uid : String = self.loggedInUser?.uid {
-                    self.userID = uid
+                    self.userID = uid // ID текущего пользователя (может использоваться при переходе на страницу другого пользователья)
+                    self.loginUserID = uid // ID только зарегистрированного пользователя/пользователя, сделавшего вход
                 }
                 
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
@@ -171,7 +205,8 @@ class AuthenticationState: NSObject, ObservableObject {
                     }
                     
                     if let uid : String = self.loggedInUser?.uid {
-                        self.userID = uid
+                        self.userID = uid // ID текущего пользователя (может использоваться при переходе на страницу другого пользователья)
+                        self.loginUserID = uid // ID только зарегистрированного пользователя/пользователя, сделавшего вход
                     }
                     
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
@@ -192,12 +227,10 @@ class AuthenticationState: NSObject, ObservableObject {
             self.loggedInUser = nil
             self.successfullyLoggedIn = false
             
-            self.userEmail = ""
-            self.userExists = false
-            
-            self.userID = ""
+            self.resetOwnInfo()
             
             DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(500)) {
+                
                 self.showPV = false
             }
             

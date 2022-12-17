@@ -34,16 +34,20 @@ struct ProfileActionCell: View {
                     .background(Color("AdditionBackground"))
                     .overlay {
                         HStack {
+                            
                             if self.text == "More information" {
                                 Image(systemName: "info.circle")
-                                    .foregroundColor(.white)
-                                    .font(.custom("RobotoMono-Bold", size: 15))
+        
+                            } else if self.text == "Create Post" {
+                                Spacer()
+                                Image(systemName: "square.and.pencil")
+                  
                             }
                             Text(self.text)
-                                .foregroundColor(.white)
-                                .font(.custom("RobotoMono-Bold", size: 15))
                             Spacer()
                         }.padding(.horizontal, 16)
+                            .foregroundColor(.white)
+                            .font(.custom("RobotoMono-Bold", size: 15))
                     }.cornerRadius(15)
             }
             
