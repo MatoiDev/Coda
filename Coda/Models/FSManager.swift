@@ -28,6 +28,7 @@ class FSManager: ObservableObject {
     @AppStorage("UserReputation") var userReputation: String = ""
     @AppStorage("UserLanguage") var userLanguage: PLanguages.RawValue = ""
     @AppStorage("UserBio") var userBio : String = ""
+    @AppStorage("UserRegisterDate") var userRegisterDate: String = ""
     
     @AppStorage("UserProjects") var userProjects : [String] = []
     @AppStorage("UserPosts") var userPosts : [String] = []
@@ -117,8 +118,12 @@ class FSManager: ObservableObject {
     
     
     // MARK: - Remove functions
-    func remove(project id: String) {
-        db.collection("Projects").document(id).delete() { err in
+    
+    func remove(project id: String) -> Void {
+        
+        // Delete project from FireBase
+        
+        self.db.collection("Projects").document(id).delete() { err in
             if let err = err {
                 print("Error removing document: \(err)")
             } else {
@@ -127,7 +132,33 @@ class FSManager: ObservableObject {
         }
     }
     
-    func remove(projectPriview id: String) {
+    func remove(post id: String, userID: String, completion: @escaping (Result<String, Error>) -> Void) -> Void {
+        
+        // Delete post from FireBase
+        
+        self.db.collection("Users").document(userID).updateData([ // delete from user List
+            
+            "posts" : FieldValue.arrayRemove([id])
+            
+        ]) { err in
+            if let err = err {
+                completion(.failure(err))
+                self.showPV = false
+            } else {
+                self.showPV = false
+                self.db.collection("Posts").document(id).delete() { err in // delete from Posts base
+                    if let err = err {
+                        completion(.failure("Error removing document: \(err)"))
+                    } else {
+                        completion(.success("Document successfully removed!"))
+                    }
+                }
+            }
+        }
+        self.getUsersData(withID: userID)
+    }
+    
+    func remove(projectPriview id: String) -> Void {
         let desertRef = Storage.storage().reference().child("ProjectPreviews").child(id)
         // Delete the file
         desertRef.delete { error in
@@ -135,6 +166,18 @@ class FSManager: ObservableObject {
                 // Uh-oh, an error occurred!
             } else {
                 // File deleted successfully
+            }
+        }
+    }
+
+    func remove(postImage id: String, completion: @escaping (Result<NSNull, Error>) -> Void) -> Void {
+        let desertRef = Storage.storage().reference().child("PostPreviews").child(id)
+
+        desertRef.delete { error in
+            if let error = error {
+                completion(.failure(error.localizedDescription))
+            } else {
+                completion(.success(NSNull()))
             }
         }
     }
@@ -224,7 +267,8 @@ class FSManager: ObservableObject {
                     "language": language,
                     "projects": [],
                     "posts": [],
-                    "bio": ""
+                    "bio": "",
+                    "registerDate": Date().getFormattedDate(format: "dd MMMM yyyy")
                     
                 ]) { err in
                     if let err = err {
@@ -241,6 +285,7 @@ class FSManager: ObservableObject {
                         self.userBio = ""
                         self.userProjects = []
                         self.userPosts = []
+                        self.userRegisterDate = ""
                         
                         print("Document successfully written!")
                         self.userExists = true
@@ -450,6 +495,59 @@ class FSManager: ObservableObject {
         }
         self.showPV = false
     }
+
+    func updatePost(id: String, text: String, image: UIImage?, completion: @escaping (Result<String, Error>) -> Void) -> Void {
+        print("updating post with Image: \(image)")
+        // If post has image
+        self.remove(postImage: id) { result in
+            if let image = image {
+                
+                self.upload(postImage: image, id: id) { result in
+                    switch result {
+                        
+                    case .success(let url):
+                        self.db.collection("Posts").document(id).updateData([
+                            
+                            "image": url,
+                            "body": text,
+                            
+                        ]) { err in
+                            if let err = err {
+                                print("Error writing document: \(err)")
+                                self.showPV = false
+                                completion(.failure("Error with creating post: \(err.localizedDescription)"))
+                            } else {
+                                completion(.success(id))
+                            }
+                        }
+                    case .failure(let err):
+                        print("FSManager | \(err)")
+                        completion(.failure("Error with creating post: \(err.localizedDescription)"))
+                        self.showPV = false
+                    }
+                    
+                }
+                
+            } else {
+                
+                self.db.collection("Posts").document(id).updateData([
+                    
+                    "body": text,
+                    "image": FieldValue.delete()
+                    
+                ]) { err in
+                    if let err = err {
+                        print("Error writing document: \(err)")
+                        self.showPV = false
+                        completion(.failure("Error with creating post: \(err.localizedDescription)"))
+                    } else {
+                        completion(.success(id))
+                    }
+                }
+            }
+            
+        }
+    }
     
     func overrideProject(_ project: UOProject, completion: @escaping (Result<String, Error>) -> Void) {
         self.showPV = true
@@ -493,6 +591,7 @@ class FSManager: ObservableObject {
                     self.userProjects = (document.data()?["projects"] as? [String]) ?? []
                     self.userPosts = (document.data()?["posts"] as? [String])?.reversed() ?? []
                     self.avatarURL = (document.data()?["avatarURL"] as? String) ?? "AvatarURL"
+                    self.userRegisterDate = (document.data()?["registerDate"] as? String) ?? "01 January 1970"
                     
                     
                 }

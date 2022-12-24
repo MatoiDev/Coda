@@ -37,6 +37,8 @@ class AuthenticationState: NSObject, ObservableObject {
     @AppStorage("UserLanguage") var userLanguage: PLanguages.RawValue = ""
     @AppStorage("UserBio") var userBio : String = ""
     @AppStorage("UserProjects") var userProjects : [String] = []
+    @AppStorage("UserPosts") var userPosts : [String] = []
+    @AppStorage("UserRegisterDate") var userRegisterDate: String = ""
     
     @AppStorage("LoginUserID") var loginUserID: String = ""
     
@@ -74,7 +76,9 @@ class AuthenticationState: NSObject, ObservableObject {
         self.userLanguage = ""
         self.userBio = ""
         self.userProjects = []
+        self.userPosts = []
         self.loginUserID = ""
+        self.userRegisterDate = ""
         
     }
     

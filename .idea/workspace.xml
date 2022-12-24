@@ -9,16 +9,15 @@
       <change beforePath="$PROJECT_DIR$/Coda.xcodeproj/project.pbxproj" beforeDir="false" afterPath="$PROJECT_DIR$/Coda.xcodeproj/project.pbxproj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Coda.xcodeproj/project.xcworkspace/xcuserdata/worm.xcuserdatad/UserInterfaceState.xcuserstate" beforeDir="false" afterPath="$PROJECT_DIR$/Coda.xcodeproj/project.xcworkspace/xcuserdata/worm.xcuserdatad/UserInterfaceState.xcuserstate" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Coda.xcodeproj/xcuserdata/worm.xcuserdatad/xcdebugger/Breakpoints_v2.xcbkptlist" beforeDir="false" afterPath="$PROJECT_DIR$/Coda.xcodeproj/xcuserdata/worm.xcuserdatad/xcdebugger/Breakpoints_v2.xcbkptlist" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Coda/Info.plist" beforeDir="false" afterPath="$PROJECT_DIR$/Coda/Info.plist" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Coda/Models/AuthentificationState.swift" beforeDir="false" afterPath="$PROJECT_DIR$/Coda/Models/AuthentificationState.swift" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Coda/Models/AvatarImageModel.swift" beforeDir="false" afterPath="$PROJECT_DIR$/Coda/Models/CachedImageModel.swift" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Coda/Models/FSManager.swift" beforeDir="false" afterPath="$PROJECT_DIR$/Coda/Models/FSManager.swift" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Coda/Models/Projects/Project.swift" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Coda/Utils/Extensions.swift" beforeDir="false" afterPath="$PROJECT_DIR$/Coda/Utils/Extensions.swift" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Coda/Views/Additions/Profile Page/AvatarImageView.swift" beforeDir="false" afterPath="$PROJECT_DIR$/Coda/Views/Additions/Profile Page/AvatarImageView.swift" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Coda/Views/Additions/Profile Page/Profile Settings/ProfileSettingsMain.swift" beforeDir="false" afterPath="$PROJECT_DIR$/Coda/Views/Additions/Profile Page/Profile Settings/ProfileSettingsMain.swift" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Coda/Views/Additions/Profile Page/ProfileSheet.swift" beforeDir="false" afterPath="$PROJECT_DIR$/Coda/Views/Additions/Profile Page/ProfileSheet.swift" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Coda/Views/Additions/Profile Page/ProfileView.swift" beforeDir="false" afterPath="$PROJECT_DIR$/Coda/Views/Additions/Profile Page/ProfileView.swift" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Coda/Views/Additions/Profile Page/ProjectCell.swift" beforeDir="false" afterPath="$PROJECT_DIR$/Coda/Views/Additions/Profile Page/ProjectCell.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Coda/Views/Additions/Profile Page/Profile Main/MoreInfoSheet.swift" beforeDir="false" afterPath="$PROJECT_DIR$/Coda/Views/Additions/Profile Page/Profile Main/MoreInfoSheet.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Coda/Views/Additions/Profile Page/Profile Main/ProfileSheet.swift" beforeDir="false" afterPath="$PROJECT_DIR$/Coda/Views/Additions/Profile Page/Profile Main/ProfileSheet.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Coda/Views/Additions/Profile Page/Profile Main/ProfileView.swift" beforeDir="false" afterPath="$PROJECT_DIR$/Coda/Views/Additions/Profile Page/Profile Main/ProfileView.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Coda/Views/Additions/Profile Page/Profile post/PostCreator.swift" beforeDir="false" afterPath="$PROJECT_DIR$/Coda/Views/Additions/Profile Page/Profile post/PostCreator.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Coda/Views/Additions/Profile Page/Profile post/PostView.swift" beforeDir="false" afterPath="$PROJECT_DIR$/Coda/Views/Additions/Profile Page/Profile post/PostView.swift" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -86,6 +85,8 @@
       <workItem from="1668787324240" duration="619000" />
       <workItem from="1668791674996" duration="13000" />
       <workItem from="1670013983118" duration="304000" />
+      <workItem from="1671400589080" duration="779000" />
+      <workItem from="1671526889902" duration="5669000" />
     </task>
     <servers />
   </component>

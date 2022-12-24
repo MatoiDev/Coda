@@ -27,12 +27,13 @@ struct ProfileSheet<Logo: View, LanguageAndReputation: View>: View {
     @Binding var yAxisOffset: CGFloat
     
     @State var forceUpdateScroll: Bool = false
+    @State private var showPosts: Bool = false
     
     @Binding var headerPosition : CGFloat
     @AppStorage("UserProjects") var userProjects : [String] = []
     @AppStorage("UserPosts") var userPosts : [String] = []
     @AppStorage("Updater") private var updater: Bool = false
-    
+
     @ViewBuilder var logo: Logo
     @ViewBuilder var landAndRep: LanguageAndReputation
     
@@ -46,7 +47,6 @@ struct ProfileSheet<Logo: View, LanguageAndReputation: View>: View {
             LazyVStack {
                 // MARK: - Name & surname labels
                 ZStack {
-                    //                    logo
                     HStack {
                         VStack(alignment: bottomSheetTranslationProrated >= 1 ? .leading : .center) {
                             Spacer()
@@ -79,9 +79,9 @@ struct ProfileSheet<Logo: View, LanguageAndReputation: View>: View {
                         Button {
                             self.showSettings.toggle()
                         } label: {
-                            Image(systemName: "gear")
+                            Image(systemName: "gearshape")
                                 .font(.largeTitle)
-                                .symbolVariant(.fill)
+//                                .symbolVariant(.fill)
                                 .foregroundColor(.primary)
                                 .padding()
                                 .padding(.horizontal, 8)
@@ -155,7 +155,6 @@ struct ProfileSheet<Logo: View, LanguageAndReputation: View>: View {
                 }
                 
                 // MARK: - Posts
-                
                 HStack {
                     Image(systemName: "list.dash.header.rectangle")
                     Text("Posts")
@@ -169,7 +168,9 @@ struct ProfileSheet<Logo: View, LanguageAndReputation: View>: View {
                         self.showCreatePostSheet.toggle()
                     }.padding(.bottom, 16)
                     
-
+                
+                    
+                
                     if self.userPosts.count == 0 {
                         HStack {
                             Spacer()
@@ -180,15 +181,6 @@ struct ProfileSheet<Logo: View, LanguageAndReputation: View>: View {
                             
                         }
                     } else {
-                
-                            
-                            ForEach(0..<self.userPosts.count, id: \.self) { ind in
-                                PostView(with: self.userPosts.reversed()[ind], logo: self.logo)
-                                        .padding(.vertical, 4)
-                            }
-         
-                            
-                        
                         VStack {
                             HStack {
                                 Spacer()

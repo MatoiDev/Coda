@@ -7,6 +7,7 @@
 
 import SwiftUI
 import BottomSheet
+import CoreHaptics
 
 
 
@@ -68,6 +69,7 @@ struct ProfileView: View {
     @State var showInfoSheet: Bool = false
     @State var showCreatePostSheet: Bool = false
     @State private var avatarImage : AvatarImageView = AvatarImageView(urlString: nil, translation: .constant(0))
+    @State private var engine: CHHapticEngine?
     
     
 
@@ -180,6 +182,11 @@ struct ProfileView: View {
                         self.bottomSheetTranslation = translation / screenHeight
                         self.avatarTranslation = self.bottomSheetTranslationProrated
                     }
+//                    if self.bottomSheetPosition == .bottom {
+//                        Vibro.complexSuccess(engine: self.engine)
+//                    } else if self.bottomSheetPosition == .top {
+//                        Vibro.complexSuccess(engine: self.engine)
+//                    }
                 }
                 
                 .overlay {
@@ -241,11 +248,19 @@ struct ProfileView: View {
                 }
             }
         }
+        .onAppear {
+            Vibro.prepareEngine(engine: &self.engine)
+        }
         .task {
             await self.getImageURL()
         }
         .sheet(isPresented: self.$showInfoSheet) {
-            MoreInfoSheet()
+            MoreInfoSheet(logo: {
+                if self.avatarURL != "" {
+                    AvatarImageView(urlString: self.avatarURL, onPost: true, translation: self.$avatarTranslation)
+                        .frame(width: 40, height: 40)
+                }
+            })
         }
         .sheet(isPresented: self.$showCreatePostSheet) {
             PostCreator()

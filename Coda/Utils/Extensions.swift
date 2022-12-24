@@ -105,7 +105,11 @@ extension Date {
         let dateformat = DateFormatter()
         dateformat.dateFormat = format
         dateformat.locale = Locale(identifier: "en")
-       let date = dateformat.string(from: self).split(separator: ",")
-        return "\(date[0]) at\(date[1])"
+       if dateformat.string(from: self).contains(",") {
+           let date = dateformat.string(from: self).split(separator: ",")
+            return "\(date[0]) at\(date[1])"
+       }
+           return dateformat.string(from: self)
+       
     }
 }

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CoreHaptics
 
 
 struct IFooterTextForMainSettings: View {
@@ -49,6 +50,7 @@ struct ProfileSettingsMain: View {
     @State var avatar : UIImage? = nil
     
     @State private var editMode: EditMode = .inactive
+    @State private var engine: CHHapticEngine?
     
     @AppStorage("IsUserExists") private var userExists : Bool = false
     
@@ -231,14 +233,12 @@ struct ProfileSettingsMain: View {
                             if self.editMode == .inactive {
                                 Button {
                                     self.editMode = .active
+                                    Vibro.complexSuccess(engine: self.engine)
                                     print("1")
                                 } label: {
                                     HStack {
-                                        
                                             Image(systemName: "square.and.pencil")
                                             Text("Edit")
-                                        
-
                                     }
                                     .foregroundColor(Color.blue)
                                     .font(.custom("RobotoMono-SemiBold", size: 15))
@@ -268,6 +268,7 @@ struct ProfileSettingsMain: View {
                         }
                     }.onTapGesture {
                         print("Hitted")
+                        
                     }
                     
                     
@@ -303,9 +304,11 @@ struct ProfileSettingsMain: View {
                     }
                 }
                 .toolbar{
+                    // MARK: - Complete editing projects order button
                     ToolbarItem(placement: .navigationBarTrailing) {
                         Button {
                             self.editMode = .inactive
+                            Vibro.trigger(.success)
                         } label: {
                             HStack {
                                 if self.editMode == .active {
@@ -319,6 +322,8 @@ struct ProfileSettingsMain: View {
                             
                         }
                     }
+                    
+                    // MARK: - Save settings button
                     ToolbarItem(placement: .navigationBarTrailing) {
                         Button {
                             self.saveSettings()
@@ -328,12 +333,10 @@ struct ProfileSettingsMain: View {
                                 .font(.custom("RobotoMono-Bold", size: 18))
                                 .fontWeight(.black)
                         }
-                        
                     }
-                    
-                   
                 }
                 .toolbar {
+                    // MARK: - Back button
                     ToolbarItem(placement: .navigationBarLeading) {
                         Button {
                             dissmiss.callAsFunction()
@@ -347,15 +350,16 @@ struct ProfileSettingsMain: View {
                             
                         }
                     }
-                    
-                    
                 }
                 if self.showPV {
                     ProgressView()
                 }
             }
             
-        }.task {
+        }.onAppear {
+            Vibro.prepareEngine(engine: &self.engine)
+        }
+        .task {
             await self.setProjects()
         }
 

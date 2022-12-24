@@ -30,8 +30,8 @@
             filePath = "Coda/Models/AuthentificationState.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "201"
-            endingLineNumber = "201"
+            startingLineNumber = "205"
+            endingLineNumber = "205"
             landmarkName = "signInWithGitHub()"
             landmarkType = "7">
          </BreakpointContent>
@@ -142,10 +142,149 @@
             filePath = "Coda/Models/AuthentificationState.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "222"
-            endingLineNumber = "222"
+            startingLineNumber = "226"
+            endingLineNumber = "226"
             landmarkName = "signOut()"
             landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "6D00F957-E47C-46DD-8559-2C3239837CBE"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Coda/Models/FSManager.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "19"
+            endingLineNumber = "19"
+            landmarkName = "FSManager"
+            landmarkType = "3">
+            <Locations>
+               <Location
+                  uuid = "6D00F957-E47C-46DD-8559-2C3239837CBE - 4073d1ba0e13ea2e"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "property wrapper backing initializer of Coda.FSManager.showPV : Swift.Bool"
+                  moduleName = "Coda"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/worm/Desktop/Coda/Coda/Models/FSManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "20"
+                  endingLineNumber = "20"
+                  offsetFromSymbolStart = "52">
+               </Location>
+               <Location
+                  uuid = "6D00F957-E47C-46DD-8559-2C3239837CBE - 8e49c9664b29bf18"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Coda.FSManager.showPV.getter : Swift.Bool"
+                  moduleName = "Coda"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/worm/Desktop/Coda/Coda/Models/FSManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "20"
+                  endingLineNumber = "20"
+                  offsetFromSymbolStart = "104">
+               </Location>
+               <Location
+                  uuid = "6D00F957-E47C-46DD-8559-2C3239837CBE - bb9e2d92accaaf14"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Coda.FSManager.showPV.setter : Swift.Bool"
+                  moduleName = "Coda"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/worm/Desktop/Coda/Coda/Models/FSManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "20"
+                  endingLineNumber = "20"
+                  offsetFromSymbolStart = "140">
+               </Location>
+               <Location
+                  uuid = "6D00F957-E47C-46DD-8559-2C3239837CBE - b1024eed2b35c307"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Coda.FSManager.showPV.modify : Swift.Bool"
+                  moduleName = "Coda"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/worm/Desktop/Coda/Coda/Models/FSManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "20"
+                  endingLineNumber = "20"
+                  offsetFromSymbolStart = "0">
+               </Location>
+               <Location
+                  uuid = "6D00F957-E47C-46DD-8559-2C3239837CBE - 26c8b09c7d82b114"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Coda.FSManager.showPV.modify : Swift.Bool with unmangled suffix &quot;.resume.0&quot;"
+                  moduleName = "Coda"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/worm/Desktop/Coda/Coda/Models/FSManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "20"
+                  endingLineNumber = "20"
+                  offsetFromSymbolStart = "20">
+               </Location>
+               <Location
+                  uuid = "6D00F957-E47C-46DD-8559-2C3239837CBE - 1a2ba64a912be95c"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Coda.FSManager.$showPV.getter : SwiftUI.Binding&lt;Swift.Bool&gt;"
+                  moduleName = "Coda"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/worm/Desktop/Coda/Coda/Models/FSManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "20"
+                  endingLineNumber = "20"
+                  offsetFromSymbolStart = "120">
+               </Location>
+               <Location
+                  uuid = "6D00F957-E47C-46DD-8559-2C3239837CBE - 9eee6322150a88de"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Coda.FSManager.init() -&gt; Coda.FSManager"
+                  moduleName = "Coda"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/worm/Desktop/Coda/Coda/Models/FSManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "20"
+                  endingLineNumber = "20"
+                  offsetFromSymbolStart = "96">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "82BC3EE2-C629-4F08-B87A-7D65C2A7FA2C"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Coda/Views/Additions/Profile Page/Profile post/PostView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "80"
+            endingLineNumber = "80"
+            landmarkName = "PostView"
+            landmarkType = "14">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
