@@ -11,7 +11,7 @@ struct CodaTabBar: View {
 
     @State var selectedTab: Tab = .home
     @State var circleColor: Color = .cyan
-    @AppStorage("UserID") private var userID : String = ""
+    @AppStorage("LoginUserID") var loginUserID: String = ""
 
     var body: some View {
         ZStack(alignment: .bottom) {
@@ -22,10 +22,10 @@ struct CodaTabBar: View {
                 case .search:
                     SearchView()
                 case .chat:
-                    ChatView()
+                    ChatsTableView(with: self.loginUserID)
                 case .profile:
                     // Вход в на свою страницу профиля по своему id
-                    ProfileView(with: self.userID)
+                    ProfileView(with: self.loginUserID)
                 }
             }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)

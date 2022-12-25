@@ -113,3 +113,13 @@ extension Date {
        
     }
 }
+
+
+extension String {
+    subscript (range: Range<Int>) -> String {
+        guard self.count > range.count else { return self }
+        let firstIndex = self.startIndex
+        let cutIndex = self.index(self.startIndex, offsetBy: range.count)
+        return "\(self[firstIndex..<cutIndex])"
+    }
+}

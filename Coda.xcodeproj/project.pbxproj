@@ -11,6 +11,7 @@
 		95084A8B29324AF200D8EC96 /* ProjectEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95084A8A29324AF200D8EC96 /* ProjectEditor.swift */; };
 		951367102909C9CE00FD7C78 /* RegisterBubble.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9513670F2909C9CE00FD7C78 /* RegisterBubble.swift */; };
 		951367132909D5B000FD7C78 /* Blur.swift in Sources */ = {isa = PBXBuildFile; fileRef = 951367122909D5B000FD7C78 /* Blur.swift */; };
+		9515509E2958CE7400A23D1D /* CellImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9515509D2958CE7400A23D1D /* CellImageView.swift */; };
 		95170552290AD634008C137F /* githubLogoWhite.json in Resources */ = {isa = PBXBuildFile; fileRef = 95170551290AD634008C137F /* githubLogoWhite.json */; };
 		95170554290AEC3F008C137F /* RobotoMono-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 95170553290AEC3F008C137F /* RobotoMono-Medium.ttf */; };
 		95170556290AEEE2008C137F /* RobotoMono-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 95170555290AEEE2008C137F /* RobotoMono-Bold.ttf */; };
@@ -23,6 +24,8 @@
 		951DBBF42910431700FAB2E3 /* PLanguages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 951DBBF32910431700FAB2E3 /* PLanguages.swift */; };
 		951DBBF929104A1400FAB2E3 /* RobotoMono-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 951DBBF829104A1400FAB2E3 /* RobotoMono-Light.ttf */; };
 		951DBBFB2910611500FAB2E3 /* RobotoMono-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 951DBBFA2910611500FAB2E3 /* RobotoMono-SemiBold.ttf */; };
+		95208ECC2957333B0083F85D /* ChatCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95208ECB2957333B0083F85D /* ChatCell.swift */; };
+		95208ECE295734960083F85D /* Chat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95208ECD295734960083F85D /* Chat.swift */; };
 		95255C97294393550050EB22 /* ViewOffsetKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95255C96294393550050EB22 /* ViewOffsetKey.swift */; };
 		9526C79F29143FA90005C285 /* FSManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9526C79E29143FA90005C285 /* FSManager.swift */; };
 		9526C7A2291441E60005C285 /* DataEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9526C7A1291441E60005C285 /* DataEditor.swift */; };
@@ -77,7 +80,7 @@
 		95F1CD36290EDC8D000A3080 /* CodaTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95F1CD35290EDC8D000A3080 /* CodaTabBar.swift */; };
 		95F1CD38290EDCFA000A3080 /* Tab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95F1CD37290EDCFA000A3080 /* Tab.swift */; };
 		95F1CD3A290EE573000A3080 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95F1CD39290EE573000A3080 /* ProfileView.swift */; };
-		95F1CD3C290EE57B000A3080 /* ChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95F1CD3B290EE57B000A3080 /* ChatView.swift */; };
+		95F1CD3C290EE57B000A3080 /* ChatsTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95F1CD3B290EE57B000A3080 /* ChatsTableView.swift */; };
 		95F1CD3E290EE586000A3080 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95F1CD3D290EE586000A3080 /* SearchView.swift */; };
 		95F1CD40290EE58F000A3080 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95F1CD3F290EE58F000A3080 /* HomeView.swift */; };
 		95FE873C293E5AD0001896F0 /* BottomSheet in Frameworks */ = {isa = PBXBuildFile; productRef = 95FE873B293E5AD0001896F0 /* BottomSheet */; };
@@ -88,6 +91,7 @@
 		95084A8A29324AF200D8EC96 /* ProjectEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectEditor.swift; sourceTree = "<group>"; };
 		9513670F2909C9CE00FD7C78 /* RegisterBubble.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterBubble.swift; sourceTree = "<group>"; };
 		951367122909D5B000FD7C78 /* Blur.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Blur.swift; sourceTree = "<group>"; };
+		9515509D2958CE7400A23D1D /* CellImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellImageView.swift; sourceTree = "<group>"; };
 		95170551290AD634008C137F /* githubLogoWhite.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = githubLogoWhite.json; sourceTree = "<group>"; };
 		95170553290AEC3F008C137F /* RobotoMono-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "RobotoMono-Medium.ttf"; sourceTree = "<group>"; };
 		95170555290AEEE2008C137F /* RobotoMono-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "RobotoMono-Bold.ttf"; sourceTree = "<group>"; };
@@ -100,6 +104,8 @@
 		951DBBF32910431700FAB2E3 /* PLanguages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PLanguages.swift; sourceTree = "<group>"; };
 		951DBBF829104A1400FAB2E3 /* RobotoMono-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "RobotoMono-Light.ttf"; sourceTree = "<group>"; };
 		951DBBFA2910611500FAB2E3 /* RobotoMono-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "RobotoMono-SemiBold.ttf"; sourceTree = "<group>"; };
+		95208ECB2957333B0083F85D /* ChatCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatCell.swift; sourceTree = "<group>"; };
+		95208ECD295734960083F85D /* Chat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Chat.swift; sourceTree = "<group>"; };
 		95255C96294393550050EB22 /* ViewOffsetKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewOffsetKey.swift; sourceTree = "<group>"; };
 		9526C79E29143FA90005C285 /* FSManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FSManager.swift; sourceTree = "<group>"; };
 		9526C7A1291441E60005C285 /* DataEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataEditor.swift; sourceTree = "<group>"; };
@@ -146,7 +152,7 @@
 		95F1CD35290EDC8D000A3080 /* CodaTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodaTabBar.swift; sourceTree = "<group>"; };
 		95F1CD37290EDCFA000A3080 /* Tab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tab.swift; sourceTree = "<group>"; };
 		95F1CD39290EE573000A3080 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
-		95F1CD3B290EE57B000A3080 /* ChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatView.swift; sourceTree = "<group>"; };
+		95F1CD3B290EE57B000A3080 /* ChatsTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatsTableView.swift; sourceTree = "<group>"; };
 		95F1CD3D290EE586000A3080 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		95F1CD3F290EE58F000A3080 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -197,7 +203,8 @@
 		37C719752794896027422A4B /* Chat Page */ = {
 			isa = PBXGroup;
 			children = (
-				95F1CD3B290EE57B000A3080 /* ChatView.swift */,
+				95208EC8295733080083F85D /* MainView */,
+				9515509D2958CE7400A23D1D /* CellImageView.swift */,
 			);
 			path = "Chat Page";
 			sourceTree = "<group>";
@@ -276,6 +283,16 @@
 				95DB57E02931F96D00B7E7A8 /* UOProject.swift */,
 			);
 			path = Projects;
+			sourceTree = "<group>";
+		};
+		95208EC8295733080083F85D /* MainView */ = {
+			isa = PBXGroup;
+			children = (
+				95F1CD3B290EE57B000A3080 /* ChatsTableView.swift */,
+				95208ECB2957333B0083F85D /* ChatCell.swift */,
+				95208ECD295734960083F85D /* Chat.swift */,
+			);
+			path = MainView;
 			sourceTree = "<group>";
 		};
 		9526C7A0291441C50005C285 /* Data Editor */ = {
@@ -548,18 +565,20 @@
 				9595C47929083505004726AD /* InputSheet.swift in Sources */,
 				952BCF79290968380046FB02 /* LoginBubble.swift in Sources */,
 				95C4723A2928FAB40084C60A /* ProfileActionCell.swift in Sources */,
+				9515509E2958CE7400A23D1D /* CellImageView.swift in Sources */,
 				954ADF45291FBF32001300EA /* AvatarImageView.swift in Sources */,
 				95680B952951C19300DFD85A /* PostRedactor.swift in Sources */,
 				95421D092911914000980E52 /* ProjectCell.swift in Sources */,
 				95084A8B29324AF200D8EC96 /* ProjectEditor.swift in Sources */,
 				954ADF49291FC237001300EA /* ImageCache.swift in Sources */,
 				952BCF7B2909750F0046FB02 /* GitHubLoginButton.swift in Sources */,
-				95F1CD3C290EE57B000A3080 /* ChatView.swift in Sources */,
+				95F1CD3C290EE57B000A3080 /* ChatsTableView.swift in Sources */,
 				9595C47B29083529004726AD /* RegistrationPageMain.swift in Sources */,
 				95F1CD33290EDC61000A3080 /* AppView.swift in Sources */,
 				951DBBED291034B700FAB2E3 /* ProfileSheet.swift in Sources */,
 				956EEC4E29464865006C7895 /* PostCreator.swift in Sources */,
 				9595C477290834EB004726AD /* DataBubble.swift in Sources */,
+				95208ECE295734960083F85D /* Chat.swift in Sources */,
 				9519B05529087E1800504B03 /* LoginOption.swift in Sources */,
 				95AA827A2919B21600B7975C /* ImageCropper.swift in Sources */,
 				95F0FD8D295375E100648213 /* Vibro.swift in Sources */,
@@ -575,6 +594,7 @@
 				952BCF7329094A820046FB02 /* Extensions.swift in Sources */,
 				952BCF71290949D50046FB02 /* AuthentificationType.swift in Sources */,
 				9526C79F29143FA90005C285 /* FSManager.swift in Sources */,
+				95208ECC2957333B0083F85D /* ChatCell.swift in Sources */,
 				953E5F392950FA64006810CC /* ImageSaver.swift in Sources */,
 				95F1CD3A290EE573000A3080 /* ProfileView.swift in Sources */,
 				952BCF8A290982CF0046FB02 /* LottieAnimation.swift in Sources */,

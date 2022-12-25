@@ -15,6 +15,8 @@ import FirebaseStorage
 
 class FSManager: ObservableObject {
     @AppStorage("UserID") private var userID : String = ""
+    @AppStorage("LoginUserID") var loginUserID: String = ""
+
     @AppStorage("IsUserExists") var userExists : Bool = false
     
     @AppStorage("ShowPV") var showPV: Bool = false
@@ -32,7 +34,7 @@ class FSManager: ObservableObject {
     
     @AppStorage("UserProjects") var userProjects : [String] = []
     @AppStorage("UserPosts") var userPosts : [String] = []
-    
+
     private let db = Firestore.firestore()
     
     // MARK: - Generate ID (Static)
@@ -267,6 +269,7 @@ class FSManager: ObservableObject {
                     "language": language,
                     "projects": [],
                     "posts": [],
+                    "chats": [],
                     "bio": "",
                     "registerDate": Date().getFormattedDate(format: "dd MMMM yyyy")
                     
@@ -575,6 +578,78 @@ class FSManager: ObservableObject {
     
     // MARK: - Functions for getting stuff
     
+    
+    func getMessageInfo(id: String, completion:  @escaping (Result<Dictionary<String, Any>, Error>) -> Void) async -> Void {
+        if id != "" {
+            var res: Dictionary<String, Any> = Dictionary<String, Any>()
+            let docRef = db.collection("Messages").document(id)
+            docRef.getDocument { (document, error) in
+                
+                    print(error)
+                
+                if let document = document, document.exists {
+                    
+                    res["id"] = (document.data()?["id"] as? String) ?? ""
+                    res["chatID"] = (document.data()?["chatID"] as? String) ?? ""
+                    res["sender"] = (document.data()?["sender"] as? String) ?? ""
+                    res["timeSince1970"] = (document.data()?["timeSince1970"] as? String) ?? ""
+                    res["date"] = (document.data()?["date"] as? String) ?? "01.01.1970" // dd.mm.yyyy
+                    res["dayTime"] = (document.data()?["dayTime"] as? String) ?? "10:09"
+                    res["body"] = (document.data()?["body"] as? String) ?? ""
+                    res["didEdit"] = (document.data()?["didEdit"] as? String) ?? ""
+                    res["whoHasRead"] = (document.data()?["whoHasRead"] as? [String]) ?? []
+
+                    completion(.success(res))
+                } else {
+                    completion(.failure("The message \(id) does not exist"))
+                }
+            }
+        } else {
+            completion(.failure("Incorrect ID"))
+        }
+    }
+
+    func getChatInfo(of: ChatInfoProperties.RawValue, by id: String, completion: @escaping (Result<Dictionary<String, Any>, Error>) -> Void) async -> Void {
+        if id != "" {
+            var res: Dictionary<String, Any> = Dictionary<String, Any>()
+            let docRef = db.collection("Chats").document(id)
+            docRef.getDocument { (document, error) in
+                if let document = document, document.exists {
+                    
+                    res["id"] = (document.data()?["id"] as? String) ?? ""
+                    res["members"] = (document.data()?["members"] as? [String]) ?? []
+                    res["lastMessage"] = (document.data()?["lastMessage"] as? String) ?? ""
+                    res["name"] = (document.data()?["name"] as? String) ?? ""
+                    res["messages"] = (document.data()?["messages"] as? [String]) ?? []
+                    
+                    completion(.success(res))
+                } else {
+                    completion(.failure("The chat does not exist"))
+                }
+            }
+        } else {
+            completion(.failure("Incorrect ID"))
+        }
+    }
+
+    func getUserChats(completion: @escaping (Result<Array<String>, Error>) -> Void) async -> Void {
+        if self.loginUserID != "" {
+            let docRef = db.collection("Users").document(self.loginUserID)
+            docRef.getDocument { (document, error) in
+                if let document = document, document.exists {
+                    if let chats = (document.data()?["chats"] as? Array<String>) {
+                        completion(.success(chats))
+                    } else { completion(.failure("User doesn't have chats field."))}
+                } else {
+                    completion(.failure("This document does not exist."))
+                }
+            }
+        } else {
+            completion(.failure("Incorrect ID"))
+        }
+        
+    }
+    
     func getUsersData(withID id: String) -> Void {
         if id != "" {
             let docRef = db.collection("Users").document(id)
@@ -594,6 +669,19 @@ class FSManager: ObservableObject {
                     self.userRegisterDate = (document.data()?["registerDate"] as? String) ?? "01 January 1970"
                     
                     
+                }
+            }
+        }
+    }
+    
+    func getUserAvatar(withID id: String, completion: @escaping (Result<String, Error>) -> Void) -> Void {
+        if id != "" {
+            let docRef = db.collection("Users").document(id)
+            docRef.getDocument { (document, error) in
+                if let error = error {
+                    completion(.failure(error))
+                } else if let document = document, document.exists {
+                    completion(.success((document.data()?["avatarURL"] as! String)))
                 }
             }
         }
