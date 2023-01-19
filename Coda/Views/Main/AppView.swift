@@ -13,9 +13,7 @@ struct AppView: View {
     @ObservedObject private var fsmanager : FSManager = FSManager()
     @AppStorage("IsUserExists") var userExists : Bool = false
     @State var showView : Bool = false
-    //    init() {
-    //        self.fsmanager.isUserExist()
-    //    }
+    
     var body: some View {
         
         Group {
@@ -30,7 +28,6 @@ struct AppView: View {
                         Image("WallpaperRegistration").edgesIgnoringSafeArea(.top)
                         DataEditor()
                     }
-    
                 }
             } else {
                 // MARK: - View while user is determining
@@ -38,9 +35,7 @@ struct AppView: View {
                     Image("WallpaperRegistration").edgesIgnoringSafeArea(.top)
                     ProgressView()
                 }
-
             }
-            
         }.task {
             if !self.userExists {
                 self.fsmanager.isUserExist()
@@ -48,22 +43,14 @@ struct AppView: View {
                     withAnimation {
                         self.showView = true
                     }
-                    
                 }
             } else {
                 withAnimation {
                     self.showView = true
                 }
             }
-            
-            
         }
-        
-        
     }
-    
-    
-    
 }
 
 

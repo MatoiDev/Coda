@@ -34,21 +34,34 @@ class FSManager: ObservableObject {
     
     @AppStorage("UserProjects") var userProjects : [String] = []
     @AppStorage("UserPosts") var userPosts : [String] = []
+    @AppStorage("UserChats") var userChats: [String] = []
 
     private let db = Firestore.firestore()
     
-    // MARK: - Generate ID (Static)
+    // MARK: - Generate IDs (Static)
     static func generateProjectID() -> String {
         let letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
         return String((0..<64).map{ _ in letters.randomElement()! })
     }
     
+    static func generateMessageID() -> String {
+        let letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+        return String((0..<64).map{ _ in letters.randomElement()! })
+    }
+    
+    static func generateMessageImageID(messageID: String) -> String {
+        let letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+        return messageID + String((0..<16).map{ _ in letters.randomElement()! })
+    }
+    
     
     // MARK: - Upload functions
-    func upload(image: UIImage, completion: @escaping (Result<URL, Error>) -> Void) -> Void {
+    func upload(avatar: UIImage, completion: @escaping (Result<URL, Error>) -> Void) -> Void {
+        
+        
         let ref = Storage.storage().reference().child("Avatars").child(self.userID)
         
-        guard let imageData = image.jpegData(compressionQuality: 0.4) else { return }
+        guard let imageData = avatar.jpegData(compressionQuality: 0.4) else { return }
         
         let metadata = StorageMetadata()
         metadata.contentType = "image/jpeg"
@@ -65,6 +78,34 @@ class FSManager: ObservableObject {
                     return
                 }
                 completion(.success(url))
+            }
+        }
+    }
+    
+    func upload(messageImage: UIImage, messageID: String, completion: @escaping (Result<URL, Error>) -> Void) -> Void {
+        
+        
+        let imageID = FSManager.generateMessageImageID(messageID: messageID)
+        let ref = Storage.storage().reference().child("MessageImages").child(imageID)
+        
+        guard let imageData = messageImage.jpegData(compressionQuality: 0.4) else { return }
+        
+        let metadata = StorageMetadata()
+        metadata.contentType = "image/jpeg"
+        
+        ref.putData(imageData, metadata: metadata) { metadata, error in
+            guard let _ = metadata else {
+                completion(.failure(error!))
+                return
+            }
+           
+            ref.downloadURL { url, error in
+                guard let url = url else {
+                    completion(.failure(error!))
+                    return
+                }
+                completion(.success(url))
+                
             }
         }
     }
@@ -130,6 +171,59 @@ class FSManager: ObservableObject {
                 print("Error removing document: \(err)")
             } else {
                 print("Document successfully removed!")
+            }
+        }
+    }
+    
+    func remove(message id: String, from chatID: String) -> Void {
+        
+        // Delete message from FireBase
+        self.db.collection("Chats").document(chatID).updateData([
+            "messages": FieldValue.arrayRemove([id])
+        ]) { error in
+            if error == nil {
+                self.db.collection("Chats").document(chatID).getDocument { (document, _) in
+                    if let document = document, document.exists {
+                        print("HUI")
+                        if let messages = (document.data()?["messages"] as? [String]) {
+                            self.db.collection("Chats").document(chatID).updateData([
+                                "lastMessage": messages.last ?? ""
+                            ]) { err in
+                                if err == nil {
+                                    self.db.collection("Messages").document(id).delete() { e in
+                                        if let h = e {
+                                            print("Error removing document: \(e)")
+                                        } else {
+                                            print("Document successfully removed!")
+                                        }
+                                    }
+
+                                } else {
+                                    print("Cannot Update messages")
+                                }
+                            }
+
+                        } else {
+                            print("The chat doens't contain messages")
+                        }
+                    } else {
+                        print("Chat doesn't exist")
+                        
+                    }
+                }
+            }
+        }
+    }
+    
+    func remove(messageImage id: String, completion: @escaping (Result<NSNull, Error>) -> Void) -> Void {
+        guard id != "" else { completion(.failure("Not an image")); return }
+        let desertRef = Storage.storage().reference().child("MessageImages").child(id)
+
+        desertRef.delete { error in
+            if let error = error {
+                completion(.failure(error.localizedDescription))
+            } else {
+                completion(.success(NSNull()))
             }
         }
     }
@@ -203,7 +297,7 @@ class FSManager: ObservableObject {
                         "image": url,
                         "body": text,
                         "time": Date().timeIntervalSince1970,
-                        "stars": 0,
+                        "stars": [],
                         "date": Date().getFormattedDate(format: "d MMM, HH:mm")
                         
                     ]) { err in
@@ -228,7 +322,7 @@ class FSManager: ObservableObject {
                 "owner": userID,
                 "body": text,
                 "time": Date().timeIntervalSince1970,
-                "stars": 0,
+                "stars": [],
                 "date": Date().getFormattedDate(format: "d MMM, HH:mm")
                 
             ]) { err in
@@ -252,7 +346,7 @@ class FSManager: ObservableObject {
             return
         }
         
-        self.upload(image: image) { (result) in
+        self.upload(avatar: image) { (result) in
             switch result {
                 
             case .success(let url):
@@ -302,6 +396,115 @@ class FSManager: ObservableObject {
         }
     }
     
+    func sentMessage(chat chatID: String, body: String, image: UIImage? = nil, completion: @escaping (Result<String, Error>) -> Void) -> Void {
+        
+        
+        
+        let date: String = Date().getFormattedDate(format: "dd.MM.yyyy")
+        let hourAndMinute: String = Date().getFormattedDate(format: "HH:mm")
+        let id: String = FSManager.generateMessageID()
+        
+        if let image = image {
+            
+            self.upload(messageImage: image, messageID: id) { result in
+                switch result {
+                    
+                case .success(let url):
+                    self.db.collection("Messages").document(id).setData([
+                        
+                        "id": id,
+                        "chatID": chatID,
+                        "body": body,
+                        "date": date,
+                        "dayTime": hourAndMinute,
+                        "didEdit": "false",
+                        "image": "\(url)",
+                        "sender": self.loginUserID,
+                        "timeSince1970": String(Date().timeIntervalSince1970),
+                        "whoHasRead": []
+                        
+                    ]) { err in
+                        if let err = err {
+                            print("Error writing document: \(err)")
+                            self.showPV = false
+                            completion(.failure("Error with creating message: \(err.localizedDescription)"))
+                        } else {
+                            self.db.collection("Chats").document(chatID).updateData([
+                                
+                                "messages": FieldValue.arrayUnion([id]),
+                                "lastMessage": id
+                                
+                            ]) { err in
+                                if let err = err {
+                                    print("Error writing document: \(err)")
+                                    self.showPV = false
+                                    completion(.failure("Error with creating message: \(err.localizedDescription)"))
+                                } else {
+                                    print("Successfully writing message")
+                                    self.showPV = false
+                                    completion(.success(id))
+                                }
+                                
+                            }
+                            completion(.success(id))
+                        
+                        }
+                    }
+                case .failure(let err):
+                    print("FSManager | \(err)")
+                    completion(.failure("Error with creating message: \(err.localizedDescription)"))
+                    self.showPV = false
+                }
+                
+            }
+            
+        } else {
+            
+            self.db.collection("Messages").document(id).setData([
+                
+                "id": id,
+                "chatID": chatID,
+                "body": body,
+                "date": date,
+                "dayTime": hourAndMinute,
+                "didEdit": "false",
+                "sender": self.loginUserID,
+                "timeSince1970": String(Date().timeIntervalSince1970),
+                "whoHasRead": [],
+                "image": ""
+                
+            ]) { err in
+                if let err = err {
+                    print("Error writing document: \(err)")
+                    self.showPV = false
+                    completion(.failure("Error with creating message: \(err.localizedDescription)"))
+                } else {
+                    
+                    self.db.collection("Chats").document(chatID).updateData([
+                        
+                        "messages": FieldValue.arrayUnion([id]),
+                        "lastMessage": id
+                        
+                    ]) { err in
+                        if let err = err {
+                            print("Error writing document: \(err)")
+                            self.showPV = false
+                            completion(.failure("Error with creating message: \(err.localizedDescription)"))
+                        } else {
+                            print("Successfully writing message")
+                            self.showPV = false
+                            completion(.success(id))
+                        }
+                        
+                    }
+                    completion(.success(id))
+                }
+            }
+        }
+        
+        
+    }
+    
     // MARK: - Check for user existing
     func isUserExist() {
         let docRef = db.collection("Users").document(self.userID)
@@ -340,6 +543,24 @@ class FSManager: ObservableObject {
         }
     }
     
+//    func getReputation(withID id: String) -> Void {
+//        db.collection("Users").document(id)
+//            .addSnapshotListener { documentSnapshot, error in
+//              guard let document = documentSnapshot else {
+//                print("Error fetching document: \(error!)")
+//                return
+//              }
+//              guard let data = document.data() else {
+//                print("Document data was empty.")
+//                return
+//              }
+//              print("Current data: \(data)")
+//              print(data["reputation"])
+//              self.userReputation = String((data["reputation"] as! Int))
+//                
+//            }
+//    }
+    
     // MARK: - Add functions
     func add(project id: String, to userId: String, completion: @escaping (Result<String, Error>) -> Void) {
         let docRef = db.collection("Users").document(userId)
@@ -367,6 +588,20 @@ class FSManager: ObservableObject {
                 completion(.failure("Can not update user's Data: \(err.localizedDescription)"))
             } else {
                 completion(.success("Succes"))
+            }
+        }
+    }
+    
+    func add(reader id: String, toMessage msgID: String, completion: @escaping (Result<String, Error>) -> Void) -> Void {
+        let ownerRef = db.collection("Messages").document(msgID)
+        
+        ownerRef.updateData([
+            "whoHasRead": FieldValue.arrayUnion([id])
+        ]) { err in
+            if let err = err {
+                completion(.failure(err))
+            } else {
+                completion(.success("Successfully marked message \(msgID) as read by user: \(id)"))
             }
         }
     }
@@ -416,11 +651,66 @@ class FSManager: ObservableObject {
     }
     
     // MARK: - Override/Update/Replace functions
+    
+    func editMessage(_ id: String, body: String, image: UIImage? = nil, messageImageID: String = "", imageDidChange: Bool, completion: @escaping (Result<String, Error>) -> Void) -> Void {
+        // Если сообщение с изображением
+        if let image = image {
+            // Если изображение было изменено, то обновляем его
+            if imageDidChange {
+                self.upload(messageImage: image, messageID: id) { result in
+                    switch result {
+                    case .success(let url):
+                        self.db.collection("Messages").document(id).updateData([
+                            "didEdit": "true",
+                            "body": body,
+                            "image": "\(url)"
+                        ]){ err in
+                            if let err = err {
+                                completion(.failure(err))
+                            }
+                            completion(.success("Succesfully changed image&data."))
+          
+                        }
+                    case .failure(let failure):
+                        completion(.failure(failure))
+                    }
+                }
+                // Если изображение не менялось, то оставляем всё как было
+            } else {
+                self.db.collection("Messages").document(id).updateData([
+                    "didEdit": "true",
+                    "body": body,
+                ]){ err in
+                    if let err = err {
+                        completion(.failure(err))
+                    }
+                    completion(.success("Succesfully cheanged message."))
+  
+                }
+            }
+            
+        } else {
+            self.remove(messageImage: messageImageID) { _ in
+                self.db.collection("Messages").document(id).updateData([
+                    "didEdit": "true",
+                    "body": body,
+                    "image": ""
+                ]) { err in
+                    if let err = err {
+                        completion(.failure(err))
+                    }
+                    completion(.success("Succesfully removed image&changed data."))
+  
+                }
+            }
+        }
+    }
+    
     func updateUser(withID id: String, email : String, username: String, name: String, surname: String, mates: Int = 0, reputation : Int = 0, image: UIImage?, language: PLanguages.RawValue, bio: String, projects: [String]) -> Void {
         self.showPV = true
         
         if let image = image {
-            self.upload(image: image) { (result) in
+            self.upload(avatar: image) { (result) in
                 switch result {
                     
                 case .success(let url):
@@ -500,7 +790,7 @@ class FSManager: ObservableObject {
     }
 
     func updatePost(id: String, text: String, image: UIImage?, completion: @escaping (Result<String, Error>) -> Void) -> Void {
-        print("updating post with Image: \(image)")
+        
         // If post has image
         self.remove(postImage: id) { result in
             if let image = image {
@@ -578,54 +868,100 @@ class FSManager: ObservableObject {
     
     // MARK: - Functions for getting stuff
     
+   
+    @MainActor func getMessageInfoNonAsync(id: String) -> Dictionary<String, Any>? {
+        print(id)
+        var waitPlease: Bool = true
+        if id != "" {
+            var isEmpty : Bool = true
+            var res: Dictionary<String, Any> = Dictionary<String, Any>()
+            
+            db.collection("Messages").document(id) .addSnapshotListener { documentSnapshot, error in
+                guard let document = documentSnapshot else {
+                    print("Document is not a document")
+                    waitPlease = false
+                    return
+                }
+                guard let data = document.data() else {
+                    print("data is not data")
+                    waitPlease = false
+                    return
+                }
+                
+                res["id"] = (data["id"] as! String)
+                res["chatID"] = (data["chatID"] as! String)
+                res["sender"] = (data["sender"] as? String)
+                res["timeSince1970"] = (data["timeSince1970"] as! String)
+                res["date"] = (data["date"] as! String) // dd.mm.yyyy
+                res["dayTime"] = (data["dayTime"] as! String)
+                res["body"] = (data["body"] as! String)
+                res["didEdit"] = (data["didEdit"] as! String)
+                res["whoHasRead"] = (data["whoHasRead"] as! [String])
+                res["image"] = (data["image"] as! String)
+                print(res)
+                isEmpty = false
+                
+            }
+            return nil
+        }
+        return nil
+    }
+    
     
     func getMessageInfo(id: String, completion:  @escaping (Result<Dictionary<String, Any>, Error>) -> Void) async -> Void {
+        print(id)
         if id != "" {
             var res: Dictionary<String, Any> = Dictionary<String, Any>()
-            let docRef = db.collection("Messages").document(id)
-            docRef.getDocument { (document, error) in
-                
-                    print(error)
-                
-                if let document = document, document.exists {
-                    
-                    res["id"] = (document.data()?["id"] as? String) ?? ""
-                    res["chatID"] = (document.data()?["chatID"] as? String) ?? ""
-                    res["sender"] = (document.data()?["sender"] as? String) ?? ""
-                    res["timeSince1970"] = (document.data()?["timeSince1970"] as? String) ?? ""
-                    res["date"] = (document.data()?["date"] as? String) ?? "01.01.1970" // dd.mm.yyyy
-                    res["dayTime"] = (document.data()?["dayTime"] as? String) ?? "10:09"
-                    res["body"] = (document.data()?["body"] as? String) ?? ""
-                    res["didEdit"] = (document.data()?["didEdit"] as? String) ?? ""
-                    res["whoHasRead"] = (document.data()?["whoHasRead"] as? [String]) ?? []
-
-                    completion(.success(res))
-                } else {
-                    completion(.failure("The message \(id) does not exist"))
+            db.collection("Messages").document(id) .addSnapshotListener { documentSnapshot, error in
+                guard let document = documentSnapshot else {
+                    completion(.failure("Error fetching document: \(error!)"))
+                  return
                 }
+                guard let data = document.data() else {
+                    completion(.failure("Document data was empty."))
+                  return
+                }
+                    
+                    res["id"] = (data["id"] as? String)
+                    res["chatID"] = (data["chatID"] as! String)
+                    res["sender"] = (data["sender"] as! String)
+                    res["timeSince1970"] = (data["timeSince1970"] as! String)
+                    res["date"] = (data["date"] as! String) // dd.mm.yyyy
+                    res["dayTime"] = (data["dayTime"] as! String)
+                    res["body"] = (data["body"] as! String)
+                    res["didEdit"] = (data["didEdit"] as! String)
+                    res["whoHasRead"] = (data["whoHasRead"] as! [String])
+                    res["image"] = (data["image"] as! String)
+                
+                    completion(.success(res))
             }
         } else {
             completion(.failure("Incorrect ID"))
         }
     }
+    
+//    func getChatName(id: String) -> Void {}
 
     func getChatInfo(of: ChatInfoProperties.RawValue, by id: String, completion: @escaping (Result<Dictionary<String, Any>, Error>) -> Void) async -> Void {
         if id != "" {
             var res: Dictionary<String, Any> = Dictionary<String, Any>()
-            let docRef = db.collection("Chats").document(id)
-            docRef.getDocument { (document, error) in
-                if let document = document, document.exists {
-                    
-                    res["id"] = (document.data()?["id"] as? String) ?? ""
-                    res["members"] = (document.data()?["members"] as? [String]) ?? []
-                    res["lastMessage"] = (document.data()?["lastMessage"] as? String) ?? ""
-                    res["name"] = (document.data()?["name"] as? String) ?? ""
-                    res["messages"] = (document.data()?["messages"] as? [String]) ?? []
-                    
-                    completion(.success(res))
-                } else {
-                    completion(.failure("The chat does not exist"))
+            db.collection("Chats").document(id) .addSnapshotListener { documentSnapshot, error in
+                guard let document = documentSnapshot else {
+                    completion(.failure("Error fetching document: \(error!)"))
+                  return
                 }
+                guard let data = document.data() else {
+                    completion(.failure("Document data was empty."))
+                  return
+                }
+                
+                res["id"] = (data["id"] as! String)
+                res["members"] = (data["members"] as! [String])
+                res["lastMessage"] = (data["lastMessage"] as? String) ?? "No messages"
+                res["name"] = (data["name"] as! String)
+                res["messages"] = (data["messages"] as? [String]) ?? []
+                
+                completion(.success(res))
             }
         } else {
             completion(.failure("Incorrect ID"))
@@ -634,16 +970,27 @@ class FSManager: ObservableObject {
 
     func getUserChats(completion: @escaping (Result<Array<String>, Error>) -> Void) async -> Void {
         if self.loginUserID != "" {
-            let docRef = db.collection("Users").document(self.loginUserID)
-            docRef.getDocument { (document, error) in
-                if let document = document, document.exists {
-                    if let chats = (document.data()?["chats"] as? Array<String>) {
-                        completion(.success(chats))
-                    } else { completion(.failure("User doesn't have chats field."))}
-                } else {
-                    completion(.failure("This document does not exist."))
+            db.collection("Users").document(self.loginUserID)
+                .addSnapshotListener { documentSnapshot, error in
+                    guard let document = documentSnapshot else {
+                        completion(.failure("Error fetching document: \(error!)"))
+                      return
+                    }
+                    guard let data = document.data() else {
+                        completion(.failure("Document data was empty."))
+                      return
+                    }
+                    completion(.success(data["chats"] as! [String]))
                 }
-            }
+//            docRef.getDocument { (document, error) in
+//                if let document = document, document.exists {
+//                    if let chats = (document.data()?["chats"] as? Array<String>) {
+//                        completion(.success(chats))
+//                    } else { completion(.failure("User doesn't have chats field."))}
+//                } else {
+//                    completion(.failure("This document does not exist."))
+//                }
+//            }
         } else {
             completion(.failure("Incorrect ID"))
         }
@@ -651,26 +998,60 @@ class FSManager: ObservableObject {
     }
     
     func getUsersData(withID id: String) -> Void {
+
         if id != "" {
-            let docRef = db.collection("Users").document(id)
-            docRef.getDocument { (document, error) in
-                if let document = document, document.exists {
-                    
-                    self.userUsername = (document.data()?["username"] as? String) ?? "username"
-                    self.userFirstName = (document.data()?["name"] as? String) ?? "name"
-                    self.userLastName = (document.data()?["surname"] as? String) ?? "surname"
-                    self.userMates = (document.data()?["mates"] as? String) ?? "0"
-                    self.userReputation = "\(document.data()?["reputation"] as! Int64)"
-                    self.userLanguage = (document.data()?["language"] as? String) ?? PLanguages.swift.rawValue
-                    self.userBio = (document.data()?["bio"] as? String) ?? "Bio"
-                    self.userProjects = (document.data()?["projects"] as? [String]) ?? []
-                    self.userPosts = (document.data()?["posts"] as? [String])?.reversed() ?? []
-                    self.avatarURL = (document.data()?["avatarURL"] as? String) ?? "AvatarURL"
-                    self.userRegisterDate = (document.data()?["registerDate"] as? String) ?? "01 January 1970"
-                    
-                    
+            
+            db.collection("Users").document(id)
+                .addSnapshotListener { documentSnapshot, error in
+                  guard let document = documentSnapshot else {
+                    print("Error fetching document: \(error!)")
+                    return
+                  }
+                  guard let data = document.data() else {
+                    print("Document data was empty.")
+                    return
+                  }
+                  print("Current data: \(data)")
+//                  print(data["reputation"])
+                            
+                          
+                            self.userUsername = (data["username"] as! String)
+                            self.userFirstName = (data["name"] as! String)
+                            self.userLastName = (data["surname"] as! String)
+                            self.userMates = String((data["mates"] as! Int))
+                            self.userReputation = String((data["reputation"] as! Int))
+                            self.userLanguage = (data["language"] as! String)
+                            self.userBio = (data["bio"] as! String)
+                            self.userProjects = (data["projects"] as! [String])
+                            self.userPosts = (data["posts"] as! [String]).reversed()
+                            self.avatarURL = (data["avatarURL"] as! String)
+                            self.userRegisterDate = (data["registerDate"] as! String)
+
                 }
-            }
+            
+//            let docRef = db.collection("Users").document(id)
+//            docRef.getDocument { (document, error) in
+//                if let document = document, document.exists {
+//
+//                    self.userUsername = (document.data()?["username"] as? String) ?? "username"
+//                    self.userFirstName = (document.data()?["name"] as? String) ?? "name"
+//                    self.userLastName = (document.data()?["surname"] as? String) ?? "surname"
+//                    self.userMates = (document.data()?["mates"] as? String) ?? "0"
+//                    self.userReputation = "\(document.data()?["reputation"] as! Int64)"
+//                    self.userLanguage = (document.data()?["language"] as? String) ?? PLanguages.swift.rawValue
+//                    self.userBio = (document.data()?["bio"] as? String) ?? "Bio"
+//                    self.userProjects = (document.data()?["projects"] as? [String]) ?? []
+//                    self.userPosts = (document.data()?["posts"] as? [String])?.reversed() ?? []
+//                    self.avatarURL = (document.data()?["avatarURL"] as? String) ?? "AvatarURL"
+//                    self.userRegisterDate = (document.data()?["registerDate"] as? String) ?? "01 January 1970"
+//
+//
+//                }
+//            }
+        
+            
+            
+            
         }
     }
     
@@ -691,19 +1072,23 @@ class FSManager: ObservableObject {
         
         var res : Dictionary<String, Any> = Dictionary<String, Any>()
         if id != "" {
-            let docRef = db.collection("Posts").document(id)
-            docRef.getDocument { (document, error) in
-                if let document = document, document.exists {
-                    res["body"] = (document.data()?["body"] as? String) ?? "Post body"
-                    res["date"] = (document.data()?["date"] as? String) ?? "0"
-                    res["time"] = (document.data()?["time"] as? Int) ?? 0
-                    if let url = (document.data()?["image"] as? String) { res["image"] =  url }
-                    res["stars"] = (document.data()?["stars"] as? [String]) ?? []
-                    res["owner"] = (document.data()?["owner"] as? String) ?? "Post owner"
-                    completion(.success(res))
-                } else {
-                    completion(.failure("The post does not exist"))
+            let docRef = db.collection("Posts").document(id).addSnapshotListener { documentSnapshot, error in
+                guard let document = documentSnapshot else {
+                  print("Error fetching document: \(error!)")
+                  return
                 }
+                guard let data = document.data() else {
+                  print("Document data was empty.")
+                  return
+                }
+                
+                    res["body"] = (data["body"] as! String)
+                    res["date"] = (data["date"] as! String)
+//                    res["time"] = (data["time"] as! Int)
+                    if let url = (data["image"] as?  String) { res["image"] =  url }
+                    res["stars"] = (data["stars"] as!  [String])
+                    res["owner"] = (data["owner"] as!  String)
+                    completion(.success(res))
             }
         } else {
             completion(.failure("Incorrect id"))
@@ -724,7 +1109,7 @@ class FSManager: ObservableObject {
             } else { completion(.failure("Username")) }
         }
     }
-    
+
     func getPostImage(from url: String, completion: @escaping (Result<UIImage, Error>) -> Void) async {
         print(url)
         let ref = Storage.storage().reference().child("PostPreviews").child(url)
@@ -741,7 +1126,7 @@ class FSManager: ObservableObject {
     func getProjectImage(from url: String, completion: @escaping (Result<UIImage, Error>) -> Void) async {
         print("Project url: \(url)")
         let ref = Storage.storage().reference().child("ProjectPreviews").child(url)
-        ref.getData(maxSize: 1 * 1024 * 1024) { data, error in
+        ref.getData(maxSize: 1024 * 1024) { data, error in
             if let error = error {
                 completion(.failure("Could not load the image: \(error)"))
             } else {

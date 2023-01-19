@@ -32,7 +32,7 @@ struct PostView<Logo: View>: View {
     
     @State private var engine: CHHapticEngine?
     
-    @ObservedObject var model: Model = Model()
+    @ObservedObject var model: AppConfiguration = AppConfiguration()
     
     private var fsmanager: FSManager = FSManager()
     
@@ -40,8 +40,9 @@ struct PostView<Logo: View>: View {
     
     var postID: String
     @ViewBuilder var logo: Logo
-    @AppStorage("LoginUserID") var loginUserID: String = ""
-    @AppStorage("UserID") var userID: String = ""
+    
+    @AppStorage("UserID") private var userID : String = ""
+    @AppStorage("LoginUserID") private var loginUserID: String = ""
     
     init(with postID: String, logo: Logo) {
         self.postID = postID
@@ -139,39 +140,138 @@ struct PostView<Logo: View>: View {
                             Spacer()
                             // MARK: - Ellipses menu
                             Menu {
-                                Button {
-                                    self.showPostEditor.toggle()
-                                    Vibro.complexSuccess(engine: self.engine)
-                                } label: {
-                                    HStack {
-                                        Text("Edit Post")
-                                        Image(systemName: "square.and.pencil")
-                                    }
-                                }
-                                Divider()
-                                Button(role: .destructive) {
-                    
-                                    self.fsmanager.remove(post: self.postID, userID: self.userID) { result in
-                                        switch result {
-                                        case .success(let success):
-                                            Vibro.trigger(.success)
-                                            print(success)
-                                        case .failure(let failure):
-                                            print(failure)
-                                            Vibro.trigger(.error)
-                                            self.alertLog = failure.localizedDescription
-                                            self.showAlert.toggle()
+                                if self.userID == self.loginUserID {
+                                    Button {
+                                        self.showPostEditor.toggle()
+                                        Vibro.complexSuccess(engine: self.engine)
+                                    } label: {
+                                        HStack {
+                                            Text("Edit Post")
+                                            Image(systemName: "square.and.pencil")
                                         }
                                     }
-                                } label: {
-                                    HStack {
-                                        Text("Delete Post")
-                                        Image(systemName: "trash")
+                                    Button {
+                                        withAnimation {
+                                            self.starRotation = 180
+                                            self.starYOffset = -14
+                                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+                                                if self.userHasLikedThisPost {
+                                                    Vibro.trigger(.success)
+                                                } else {
+                                                    Vibro.complexSuccess(engine: self.engine)
+                                                }
+                                                
+                                                withAnimation {
+                                                    self.starRotation = 360
+                                                    self.starYOffset = 0
+                                                }
+                                                self.starRotation = 0
+                                            }
+                                        }
+                                        if self.userHasLikedThisPost {
+                                            self.userHasLikedThisPost.toggle()
+                                            self.cream -= 1
+                                            self.fsmanager.unlike(profilePost: self.postID, user: self.loginUserID, owner: self.ownerID!)
+                                        } else {
+                                            self.userHasLikedThisPost.toggle()
+                                            self.cream += 1
+                                            self.fsmanager.like(profilePost: self.postID, user: self.loginUserID, owner: self.ownerID!)
+                                        }
+                                        
+                                    } label: {
+                                        HStack {
+                                            Text(self.userHasLikedThisPost ? "Unlike this post" : "Like this post")
+                                            Spacer()
+                                            Image(systemName: !self.userHasLikedThisPost ? "star.fill" : "star")
+                                        }.font(.custom("RobotoMono-SemiBold", size: 14))
+                                        
+                                            .foregroundColor(.primary)
+                                            
                                     }
-                                    .foregroundColor(.red)
-                                    .font(.custom("RobotoMono-SemiBold", size: 14))
+                                    Divider()
+                                    Button(role: .destructive) {
+                        
+                                        self.fsmanager.remove(post: self.postID, userID: self.userID) { result in
+                                            switch result {
+                                            case .success(let success):
+                                                Vibro.trigger(.success)
+                                                print(success)
+                                            case .failure(let failure):
+                                                print(failure)
+                                                Vibro.trigger(.error)
+                                                self.alertLog = failure.localizedDescription
+                                                self.showAlert.toggle()
+                                            }
+                                        }
+                                    } label: {
+                                        HStack {
+                                            Text("Delete Post")
+                                            Image(systemName: "trash")
+                                        }
+                                        .foregroundColor(.red)
+                                        .font(.custom("RobotoMono-SemiBold", size: 14))
+                                        
+                                    }
+                                } else {
+                                    if self.postImage != nil {
+                                        Button {
+                                            guard let inputImage = self.postImage else {
+                                                Vibro.trigger(.error)
+                                                return
+                                            }
+                                            Vibro.trigger(.success)
+                                            let imageSaver = ImageSaver()
+                                            imageSaver.writeToPhotoAlbum(image: inputImage)
+                                        } label: {
+                                            HStack {
+                                                Text("Save photo")
+                                                Spacer()
+                                                Image(systemName: "arrow.down.circle")
+                                            }.font(.custom("RobotoMono-SemiBold", size: 14))
+
+                                        }
+                                    }
+                                    Button {
+                                        withAnimation {
+                                            self.starRotation = 180
+                                            self.starYOffset = -14
+                                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+                                                if self.userHasLikedThisPost {
+                                                    Vibro.trigger(.success)
+                                                } else {
+                                                    Vibro.complexSuccess(engine: self.engine)
+                                                }
+                                                
+                                                withAnimation {
+                                                    self.starRotation = 360
+                                                    self.starYOffset = 0
+                                                }
+                                                self.starRotation = 0
+                                            }
+                                        }
+                                        if self.userHasLikedThisPost {
+                                            self.userHasLikedThisPost.toggle()
+                                            self.cream -= 1
+                                            self.fsmanager.unlike(profilePost: self.postID, user: self.loginUserID, owner: self.ownerID!)
+                                        } else {
+                                            self.userHasLikedThisPost.toggle()
+                                            self.cream += 1
+                                            self.fsmanager.like(profilePost: self.postID, user: self.loginUserID, owner: self.ownerID!)
+                                        }
+                                        
+                                    } label: {
+                                        HStack {
+                                            Text(self.userHasLikedThisPost ? "Unlike this post" : "Like this post")
+                                            Spacer()
+                                            Image(systemName: !self.userHasLikedThisPost ? "star.fill" : "star")
+                                        }.font(.custom("RobotoMono-SemiBold", size: 14))
+                                        
+                                            .foregroundColor(.primary)
+                                            
+                                    }
                                     
                                 }
+                                
                             } label: {
                                 Image(systemName: "ellipsis.circle.fill")
                                     .resizable()
@@ -211,7 +311,7 @@ struct PostView<Logo: View>: View {
                                                 Vibro.trigger(.success)
                                                 let imageSaver = ImageSaver()
                                                 imageSaver.writeToPhotoAlbum(image: inputImage)
-                                            }label: {
+                                            } label: {
                                                 HStack {
                                                     Text("Save photo")
                                                     Spacer()
@@ -262,10 +362,10 @@ struct PostView<Logo: View>: View {
                                         self.cream += 1
                                         self.fsmanager.like(profilePost: self.postID, user: self.loginUserID, owner: self.ownerID!)
                                     }
-                                    self.fsmanager.getUsersData(withID: self.ownerID!)
-                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
-                                        self.fsmanager.getUsersData(withID: self.ownerID!)
-                                    })
+//                                    self.fsmanager.getUsersData(withID: self.ownerID!)
+//                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
+//                                        self.fsmanager.getUsersData(withID: self.ownerID!)
+//                                    })
                                     
                                 } label: {
                                     

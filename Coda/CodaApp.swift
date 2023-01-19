@@ -7,10 +7,12 @@
 
 import SwiftUI
 import Firebase
+import Cachy
 
 @main
 struct CodaApp: App {
     init() {
+        Cachy.isOnlyInMemory = true
         FirebaseApp.configure()
     }
     @StateObject var authState: AuthenticationState = AuthenticationState.shared

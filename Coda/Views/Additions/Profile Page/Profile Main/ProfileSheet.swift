@@ -20,6 +20,8 @@ struct ProfileSheet<Logo: View, LanguageAndReputation: View>: View {
     
     @EnvironmentObject var authState : AuthenticationState
     
+    @Binding var userMode : UserMode?
+    
     @State var showSettings: Bool = false
     @Binding var showInfoSheet: Bool
     @Binding var showCreatePostSheet: Bool
@@ -30,9 +32,14 @@ struct ProfileSheet<Logo: View, LanguageAndReputation: View>: View {
     @State private var showPosts: Bool = false
     
     @Binding var headerPosition : CGFloat
+    
+    
     @AppStorage("UserProjects") var userProjects : [String] = []
     @AppStorage("UserPosts") var userPosts : [String] = []
     @AppStorage("Updater") private var updater: Bool = false
+    
+    @AppStorage("UserID") private var userID : String = ""
+    @AppStorage("LoginUserID") var loginUserID: String = ""
 
     @ViewBuilder var logo: Logo
     @ViewBuilder var landAndRep: LanguageAndReputation
@@ -74,25 +81,25 @@ struct ProfileSheet<Logo: View, LanguageAndReputation: View>: View {
                     }
                     .offset(x: bottomSheetTranslationProrated * 32, y: 80 - 20 * bottomSheetTranslationProrated)
                     .padding(.horizontal, 32)
-                    
-                    HStack {
-                        Button {
-                            self.showSettings.toggle()
-                        } label: {
-                            Image(systemName: "gearshape")
-                                .font(.largeTitle)
-//                                .symbolVariant(.fill)
-                                .foregroundColor(.primary)
-                                .padding()
-                                .padding(.horizontal, 8)
-                                .offset(y: 50 * bottomSheetTranslationProrated)
-                        }
-                        .fullScreenCover(isPresented: self.$showSettings) {
-                            ProfileSettingsMain()
-                        }
-                        
-                    }.frame(maxWidth:.infinity, alignment: .trailing)
-                    
+                    if self.userID == self.loginUserID {
+                        HStack {
+                            Button {
+                                self.showSettings.toggle()
+                            } label: {
+                                Image(systemName: "gearshape")
+                                    .font(.largeTitle)
+    //                                .symbolVariant(.fill)
+                                    .foregroundColor(.primary)
+                                    .padding()
+                                    .padding(.horizontal, 8)
+                                    .offset(y: 50 * bottomSheetTranslationProrated)
+                            }
+                            .fullScreenCover(isPresented: self.$showSettings) {
+                                ProfileSettingsMain()
+                            }
+                            
+                        }.frame(maxWidth:.infinity, alignment: .trailing)
+                    }
                 }
                 
             }.background(GeometryReader {
@@ -163,10 +170,12 @@ struct ProfileSheet<Logo: View, LanguageAndReputation: View>: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.horizontal, 32)
                     .padding(.vertical, 16)
-                
+                if self.userID == self.loginUserID {
                     ProfileActionCell(withText: "Create Post") {
                         self.showCreatePostSheet.toggle()
                     }.padding(.bottom, 16)
+                }
+                    
                     
                 
                     

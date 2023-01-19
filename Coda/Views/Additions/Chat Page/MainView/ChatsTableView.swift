@@ -5,36 +5,34 @@
 //  Created by Matoi on 30.10.2022.
 //
 
+
 import SwiftUI
+import Cachy
 
 
 struct ChatsTableView: View {
-//    var chats: [ChatCell] = [
-//        ChatCell(userName: "MatoiDev", previewMessage: "Hi! How are you?", time: "15:18", haveSeen: false, image: Image("default")),
-//        ChatCell(userName: "Kerob", previewMessage: "We schould meet today.", time: "11:28", haveSeen: false, image: Image("CPL\(Int.random(in: 1...64))")),
-//        ChatCell(userName: "Loise", previewMessage: "We schould meet today.", time: "\(Int.random(in: 10..<24)):\(Int.random(in: 10..<60))", haveSeen: Bool.random(), image: Image("CPL\(Int.random(in: 1...64))")),
-//        ChatCell(userName: "Max", previewMessage: "Hi!", time: "\(Int.random(in: 10..<24)):\(Int.random(in: 10..<60))", haveSeen: Bool.random(), image: Image("CPL\(Int.random(in: 1...64))")),
-//        ChatCell(userName: "Meni Motti", previewMessage: "Thanks!", time: "\(Int.random(in: 10..<24)):\(Int.random(in: 10..<60))", haveSeen: Bool.random(), image: Image("CPL\(Int.random(in: 1...64))")),
-//        ChatCell(userName: "Candy", previewMessage: "How about it?", time: "\(Int.random(in: 10..<24)):\(Int.random(in: 10..<60))", haveSeen: Bool.random(), image: Image("CPL\(Int.random(in: 1...64))")),
-//        ChatCell(userName: "Bob", previewMessage: "Good Job! Thanks!", time: "\(Int.random(in: 10..<24)):\(Int.random(in: 10..<60))", haveSeen: Bool.random(), image: Image("CPL\(Int.random(in: 1...64))")),
-//        ChatCell(userName: "Jessy", previewMessage: "Have a luck!", time: "\(Int.random(in: 10..<24)):\(Int.random(in: 10..<60))", haveSeen: Bool.random(), image: Image("CPL\(Int.random(in: 1...64))")),
-//        ChatCell(userName: "Rose", previewMessage: "Just write on SE-3378", time: "\(Int.random(in: 10..<24)):\(Int.random(in: 10..<60))", haveSeen: Bool.random(), image: Image("CPL\(Int.random(in: 1...64))")),
-//        ChatCell(userName: "Kate", previewMessage: "Maybe you should just check it?", time: "\(Int.random(in: 10..<24)):\(Int.random(in: 10..<60))", haveSeen: Bool.random(), image: Image("CPL\(Int.random(in: 1...64))")),
-//        ChatCell(userName: "Capitan Hook", previewMessage: "Good!", time: "\(Int.random(in: 10..<24)):\(Int.random(in: 10..<60))", haveSeen: Bool.random(), image: Image("CPL\(Int.random(in: 1...64))")),
-//        ChatCell(userName: "Cody", previewMessage: "Man, watch what you are looking for! It s nervous! Dont give a fuck what this damn doing!", time: "\(Int.random(in: 10..<24)):\(Int.random(in: 10..<60))", haveSeen: Bool.random(), image: Image("CPL\(Int.random(in: 1...64))"))
-//
-//    ]
+
     
     var userID: String
-    private let chatsCacher = NSCache<NSString, NSArray>()
+    
     
     private let fsmanager : FSManager = FSManager()
     
-    @State private var chatsIDs: Array<String>?
     
-    init(with id: String) {
+    @State private var chatsIDs: Array<String>?
+    @State private var multiSelection = Set<String>()
+    @State private var chatName: String?
+    
+    
+    @ObservedObject var appConfig: AppConfiguration
+    
+    
+    
+    init(with id: String, config: AppConfiguration) {
         self.userID = id
-        if let ids: Array<String> = chatsCacher.object(forKey: "chats") as? Array<String> {
+        self.appConfig = config
+        if let ids: Array<String> = Cachy.shared.get(forKey: "chats") {
+            print("Use cached value")
             self.chatsIDs = ids
         }
     }
@@ -44,24 +42,40 @@ struct ChatsTableView: View {
     var body: some View {
         NavigationView {
             if let chats = self.chatsIDs {
-                List {
-//                    ForEach(0..<self.chats.count, id: \.self) { chat in
-//                        NavigationLink {
-//                            Chat(with: )
-//                        } label: {
-//                            self.chats[chat]
-//                        }
-//                    }
-                    ForEach(chats, id: \.self) { chat in
+                List(selection: self.$multiSelection) {
+                    ForEach(0..<chats.count, id: \.self) { ind in
                         NavigationLink {
-                            Chat(with: chat)
+                            Chat(with: chats[ind], config: self.appConfig)
+//                            if let chatName: String = Cachy.shared.object(forKey: "name:\(chats[ind])" as NSString) as? String {
+//                                Chat(with: chats[ind], chatName: chatName, config: self.appConfig)
+//                            } else {
+//                                Chat(with: chats[ind], chatName: "Chat", config: self.appConfig)
+//                            }
+                           
                         } label: {
-                            ChatCell(with: chat)
+                            ChatCell(with: chats[ind])
                         }
                     }
 
-                }.listRowSeparatorTint(Color("Register2"))
-                        .buttonStyle(PlainButtonStyle())
+                }
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarLeading) {
+                        EditButton()
+                            .font(.custom("RobotoMono-Medium", size: 16)).lineSpacing(0.1)
+                            .foregroundColor(.cyan)
+                    }
+                }
+                        .toolbar {
+                            ToolbarItem(placement: .navigationBarTrailing) {
+                                Button {
+                                    print("Add chat button has pressed!")
+                                } label: {
+                                    Image(systemName: "square.and.pencil")
+                                        .foregroundColor(Color("Register2"))
+                                }
+
+                            }
+                        }
                         .toolbar {
                             ToolbarItem(placement: .principal) {
                                 VStack {
@@ -70,27 +84,27 @@ struct ChatsTableView: View {
                                 }
                             }
                         }
-                        .toolbar {
-                            ToolbarItem(placement: .navigationBarLeading) {
-                                EditButton()
-                                        .font(.custom("RobotoMono-Medium", size: 16)).lineSpacing(0.1)
-                                        .foregroundColor(.cyan)
-                            }
-                        }
+                        
+                        .navigationBarHidden(false)
                         .navigationBarTitleDisplayMode(.inline)
                         .listStyle(.plain)
             } else {
                 ProgressView()
+                    .navigationBarTitleDisplayMode(.inline)
+                    .listStyle(.plain)
+                    .navigationBarHidden(false)
             }
 
-        }.task {
+        }.background(Color.black)
+        .background(.ultraThinMaterial)
+        .task {
             if self.chatsIDs == nil {
                 await self.fsmanager.getUserChats { result in
                     switch result {
                     case .success(let chats):
                         self.chatsIDs = chats
-                        
-                        self.chatsCacher.setObject(chats as NSArray, forKey: "chats")
+                        let object = CachyObject(value: chats as NSArray, key: "chats")
+                        Cachy.shared.add(object: object)
                     case .failure(let failure):
                         // trigger error
                         print("Here it is")
@@ -105,6 +119,6 @@ struct ChatsTableView: View {
 
 struct ChatsTableView_Previews: PreviewProvider {
     static var previews: some View {
-        ChatsTableView(with: "qDSsjK8T5JNRcTYtDVMXT4fYqcj1")
+        ChatsTableView(with: "qDSsjK8T5JNRcTYtDVMXT4fYqcj1", config: AppConfiguration())
     }
 }

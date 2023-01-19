@@ -521,9 +521,9 @@ struct ProjectEditor: View {
             }
             
         }
-        .onDisappear {
-            self.fsmanager.getUsersData(withID: self.userID)
-        }
+//        .onDisappear {
+//            self.fsmanager.getUsersData(withID: self.userID)
+//        }
         .navigationBarBackButtonHidden(true)
         .navigationBarItems(leading: BackButton())
         

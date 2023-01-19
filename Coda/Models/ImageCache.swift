@@ -8,16 +8,24 @@
 
 import SwiftUI
 import Foundation
+import Cachy // To store image on Disk
 
 class ImageCache {
     var cache = NSCache<NSString, UIImage>()
     
-    func get(forKey: String) -> UIImage? {
-        return cache.object(forKey: NSString(string: forKey))
+    func get(forKey key: String) -> UIImage? {
+        if let image: UIImage = Cachy.shared.get(forKey: key) {
+            return image
+        }
+        return nil
+        
+//        return cache.object(forKey: NSString(string: key))
     }
     
-    func set(forKey: String, image: UIImage) {
-        cache.setObject(image, forKey: NSString(string: forKey))
+    func set(forKey key: String, image: UIImage) {
+        let imageObject = CachyObject(value: image as UIImage, key: key)
+        Cachy.shared.add(object: imageObject)
+//        cache.setObject(image, forKey: NSString(string: key))
     }
 }
 

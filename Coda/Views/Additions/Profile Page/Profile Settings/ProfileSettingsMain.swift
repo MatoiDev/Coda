@@ -378,7 +378,7 @@ struct ProfileSettingsMain: View {
                                   projects: self.projects)
         self.userProjects = self.projects
         
-        self.fsmanager.getUsersData(withID: self.userID)
+//        self.fsmanager.getUsersData(withID: self.userID)
         self.dissmiss.callAsFunction()
     }
 }

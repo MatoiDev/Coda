@@ -11,36 +11,30 @@ import CoreHaptics
 
 
 
-func stringToDict(string dict: String) -> Dictionary<String, String> {
-    print(dict)
-    let dict: String = String(String(dict.dropFirst()).dropLast())
-    var res: Dictionary<String, String> = Dictionary<String, String>()
-
-    for item in dict.split(separator: ",") {
-        let items = item.split(separator: ":")
-        var key = String(String(items[0].dropFirst()).dropLast())
-        if key[key.startIndex] == "\"" {
-            key = String(key.dropFirst())
-        }
-
-        var value: String = String(items[1])
-        if value[value.startIndex] == " " {
-            value = String(value.dropFirst())
-        }
-        if value == "https" {
-            print(items[2])
-            value =  items[1...].joined(separator: ":")
-            if value[value.startIndex] == " " {
-                value = String(value.dropFirst())
+struct CancelCrossButton: View {
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    
+    var body : some View {
+        Button(action: {
+            self.presentationMode.wrappedValue.dismiss()
+        }) {
+            HStack {
+                Image(systemName: "xmark.circle.fill")
+                    .symbolRenderingMode(.hierarchical)
+                    .resizable()
+                    .foregroundColor(.primary)
             }
         }
-        res[key] = value
     }
-    return res
+}
+
+enum UserMode {
+    case guest, owner
 }
 
 
 struct ProfileView: View {
+    
     @State var bottomSheetPosition: BottomSheetPosition = .bottom
     @State var bottomSheetTranslation : CGFloat = BottomSheetPosition.bottom.rawValue
     @State private var avatar: UIImage = UIImage(named: "default")!
@@ -61,6 +55,7 @@ struct ProfileView: View {
     @AppStorage("UserPosts") var userPosts : [String] = []
     
     @AppStorage("UserID") private var userID : String = ""
+    @AppStorage("LoginUserID") var loginUserID: String = ""
         
     private var fsmanager: FSManager = FSManager()
     
@@ -71,21 +66,25 @@ struct ProfileView: View {
     @State private var avatarImage : AvatarImageView = AvatarImageView(urlString: nil, translation: .constant(0))
     @State private var engine: CHHapticEngine?
     
-    
+
+    @State private var userMode: UserMode!
 
     init(with userID: String) {
         
+        self.userMode = self.userID == self.loginUserID ? .owner : .guest
         self.userID = userID
-        fsmanager.getUsersData(withID: self.userID)
+        self.fsmanager.getUsersData(withID: self.userID)
         self.loadAvatar = true
-        print(self.userReputation)
         
+        print(self.userID == self.loginUserID, self.userMode)
+        print(self.userReputation)
+
     }
     
     func getImageURL() async {
         while true {
             
-            fsmanager.getUsersData(withID: self.userID)
+//            fsmanager.getUsersData(withID: self.userID)
             
             try? await Task.sleep(nanoseconds: 4 * NSEC_PER_SEC)
 
@@ -115,6 +114,16 @@ struct ProfileView: View {
             let screenHeight = geometry.size.height + geometry.safeAreaInsets.top + geometry.safeAreaInsets.bottom
             
             ZStack {
+                if self.userID != self.loginUserID {
+                    VStack {
+                        HStack {
+                            CancelCrossButton()
+                                .frame(width: 35, height: 35)
+                            Spacer()
+                        }.padding()
+                    }.frame(maxHeight: .infinity, alignment: .top)
+                }
+                
 
                 // MARK: - Bottom Sheet View
                 BottomSheetView(position: $bottomSheetPosition) {
@@ -128,7 +137,7 @@ struct ProfileView: View {
                                  reputation: self.userReputation,
                                  mates: self.userMates,
                                  projects: self.userProjects,
-                                 showInfoSheet: self.$showInfoSheet,
+                                 userMode: self.$userMode, showInfoSheet: self.$showInfoSheet,
                                  showCreatePostSheet: self.$showCreatePostSheet,
                                  yAxisOffset: self.$yAxisScrollViewOnBottomSheetOffset,
                                  headerPosition: self.$bottomSheetTranslation)

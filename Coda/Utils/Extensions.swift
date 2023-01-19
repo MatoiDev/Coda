@@ -114,6 +114,25 @@ extension Date {
     }
 }
 
+extension UITableView {
+    func scrollTableViewToBottom(animated: Bool) {
+        guard let dataSource = dataSource else { return }
+
+        var lastSectionWithAtLeasOneElements = (dataSource.numberOfSections?(in: self) ?? 1) - 1
+
+        while dataSource.tableView(self, numberOfRowsInSection: lastSectionWithAtLeasOneElements) < 1 {
+            lastSectionWithAtLeasOneElements -= 1
+        }
+
+        let lastRow = dataSource.tableView(self, numberOfRowsInSection: lastSectionWithAtLeasOneElements) - 1
+
+        guard lastSectionWithAtLeasOneElements > -1 && lastRow > -1 else { return }
+
+        let bottomIndex = IndexPath(item: lastRow, section: lastSectionWithAtLeasOneElements)
+        scrollToRow(at: bottomIndex, at: .bottom, animated: animated)
+    }
+}
+
 
 extension String {
     subscript (range: Range<Int>) -> String {
@@ -121,5 +140,21 @@ extension String {
         let firstIndex = self.startIndex
         let cutIndex = self.index(self.startIndex, offsetBy: range.count)
         return "\(self[firstIndex..<cutIndex])"
+    }
+}
+
+class Cache: NSCache<AnyObject, AnyObject> {
+    static let shared = NSCache<AnyObject, AnyObject>()
+    private override init() {
+        super.init()
+        
+    }
+    
+}
+
+// Hide keyboard
+extension UIApplication {
+    func hideKeyboard() {
+        sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
     }
 }

@@ -14,7 +14,7 @@ struct GitHubLoginButton: View {
         Button {
             authState.signInWithGitHub()
         } label: {
-            LottieAnimation(named: "githubLogoWhite")
+            LottieView(named: "githubLogoWhite")
                 .frame(width: 50, height: 50)
         }
     }

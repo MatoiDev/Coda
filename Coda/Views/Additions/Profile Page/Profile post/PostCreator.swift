@@ -76,7 +76,7 @@ struct PostCreator: View {
                                 switch result {
                                 case .success(let success):
                                     self.showProgressView = false
-                                    self.fsmanager.getUsersData(withID: self.userID)
+//                                    self.fsmanager.getUsersData(withID: self.userID)
                                     self.reloadView()
                                     self.dismiss.callAsFunction()
                                 case .failure(let err):
@@ -95,7 +95,7 @@ struct PostCreator: View {
                                         case .success(_):
                                             self.showProgressView = false
                                             self.userPosts.append(postID)
-                                            self.fsmanager.getUsersData(withID: self.userID)
+//                                            self.fsmanager.getUsersData(withID: self.userID)
 
                                             self.dismiss.callAsFunction()
                                         case .failure(let failure):

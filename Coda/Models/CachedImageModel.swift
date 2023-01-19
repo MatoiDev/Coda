@@ -78,7 +78,6 @@ class CachedImageModel: ObservableObject {
                 }
             }
         }
-       
     }
 }
 

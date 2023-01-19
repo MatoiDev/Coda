@@ -12,6 +12,11 @@ struct CodaTabBar: View {
     @State var selectedTab: Tab = .home
     @State var circleColor: Color = .cyan
     @AppStorage("LoginUserID") var loginUserID: String = ""
+    @AppStorage("HideTabBar") var tabBarIsHidden: Bool = false
+    
+    @StateObject var appConfig: AppConfiguration = AppConfiguration()
+    
+    
 
     var body: some View {
         ZStack(alignment: .bottom) {
@@ -22,7 +27,7 @@ struct CodaTabBar: View {
                 case .search:
                     SearchView()
                 case .chat:
-                    ChatsTableView(with: self.loginUserID)
+                    ChatsTableView(with: self.loginUserID, config: self.appConfig)
                 case .profile:
                     // Вход в на свою страницу профиля по своему id
                     ProfileView(with: self.loginUserID)
@@ -87,6 +92,7 @@ struct CodaTabBar: View {
                         }.padding(.horizontal, 8)
                         
                     }
+                    .offset(y: self.appConfig.tabBarIsHidden ? 255 : 0)
                     .frame(maxHeight: .infinity, alignment: .bottom)
                     
                     .ignoresSafeArea()
