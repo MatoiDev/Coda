@@ -314,18 +314,18 @@ struct ProjectEditor: View {
                         {
                             
                             // MARK: - Name editor
-                            TextField(self.name! == "" ? "Name" : self.name!, text: Binding(self.$name)!)
+                            TextField(self.name!.isEmpty ? "Name" : self.name!, text: Binding(self.$name)!)
                                 .textContentType(.name)
                                 .keyboardType(.default)
                                 
                             
                             // MARK: - Description editor
-                            TextField(self.description! == "" ? "Description" : self.description!, text: Binding(self.$description)!)
+                            TextField(self.description!.isEmpty ? "Description" : self.description!, text: Binding(self.$description)!)
                                 .textContentType(.name)
                                 .keyboardType(.default)
                             
                             // MARK: - Link editor
-                            TextField(self.link! == "" ? "Link to a project" : self.link!, text: Binding(self.$link)!)
+                            TextField(self.link!.isEmpty ? "Link to a project" : self.link!, text: Binding(self.$link)!)
                                 .textContentType(.URL)
                                 .keyboardType(.URL)
 
@@ -440,18 +440,18 @@ struct ProjectEditor: View {
                     Section(header: Text("Info").foregroundColor(.cyan).font(.custom("RobotoMono-SemiBold", size: 13)), footer: Text(self.resultLog).foregroundColor(.red)) {
                         
                         // MARK: - Name editor
-                        TextField(self.name! == "" ? "Name" : self.name!, text: Binding(self.$name)!)
+                        TextField(self.name!.isEmpty ? "Name" : self.name!, text: Binding(self.$name)!)
                             .textContentType(.name)
                             .keyboardType(.default)
                             
                         
                         // MARK: - Description editor
-                        TextField(self.description! == "" ? "Description" : self.description!, text: Binding(self.$description)!)
+                        TextField(self.description!.isEmpty ? "Description" : self.description!, text: Binding(self.$description)!)
                             .textContentType(.name)
                             .keyboardType(.default)
                         
                         // MARK: - Link editor
-                        TextField(self.link! == "" ? "Link to a project" : self.link!, text: Binding(self.$link)!)
+                        TextField(self.link!.isEmpty ? "Link to a project" : self.link!, text: Binding(self.$link)!)
                             .textContentType(.URL)
                             .keyboardType(.URL)
 

@@ -24,13 +24,12 @@ struct ChatsTableView: View {
     @State private var chatName: String?
     
     
-    @ObservedObject var appConfig: AppConfiguration
     
     
     
-    init(with id: String, config: AppConfiguration) {
+    
+    init(with id: String) {
         self.userID = id
-        self.appConfig = config
         if let ids: Array<String> = Cachy.shared.get(forKey: "chats") {
             print("Use cached value")
             self.chatsIDs = ids
@@ -45,7 +44,7 @@ struct ChatsTableView: View {
                 List(selection: self.$multiSelection) {
                     ForEach(0..<chats.count, id: \.self) { ind in
                         NavigationLink {
-                            Chat(with: chats[ind], config: self.appConfig)
+                            Chat(with: chats[ind])
 //                            if let chatName: String = Cachy.shared.object(forKey: "name:\(chats[ind])" as NSString) as? String {
 //                                Chat(with: chats[ind], chatName: chatName, config: self.appConfig)
 //                            } else {
@@ -116,9 +115,9 @@ struct ChatsTableView: View {
         }
     }
 }
-
-struct ChatsTableView_Previews: PreviewProvider {
-    static var previews: some View {
-        ChatsTableView(with: "qDSsjK8T5JNRcTYtDVMXT4fYqcj1", config: AppConfiguration())
-    }
-}
+//
+//struct ChatsTableView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ChatsTableView(with: "qDSsjK8T5JNRcTYtDVMXT4fYqcj1")
+//    }
+//}

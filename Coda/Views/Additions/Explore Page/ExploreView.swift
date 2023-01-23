@@ -7,14 +7,15 @@
 
 import SwiftUI
 
-struct SearchView: View {
+struct ExploreView: View {
+
     var body: some View {
-        Text("This is the Serach View")
+        NewsViewMain()
     }
 }
 
 struct SearchView_Previews: PreviewProvider {
     static var previews: some View {
-        SearchView()
+        ExploreView()
     }
 }

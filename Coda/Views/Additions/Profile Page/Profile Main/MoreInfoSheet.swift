@@ -31,7 +31,7 @@ struct MoreInfoSheet<Logo: View>: View {
                         Image(systemName: "c.circle")
                             .foregroundColor(.secondary)
                             .font(.custom("RobotoMono-Bold", size: 15))
-                        Text(self.userBio == "" ? "..." : self.userBio)
+                        Text(self.userBio.isEmpty ? "..." : self.userBio)
                             .offset(x: self.bioOffset)
                            Spacer()
                     }.padding(.top, 16)

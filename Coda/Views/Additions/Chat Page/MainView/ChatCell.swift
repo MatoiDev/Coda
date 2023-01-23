@@ -24,6 +24,7 @@ struct ChatCell: View {
     
     var id: String
     
+    
     @State private var userName: String?
     @State private var previewMessageID: String?
     @State private var lastMessage: String?
@@ -119,7 +120,7 @@ struct ChatCell: View {
                     HStack {
                         ChatCachedImageView(with: messageImageURL, for: .CellMessage)
                             .fixedSize()
-                        if let lastMessage = self.lastMessage, lastMessage == "" {
+                        if let lastMessage = self.lastMessage, lastMessage.isEmpty {
                             Text("Photo")
                                 .foregroundColor(.secondary)
                                 .font(.custom("RobotoMono-Bold", size: 12))

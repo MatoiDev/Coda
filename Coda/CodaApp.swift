@@ -13,6 +13,7 @@ import Cachy
 struct CodaApp: App {
     init() {
         Cachy.isOnlyInMemory = true
+        
         FirebaseApp.configure()
     }
     @StateObject var authState: AuthenticationState = AuthenticationState.shared

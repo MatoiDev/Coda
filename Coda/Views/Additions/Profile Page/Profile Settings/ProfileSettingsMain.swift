@@ -167,16 +167,16 @@ struct ProfileSettingsMain: View {
                         
                     ) {
                         
-                        TextField(self.username == "" ? "Username" : self.username, text: self.$username)
+                        TextField(self.username.isEmpty ? "Username" : self.username, text: self.$username)
                             .textContentType(.nickname)
                             .onAppear {
                                 self.username = self.userUsername
                             }
-                        TextField(self.firstName == "" ? "First Name" : self.firstName, text: self.$firstName)
+                        TextField(self.firstName.isEmpty ? "First Name" : self.firstName, text: self.$firstName)
                             .onAppear {
                                 self.firstName = self.userFirstName
                             }
-                        TextField(self.lastName == "" ? "Last Name" : self.lastName, text: self.$lastName)
+                        TextField(self.lastName.isEmpty ? "Last Name" : self.lastName, text: self.$lastName)
                             .onAppear {
                                 self.lastName = self.userLastName
                             }
@@ -196,7 +196,7 @@ struct ProfileSettingsMain: View {
                                 .font(.custom("RobotoMono-SemiBold", size: 11))
                                 .lineLimit(10)
                                 .lineSpacing(0.3)) {
-                        TextField(self.bio == "" ? "Bio" : self.bio, text: self.$bio)
+                                    TextField(self.bio.isEmpty ? "Bio" : self.bio, text: self.$bio)
                                 .textContentType(.name)
                                 .keyboardType(.default)
                                 .autocapitalization(.none)
@@ -369,11 +369,11 @@ struct ProfileSettingsMain: View {
         
         self.fsmanager.updateUser(withID: self.userID,
                                   email: self.userEmail,
-                                  username: self.username == "" ? self.userUsername : self.username,
-                                  name: self.firstName == "" ? self.userFirstName : self.firstName,
-                                  surname: self.lastName == "" ? self.userLastName : self.lastName,
+                                  username: self.username.isEmpty ? self.userUsername : self.username,
+                                  name: self.firstName.isEmpty ? self.userFirstName : self.firstName,
+                                  surname: self.lastName.isEmpty ? self.userLastName : self.lastName,
                                   image: self.avatar, language:
-                                    self.language == "" ? self.userLanguage : self.language,
+                                    self.language.isEmpty ? self.userLanguage : self.language,
                                   bio: self.bio,
                                   projects: self.projects)
         self.userProjects = self.projects

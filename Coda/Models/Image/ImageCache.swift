@@ -13,8 +13,14 @@ import Cachy // To store image on Disk
 class ImageCache {
     var cache = NSCache<NSString, UIImage>()
     
+    init() {
+        Cachy.isOnlyInMemory = true
+    }
+    
     func get(forKey key: String) -> UIImage? {
+        print("_", key)
         if let image: UIImage = Cachy.shared.get(forKey: key) {
+            print("Load \(key) from cache")
             return image
         }
         return nil

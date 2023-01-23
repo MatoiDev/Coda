@@ -869,43 +869,41 @@ class FSManager: ObservableObject {
     // MARK: - Functions for getting stuff
     
    
-    @MainActor func getMessageInfoNonAsync(id: String) -> Dictionary<String, Any>? {
-        print(id)
-        var waitPlease: Bool = true
-        if id != "" {
-            var isEmpty : Bool = true
-            var res: Dictionary<String, Any> = Dictionary<String, Any>()
-            
-            db.collection("Messages").document(id) .addSnapshotListener { documentSnapshot, error in
-                guard let document = documentSnapshot else {
-                    print("Document is not a document")
-                    waitPlease = false
-                    return
-                }
-                guard let data = document.data() else {
-                    print("data is not data")
-                    waitPlease = false
-                    return
-                }
-                
-                res["id"] = (data["id"] as! String)
-                res["chatID"] = (data["chatID"] as! String)
-                res["sender"] = (data["sender"] as? String)
-                res["timeSince1970"] = (data["timeSince1970"] as! String)
-                res["date"] = (data["date"] as! String) // dd.mm.yyyy
-                res["dayTime"] = (data["dayTime"] as! String)
-                res["body"] = (data["body"] as! String)
-                res["didEdit"] = (data["didEdit"] as! String)
-                res["whoHasRead"] = (data["whoHasRead"] as! [String])
-                res["image"] = (data["image"] as! String)
-                print(res)
-                isEmpty = false
-                
-            }
-            return nil
-        }
-        return nil
-    }
+//    @MainActor func getMessageInfoNonAsync(id: String) -> Dictionary<String, Any>? {
+//        if id != "" {
+//            var isEmpty : Bool = true
+//            var res: Dictionary<String, Any> = Dictionary<String, Any>()
+//            
+//            db.collection("Messages").document(id) .addSnapshotListener { documentSnapshot, error in
+//                guard let document = documentSnapshot else {
+//                    print("Document is not a document")
+//                    waitPlease = false
+//                    return
+//                }
+//                guard let data = document.data() else {
+//                    print("data is not data")
+//                    waitPlease = false
+//                    return
+//                }
+//                
+//                res["id"] = (data["id"] as! String)
+//                res["chatID"] = (data["chatID"] as! String)
+//                res["sender"] = (data["sender"] as? String)
+//                res["timeSince1970"] = (data["timeSince1970"] as! String)
+//                res["date"] = (data["date"] as! String) // dd.mm.yyyy
+//                res["dayTime"] = (data["dayTime"] as! String)
+//                res["body"] = (data["body"] as! String)
+//                res["didEdit"] = (data["didEdit"] as! String)
+//                res["whoHasRead"] = (data["whoHasRead"] as! [String])
+//                res["image"] = (data["image"] as! String)
+//                print(res)
+//                isEmpty = false
+//                
+//            }
+//            return nil
+//        }
+//        return nil
+//    }
     
     
     func getMessageInfo(id: String, completion:  @escaping (Result<Dictionary<String, Any>, Error>) -> Void) async -> Void {
@@ -940,7 +938,6 @@ class FSManager: ObservableObject {
         }
     }
     
-//    func getChatName(id: String) -> Void {}
 
     func getChatInfo(of: ChatInfoProperties.RawValue, by id: String, completion: @escaping (Result<Dictionary<String, Any>, Error>) -> Void) async -> Void {
         if id != "" {

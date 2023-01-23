@@ -33,7 +33,7 @@ struct DataEditorInputBubble: View {
                 .disableAutocorrection(true)
                 .focused($isTFEditing)
                 .onChange(of: isTFEditing) { isFocused in
-                    if self.text == "" {
+                    if self.text.isEmpty {
                         editHandler = false
                     }
                     else if !isFocused {

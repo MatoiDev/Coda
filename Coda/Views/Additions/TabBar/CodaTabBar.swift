@@ -11,11 +11,9 @@ struct CodaTabBar: View {
 
     @State var selectedTab: Tab = .home
     @State var circleColor: Color = .cyan
+    @State private var hideTabBar: Bool = false
+    
     @AppStorage("LoginUserID") var loginUserID: String = ""
-    @AppStorage("HideTabBar") var tabBarIsHidden: Bool = false
-    
-    @StateObject var appConfig: AppConfiguration = AppConfiguration()
-    
     
 
     var body: some View {
@@ -25,14 +23,17 @@ struct CodaTabBar: View {
                 case .home:
                     HomeView()
                 case .search:
-                    SearchView()
+                    ExploreView()
                 case .chat:
-                    ChatsTableView(with: self.loginUserID, config: self.appConfig)
+                    ChatsTableView(with: self.loginUserID)
                 case .profile:
                     // Вход в на свою страницу профиля по своему id
                     ProfileView(with: self.loginUserID)
                 }
             }
+            .onPreferenceChange(TabBarAppearencePreference.self, perform: { observableValue in
+                self.hideTabBar = observableValue
+            })
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
             HStack {
                 ForEach(tabItems) { item in
@@ -92,7 +93,7 @@ struct CodaTabBar: View {
                         }.padding(.horizontal, 8)
                         
                     }
-                    .offset(y: self.appConfig.tabBarIsHidden ? 255 : 0)
+                    .offset(y: self.hideTabBar ? 255 : 0)
                     .frame(maxHeight: .infinity, alignment: .bottom)
                     
                     .ignoresSafeArea()

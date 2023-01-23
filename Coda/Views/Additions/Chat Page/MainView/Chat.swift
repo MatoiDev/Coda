@@ -14,8 +14,9 @@ struct Chat: View {
     // To scroll to bottom always
     @Namespace var bottomID
     
-    // Hiding tabbar
-    @ObservedObject var appConfig: AppConfiguration
+    // For hiding TabBar
+    @State var hideTabBar: Bool = false
+    
     // For creating new Message
     @State var messageText: String = ""
     
@@ -55,10 +56,9 @@ struct Chat: View {
     
     
 
-    init(with id: String, config: AppConfiguration) {
+    init(with id: String) {
         
         self.id = id
-        self.appConfig = config
         self.tryToGetMessages()
 
     }
@@ -309,89 +309,104 @@ struct Chat: View {
                     }
                     HStack {
                         // MARK: - Pin\change image Button
-                        Button {
-                            self.pinImage.toggle()
-                        } label: {
-                            Image(systemName: self.editMessage ? self.messageImage != UIImage() ? "arrow.triangle.2.circlepath.circle.fill" : "paperclip.circle.fill" : self.pinnedPhoto == nil ? "paperclip.circle.fill" : "arrow.triangle.2.circlepath.circle.fill")
-                                .resizable()
-                                .symbolRenderingMode(.hierarchical)
-                                .foregroundColor(.secondary)
-                                .frame(width: 35, height: 35)
+                    
+                        VStack {
+                            Spacer()
+                            Button {
+                                self.pinImage.toggle()
+                            } label: {
+                                Image(systemName: self.editMessage ?
+                                      self.messageImage != UIImage() ? "arrow.triangle.2.circlepath.circle.fill" : "paperclip.circle.fill" :
+                                        self.pinnedPhoto == nil ? "paperclip.circle.fill" : "arrow.triangle.2.circlepath.circle.fill")
+                                    .resizable()
+                                    .symbolRenderingMode(.hierarchical)
+                                    .foregroundColor(.secondary)
+                                    .frame(width: 35, height: 35)
+                            }
                         }
                         
                         ChatMessageTyper(messageText: self.$messageText)
                         // MARK: - Edit message mode
                         if self.editMessage {
                             // MARK: - Edit message button
-                            Button {
-//                                guard self.messageText != "" || self.messageImage != UIImage() else { return }
-                                self.fsmanager.editMessage(self.currentEditMessageID, body: self.messageText, image: self.messageImage == UIImage() ? nil : self.messageImage, messageImageID: self.imageOptionalID, imageDidChange: self.imageDidChange) { res in
-                                    switch res {
-                                    case .success(_):
-                                        withAnimation {
-                                            self.editMessage = false
-                                            self.imageDidChange = false
-                                            
-                                            self.messageText = ""
-                                            self.currentEditMessageID = ""
-                                            self.imageOptionalID = ""
-                                            
-                                            self.messageImage = UIImage()
-                                            
-                                            
-                                            self.editBarText = nil
-                                            self.pinnedPhoto = nil
+                            VStack {
+                                Spacer()
+                                Button {
+    //                                guard self.messageText != "" || self.messageImage != UIImage() else { return }
+                                    self.fsmanager.editMessage(self.currentEditMessageID, body: self.messageText, image: self.messageImage == UIImage() ? nil : self.messageImage, messageImageID: self.imageOptionalID, imageDidChange: self.imageDidChange) { res in
+                                        switch res {
+                                        case .success(_):
+                                            withAnimation {
+                                                self.editMessage = false
+                                                self.imageDidChange = false
+                                                
+                                                self.messageText = ""
+                                                self.currentEditMessageID = ""
+                                                self.imageOptionalID = ""
+                                                
+                                                self.messageImage = UIImage()
+                                                
+                                                
+                                                self.editBarText = nil
+                                                self.pinnedPhoto = nil
+                                            }
+                                        case .failure(let err):
+                                            print("___ need an error handler: \(err)")
                                         }
-                                    case .failure(let err):
-                                        print("___ need an error handler: \(err)")
+                                        
                                     }
-                                    
+                                } label: {
+                                    Image(systemName: "pencil.circle.fill")
+                                        .resizable()
+                                        .symbolRenderingMode(.hierarchical)
+                                        .foregroundColor(Color("Register2"))
+                                        .frame(width: 35, height: 35)
                                 }
-                            } label: {
-                                Image(systemName: "pencil.circle.fill")
-                                    .resizable()
-                                    .symbolRenderingMode(.hierarchical)
-                                    .foregroundColor(Color("Register2"))
-                                    .frame(width: 35, height: 35)
+                                .disabled(self.messageText.isEmpty && self.messageImage == UIImage())
+                                
                             }
                         } else {
                             // MARK: - Send message button
-                            Button {
-                                self.fsmanager.sentMessage(chat: self.id, body: self.messageText, image: self.pinnedPhoto) { result in
-                                    switch result {
-                                    case .success(let success):
-                                        print(success)
-                                        
-                                        withAnimation {
-                                            self.editMessage = false
-                                            self.imageDidChange = false
+                            VStack {
+                                Spacer()
+                                Button {
+                                    self.fsmanager.sentMessage(chat: self.id, body: self.messageText, image: self.pinnedPhoto) { result in
+                                        switch result {
+                                        case .success(let success):
+                                            print(success)
                                             
-                                            self.messageText = ""
-                                            self.currentEditMessageID = ""
-                                            self.imageOptionalID = ""
+                                            withAnimation {
+                                                self.editMessage = false
+                                                self.imageDidChange = false
+                                                
+                                                self.messageText = ""
+                                                self.currentEditMessageID = ""
+                                                self.imageOptionalID = ""
+                                                
+                                                self.messageImage = UIImage()
+                                                
+                                                self.editBarText = nil
+                                                self.pinnedPhoto = nil
+                                            }
                                             
-                                            self.messageImage = UIImage()
-                                            
-                                            self.editBarText = nil
-                                            self.pinnedPhoto = nil
+                                        case .failure(let failure):
+                                            print(failure)
                                         }
-                                        
-                                    case .failure(let failure):
-                                        print(failure)
                                     }
-                                }
-                                
-                            } label: {
-                                Image(systemName: "paperplane.circle.fill")
-                                    .resizable()
-                                    .symbolRenderingMode(.hierarchical)
-                                    .foregroundColor(Color("Register2"))
-                                    .frame(width: 35, height: 35)
+                                    
+                                } label: {
+                                    Image(systemName: "paperplane.circle.fill")
+                                        .resizable()
+                                        .symbolRenderingMode(.hierarchical)
+                                        .foregroundColor(Color("Register2"))
+                                        .frame(width: 35, height: 35)
+                                }.disabled(self.messageText.isEmpty && self.pinnedPhoto == nil)
                             }
                         }
                         
                         
-                    }
+                    }.fixedSize(horizontal: false, vertical: true)
+                            .padding(.top, 4)
                     
                 }.padding(.horizontal)
                         .padding(.vertical, 4)
@@ -429,7 +444,7 @@ struct Chat: View {
             })
 
             .onAppear {
-                self.appConfig.hideTabBar()
+                self.hideTabBar = true
 
             }
             .navigationBarBackButtonHidden(true)
@@ -469,7 +484,7 @@ struct Chat: View {
                 }
             }
             .navigationBarItems(leading: Button(action : {
-                self.appConfig.showTabBar()
+                self.hideTabBar = false
                 self.mode.wrappedValue.dismiss()
             }){
                 HStack {
@@ -539,6 +554,9 @@ struct Chat: View {
                 }
             }
         }
+        .publishOnTabBarAppearence(self.hideTabBar)
+//        .preference(key: TabBarAppearencePreference.self, value: self.hideTabBar)
+    
         .fullScreenCover(isPresented: self.$showProfile) {
             if let interlocutorID = self.interlocutorID {
                 ProfileView(with: interlocutorID)

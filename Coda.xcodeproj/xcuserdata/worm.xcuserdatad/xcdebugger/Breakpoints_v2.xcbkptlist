@@ -297,8 +297,8 @@
             filePath = "Coda/Views/Additions/Chat Page/MainView/ChatCell.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "177"
-            endingLineNumber = "177"
+            startingLineNumber = "178"
+            endingLineNumber = "178"
             landmarkName = "body"
             landmarkType = "24">
             <Locations>
@@ -347,8 +347,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "872"
             endingLineNumber = "872"
-            landmarkName = "getMessageInfoNonAsync(id:)"
-            landmarkType = "7">
+            landmarkName = "FSManager"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -361,8 +361,8 @@
             filePath = "Coda/Models/FSManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "936"
-            endingLineNumber = "936"
+            startingLineNumber = "934"
+            endingLineNumber = "934"
             landmarkName = "getMessageInfo(id:completion:)"
             landmarkType = "7">
          </BreakpointContent>

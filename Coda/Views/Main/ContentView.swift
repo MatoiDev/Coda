@@ -15,7 +15,7 @@ struct ContentView: View {
     
     var body: some View {
         Group {
-            if userID == "" {
+            if userID.isEmpty {
                 RegistrationPageMain()
             } else {
                 AppView()

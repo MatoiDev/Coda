@@ -23,3 +23,18 @@ import SwiftUI
         objectWillChange.send()
     }
 }
+
+
+struct TabBarAppearencePreference: PreferenceKey {
+    static var defaultValue: Bool = false
+    static func reduce(value: inout Bool, nextValue: () -> Bool) {
+        value = nextValue()
+    }
+}
+
+
+extension View {
+    func publishOnTabBarAppearence(_ value: Bool) -> some View {
+        preference(key: TabBarAppearencePreference.self, value: value)
+    }
+}
