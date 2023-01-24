@@ -11,6 +11,7 @@ struct CodaTabBar: View {
 
     @State var selectedTab: Tab = .home
     @State var circleColor: Color = .cyan
+    
     @State private var hideTabBar: Bool = false
     
     @AppStorage("LoginUserID") var loginUserID: String = ""
@@ -32,6 +33,7 @@ struct CodaTabBar: View {
                 }
             }
             .onPreferenceChange(TabBarAppearencePreference.self, perform: { observableValue in
+                print("observableValue: \(observableValue)")
                 self.hideTabBar = observableValue
             })
                     .frame(maxWidth: .infinity, maxHeight: .infinity)

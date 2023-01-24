@@ -144,8 +144,8 @@ class NewsAPI: APIProtocol {
 
     // Асинхронная выборка на основе URL с сообщениями об ошибках
     func fetch<T: Decodable>(_ url: URL) -> AnyPublisher<T, Error> {
-        URLSession.shared.dataTaskPublisher(for: url)             // 1
-                .tryMap { (data, response) -> Data in                     // 2
+        URLSession.shared.dataTaskPublisher(for: url)             
+                .tryMap { (data, response) -> Data in
                     guard let httpResponse = response as? HTTPURLResponse,
                           200...299 ~= httpResponse.statusCode else {
                         throw NewsError.responseError(

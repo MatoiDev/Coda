@@ -15,7 +15,7 @@ struct Chat: View {
     @Namespace var bottomID
     
     // For hiding TabBar
-    @State var hideTabBar: Bool = false
+    @State var hideTabBar: Bool = true
     
     // For creating new Message
     @State var messageText: String = ""
@@ -60,6 +60,7 @@ struct Chat: View {
         
         self.id = id
         self.tryToGetMessages()
+        self.hideTabBar = true
 
     }
     

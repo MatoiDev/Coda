@@ -362,10 +362,6 @@ struct PostView<Logo: View>: View {
                                         self.cream += 1
                                         self.fsmanager.like(profilePost: self.postID, user: self.loginUserID, owner: self.ownerID!)
                                     }
-//                                    self.fsmanager.getUsersData(withID: self.ownerID!)
-//                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
-//                                        self.fsmanager.getUsersData(withID: self.ownerID!)
-//                                    })
                                     
                                 } label: {
                                     
@@ -389,8 +385,6 @@ struct PostView<Logo: View>: View {
         .frame(maxHeight: .infinity)
         .frame(maxWidth: UIScreen.main.bounds.width - 30)
         .background(Color.clear)
-        //        .background(.ultraThinMaterial)
-        //        .background(Color("AdditionBackground"))
         .clipShape(RoundedRectangle(cornerRadius: 15))
         .onAppear {
             Vibro.prepareEngine(engine: &self.engine)
@@ -405,9 +399,3 @@ struct PostView<Logo: View>: View {
         }
     }
 }
-
-//struct PostView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        PostView(with: "dftHy1t938IXyvKbCq91rv9qPCfI7Vwd8Dl6g9f4RgueQhiazSbbKmwKLYOMraHB")
-//    }
-//}

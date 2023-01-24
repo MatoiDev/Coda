@@ -21,6 +21,21 @@ struct Article: Codable, Identifiable {
     let url: String?
 }
 
+extension Article {
+    static let SOLID = Article(title: "Test article",
+                               description: "testing..",
+                               author: "Matoi",
+                               urlToImage: nil,
+                               publishedAt: nil,
+                               source: Source(id: nil,
+                                              name: nil,
+                                              description: nil,
+                                              country: nil,
+                                              category: nil,
+                                              url: nil),
+                               url: "https://google.com")
+}
+
 struct SourcesResponse: Codable {
     let status: String
     let sources: [Source]
