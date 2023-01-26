@@ -12,10 +12,7 @@ import Cachy
 
 struct ChatsTableView: View {
 
-    
-    var userID: String
-    
-    
+    private var userID: String
     private let fsmanager : FSManager = FSManager()
     
     
@@ -23,8 +20,8 @@ struct ChatsTableView: View {
     @State private var multiSelection = Set<String>()
     @State private var chatName: String?
     
-    
-    
+    // For hiding TabBar
+    @State var hideTabBar: Bool = false
     
     
     
@@ -44,13 +41,7 @@ struct ChatsTableView: View {
                 List(selection: self.$multiSelection) {
                     ForEach(0..<chats.count, id: \.self) { ind in
                         NavigationLink {
-                            Chat(with: chats[ind])
-//                            if let chatName: String = Cachy.shared.object(forKey: "name:\(chats[ind])" as NSString) as? String {
-//                                Chat(with: chats[ind], chatName: chatName, config: self.appConfig)
-//                            } else {
-//                                Chat(with: chats[ind], chatName: "Chat", config: self.appConfig)
-//                            }
-                           
+                            Chat(with: chats[ind], tabbarObserver: self.$hideTabBar)
                         } label: {
                             ChatCell(with: chats[ind])
                         }
@@ -94,7 +85,9 @@ struct ChatsTableView: View {
                     .navigationBarHidden(false)
             }
 
-        }.background(Color.black)
+        }
+        .publishOnTabBarAppearence(self.hideTabBar)
+        .background(Color.black)
         .background(.ultraThinMaterial)
         .task {
             if self.chatsIDs == nil {
@@ -115,9 +108,3 @@ struct ChatsTableView: View {
         }
     }
 }
-//
-//struct ChatsTableView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        ChatsTableView(with: "qDSsjK8T5JNRcTYtDVMXT4fYqcj1")
-//    }
-//}

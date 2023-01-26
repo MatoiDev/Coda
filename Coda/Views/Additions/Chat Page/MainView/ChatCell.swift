@@ -24,7 +24,6 @@ struct ChatCell: View {
     
     var id: String
     
-    
     @State private var userName: String?
     @State private var previewMessageID: String?
     @State private var lastMessage: String?

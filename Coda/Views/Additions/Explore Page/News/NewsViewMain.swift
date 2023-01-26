@@ -29,12 +29,14 @@ struct NewsViewMain: View {
                         let article: Article = self.ArticlesVM.articles[articleIndex]
                         // MARK: - Article post view
                         ArticlePostView(of: article, selected: self.$selectedArticle, tabBarObserver: self.$hideTabBar)
+                            .buttonStyle(PlainButtonStyle())
                         .listRowBackground(
                             RoundedRectangle(cornerRadius: 20)
                                 .background(.clear)
                                 .foregroundColor(Color("AdditionBackground"))
                                 .padding(EdgeInsets(top: 2, leading: 10, bottom: 2, trailing: 10))
                         )
+                        
                         .listRowSeparator(.hidden)
                         .listRowSeparatorTint(Color.clear)
                     }
@@ -50,7 +52,7 @@ struct NewsViewMain: View {
                     UITableView.appearance().showsVerticalScrollIndicator = false
                     UITableView.appearance().separatorColor = UIColor.clear
                 }
-        }
+        }.navigationViewStyle(.stack)
         .publishOnTabBarAppearence(self.hideTabBar)
     }
 }

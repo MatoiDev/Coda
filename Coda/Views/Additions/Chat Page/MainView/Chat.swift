@@ -14,9 +14,6 @@ struct Chat: View {
     // To scroll to bottom always
     @Namespace var bottomID
     
-    // For hiding TabBar
-    @State var hideTabBar: Bool = true
-    
     // For creating new Message
     @State var messageText: String = ""
     
@@ -51,16 +48,14 @@ struct Chat: View {
     @State private var members: Array<String>?
     @State private var interlocutorID: String?
     
-    
-    
-    
-    
+    // For hiding TabBar
+    @Binding var hideTabBar: Bool
 
-    init(with id: String) {
+    init(with id: String, tabbarObserver: Binding<Bool>) {
         
         self.id = id
+        self._hideTabBar = tabbarObserver
         self.tryToGetMessages()
-        self.hideTabBar = true
 
     }
     
@@ -130,7 +125,8 @@ struct Chat: View {
                                                 }
                                                 if body != "" {
                                                     HStack {
-                                                        Text(body).font(.custom("RobotoMono-SemiBold", size: 15))
+                                                        Text(LocalizedStringKey(body))
+                                                            .font(.custom("RobotoMono-SemiBold", size: 15))
                                                             .padding(.all, 10)
                                                             .padding(.leading, 4)
                                                             .foregroundColor(Color.white)
@@ -158,7 +154,7 @@ struct Chat: View {
                                                 }
                                                     if body != "" {
                                                         HStack {
-                                                        Text(body)
+                                                            Text(LocalizedStringKey(body))
                                                             .font(.custom("RobotoMono-SemiBold", size: 15))
                                                             .padding(.all, 10)
                                                             .foregroundColor(Color.white)
@@ -555,8 +551,8 @@ struct Chat: View {
                 }
             }
         }
-        .publishOnTabBarAppearence(self.hideTabBar)
-//        .preference(key: TabBarAppearencePreference.self, value: self.hideTabBar)
+//        .publishOnTabBarAppearence(self.hideTabBar)
+
     
         .fullScreenCover(isPresented: self.$showProfile) {
             if let interlocutorID = self.interlocutorID {

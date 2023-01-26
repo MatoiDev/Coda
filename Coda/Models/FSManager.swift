@@ -280,6 +280,24 @@ class FSManager: ObservableObject {
     
     
     // MARK: - Create functions
+    
+    func serveNewsPost(withID id: String, competion: @escaping (Result<String, Error>) -> Void) -> Void {
+        self.db.collection("NewsPosts").document(id).setData([
+            "id": id,
+            "upvotes": [],
+            "downvotes": [],
+            "comments": []
+            
+        ]) { error in
+            if let error = error {
+                competion(.failure(error))
+            } else {
+                competion(.success(""))
+            }
+            
+        }
+    }
+    
     func createPost(owner userID: String, text: String, image: UIImage?=nil, completion: @escaping (Result<String, Error>) -> Void) {
         
         let id = FSManager.generateProjectID()
@@ -517,6 +535,17 @@ class FSManager: ObservableObject {
         }
     }
     
+    func newsPostIsServed(id: String, completion: @escaping (Bool) -> Void) {
+        let docRef = db.collection("NewsPosts").document(id)
+        docRef.getDocument { (doc, err) in
+            if let doc = doc, doc.exists {
+                completion(true)
+            } else {
+                completion(false)
+            }
+        }
+    }
+    
     
     
     // MARK: -  Deploy project on FireBase storage
@@ -625,6 +654,21 @@ class FSManager: ObservableObject {
         }
     }
     
+    func unlike(newsPost postID: String, user userID: String) {
+        let postsRef = db.collection("NewsPosts").document(postID)
+        
+        postsRef.updateData([
+            "upvotes": FieldValue.arrayRemove([userID]),
+            "downvotes": FieldValue.arrayUnion([userID])
+        ]) { err in
+            if let err = err {
+                print(err)
+            } else {
+                print("Success")
+            }
+        }
+    }
+    
     func like(profilePost postID: String, user userID: String, owner ownerID: String) {
         let postsRef = db.collection("Posts").document(postID)
         
@@ -642,10 +686,25 @@ class FSManager: ObservableObject {
                     "reputation": FieldValue.increment(Int64(1))
                 ]) { err in
                     if let err = err {
-                        print("Пиздаааааааа \(err)")
+                        print("ERROR: \(err)")
                     }
                     
                 }
+            }
+        }
+    }
+    
+    func like(newsPost postID: String, user userID: String) {
+        let postsRef = db.collection("NewsPosts").document(postID)
+        
+        postsRef.updateData([
+            "upvotes": FieldValue.arrayUnion([userID]),
+            "downvotes": FieldValue.arrayRemove([userID])
+        ]) { err in
+            if let err = err {
+                print(err)
+            } else {
+                print("Success")
             }
         }
     }
@@ -906,11 +965,36 @@ class FSManager: ObservableObject {
 //    }
     
     
+    func getNewsPostInfo(id: String, completion: @escaping (Result<Dictionary<String, Any>, Error>) -> Void) -> Void {
+        if id != "" {
+            var res: Dictionary<String, Any> = Dictionary<String, Any>()
+            self.db.collection("NewsPosts").document(id).addSnapshotListener { documentSnapshot, error in
+                guard let document = documentSnapshot else {
+                    completion(.failure("Error fetching document: \(error!.localizedDescription)"))
+                    return
+                }
+                guard let data = document.data() else {
+                    completion(.failure("Document data was empty."))
+                  return
+                }
+                res["id"] = (data["id"] as! String)
+                res["upvotes"] = (data["upvotes"] as! [String])
+                res["downvotes"] = (data["downvotes"] as! [String])
+                res["comments"] = (data["comments"] as! [String])
+                
+                completion(.success(res))
+            }
+        } else {
+            completion(.failure("The document does not exists"))
+        }
+    }
+    
+    
     func getMessageInfo(id: String, completion:  @escaping (Result<Dictionary<String, Any>, Error>) -> Void) async -> Void {
         print(id)
         if id != "" {
             var res: Dictionary<String, Any> = Dictionary<String, Any>()
-            db.collection("Messages").document(id) .addSnapshotListener { documentSnapshot, error in
+            self.db.collection("Messages").document(id) .addSnapshotListener { documentSnapshot, error in
                 guard let document = documentSnapshot else {
                     completion(.failure("Error fetching document: \(error!)"))
                   return

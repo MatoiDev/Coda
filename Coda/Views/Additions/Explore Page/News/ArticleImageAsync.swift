@@ -7,7 +7,7 @@ import SwiftUI
 struct ArticleImageAsync: View {
 
     @ObservedObject var imageLoader: NewsImageLoader
-    @State private var animate = false
+    @State private var animateColor: CGFloat = 20
 
     var body: some View {
         Group {
@@ -20,26 +20,16 @@ struct ArticleImageAsync: View {
                     } else {
                         if imageLoader.url != nil {
                             Rectangle()
-                                    .foregroundColor(.gray)
+                                .foregroundColor(Color(uiColor: UIColor(red: self.animateColor, green: self.animateColor, blue: self.animateColor, alpha: 1)))
                                     .frame(width: (UIScreen.main.bounds.width) * 0.75,
                                             height: UIScreen.main.bounds.width  * 0.6,
                                             alignment: .center)
                                     .scaledToFit()
-                                    .overlay(
-                                            HStack {
-                                                ProgressView()
-                                                Text("Loading...")
-                                                        .font(.footnote)
-                                                        .foregroundColor(.white)
-                                                        .rotationEffect(Angle(degrees: animate ? 60 : -60))
-                                                        .onAppear {
-                                                            withAnimation(Animation.easeInOut(duration: 1.0).repeatForever()) {
-                                                                self.animate = true
-                                                            }
-                                                        }
-                                            }
-
-                                    )
+                                    .onAppear {
+                                        withAnimation(Animation.easeInOut(duration: 1.0).repeatForever()) {
+                                            self.animateColor = self.animateColor == 20 ? 50 : 20
+                                        }
+                                    }
                         } else {
                             EmptyView()
                         }

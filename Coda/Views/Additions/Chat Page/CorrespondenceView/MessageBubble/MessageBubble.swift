@@ -137,7 +137,7 @@ struct MessageBubble<Content>: View where Content: View {
                                 // MARK: - Message Body
                                     if messageBody != "" {
                                         HStack {
-                                            Text(messageBody)
+                                            Text(LocalizedStringKey(messageBody))
                                                 .font(.custom("RobotoMono-SemiBold", size: 15))
                                                 .padding(.all, 10)
                                                 .padding(.leading, self.direction == .left ? 4 : 0)
@@ -159,8 +159,8 @@ struct MessageBubble<Content>: View where Content: View {
                             }
                             
                         }
-                        
-                    }.background(direction == .left ? Color("BubbleMessageRecievedColor") : Color("BubbleMessageSentColor"))
+                        // MARK: - Bubble background color
+                    }.background(direction == .left ? Color("BubbleMessageRecievedColor") : Color("BubbleMessageSentColor2"))
                         .clipShape(ChatBubbleShape(direction: direction))
                         .onAppear {
                             if direction == .left {
