@@ -6,7 +6,8 @@ import Foundation
 import Combine
 
 struct APIConstants {
-    static let apiKey: String = "2cd60ff51c87439789f42a2c312fc56d"
+//    static let apiKey: String = "2cd60ff51c87439789f42a2c312fc56d"t
+    static let apiKey: String = "ad18028a33f94d0b9874ccce9efd22b3"
 
     static let jsonDecoder: JSONDecoder = {
         let jsonDecoder = JSONDecoder()

@@ -28,6 +28,7 @@ import SwiftUI
 struct TabBarAppearencePreference: PreferenceKey {
     static var defaultValue: Bool = false
     static func reduce(value: inout Bool, nextValue: () -> Bool) {
+        print(value, "->", nextValue())
         value = nextValue()
     }
 }

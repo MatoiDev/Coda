@@ -14,6 +14,7 @@ struct ArticlePostView: View {
     let article: Article
     
     @AppStorage("LoginUserID") var loginUserID: String = ""
+    @AppStorage("hideTabBar") var ASHideTabBar: Bool = false
     
     @State private var postRate: Int = 0
     
@@ -141,6 +142,10 @@ struct ArticlePostView: View {
                     Button {
                         self.selectedArticle = article
                         self.closeSafari = true
+                        DispatchQueue.main.async {
+                            self.hideTabBar = true
+                            self.ASHideTabBar = true
+                        }
                     } label: {
                         HStack {
                             VStack(alignment: .trailing) {
@@ -160,35 +165,32 @@ struct ArticlePostView: View {
             }
             
         }
-//        .overlay(
-//            NavigationLink(isActive: self.$closeSafari, destination: {
-//                SafariView(url: URL(string: self.selectedArticle.url!)!, viewDiactivator: self.$closeSafari)
-//                    .navigationBarHidden(true)
-//                    .navigationBarTitle(Text("Home"))
-//                    .onAppear(perform: {self.hideTabBar = true})
-//                    .onDisappear(perform: {self.hideTabBar = false})
-//                    .ignoresSafeArea(.all)
-//            }, label: {EmptyView()})
-//        )
         
         .padding(.horizontal, 2)
         
         // MARK: - Safari View
-        
-        .background(NavigationLink(isActive: self.$closeSafari, destination: {
+            
+        .fullScreenCover(isPresented: self.$closeSafari, content: {
             SafariView(url: URL(string: self.selectedArticle.url!)!, viewDiactivator: self.$closeSafari)
                 .navigationBarHidden(true)
                 .navigationBarTitle(Text("Home"))
                 .onAppear(perform: {self.hideTabBar = true})
                 .onDisappear(perform: {self.hideTabBar = false})
                 .ignoresSafeArea(.all)
-        }, label: {EmptyView()}).hidden())
+        })
+        // Also working
+//        .background(
+//
+//            NavigationLink(isActive: self.$closeSafari, destination: {
+//            SafariView(url: URL(string: self.selectedArticle.url!)!, viewDiactivator: self.$closeSafari)
+//                .navigationBarHidden(true)
+//                .navigationBarTitle(Text("Home"))
+//                .ignoresSafeArea(.all)
+//        }, label: {EmptyView()}).hidden())
         
         .task {
             self.image = NewsImageCacher.shared.loaderFor(article: article).image
-            print("______________________ \(self.article.url!.components(separatedBy: "/").last)")
             
-            print(self.article.url!, self.article.url!.components(separatedBy: "/"))
             if let id = self.article.url!.dropLast().components(separatedBy: "/").last, id != "" {
                 
                 self.fsmanager.newsPostIsServed(id: id) { exists in
@@ -240,6 +242,10 @@ struct ArticlePostView: View {
             Button {
                 self.selectedArticle = article
                 self.closeSafari = true
+                DispatchQueue.main.async {
+                    self.hideTabBar = true
+                }
+                
             } label: {
                 HStack {
                     Text("Follow")

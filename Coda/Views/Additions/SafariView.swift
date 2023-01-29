@@ -8,7 +8,9 @@
 import SwiftUI
 import SafariServices
 
-struct SafariView : UIViewControllerRepresentable {
+@MainActor struct SafariView : UIViewControllerRepresentable {
+    
+    @AppStorage("hideTabBar") var ASHideTabBar: Bool = false
     
     var url: URL
     @Binding var viewDiactivator: Bool
@@ -29,14 +31,16 @@ struct SafariView : UIViewControllerRepresentable {
     
     class Coordinator: NSObject, SFSafariViewControllerDelegate {
         @Binding var viewDiactivator: Bool
+        @AppStorage("hideTabBar") var ASHideTabBar: Bool = false
         
         init(_ viewDiactivator: Binding<Bool>) {
             self._viewDiactivator = viewDiactivator
         }
         
         func safariViewControllerDidFinish(_ controller: SFSafariViewController) {
-            print("Close")
-            self.viewDiactivator.toggle()
+//            print("Close")
+            self.ASHideTabBar = false
+            self.viewDiactivator = false
         }
     }
 }

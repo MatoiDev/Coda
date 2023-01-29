@@ -15,6 +15,7 @@ struct CodaTabBar: View {
     @State private var hideTabBar: Bool = false
     
     @AppStorage("LoginUserID") var loginUserID: String = ""
+    @AppStorage("hideTabBar") var ASHideTabBar: Bool = false
     
 
     var body: some View {
@@ -33,7 +34,7 @@ struct CodaTabBar: View {
                 }
             }
             .onPreferenceChange(TabBarAppearencePreference.self, perform: { observableValue in
-                print("observableValue: \(observableValue)")
+                
                 self.hideTabBar = observableValue
             })
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -95,7 +96,7 @@ struct CodaTabBar: View {
                         }.padding(.horizontal, 8)
                         
                     }
-                    .offset(y: self.hideTabBar ? 255 : 0)
+                    .offset(y: (self.hideTabBar || self.ASHideTabBar) ? 255 : 0)
                     .frame(maxHeight: .infinity, alignment: .bottom)
                     
                     .ignoresSafeArea()

@@ -71,6 +71,7 @@
 		956EEC4E29464865006C7895 /* PostCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 956EEC4D29464865006C7895 /* PostCreator.swift */; };
 		956EEC5029464A03006C7895 /* PostEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 956EEC4F29464A03006C7895 /* PostEditor.swift */; };
 		957B9B5229520CBE00BFA814 /* AppConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 957B9B5129520CBE00BFA814 /* AppConfiguration.swift */; };
+		957E89D92984824A00607AA5 /* PagerTabStripView in Frameworks */ = {isa = PBXBuildFile; productRef = 957E89D82984824A00607AA5 /* PagerTabStripView */; };
 		95810E84295CD4C400FA4D84 /* Cachy in Frameworks */ = {isa = PBXBuildFile; productRef = 95810E83295CD4C400FA4D84 /* Cachy */; };
 		95810E87295CD55000FA4D84 /* BottomSheet in Frameworks */ = {isa = PBXBuildFile; productRef = 95810E86295CD55000FA4D84 /* BottomSheet */; };
 		95810E89295CED9700FA4D84 /* ChatMessageTyper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95810E88295CED9700FA4D84 /* ChatMessageTyper.swift */; };
@@ -99,6 +100,8 @@
 		95E5ECA6297DDFE600C82946 /* ArticleImageAsync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95E5ECA4297DDFE600C82946 /* ArticleImageAsync.swift */; };
 		95E5ECA9297DE01000C82946 /* NewsViewMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95E5ECA8297DE01000C82946 /* NewsViewMain.swift */; };
 		95E5ECAB297DE2B100C82946 /* SafariView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95E5ECAA297DE2B100C82946 /* SafariView.swift */; };
+		95EE333129851FD80037F811 /* Pages in Frameworks */ = {isa = PBXBuildFile; productRef = 95EE333029851FD80037F811 /* Pages */; };
+		95EE3333298537FE0037F811 /* TrailingFullScreenCover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95EE3332298537FE0037F811 /* TrailingFullScreenCover.swift */; };
 		95F0FD8D295375E100648213 /* Vibro.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95F0FD8C295375E100648213 /* Vibro.swift */; };
 		95F1CD33290EDC61000A3080 /* AppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95F1CD32290EDC61000A3080 /* AppView.swift */; };
 		95F1CD36290EDC8D000A3080 /* CodaTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95F1CD35290EDC8D000A3080 /* CodaTabBar.swift */; };
@@ -192,6 +195,7 @@
 		95E5ECA4297DDFE600C82946 /* ArticleImageAsync.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArticleImageAsync.swift; sourceTree = "<group>"; };
 		95E5ECA8297DE01000C82946 /* NewsViewMain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsViewMain.swift; sourceTree = "<group>"; };
 		95E5ECAA297DE2B100C82946 /* SafariView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafariView.swift; sourceTree = "<group>"; };
+		95EE3332298537FE0037F811 /* TrailingFullScreenCover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrailingFullScreenCover.swift; sourceTree = "<group>"; };
 		95F0FD8C295375E100648213 /* Vibro.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vibro.swift; sourceTree = "<group>"; };
 		95F1CD32290EDC61000A3080 /* AppView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppView.swift; sourceTree = "<group>"; };
 		95F1CD35290EDC8D000A3080 /* CodaTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodaTabBar.swift; sourceTree = "<group>"; };
@@ -215,12 +219,14 @@
 				95810E84295CD4C400FA4D84 /* Cachy in Frameworks */,
 				95450D77295BAC7200B64C65 /* FirebaseAuth in Frameworks */,
 				95810E87295CD55000FA4D84 /* BottomSheet in Frameworks */,
+				957E89D92984824A00607AA5 /* PagerTabStripView in Frameworks */,
 				95450D85295BAC7200B64C65 /* FirebaseStorage in Frameworks */,
 				95F5CA47297B3CFC00532957 /* Kingfisher in Frameworks */,
 				95450D83295BAC7200B64C65 /* FirebaseFirestoreSwift in Frameworks */,
 				95450D7F295BAC7200B64C65 /* FirebaseFirestore in Frameworks */,
 				95F5A740296453B1009639FE /* Introspect in Frameworks */,
 				95450D75295BAC7200B64C65 /* FirebaseAnalytics in Frameworks */,
+				95EE333129851FD80037F811 /* Pages in Frameworks */,
 				95D814D1297C6DBC00BBAE02 /* MultilineTextField in Frameworks */,
 				95450D7B295BAC7200B64C65 /* FirebaseDatabase in Frameworks */,
 			);
@@ -529,6 +535,7 @@
 				9519B05029087C8E00504B03 /* Main */,
 				9595C473290834C3004726AD /* Additions */,
 				951367112909D59E00FD7C78 /* Components */,
+				95EE3332298537FE0037F811 /* TrailingFullScreenCover.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -692,6 +699,8 @@
 				95F5A73F296453B1009639FE /* Introspect */,
 				95F5CA46297B3CFC00532957 /* Kingfisher */,
 				95D814D0297C6DBC00BBAE02 /* MultilineTextField */,
+				957E89D82984824A00607AA5 /* PagerTabStripView */,
+				95EE333029851FD80037F811 /* Pages */,
 			);
 			productName = Coda;
 			productReference = 9595C45B2908343C004726AD /* Coda.app */;
@@ -729,6 +738,8 @@
 				95F5A73E296453B1009639FE /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */,
 				95F5CA45297B3CFC00532957 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				95D814CF297C6DBB00BBAE02 /* XCRemoteSwiftPackageReference "MultilineTextField" */,
+				957E89D72984824A00607AA5 /* XCRemoteSwiftPackageReference "PagerTabStripView" */,
+				95EE332F29851FD80037F811 /* XCRemoteSwiftPackageReference "Pages" */,
 			);
 			productRefGroup = 9595C45C2908343C004726AD /* Products */;
 			projectDirPath = "";
@@ -832,6 +843,7 @@
 				9595C45F2908343C004726AD /* CodaApp.swift in Sources */,
 				953E2DBD2982FB9900A4A82B /* VacationsView.swift in Sources */,
 				956EEC5029464A03006C7895 /* PostEditor.swift in Sources */,
+				95EE3333298537FE0037F811 /* TrailingFullScreenCover.swift in Sources */,
 				954ADF47291FBFFF001300EA /* CachedImageModel.swift in Sources */,
 				9519B05229087DBA00504B03 /* AuthentificationState.swift in Sources */,
 				951DBBF42910431700FAB2E3 /* PLanguages.swift in Sources */,
@@ -1066,6 +1078,14 @@
 				minimumVersion = 9.0.0;
 			};
 		};
+		957E89D72984824A00607AA5 /* XCRemoteSwiftPackageReference "PagerTabStripView" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/xmartlabs/PagerTabStripView";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.0.0;
+			};
+		};
 		95810E82295CD4C400FA4D84 /* XCRemoteSwiftPackageReference "CachyKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Sadmansamee/CachyKit";
@@ -1088,6 +1108,14 @@
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 1.0.0;
+			};
+		};
+		95EE332F29851FD80037F811 /* XCRemoteSwiftPackageReference "Pages" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/nachonavarro/Pages";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.1.5;
 			};
 		};
 		95F5A73E296453B1009639FE /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */ = {
@@ -1164,6 +1192,11 @@
 			package = 95450D73295BAC7200B64C65 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = "FirebaseStorageCombine-Community";
 		};
+		957E89D82984824A00607AA5 /* PagerTabStripView */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 957E89D72984824A00607AA5 /* XCRemoteSwiftPackageReference "PagerTabStripView" */;
+			productName = PagerTabStripView;
+		};
 		95810E83295CD4C400FA4D84 /* Cachy */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 95810E82295CD4C400FA4D84 /* XCRemoteSwiftPackageReference "CachyKit" */;
@@ -1178,6 +1211,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 95D814CF297C6DBB00BBAE02 /* XCRemoteSwiftPackageReference "MultilineTextField" */;
 			productName = MultilineTextField;
+		};
+		95EE333029851FD80037F811 /* Pages */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 95EE332F29851FD80037F811 /* XCRemoteSwiftPackageReference "Pages" */;
+			productName = Pages;
 		};
 		95F5A73F296453B1009639FE /* Introspect */ = {
 			isa = XCSwiftPackageProductDependency;
