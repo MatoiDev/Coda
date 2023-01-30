@@ -194,7 +194,7 @@ struct ArticlePostView: View {
             if let id = self.article.url!.dropLast().components(separatedBy: "/").last, id != "" {
                 
                 self.fsmanager.newsPostIsServed(id: id) { exists in
-                    print(id, "->", exists)
+//                    print(id, "->", exists)
                     if exists {
                         print("Document does exists")
                         self.fsmanager.getNewsPostInfo(id: id) { result in

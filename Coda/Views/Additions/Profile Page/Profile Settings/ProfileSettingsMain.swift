@@ -159,7 +159,7 @@ struct ProfileSettingsMain: View {
                     }
                     
                     // MARK: - Profile info
-                    Section(header: Text("Profile").foregroundColor(.cyan).font(.custom("RobotoMono-SemiBold", size: 13)),
+                    Section(header: Text("Profile").foregroundColor(.cyan).font(.custom("RobotoMono-SemiBold", size: 15)),
                             footer: Text("Enter your new username, first name, last name, or edit a profile photo.")
                         .font(.custom("RobotoMono-SemiBold", size: 11))
                         .lineLimit(10)
@@ -181,6 +181,7 @@ struct ProfileSettingsMain: View {
                                 self.lastName = self.userLastName
                             }
                     }
+                    .textCase(nil)
                     .textContentType(.name)
                     .keyboardType(.default)
                     .autocapitalization(.none)
@@ -211,7 +212,7 @@ struct ProfileSettingsMain: View {
                     
                     // MARK: - Projects
                     
-                    Section(header: Text("Pinned projects").foregroundColor(.cyan).font(.custom("RobotoMono-SemiBold", size: 13))) {
+                    Section(header: Text("Pinned Projects").foregroundColor(.cyan).font(.custom("RobotoMono-SemiBold", size: 15))) {
                         
                         if self.projects.count > 0 {
                             ForEach(0..<self.projects.count, id: \.self) { ind in
@@ -251,6 +252,7 @@ struct ProfileSettingsMain: View {
                         
                         
                     }
+                     .textCase(nil)
                      .lineLimit(1)
                      .minimumScaleFactor(1)
                      .font(.custom("RobotoMono-SemiBold", size: 16))
