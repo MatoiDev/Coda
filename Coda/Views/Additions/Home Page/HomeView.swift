@@ -52,19 +52,22 @@ struct HomeView: View {
             List {
                 Section {
                     HomeViewActionCell(title: "New Project", image: "CPL42") {
-                        Text("Create new project view")
+                        Text("Here is Project constructor")
                     }
                     HomeViewActionCell(title: "New Idea", image: "CPL43") {
-                        Text("Create new Idea view")
+                        Text("Here is Idea constructor")
                     }
-                    HomeViewActionCell(title: "New Announcement", image: "CPL44") {
-                        Text("Create new Announcement view")
+                    HomeViewActionCell(title: "Find Team", image: "CPL44") {
+                        Text("Here is Team request constructor")
                     }
                     HomeViewActionCell(title: "New Vacation", image: "CPL45") {
-                        Text("Create new Vacation view")
+                        Text("Here is Vacation constructor")
+                    }
+                    HomeViewActionCell(title: "Create a resume", image: "CPL47") {
+                        Text("Here is Resume constructor")
                     }
                     HomeViewActionCell(title: "New Freelance order", image: "CPL46") {
-                        Text("Create new Freelance order view")
+                        Text("Here is Freelance Order constructor")
                     }
                 } header: {
                     Text("New Discussion")
@@ -77,19 +80,22 @@ struct HomeView: View {
                 
                 Section {
                     HomeViewActionCell(title: "New Project", image: "CPL42") {
-                        Text("Create new project view")
+                        Text("Here is Project constructor")
                     }
                     HomeViewActionCell(title: "New Idea", image: "CPL43") {
-                        Text("Create new Idea view")
+                        Text("Here is Idea constructor")
                     }
-                    HomeViewActionCell(title: "New Announcement", image: "CPL44") {
-                        Text("Create new Announcement view")
+                    HomeViewActionCell(title: "Find Team", image: "CPL44") {
+                        Text("Here is Team request constructor")
                     }
                     HomeViewActionCell(title: "New Vacation", image: "CPL45") {
-                        Text("Create new Vacation view")
+                        Text("Here is Vacation constructor")
+                    }
+                    HomeViewActionCell(title: "Create a resume", image: "CPL47") {
+                        Text("Here is Resume constructor")
                     }
                     HomeViewActionCell(title: "New Freelance order", image: "CPL46") {
-                        Text("Create new Freelance order view")
+                        Text("Here is Freelance Order constructor")
                     }
                 } header: {
                     HStack {
@@ -107,19 +113,22 @@ struct HomeView: View {
                 
                 Section {
                     HomeViewActionCell(title: "New Project", image: "CPL42") {
-                        Text("Create new project view")
+                        Text("Here is Project constructor")
                     }
                     HomeViewActionCell(title: "New Idea", image: "CPL43") {
-                        Text("Create new Idea view")
+                        Text("Here is Idea constructor")
                     }
-                    HomeViewActionCell(title: "New Announcement", image: "CPL44") {
-                        Text("Create new Announcement view")
+                    HomeViewActionCell(title: "Find Team", image: "CPL44") {
+                        Text("Here is Team request constructor")
                     }
                     HomeViewActionCell(title: "New Vacation", image: "CPL45") {
-                        Text("Create new Vacation view")
+                        Text("Here is Vacation constructor")
+                    }
+                    HomeViewActionCell(title: "Create a resume", image: "CPL47") {
+                        Text("Here is Resume constructor")
                     }
                     HomeViewActionCell(title: "New Freelance order", image: "CPL46") {
-                        Text("Create new Freelance order view")
+                        Text("Here is Freelance Order constructor")
                     }
                 } header: {
                     HStack {
@@ -134,7 +143,7 @@ struct HomeView: View {
                 .listRowInsets(EdgeInsets.init(top: 0, leading: 0, bottom: 0, trailing: 0))
                 
                 Text("")
-//                    .padding()
+
                     .listRowBackground(Color.clear)
             }.navigationBarTitle("Home")
         }).edgesIgnoringSafeArea(.top)
