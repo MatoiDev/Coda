@@ -44,6 +44,7 @@ extension View {
 struct HomeView: View {
     
     @State private var searchResult: String = ""
+    
     var body: some View {
         SearchNavigation(text: self.$searchResult,
                          search: { print("Search") },
@@ -51,92 +52,27 @@ struct HomeView: View {
                          content: {
             List {
                 Section {
-                    HomeViewActionCell(title: "New Project", image: "CPL42") {
-                        Text("Here is Project constructor")
+                    HomeViewActionCell(title: "New Project", image: "HomeViewProjectIcon") {
+                        ProjectConstructorMain()
                     }
-                    HomeViewActionCell(title: "New Idea", image: "CPL43") {
+                    HomeViewActionCell(title: "New Idea", image: "HomeViewIdeaIcon") {
                         Text("Here is Idea constructor")
                     }
-                    HomeViewActionCell(title: "Find Team", image: "CPL44") {
+                    HomeViewActionCell(title: "Find Team", image: "HomeViewTeamIcon") {
                         Text("Here is Team request constructor")
                     }
-                    HomeViewActionCell(title: "New Vacation", image: "CPL45") {
+                    HomeViewActionCell(title: "New Vacation", image: "HomeViewVacationIcon") {
                         Text("Here is Vacation constructor")
                     }
-                    HomeViewActionCell(title: "Create a resume", image: "CPL47") {
+                    HomeViewActionCell(title: "Create Resume", image: "HomeViewResumeIcon") {
                         Text("Here is Resume constructor")
                     }
-                    HomeViewActionCell(title: "New Freelance order", image: "CPL46") {
-                        Text("Here is Freelance Order constructor")
+                    HomeViewActionCell(title: "Freelance", image: "HomeViewFreelanceIcon") {
+                        FreelanceConstructorCrossroadView()
                     }
                 } header: {
                     Text("New Discussion")
                         .uppercasedListHeader()
-                        .padding(.bottom, 8)
-                }
-                .textCase(nil)
-                .listRowInsets(EdgeInsets.init(top: 0, leading: 0, bottom: 0, trailing: 0))
-                
-                
-                Section {
-                    HomeViewActionCell(title: "New Project", image: "CPL42") {
-                        Text("Here is Project constructor")
-                    }
-                    HomeViewActionCell(title: "New Idea", image: "CPL43") {
-                        Text("Here is Idea constructor")
-                    }
-                    HomeViewActionCell(title: "Find Team", image: "CPL44") {
-                        Text("Here is Team request constructor")
-                    }
-                    HomeViewActionCell(title: "New Vacation", image: "CPL45") {
-                        Text("Here is Vacation constructor")
-                    }
-                    HomeViewActionCell(title: "Create a resume", image: "CPL47") {
-                        Text("Here is Resume constructor")
-                    }
-                    HomeViewActionCell(title: "New Freelance order", image: "CPL46") {
-                        Text("Here is Freelance Order constructor")
-                    }
-                } header: {
-                    HStack {
-                        
-                        Text("New Discussion")
-                        Image(systemName: "plus.circle")
-                        
-                    }.uppercasedListHeader()
-                        .padding(.bottom, 8)
-                    
-                }
-                .textCase(nil)
-                .listRowInsets(EdgeInsets.init(top: 0, leading: 0, bottom: 0, trailing: 0))
-                
-                
-                Section {
-                    HomeViewActionCell(title: "New Project", image: "CPL42") {
-                        Text("Here is Project constructor")
-                    }
-                    HomeViewActionCell(title: "New Idea", image: "CPL43") {
-                        Text("Here is Idea constructor")
-                    }
-                    HomeViewActionCell(title: "Find Team", image: "CPL44") {
-                        Text("Here is Team request constructor")
-                    }
-                    HomeViewActionCell(title: "New Vacation", image: "CPL45") {
-                        Text("Here is Vacation constructor")
-                    }
-                    HomeViewActionCell(title: "Create a resume", image: "CPL47") {
-                        Text("Here is Resume constructor")
-                    }
-                    HomeViewActionCell(title: "New Freelance order", image: "CPL46") {
-                        Text("Here is Freelance Order constructor")
-                    }
-                } header: {
-                    HStack {
-                        
-                        Image(systemName: "plus.circle")
-                        Text("New Discussion")
-
-                    }.uppercasedListHeader()
                         .padding(.bottom, 8)
                 }
                 .textCase(nil)
