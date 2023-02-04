@@ -191,7 +191,7 @@ class FSManager: ObservableObject {
                             ]) { err in
                                 if err == nil {
                                     self.db.collection("Messages").document(id).delete() { e in
-                                        if let h = e {
+                                        if let e = e {
                                             print("Error removing document: \(e)")
                                         } else {
                                             print("Document successfully removed!")

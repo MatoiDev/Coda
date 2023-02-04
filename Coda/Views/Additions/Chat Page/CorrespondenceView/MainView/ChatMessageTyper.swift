@@ -11,20 +11,20 @@ import MultilineTextField
 struct MultilineTextFieldRepresentable: UIViewRepresentable {
     
     let placeholder: String
+    let maxContentHeight: CGFloat
+    
     @Binding var text: String
     @Binding var contentHeight: CGFloat
     
-    init(placeholder: String, text: Binding<String>, contentHeight: Binding<CGFloat>) {
+    init(placeholder: String, text: Binding<String>, contentHeight: Binding<CGFloat>, maxContentHeight: CGFloat = 168.0) {
         self.placeholder = placeholder
         self._text = text
         self._contentHeight = contentHeight
+        self.maxContentHeight = maxContentHeight
     }
     
     func makeUIView(context: Context) -> MultilineTextField {
         let textField = MultilineTextField()
-        
-
-        
         
         textField.placeholder = self.placeholder
         textField.text = self.text
@@ -49,7 +49,7 @@ struct MultilineTextFieldRepresentable: UIViewRepresentable {
     }
     
     func setContentSize(size: CGFloat) {
-        self.contentHeight = size > 168.0 ? 168.0 : size
+        self.contentHeight = size > self.maxContentHeight ? self.maxContentHeight : size
     }
     
     func updateUIView(_ uiView: MultilineTextField, context: Context) {
@@ -57,29 +57,38 @@ struct MultilineTextFieldRepresentable: UIViewRepresentable {
         uiView.selectedRange = NSMakeRange(uiView.text.count, 0)
         
         DispatchQueue.main.async {
-            self.setContentSize(size: uiView.contentSize.height)
+            withAnimation(.easeOut) {
+                self.setContentSize(size: uiView.contentSize.height)
+            }
+            
         }
     }
     
     func makeCoordinator() -> Coordinator {
         print("coord")
-        return Coordinator(with: self.$text, contentHeight: self.$contentHeight)
+        return Coordinator(with: self.$text, contentHeight: self.$contentHeight, maxContentHeight: self.maxContentHeight)
     }
+    
     class Coordinator: NSObject, UITextViewDelegate {
         
+        let maxContentHeight: CGFloat
         @Binding var text: String
         @Binding var contentHeight: CGFloat
         
-        init(with text: Binding<String>, contentHeight: Binding<CGFloat>) {
+        init(with text: Binding<String>, contentHeight: Binding<CGFloat>, maxContentHeight: CGFloat) {
             self._text = text
             self._contentHeight = contentHeight
+            self.maxContentHeight = maxContentHeight
         }
         
         func textViewDidChange(_ textView: UITextView) {
             self.text = textView.text
             
-            if textView.contentSize.height < 168 {
-                self.contentHeight = textView.contentSize.height
+            if textView.contentSize.height < self.maxContentHeight {
+                withAnimation(.easeOut) {
+                    self.contentHeight = textView.contentSize.height
+                }
+                
             }
             print(self.contentHeight)
         }

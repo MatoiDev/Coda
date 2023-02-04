@@ -304,7 +304,7 @@ struct ChatCell: View {
 }
 
 //struct ChatCell_Previews: PreviewProvider {
-
+//
 //    static var previews: some View {
 //        ChatCell()
 //    }

@@ -71,8 +71,8 @@ struct ExploreHeaderView: View {
             .onChange(of: self.selectedPage, perform: { [previousPage = self.selectedPage] selection in
                 print(selection, previousPage)
                 switch selection {
-                case 0: withAnimation(.easeInOut) { scrollProxy.scrollTo(-1, anchor: .leading) }
-                case 1: withAnimation(.easeInOut) { scrollProxy.scrollTo(previousPage > 1 ? -1 : 1) }
+                case 0: withAnimation(.easeInOut) { scrollProxy.scrollTo(-1, anchor: .trailing) }
+                case 1: withAnimation(.easeInOut) { scrollProxy.scrollTo(previousPage > 1 ? -1 : 1, anchor: .trailing) }
                 case 2: withAnimation(.easeInOut) { scrollProxy.scrollTo(previousPage > 2 ? -1 : 3, anchor: .leading) }
                 case 3: withAnimation(.easeInOut) { scrollProxy.scrollTo(previousPage > 3 ? 2 : 4, anchor: .leading) }
                 case 4: withAnimation(.easeInOut) { scrollProxy.scrollTo(previousPage > 3 ? 3 : 5, anchor: .leading) }

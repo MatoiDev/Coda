@@ -195,12 +195,12 @@ struct Chat: View {
                         
                         Task {
                             withAnimation {
-                                proxy.scrollTo(lastMessageID, anchor: .top)
+                                proxy.scrollTo(lastMessageID, anchor: .bottom)
                             }
                             
                         }
                     }
-                    VStack{
+                    VStack {
                         if self.editMessage {
                             HStack {
                                 Image(systemName: "pencil")
@@ -321,8 +321,9 @@ struct Chat: View {
                                     .frame(width: 35, height: 35)
                             }
                         }
-                        
+                        // MARK: - Message Typer
                         ChatMessageTyper(messageText: self.$messageText)
+                            .padding(.top, 8)
                         // MARK: - Edit message mode
                         if self.editMessage {
                             // MARK: - Edit message button
@@ -403,10 +404,11 @@ struct Chat: View {
                         
                         
                     }.fixedSize(horizontal: false, vertical: true)
-                            .padding(.top, 4)
+//                            .padding(.top, 4)
                     
                 }.padding(.horizontal)
-                        .padding(.vertical, 4)
+                        .padding(.bottom, 4)
+                        
                         .background(Color("TyperKeyPadColor"))
                         .overlay {
                             VStack {
@@ -561,3 +563,4 @@ struct Chat: View {
         }
     }
 }
+

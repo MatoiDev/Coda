@@ -57,7 +57,11 @@ struct FreelanceConstructorCrossroadView: View {
             }.listRowBackground(Color.clear)
             
 
-        }.listRowInsets(EdgeInsets.init(top: 0, leading: 0, bottom: 0, trailing: 0))
+        }
+        .onAppear {
+            UITableView.appearance().separatorColor = UIColor.clear
+        }
+        .listRowInsets(EdgeInsets.init(top: 0, leading: 0, bottom: 0, trailing: 0))
         .listRowSeparator(.hidden)
         .navigationBarTitleDisplayMode(.inline)
             .toolbar {
