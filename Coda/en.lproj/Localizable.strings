@@ -1,0 +1,53 @@
+/* 
+  Localizable.strings (English)
+  Coda
+
+  Created by Matoi on 10.02.2023.
+  
+*/
+
+"Administration" = "Administration";
+"Design" = "Design";
+"Development" = "Development";
+"Testing" = "Testing";
+
+"Turnkey sites" = "Turnkey sites";
+"Backend" = "Backend";
+"Frontend" = "Frontend";
+"Prototyping" = "Prototyping";
+"iOS" = "iOS";
+"Android" = "Android";
+"Desktop software" = "Desktop software";
+"Bots and data parsing" = "Bots and data parsing";
+"Game Development" = "Game Development";
+"1C-programming" = "1C-programming";
+"Scripts and plugins" = "Scripts and plugins";
+"Voice interfaces" = "Voice interfaces";
+"Off topic" = "Off topic";
+"Sites" = "Sites";
+"Mobile" = "Mobile";
+"Software" = "Software";
+"Sites" = "Sites";
+"Landing pages" = "Landing pages";
+"Logos" = "Logos";
+"Drawings and illustrations" = "Drawings and illustrations";
+"Mobile applications" = "Mobile applications";
+"Icons" = "Icons";
+"Polygraphy" = "Polygraphy";
+"Banners" = "Banners";
+"Vector graphics" = "Vector graphics";
+"Corporate identity" = "Corporate identity";
+"Presentations" = "Presentations";
+"3D" = "3D";
+"Animation" = "Animation";
+"Photo processing" = "Photo processing";
+"Servers" = "Servers";
+"Computer networks" = "Computer networks";
+"Databases" = "Databases";
+"Software protection and security" = "Software protection and security";
+
+"per hour" = "per hour";
+"per project" = "per project";
+
+"Choose language" = "Choose language";
+"Selected Languages" = "Selected Languages";

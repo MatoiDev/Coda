@@ -2,24 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>This is necessary to save photos e.g.</string>
-	<key>UIUserInterfaceStyle</key>
-	<string>Dark</string>
-    <key>UIApplicationSceneManifest</key>
-    <dict>
-        <key>UIApplicationSupportsMultipleScenes</key>
-        <true/>
-        <key>UISceneConfigurations</key>
-        <dict/>
-    </dict>
-	<key>UIAppFonts</key>
-	<array>
-		<string>RobotoMono-SemiBold.ttf</string>
-		<string>RobotoMono-Light.ttf</string>
-		<string>RobotoMono-Bold.ttf</string>
-		<string>RobotoMono-Medium.ttf</string>
-	</array>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -31,5 +13,19 @@
 			</array>
 		</dict>
 	</array>
+	<key>UIAppFonts</key>
+	<array>
+		<string>RobotoMono-SemiBold.ttf</string>
+		<string>RobotoMono-Light.ttf</string>
+		<string>RobotoMono-Bold.ttf</string>
+		<string>RobotoMono-Medium.ttf</string>
+	</array>
+	<key>UIApplicationSceneManifest</key>
+	<dict>
+		<key>UIApplicationSupportsMultipleScenes</key>
+		<true/>
+		<key>UISceneConfigurations</key>
+		<dict/>
+	</dict>
 </dict>
 </plist>

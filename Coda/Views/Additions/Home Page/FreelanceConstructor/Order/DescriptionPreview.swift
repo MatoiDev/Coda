@@ -39,7 +39,9 @@ struct DescriptionPreview: View {
                 Text("")
                 Text(LocalizedStringKey(self.text))
             }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+            
+            
             .overlay(alignment: .top, content: {
                 LinearGradient(colors: [.init(red: 0.11, green: 0.11, blue: 0.12), .clear], startPoint: .top, endPoint: .bottom)
                     .frame(height: 15)

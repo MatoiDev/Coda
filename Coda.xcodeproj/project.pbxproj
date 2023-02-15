@@ -71,9 +71,12 @@
 		95450D87295BAC7200B64C65 /* FirebaseStorageCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = 95450D86295BAC7200B64C65 /* FirebaseStorageCombine-Community */; };
 		9545E4142924ADCD009579BA /* ChooseLanguageButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545E4132924ADCD009579BA /* ChooseLanguageButton.swift */; };
 		9545E4162924B158009579BA /* LanguagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545E4152924B158009579BA /* LanguagePicker.swift */; };
+		9548C018299435FC00C341D8 /* TLPhotoPicker in Frameworks */ = {isa = PBXBuildFile; productRef = 9548C017299435FC00C341D8 /* TLPhotoPicker */; };
+		9548C01A299436F600C341D8 /* TLPhotosPickerViewControllerRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9548C019299436F600C341D8 /* TLPhotosPickerViewControllerRepresentable.swift */; };
 		954ADF45291FBF32001300EA /* AvatarImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 954ADF44291FBF32001300EA /* AvatarImageView.swift */; };
 		954ADF47291FBFFF001300EA /* CachedImageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 954ADF46291FBFFF001300EA /* CachedImageModel.swift */; };
 		954ADF49291FC237001300EA /* ImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 954ADF48291FC237001300EA /* ImageCache.swift */; };
+		954EAEB02997C9B600F4066B /* FreelanceSubTopicPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 954EAEAF2997C9B600F4066B /* FreelanceSubTopicPicker.swift */; };
 		95680B952951C19300DFD85A /* PostRedactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95680B942951C19300DFD85A /* PostRedactor.swift */; };
 		956EEC4E29464865006C7895 /* PostCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 956EEC4D29464865006C7895 /* PostCreator.swift */; };
 		956EEC5029464A03006C7895 /* PostEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 956EEC4F29464A03006C7895 /* PostEditor.swift */; };
@@ -82,6 +85,7 @@
 		95810E84295CD4C400FA4D84 /* Cachy in Frameworks */ = {isa = PBXBuildFile; productRef = 95810E83295CD4C400FA4D84 /* Cachy */; };
 		95810E87295CD55000FA4D84 /* BottomSheet in Frameworks */ = {isa = PBXBuildFile; productRef = 95810E86295CD55000FA4D84 /* BottomSheet */; };
 		95810E89295CED9700FA4D84 /* ChatMessageTyper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95810E88295CED9700FA4D84 /* ChatMessageTyper.swift */; };
+		9585C0A92995490000ED81FC /* FreelanceTopicPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9585C0A82995490000ED81FC /* FreelanceTopicPicker.swift */; };
 		9586437B298AB32700C2E59C /* ProjectConstructorMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9586437A298AB32700C2E59C /* ProjectConstructorMain.swift */; };
 		9586437D298AB43D00C2E59C /* RobotoMonoFontModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9586437C298AB43D00C2E59C /* RobotoMonoFontModifier.swift */; };
 		95864380298AB7A100C2E59C /* FreelanceConstructorCrossroadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9586437F298AB7A100C2E59C /* FreelanceConstructorCrossroadView.swift */; };
@@ -95,6 +99,9 @@
 		9595C47D290838C0004726AD /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9595C47C290838C0004726AD /* GoogleService-Info.plist */; };
 		95AA82782919A4AD00B7975C /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95AA82772919A4AD00B7975C /* ImagePicker.swift */; };
 		95AA827A2919B21600B7975C /* ImageCropper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95AA82792919B21600B7975C /* ImageCropper.swift */; };
+		95BA4C5B2996D18A000590C3 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 95BA4C5D2996D18A000590C3 /* Localizable.strings */; };
+		95BFE38E299BE6C500702E72 /* LangDescriptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95BFE38D299BE6C500702E72 /* LangDescriptor.swift */; };
+		95BFE390299BEC5A00702E72 /* LanguageDescriptorPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95BFE38F299BEC5A00702E72 /* LanguageDescriptorPicker.swift */; };
 		95C472382928F9690084C60A /* ProfileSettingsMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95C472372928F9690084C60A /* ProfileSettingsMain.swift */; };
 		95C4723A2928FAB40084C60A /* ProfileActionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95C472392928FAB40084C60A /* ProfileActionCell.swift */; };
 		95C4723C2928FE8B0084C60A /* MoreInfoSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95C4723B2928FE8B0084C60A /* MoreInfoSheet.swift */; };
@@ -183,14 +190,17 @@
 		95421D082911914000980E52 /* ProjectCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectCell.swift; sourceTree = "<group>"; };
 		9545E4132924ADCD009579BA /* ChooseLanguageButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseLanguageButton.swift; sourceTree = "<group>"; };
 		9545E4152924B158009579BA /* LanguagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguagePicker.swift; sourceTree = "<group>"; };
+		9548C019299436F600C341D8 /* TLPhotosPickerViewControllerRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TLPhotosPickerViewControllerRepresentable.swift; sourceTree = "<group>"; };
 		954ADF44291FBF32001300EA /* AvatarImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarImageView.swift; sourceTree = "<group>"; };
 		954ADF46291FBFFF001300EA /* CachedImageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CachedImageModel.swift; sourceTree = "<group>"; };
 		954ADF48291FC237001300EA /* ImageCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCache.swift; sourceTree = "<group>"; };
+		954EAEAF2997C9B600F4066B /* FreelanceSubTopicPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FreelanceSubTopicPicker.swift; sourceTree = "<group>"; };
 		95680B942951C19300DFD85A /* PostRedactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostRedactor.swift; sourceTree = "<group>"; };
 		956EEC4D29464865006C7895 /* PostCreator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostCreator.swift; sourceTree = "<group>"; };
 		956EEC4F29464A03006C7895 /* PostEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostEditor.swift; sourceTree = "<group>"; };
 		957B9B5129520CBE00BFA814 /* AppConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConfiguration.swift; sourceTree = "<group>"; };
 		95810E88295CED9700FA4D84 /* ChatMessageTyper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageTyper.swift; sourceTree = "<group>"; };
+		9585C0A82995490000ED81FC /* FreelanceTopicPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FreelanceTopicPicker.swift; sourceTree = "<group>"; };
 		9586437A298AB32700C2E59C /* ProjectConstructorMain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectConstructorMain.swift; sourceTree = "<group>"; };
 		9586437C298AB43D00C2E59C /* RobotoMonoFontModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RobotoMonoFontModifier.swift; sourceTree = "<group>"; };
 		9586437F298AB7A100C2E59C /* FreelanceConstructorCrossroadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FreelanceConstructorCrossroadView.swift; sourceTree = "<group>"; };
@@ -205,6 +215,10 @@
 		9595C47C290838C0004726AD /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		95AA82772919A4AD00B7975C /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		95AA82792919B21600B7975C /* ImageCropper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCropper.swift; sourceTree = "<group>"; };
+		95BA4C5C2996D18A000590C3 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		95BA4C5E2996D1C6000590C3 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
+		95BFE38D299BE6C500702E72 /* LangDescriptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LangDescriptor.swift; sourceTree = "<group>"; };
+		95BFE38F299BEC5A00702E72 /* LanguageDescriptorPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageDescriptorPicker.swift; sourceTree = "<group>"; };
 		95C472372928F9690084C60A /* ProfileSettingsMain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingsMain.swift; sourceTree = "<group>"; };
 		95C472392928FAB40084C60A /* ProfileActionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileActionCell.swift; sourceTree = "<group>"; };
 		95C4723B2928FE8B0084C60A /* MoreInfoSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreInfoSheet.swift; sourceTree = "<group>"; };
@@ -249,6 +263,7 @@
 				95810E87295CD55000FA4D84 /* BottomSheet in Frameworks */,
 				957E89D92984824A00607AA5 /* PagerTabStripView in Frameworks */,
 				95450D85295BAC7200B64C65 /* FirebaseStorage in Frameworks */,
+				9548C018299435FC00C341D8 /* TLPhotoPicker in Frameworks */,
 				95F5CA47297B3CFC00532957 /* Kingfisher in Frameworks */,
 				95450D83295BAC7200B64C65 /* FirebaseFirestoreSwift in Frameworks */,
 				95450D7F295BAC7200B64C65 /* FirebaseFirestore in Frameworks */,
@@ -394,6 +409,7 @@
 				95F1CD37290EDCFA000A3080 /* Tab.swift */,
 				951DBBF12910394C00FAB2E3 /* BottomSheetPositions.swift */,
 				951DBBF32910431700FAB2E3 /* PLanguages.swift */,
+				95BFE38D299BE6C500702E72 /* LangDescriptor.swift */,
 			);
 			path = Enums;
 			sourceTree = "<group>";
@@ -554,9 +570,12 @@
 		9586437E298AB73D00C2E59C /* FreelanceConstructor */ = {
 			isa = PBXGroup;
 			children = (
+				95F6AF20298FC51D00004545 /* FreelanceEnums.swift */,
+				9585C0A82995490000ED81FC /* FreelanceTopicPicker.swift */,
+				954EAEAF2997C9B600F4066B /* FreelanceSubTopicPicker.swift */,
 				9586437F298AB7A100C2E59C /* FreelanceConstructorCrossroadView.swift */,
 				95F6AF22298FC5C400004545 /* Order */,
-				95F6AF20298FC51D00004545 /* FreelanceEnums.swift */,
+				95BFE38F299BEC5A00702E72 /* LanguageDescriptorPicker.swift */,
 			);
 			path = FreelanceConstructor;
 			sourceTree = "<group>";
@@ -589,6 +608,7 @@
 				9519B04F29087C8600504B03 /* Utils */,
 				9595C4622908343D004726AD /* Assets.xcassets */,
 				9595C4642908343D004726AD /* Preview Content */,
+				95BA4C5D2996D18A000590C3 /* Localizable.strings */,
 			);
 			path = Coda;
 			sourceTree = "<group>";
@@ -643,6 +663,7 @@
 				37C71BAF8FA3D455BEBC909E /* Explore Page */,
 				37C7196612639077BE828FD5 /* Home Page */,
 				95F6AF25298FD3F100004545 /* UIKitAlertWithTextField.swift */,
+				9548C019299436F600C341D8 /* TLPhotosPickerViewControllerRepresentable.swift */,
 			);
 			path = Additions;
 			sourceTree = "<group>";
@@ -799,6 +820,7 @@
 				95D814D0297C6DBC00BBAE02 /* MultilineTextField */,
 				957E89D82984824A00607AA5 /* PagerTabStripView */,
 				95EE333029851FD80037F811 /* Pages */,
+				9548C017299435FC00C341D8 /* TLPhotoPicker */,
 			);
 			productName = Coda;
 			productReference = 9595C45B2908343C004726AD /* Coda.app */;
@@ -826,6 +848,7 @@
 			knownRegions = (
 				en,
 				Base,
+				ru,
 			);
 			mainGroup = 9595C4522908343C004726AD;
 			packageReferences = (
@@ -838,6 +861,7 @@
 				95D814CF297C6DBB00BBAE02 /* XCRemoteSwiftPackageReference "MultilineTextField" */,
 				957E89D72984824A00607AA5 /* XCRemoteSwiftPackageReference "PagerTabStripView" */,
 				95EE332F29851FD80037F811 /* XCRemoteSwiftPackageReference "Pages" */,
+				9548C016299435FC00C341D8 /* XCRemoteSwiftPackageReference "TLPhotoPicker" */,
 			);
 			productRefGroup = 9595C45C2908343C004726AD /* Products */;
 			projectDirPath = "";
@@ -862,6 +886,7 @@
 				951DBBF929104A1400FAB2E3 /* RobotoMono-Light.ttf in Resources */,
 				952BCF84290981DA0046FB02 /* githubLogo.json in Resources */,
 				952BCF86290981EA0046FB02 /* dragToGithub.json in Resources */,
+				95BA4C5B2996D18A000590C3 /* Localizable.strings in Resources */,
 				952BCF88290981F90046FB02 /* macOnMatrix.json in Resources */,
 				95170554290AEC3F008C137F /* RobotoMono-Medium.ttf in Resources */,
 				9595C47D290838C0004726AD /* GoogleService-Info.plist in Resources */,
@@ -891,6 +916,7 @@
 				953E2DB92982FB6F00A4A82B /* TrendingView.swift in Sources */,
 				95084A8B29324AF200D8EC96 /* ProjectEditor.swift in Sources */,
 				954ADF49291FC237001300EA /* ImageCache.swift in Sources */,
+				954EAEB02997C9B600F4066B /* FreelanceSubTopicPicker.swift in Sources */,
 				9503F3B3298992E900E1BDEA /* JobView.swift in Sources */,
 				952BCF7B2909750F0046FB02 /* GitHubLoginButton.swift in Sources */,
 				95F1CD3C290EE57B000A3080 /* ChatsTableView.swift in Sources */,
@@ -899,9 +925,11 @@
 				95E5EC95297DD17E00C82946 /* ArticlesViewModel.swift in Sources */,
 				95F1CD33290EDC61000A3080 /* AppView.swift in Sources */,
 				951DBBED291034B700FAB2E3 /* ProfileSheet.swift in Sources */,
+				95BFE38E299BE6C500702E72 /* LangDescriptor.swift in Sources */,
 				956EEC4E29464865006C7895 /* PostCreator.swift in Sources */,
 				95864380298AB7A100C2E59C /* FreelanceConstructorCrossroadView.swift in Sources */,
 				9595C477290834EB004726AD /* DataBubble.swift in Sources */,
+				9585C0A92995490000ED81FC /* FreelanceTopicPicker.swift in Sources */,
 				95810E89295CED9700FA4D84 /* ChatMessageTyper.swift in Sources */,
 				953E2DB52982FB1E00A4A82B /* TeamSearchingView.swift in Sources */,
 				9503F3A8298991FA00E1BDEA /* ProjectsListView.swift in Sources */,
@@ -915,6 +943,7 @@
 				95F1CD3E290EE586000A3080 /* ExploreView.swift in Sources */,
 				95C472382928F9690084C60A /* ProfileSettingsMain.swift in Sources */,
 				95E5EC9C297DD19700C82946 /* NewsImageLoader+Cacher.swift in Sources */,
+				9548C01A299436F600C341D8 /* TLPhotosPickerViewControllerRepresentable.swift in Sources */,
 				9595C4612908343C004726AD /* ContentView.swift in Sources */,
 				95DB57E12931F96D00B7E7A8 /* UOProject.swift in Sources */,
 				951DC337295D9FAF008010E2 /* MessageBubble.swift in Sources */,
@@ -953,6 +982,7 @@
 				95F6AF21298FC51D00004545 /* FreelanceEnums.swift in Sources */,
 				951CC6DE2924191E00096222 /* ContinueBubble.swift in Sources */,
 				9595C45F2908343C004726AD /* CodaApp.swift in Sources */,
+				95BFE390299BEC5A00702E72 /* LanguageDescriptorPicker.swift in Sources */,
 				953E2DBD2982FB9900A4A82B /* VacationsView.swift in Sources */,
 				956EEC5029464A03006C7895 /* PostEditor.swift in Sources */,
 				95EE3333298537FE0037F811 /* TrailingFullScreenCover.swift in Sources */,
@@ -969,11 +999,24 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXVariantGroup section */
+		95BA4C5D2996D18A000590C3 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				95BA4C5C2996D18A000590C3 /* en */,
+				95BA4C5E2996D1C6000590C3 /* ru */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
 /* Begin XCBuildConfiguration section */
 		9595C4672908343D004726AD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
@@ -1034,6 +1077,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
@@ -1096,11 +1140,14 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Coda/Info.plist;
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "This is necessary to make and pick photos.";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "This is necessary to save photos e.g.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "This is necessary to pick photos";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_UIUserInterfaceStyle = Dark;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1129,11 +1176,14 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Coda/Info.plist;
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "This is necessary to make and pick photos.";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "This is necessary to save photos e.g.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "This is necessary to pick photos";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_UIUserInterfaceStyle = Dark;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1188,6 +1238,14 @@
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 9.0.0;
+			};
+		};
+		9548C016299435FC00C341D8 /* XCRemoteSwiftPackageReference "TLPhotoPicker" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/tilltue/TLPhotoPicker";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
 			};
 		};
 		957E89D72984824A00607AA5 /* XCRemoteSwiftPackageReference "PagerTabStripView" */ = {
@@ -1303,6 +1361,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 95450D73295BAC7200B64C65 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = "FirebaseStorageCombine-Community";
+		};
+		9548C017299435FC00C341D8 /* TLPhotoPicker */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9548C016299435FC00C341D8 /* XCRemoteSwiftPackageReference "TLPhotoPicker" */;
+			productName = TLPhotoPicker;
 		};
 		957E89D82984824A00607AA5 /* PagerTabStripView */ = {
 			isa = XCSwiftPackageProductDependency;

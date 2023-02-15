@@ -8,23 +8,56 @@
 import SwiftUI
 
 struct FreelanceConstructorCrossroadView: View {
+    
+    // Использование этого колхозного способа позволяет избавиться от chevron в NavigationLink
+    @State private var linkToOrder: Bool = false
+    @State private var linkToService: Bool = false
+    
     var body: some View {
         List {
             
+            // Service
+            Button {
+                self.linkToService.toggle()
+            } label: {
+                        ZStack {
+                            Image("FreelanceServicePreview")
+                                .resizable()
+                                .scaledToFill()
+                                .frame(width: UIScreen.main.bounds.width - 64, height: 200)
+                                .clipShape(RoundedRectangle(cornerRadius: 20))
+                            VStack {
+                                Text("Service")
+                                    .robotoMono(.bold, 30, color: .black)
+                                    .padding(.horizontal)
+                                    .padding()
+                                
+                            }.frame(maxWidth: .infinity, maxHeight: 200, alignment: .topTrailing)
+                        }
+                    
+            }.overlay(
+                NavigationLink(
+                    isActive: self.$linkToService,
+                    destination: { Text("FreelanceServicePreview") },
+                    label: { EmptyView() }
+                ).opacity(0)
+            )
+            .listRowBackground(Color.clear)
+            
             // Order
-            NavigationLink {
-                OrderConstructor()
+            Button {
+                self.linkToOrder.toggle()
             } label: {
                 ZStack {
                     Image("FreelanceOrderPreview")
                         .resizable()
                         .scaledToFill()
-                        .frame(width: UIScreen.main.bounds.width - 32, height: 200)
+                        .frame(width: UIScreen.main.bounds.width - 64, height: 200)
                         .cornerRadius(25)
                         .clipShape(RoundedRectangle(cornerRadius: 20))
                     VStack {
                         Text("Order")
-                            .robotoMono(.bold, 30)
+                            .robotoMono(.bold, 30, color: .black)
                             .padding(.horizontal)
                             .padding()
                         
@@ -32,36 +65,21 @@ struct FreelanceConstructorCrossroadView: View {
                 }
                
  
-            }.listRowBackground(Color.clear)
-            
-            
-            // Service
-            NavigationLink {
-                Text("ServiceConstructor")
-            } label: {
-                        ZStack {
-                            Image("FreelanceServicePreview")
-                                .resizable()
-                                .scaledToFill()
-                                .frame(width: UIScreen.main.bounds.width - 32, height: 200)
-                                .clipShape(RoundedRectangle(cornerRadius: 20))
-                            VStack {
-                                Text("Service")
-                                    .robotoMono(.bold, 30)
-                                    .padding(.horizontal)
-                                    .padding()
-                                
-                            }.frame(maxWidth: .infinity, maxHeight: 200, alignment: .topLeading)
-                        }
-                    
-            }.listRowBackground(Color.clear)
-            
-
+            }
+            .overlay(
+                NavigationLink(
+                    isActive: self.$linkToOrder,
+                    destination: { OrderConstructor() },
+                    label: { EmptyView() }
+                ).opacity(0)
+            )
+            .listRowBackground(Color.clear)
+    
         }
         .onAppear {
             UITableView.appearance().separatorColor = UIColor.clear
         }
-        .listRowInsets(EdgeInsets.init(top: 0, leading: 0, bottom: 0, trailing: 0))
+//        .listRowInsets(EdgeInsets.init(top: 0, leading: 0, bottom: 0, trailing: 0))
         .listRowSeparator(.hidden)
         .navigationBarTitleDisplayMode(.inline)
             .toolbar {

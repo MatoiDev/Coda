@@ -1,0 +1,54 @@
+/* 
+  Localizable.strings (Russian)
+  Coda
+
+  Created by Matoi on 10.02.2023.
+  
+*/
+
+"Administration" = "Администрирование";
+"Design" = "Дизайн";
+"Development" = "Разработка";
+"Testing" = "Тестирование";
+
+"Turnkey sites" = "Сайты «под ключ»";
+"Backend" = "Бэкенд";
+"Frontend" = "Фронтенд";
+"Prototyping" = "Прототипирование";
+"iOS" = "iOS";
+"Android" = "Android";
+"Desktop software" = "Десктопное ПО";
+"Bots and data parsing" = "Боты и парсинг данных";
+"Game Development" = "Разработка игр";
+"1C-programming" = "1С-программирование";
+"Scripts and plugins" = "Скрипты и плагины";
+"Voice interfaces" = "Голосовые интерфейсы";
+"Off topic" = "Разное";
+"Sites" = "Сайты";
+"Mobile" = "Мобайл";
+"Software" = "Софт";
+"Sites" = "Сайты";
+"Landing pages" = "Лендинги";
+"Logos" = "Логотипы";
+"Drawings and illustrations" = "Рисунки и иллюстрации";
+"Mobile applications" = "Мобильные приложения";
+"Icons" = "Иконки";
+"Polygraphy" = "Полиграфия";
+"Banners" = "Баннеры";
+"Vector graphics" = "Векторная графика";
+"Corporate identity" = "Фирменный стиль";
+"Presentations" = "Презентации";
+"3D" = "3D";
+"Animation" = "Анимация";
+"Photo processing" = "Обработка фото";
+"Servers" = "Серверы";
+"Computer networks" = "Компьютерные сети";
+"Databases" = "Базы данных";
+"Software protection and security" = "Защита ПО и безопасность";
+
+"per hour" = "за час";
+"per project" = "за проект";
+
+"Choose language" = "Выберите язык";
+
+"Selected Languages" = "Выбранные языки";

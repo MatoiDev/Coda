@@ -31,7 +31,7 @@ class TabItem: Identifiable {
 
 var tabItems: Array<TabItem> = [
     TabItem.init(withTab: .home, icon: "house", text: "Home", color: .cyan),
-    TabItem.init(withTab: .search, icon: "terminal", text: "Explore", color: .green),
-    TabItem.init(withTab: .chat, icon: "message", text: "Chat", color: .pink),
-    TabItem.init(withTab: .profile, icon: "person", text: "Profile", color: .purple)
+    TabItem.init(withTab: .search, icon: "terminal", text: "Explore", color: Color("TBGreen")),
+    TabItem.init(withTab: .chat, icon: "message", text: "Chat", color: Color("TBYellow")),
+    TabItem.init(withTab: .profile, icon: "person", text: "Profile", color: Color("TBPink"))
 ]

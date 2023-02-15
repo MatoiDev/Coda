@@ -67,3 +67,5 @@ struct NewsViewMain: View {
         .publishOnTabBarAppearence(self.hideTabBar)
     }
 }
+
+

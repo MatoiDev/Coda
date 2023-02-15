@@ -41,21 +41,7 @@ struct ExploreHeaderView: View {
                             self.selectedPage = 4
                             
                         } label: { ExploreHeaderViewCell(title: "Job", image: "creditcard", selected: self.selectedPage == 4).id(4) }
-                        
-//                        Button {
-//                            
-//                            self.selectedPage = 5
-//                            
-//                        } label: { ExploreHeaderViewCell(title: "Summaries", image: "person.text.rectangle", selected: self.selectedPage == 5).id(5) }
-//                        
-//                        Button {
-//                            withAnimation(.easeInOut) {
-//                                scrollProxy.scrollTo(6)
-//                            }
-//                            self.selectedPage = 6
-//                            
-//                        } label: { ExploreHeaderViewCell(title: "Freelance", image: "macbook.and.iphone", selected: self.selectedPage == 6).id(6) }
-                        
+                                                
                     }.padding(.horizontal)
                 }
                 HStack {

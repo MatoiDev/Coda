@@ -179,6 +179,15 @@
         "revision" : "f2616860a41f9d9932da412a8978fec79c06fe24",
         "version" : "0.1.4"
       }
+    },
+    {
+      "identity" : "tlphotopicker",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/tilltue/TLPhotoPicker",
+      "state" : {
+        "revision" : "0d0cbbd2d20ed5fd36e5f4052209f5e2d9aaa8b7",
+        "version" : "2.1.9"
+      }
     }
   ],
   "version" : 2

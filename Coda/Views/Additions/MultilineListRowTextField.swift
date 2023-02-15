@@ -36,7 +36,6 @@ fileprivate struct UITextViewWrapper: UIViewRepresentable {
     @Binding var calculatedHeight: CGFloat
     
     @Binding var triggerLinkAlert: Bool
-    @Binding var handledURL: String? // URL From TextField Alert
     
     var onDone: (() -> Void)?
 
@@ -67,10 +66,11 @@ fileprivate struct UITextViewWrapper: UIViewRepresentable {
     func updateUIView(_ uiView: UITextView, context: UIViewRepresentableContext<UITextViewWrapper>) {
         if uiView.text != self.text {
             uiView.text = self.text
+            if uiView.window != nil, !uiView.isFirstResponder {
+                uiView.becomeFirstResponder()
+            }
         }
-        if uiView.window != nil, !uiView.isFirstResponder {
-            uiView.becomeFirstResponder()
-        }
+        
         UITextViewWrapper.recalculateHeight(view: uiView, result: $calculatedHeight)
     }
 
@@ -84,7 +84,7 @@ fileprivate struct UITextViewWrapper: UIViewRepresentable {
     }
 
     func makeCoordinator() -> Coordinator {
-        return Coordinator(text: $text, alert: self.$triggerLinkAlert, handledURL: self.$handledURL, height: $calculatedHeight, onDone: onDone)
+        return Coordinator(text: $text, alert: self.$triggerLinkAlert, height: $calculatedHeight, onDone: onDone)
     }
 
     final class Coordinator: NSObject, UITextViewDelegate {
@@ -105,7 +105,6 @@ fileprivate struct UITextViewWrapper: UIViewRepresentable {
         @Binding var text: String
         
         @Binding var alertTrigger: Bool
-        @Binding var handledURL: String?
         
         var cancellable: Set<AnyCancellable> = Set<AnyCancellable>()
         
@@ -115,11 +114,10 @@ fileprivate struct UITextViewWrapper: UIViewRepresentable {
         
         let textAlertHandler : TextAlertHandler = TextAlertHandler.sharedInstance
 
-        init(text: Binding<String>, alert: Binding<Bool>, handledURL: Binding<String?>, height: Binding<CGFloat>, onDone: (() -> Void)? = nil) {
+        init(text: Binding<String>, alert: Binding<Bool>, height: Binding<CGFloat>, onDone: (() -> Void)? = nil) {
             
             self._text = text
             self._alertTrigger = alert
-            self._handledURL = handledURL
             self.calculatedHeight = height
             self.onDone = onDone
             
@@ -212,7 +210,6 @@ struct MultilineListRowTextField: View {
     @Binding private var text: String
     
     @Binding private var forLinkAlertTrigger: Bool
-    @Binding private var handledURL: String? // URL From TextField Alert
     
     private var internalText: Binding<String> {
         Binding<String>(get: { self.text } ) {
@@ -225,19 +222,18 @@ struct MultilineListRowTextField: View {
     @State private var showingPlaceholder = false
     
 
-    init (_ placeholder: String = "", text: Binding<String>, alertTrigger: Binding<Bool>, handledURL: Binding<String?>, onCommit: (() -> Void)? = nil) {
+    init (_ placeholder: String = "", text: Binding<String>, alertTrigger: Binding<Bool>, onCommit: (() -> Void)? = nil) {
         
         self.placeholder = placeholder
         self.onCommit = onCommit
         self._forLinkAlertTrigger = alertTrigger
         self._text = text
-        self._handledURL = handledURL
         self._showingPlaceholder = State<Bool>(initialValue: self.text.isEmpty)
         
     }
 
     var body: some View {
-        UITextViewWrapper(text: self.internalText, calculatedHeight: $dynamicHeight, triggerLinkAlert: self.$forLinkAlertTrigger, handledURL: self.$handledURL, onDone: onCommit)
+        UITextViewWrapper(text: self.internalText, calculatedHeight: $dynamicHeight, triggerLinkAlert: self.$forLinkAlertTrigger, onDone: onCommit)
             .frame(minHeight: dynamicHeight, maxHeight: dynamicHeight)
             .background(placeholderView, alignment: .topLeading)
     }
