@@ -52,3 +52,23 @@
 "Choose language" = "Выберите язык";
 
 "Selected Languages" = "Выбранные языки";
+"Top Languages" = "Популярные языки";
+"Search Results" = "Результаты поиска";
+
+
+"Budget" = "Бюджет";
+"Сontractual price" = "Договорная цена";
+"Specified price" = "Указанная цена";
+
+"Main Info" = "Основная Информация";
+"Scope Of Activity" = "Сфера Деятельности";
+"Language Requirements" = "Используемые Языки";
+
+"Order name" = "Название заказа";
+"Order description" = "Описание заказа";
+"Сore Skills" = "Ключевые Навыки";
+
+"Enter from 1 to 10 key skills, separating them with a comma" = "Введите от 1 до 10 ключевых навыков, разделяя их запятой";
+
+"Files" = "Файлы";
+"Upload the ToR or other documents in .pdf format" = "Загрузите ТЗ или другие документы в формате .pdf";

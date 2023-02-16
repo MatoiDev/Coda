@@ -133,6 +133,7 @@
 		95F6AF21298FC51D00004545 /* FreelanceEnums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95F6AF20298FC51D00004545 /* FreelanceEnums.swift */; };
 		95F6AF24298FC5DB00004545 /* DescriptionPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95F6AF23298FC5DB00004545 /* DescriptionPreview.swift */; };
 		95F6AF26298FD3F100004545 /* UIKitAlertWithTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95F6AF25298FD3F100004545 /* UIKitAlertWithTextField.swift */; };
+		95F98FA8299EB55900E7FA71 /* UIDocumentPickerViewControllerRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95F98FA7299EB55900E7FA71 /* UIDocumentPickerViewControllerRepresentable.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -246,6 +247,7 @@
 		95F6AF20298FC51D00004545 /* FreelanceEnums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FreelanceEnums.swift; sourceTree = "<group>"; };
 		95F6AF23298FC5DB00004545 /* DescriptionPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DescriptionPreview.swift; sourceTree = "<group>"; };
 		95F6AF25298FD3F100004545 /* UIKitAlertWithTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitAlertWithTextField.swift; sourceTree = "<group>"; };
+		95F98FA7299EB55900E7FA71 /* UIDocumentPickerViewControllerRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIDocumentPickerViewControllerRepresentable.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -664,6 +666,7 @@
 				37C7196612639077BE828FD5 /* Home Page */,
 				95F6AF25298FD3F100004545 /* UIKitAlertWithTextField.swift */,
 				9548C019299436F600C341D8 /* TLPhotosPickerViewControllerRepresentable.swift */,
+				95F98FA7299EB55900E7FA71 /* UIDocumentPickerViewControllerRepresentable.swift */,
 			);
 			path = Additions;
 			sourceTree = "<group>";
@@ -948,6 +951,7 @@
 				95DB57E12931F96D00B7E7A8 /* UOProject.swift in Sources */,
 				951DC337295D9FAF008010E2 /* MessageBubble.swift in Sources */,
 				953E2DBF2982FBAF00A4A82B /* FreelanceView.swift in Sources */,
+				95F98FA8299EB55900E7FA71 /* UIDocumentPickerViewControllerRepresentable.swift in Sources */,
 				9503F3B1298992A700E1BDEA /* ExploreHeaderViewCell.swift in Sources */,
 				95C4723C2928FE8B0084C60A /* MoreInfoSheet.swift in Sources */,
 				95255C97294393550050EB22 /* ViewOffsetKey.swift in Sources */,

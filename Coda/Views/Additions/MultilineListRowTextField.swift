@@ -241,7 +241,7 @@ struct MultilineListRowTextField: View {
     var placeholderView: some View {
         Group {
             if showingPlaceholder {
-                Text(placeholder).foregroundColor(Color(red: 0.36, green: 0.36, blue: 0.36))
+                Text(LocalizedStringKey(placeholder)).foregroundColor(Color(red: 0.36, green: 0.36, blue: 0.36))
                     .padding(.leading, 4)
                     .padding(.top, 8)
             }

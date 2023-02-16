@@ -13,6 +13,8 @@ import Introspect
 
 
 
+
+
 /*
  
  Order [Freelance]
@@ -59,6 +61,7 @@ struct OrderConstructor: View {
     @State private var descriptionTextFieldContentHeight: CGFloat = 600
     
     @State private var showPreviewDescription: Bool = false
+    @State private var showDocumentPicker: Bool = false
     
     @State private var showLinkAlert: Bool = false
     @State private var TFAlertText: String? // Текст, который ввели в алерте
@@ -66,6 +69,10 @@ struct OrderConstructor: View {
     
     @State private var showTLPhotosPicker: Bool = false
     @State private var selectedAssets: [TLPHAsset] = [TLPHAsset]() // Images
+    
+    @State private var coreSkills: String = ""
+    
+    
     
     let textAlertHandler : TextAlertHandler = TextAlertHandler.sharedInstance
     
@@ -76,8 +83,14 @@ struct OrderConstructor: View {
             // MARK: - Title
             Section {
                 
-                TextField("Title", text: self.$title)
+                TextField(LocalizedStringKey("Order name"), text: self.$title)
                     .robotoMono(.semibold, 17)
+                // MARK: - Description
+                    
+                MultilineListRowTextField("Order description", text: self.$description, alertTrigger: self.$showLinkAlert)
+                    .robotoMono(.medium, 13)
+                    .fixedSize(horizontal: false, vertical: true)
+                    
             } header: {
                 HStack {
                     Text("Main Info")
@@ -85,26 +98,174 @@ struct OrderConstructor: View {
                     Spacer()
                 }
                 
+            } footer: {
+                HStack {
+                    Button {
+                        self.showPreviewDescription.toggle()
+                    } label: {
+                        Text("Preview")
+                            .robotoMono(.medium, 12, color: .blue)
+                    }
+                    Spacer()
+                    Text("\(self.description.count)/5000")
+                        .robotoMono(.light, 12, color: .secondary)
+                }
+                
             }.textCase(nil)
-            // MARK: - Description
-                Section {
-                    MultilineListRowTextField("Description", text: self.$description, alertTrigger: self.$showLinkAlert)
-                        .robotoMono(.medium, 13)
-                        .fixedSize(horizontal: false, vertical: true)
-                } footer: {
-                    HStack {
-                        Button {
-                            self.showPreviewDescription.toggle()
-                        } label: {
-                            Text("Preview")
-                                .robotoMono(.medium, 12, color: .blue)
+            
+            // MARK: - Reward
+            Section {
+                Menu {
+                    
+                    Button {
+                        self.reward = .negotiated
+                    } label: {
+                        HStack {
+                            Text("Сontractual price")
                         }
+                    }
+                    
+                    Button {
+                        self.reward = .specified(price: self.price)
+                    } label: {
+                        HStack {
+                            Text("Specified price")
+                            Spacer()
+                            Image(systemName: "dollarsign")
+                        }
+                    }
+                    
+                } label: {
+                    HStack {
+                        Text(self.reward == FreelanceOrderTypeReward.negotiated ? "Сontractual price" : "Specified price")
+                            .robotoMono(.semibold, 15)
                         Spacer()
-                        Text("\(self.description.count)/5000")
-                            .robotoMono(.light, 12, color: .secondary)
+                        Image(systemName: "contextualmenu.and.cursorarrow")
+                        
+                            .resizable()
+                            .scaledToFit()
+                            .symbolRenderingMode(.hierarchical)
+                            .frame(height: 20)
+                            .foregroundColor(.primary)
+                            .font(.system(size: 12).bold())
+                
+                    }
+                }
+                if self.reward != .negotiated {
+                    HStack {
+                        TextField("0", text: self.$price)
+                            .foregroundColor(".,".contains(self.price[safe: self.price.startIndex] ?? "1") ? Color.red : Color.white)
+                            .robotoMono(.semibold, 17)
+                            .keyboardType(.decimalPad)
+                            .autocorrectionDisabled(true)
+                            .textInputAutocapitalization(.none)
+                        Divider()
+                        Picker(selection: self.$pricePer) {
+                            Text(LocalizedStringKey("per hour")).tag(SpecifiedPriceType.perHour)
+                            Text(LocalizedStringKey("per project")).tag(SpecifiedPriceType.perProject)
+                                .robotoMono(.semibold, 15)
+                                                            .lineLimit(1)
+                                                            .minimumScaleFactor(0.01)
+                        } label: {
+                        }.fixedSize(horizontal: true, vertical: false)
+
                     }
                     
                 }
+             
+
+            } header: {
+                Text("Budget")
+                    .robotoMono(.semibold, 20)
+                    .foregroundColor(.white)
+            }.textCase(nil)
+            
+            
+            // MARK: - Topic Picker
+            Section  {
+              
+                NavigationLink(isActive: self.$topicPickerAlive) {
+                    FreelanceTopicPicker(topic: self.$topic,
+                                         isPickerAlive: self.$topicPickerAlive,
+                                         devSubtopic: self.$devSubtopic,
+                                         adminSubtopic: self.$adminSubtopic,
+                                         designSubtopic: self.$designSubtopic,
+                                         testSubtopic: self.$testSubtopic)
+                } label: {
+                    switch self.topic {
+                    case .Administration:
+                        Group {
+                            Text(LocalizedStringKey(self.topic.rawValue)) + Text(": ") + Text(LocalizedStringKey(self.adminSubtopic.rawValue))
+                        }.robotoMono(.semibold, 15)
+                       
+                    case .Testing:
+                        Group {
+                            Text(LocalizedStringKey(self.topic.rawValue)) + Text(": ") + Text(LocalizedStringKey(self.testSubtopic.rawValue))
+                        }.robotoMono(.semibold, 15)
+                       
+                    case .Development:
+                        Group {
+                        Text(LocalizedStringKey(self.topic.rawValue)) + Text(": ") + Text(LocalizedStringKey(self.devSubtopic.rawValue))
+                    }.robotoMono(.semibold, 15)
+                    case .Design:
+                        Group {
+                        Text(LocalizedStringKey(self.topic.rawValue)) + Text(": ") + Text(LocalizedStringKey(self.designSubtopic.rawValue))
+                        }.robotoMono(.semibold, 15)
+                    }
+                }
+
+
+            } header: {
+                HStack {
+                    Text("Scope Of Activity")
+                        .robotoMono(.semibold, 20)
+                    Spacer()
+                }
+                
+            }.textCase(nil)
+            
+            // MARK: - Language Section
+            Section {
+                NavigationLink {
+                    LanguageDescriptorPicker(langDescriptors: self.$languageDescriptors)
+                } label: {
+                    
+                    Text(self.getLineFromDescriptors(self.languageDescriptors))
+                        .robotoMono(.semibold, 14, color: .white)
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.01)
+                        
+                }
+                
+            } header: {
+                Text("Language Requirements")
+                    .robotoMono(.semibold, 20)
+                    .foregroundColor(.white)
+            }.textCase(nil)
+            
+            Section {
+                
+                    ZStack(alignment: .leading) {
+                        if self.coreSkills.isEmpty {
+                            Text(LocalizedStringKey("MVVM, Firebase, ..."))
+                                .robotoMono(.semibold, 14, color: Color(red: 0.36, green: 0.36, blue: 0.36))
+                                .padding(.horizontal, 4)
+                        }
+                        
+                        TextEditor(text: self.$coreSkills)
+                            .robotoMono(.semibold, 14)
+                    }
+                
+                
+            } header: {
+                Text("Сore Skills")
+                    .robotoMono(.semibold, 20)
+                    .foregroundColor(.white)
+            } footer: {
+                Text("Enter from 1 to 10 key skills, separating them with a comma")
+            }
+            .textCase(nil)
+            
             // MARK: - Previews
             // MARK: - Photos Picker
             Section {
@@ -172,127 +333,53 @@ struct OrderConstructor: View {
             .listRowInsets(EdgeInsets.init(top: 8, leading: 0, bottom: 8, trailing: 0))
             .buttonStyle(.plain)
             
-            // MARK: - Reward
+            // MARK: - Files
+            // MARK: - Files Picker
             Section {
-                Menu {
-                    
-                    Button {
-                        self.reward = .negotiated
-                    } label: {
-                        HStack {
-                            Text("Contractual")
-                        }
-                    }
-                    
-                    Button {
-                        self.reward = .specified(price: self.price)
-                    } label: {
-                        HStack {
-                            Text("Specified")
-                            Spacer()
-                            Image(systemName: "dollarsign")
-                        }
-                    }
-                    
+                Button {
+                    self.showDocumentPicker.toggle()
                 } label: {
-                    HStack {
-                        Text(self.reward == FreelanceOrderTypeReward.negotiated ? "Contractual" : "Specified")
-                            .robotoMono(.semibold, 15)
-                        Spacer()
-                        Image(systemName: "contextualmenu.and.cursorarrow")
+                    RoundedRectangle(cornerRadius: 25).foregroundColor(Color.clear)
+                        .frame(height: 150)
+                        .overlay {
+                            RoundedRectangle(cornerRadius: 25)
+                                .stroke(Color.white, style: StrokeStyle(lineWidth: 2, dash: [10], dashPhase: 4))
+                        }
+                        .overlay {
+                            Image("RoseCloud")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(height: 150)
+                        }
                         
-                            .resizable()
-                            .scaledToFit()
-                            .symbolRenderingMode(.hierarchical)
-                            .frame(height: 20)
-                            .foregroundColor(.primary)
-                            .font(.system(size: 12).bold())
-                
-                    }
                 }
-                if self.reward != .negotiated {
-                    HStack {
-                        TextField("0", text: self.$price)
-                            .foregroundColor(".,".contains(self.price[safe: self.price.startIndex] ?? "1") ? Color.red : Color.white)
-                            .robotoMono(.semibold, 17)
-                            .keyboardType(.decimalPad)
-                            .autocorrectionDisabled(true)
-                            .textInputAutocapitalization(.none)
-                        Divider()
-                        Picker(selection: self.$pricePer) {
-                            Text(LocalizedStringKey("per hour")).tag(SpecifiedPriceType.perHour)
-                            Text(LocalizedStringKey("per project")).tag(SpecifiedPriceType.perProject)
-                                .robotoMono(.semibold, 15)
-                                                            .lineLimit(1)
-                                                            .minimumScaleFactor(0.01)
-                        } label: {
-                        }.fixedSize(horizontal: true, vertical: false)
-
-                    }
-                    
-                }
-             
 
             } header: {
-                Text("Reward")
+                Text("Files")
                     .robotoMono(.semibold, 20)
                     .foregroundColor(.white)
-            }.textCase(nil)
-            
-            Section  {
-              
-                NavigationLink(isActive: self.$topicPickerAlive) {
-                    FreelanceTopicPicker(topic: self.$topic,
-                                         isPickerAlive: self.$topicPickerAlive,
-                                         devSubtopic: self.$devSubtopic,
-                                         adminSubtopic: self.$adminSubtopic,
-                                         designSubtopic: self.$designSubtopic,
-                                         testSubtopic: self.$testSubtopic)
-                } label: {
-                    switch self.topic {
-                    case .Administration:
-                        Group {
-                            Text(LocalizedStringKey(self.topic.rawValue)) + Text(": ") + Text(LocalizedStringKey(self.adminSubtopic.rawValue))
-                        }.robotoMono(.semibold, 15)
-                       
-                    case .Testing:
-                        Group {
-                            Text(LocalizedStringKey(self.topic.rawValue)) + Text(": ") + Text(LocalizedStringKey(self.testSubtopic.rawValue))
-                        }.robotoMono(.semibold, 15)
-                       
-                    case .Development:
-                        Group {
-                        Text(LocalizedStringKey(self.topic.rawValue)) + Text(": ") + Text(LocalizedStringKey(self.devSubtopic.rawValue))
-                    }.robotoMono(.semibold, 15)
-                    case .Design:
-                        Group {
-                        Text(LocalizedStringKey(self.topic.rawValue)) + Text(": ") + Text(LocalizedStringKey(self.designSubtopic.rawValue))
-                        }.robotoMono(.semibold, 15)
-                    }
-                }
-
-
+                    .padding(.leading, 20)
+            } footer: {
+                Text("Upload the ToR or other documents in .pdf format")
             }
-            
-            Section {
-                NavigationLink {
-                    LanguageDescriptorPicker(langDescriptors: self.$languageDescriptors)
-                } label: {
-                    
-                    Text(self.getLineFromDescriptors(self.languageDescriptors))
-                        .robotoMono(.semibold, 14, color: .white)
-                        .lineLimit(1)
-                        .minimumScaleFactor(0.01)
-                        
-                }
-                
-            }
+            .textCase(nil)
+            .listRowBackground(Color.clear)
+//            .listRowInsets(EdgeInsets.init(top: 8, leading: 0, bottom: 8, trailing: 0))
+            .buttonStyle(.plain)
             
            Text("")
                 .padding()
                 .listRowBackground(Color.clear)
         }
         .navigationBarTitleDisplayMode(.inline)
+        .onChange(of: self.coreSkills, perform: { string in
+            if string.count(of: ",") > 9 && string.last! == "," {
+                self.coreSkills = String(string.dropLast())
+            }
+        })
+        .sheet(isPresented: self.$showDocumentPicker, content: {
+            UIDocumentPickerViewControllerRepresentable()
+        })
         .toolbar {
             ToolbarItem(placement: .principal) {
                 VStack {
@@ -334,5 +421,14 @@ struct OrderConstructor: View {
     return rawedDescriptors[..<3].joined(separator: ", ") + " and \(rawedDescriptors.count - 3) more"
         
         
+    }
+}
+
+
+extension String {
+    func count(of needle: Character) -> Int {
+        return reduce(0) {
+            $1 == needle ? $0 + 1 : $0
+        }
     }
 }

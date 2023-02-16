@@ -7,6 +7,11 @@
 
 import SwiftUI
 
+fileprivate enum LanguageTitle: String { // To avoid hard-coding
+    case topLanguages = "Top Languages",
+         searchResults = "Search Results"
+}
+
 struct LanguageDescriptorPicker: View {
 
     @Environment(\.dismiss) var dissmiss
@@ -15,6 +20,7 @@ struct LanguageDescriptorPicker: View {
     @State var descriptorsToSet: Set<LangDescriptor> = Set<LangDescriptor>()
     @State private var searchableText: String = ""
     @State var languages: [LangDescriptor] = [.Java, .Python, .CPP, .C, .JavaScript, .Kotlin, .TypeScript, .Dart, .Go, .Ruby, .Rust, .Swift, .PHP, .CSharp, .MATLAB, .Perl, .Scala]
+    @State private var languagesTitle: String = "Top Languages"
     
     let topLanguages: [LangDescriptor] = [.Java, .Python, .CPP, .C, .JavaScript, .Kotlin, .TypeScript, .Dart, .Go, .Ruby, .Rust, .Swift, .PHP, .CSharp, .MATLAB, .Perl, .Scala]
     
@@ -43,46 +49,55 @@ struct LanguageDescriptorPicker: View {
                 }.textCase(nil)
             }
             
-            
-            ForEach(0..<(self.languages.count == 0 ? 1 : 15), id: \.self) { langIndex in
-                if let lang = self.languages[safe: langIndex] {
-                    Button {
-                        print("here")
-                        if !self.descriptorsToSet.contains(lang) {
-                            print("Now contains")
-                            self.descriptorsToSet.insert(lang)
-                            self.descriptorsToSet.remove(LangDescriptor.defaultValue)
-                        } else {
-                            print("Now doesnt contain")
-                            self.descriptorsToSet.remove(lang)
-                            if self.descriptorsToSet.count == 0 {
-                                self.descriptorsToSet.insert(LangDescriptor.defaultValue)
+            Section {
+                
+                ForEach(0..<(self.languages.count == 0 ? 1 : 15), id: \.self) { langIndex in
+                    if let lang = self.languages[safe: langIndex] {
+                        Button {
+                            print("here")
+                            if !self.descriptorsToSet.contains(lang) {
+                                print("Now contains")
+                                self.descriptorsToSet.insert(lang)
+                                self.descriptorsToSet.remove(LangDescriptor.defaultValue)
+                            } else {
+                                print("Now doesnt contain")
+                                self.descriptorsToSet.remove(lang)
+                                if self.descriptorsToSet.count == 0 {
+                                    self.descriptorsToSet.insert(LangDescriptor.defaultValue)
+                                }
                             }
-                        }
-                        
+                            
 
-                    } label: {
-                        Text(lang.rawValue)
-                            .robotoMono(.semibold, 15, color: self.descriptorsToSet.contains(lang) ? Color.black : Color.white)
-                    }.listRowBackground(self.descriptorsToSet.contains(lang) ? Color.green : Color(red: 0.11, green: 0.11, blue: 0.12))
-                    
-                }
-                if self.languages.count == 0 {
-                    HStack {
-                        Image(systemName: "magnifyingglass")
-                            .fixedSize()
-                            .padding(.horizontal)
-                        Text(LocalizedStringKey("Nothing was found for this request..."))
+                        } label: {
+                            Text(lang.rawValue)
+                                .robotoMono(.semibold, 15, color: self.descriptorsToSet.contains(lang) ? Color.black : Color.white)
+                        }.listRowBackground(self.descriptorsToSet.contains(lang) ? Color.green : Color(red: 0.11, green: 0.11, blue: 0.12))
                         
                     }
-                    .lineLimit(1)
-                    .minimumScaleFactor(0.001)
-                    .robotoMono(.semibold, 15, color: .blue)
-                    .listRowBackground(Color.clear)
-                    
+                    if self.languages.count == 0 {
+                        HStack {
+                            Image(systemName: "magnifyingglass")
+                                .fixedSize()
+                                .padding(.horizontal)
+                            Text(LocalizedStringKey("Nothing was found for this request..."))
+                            
+                        }
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.001)
+                        .robotoMono(.semibold, 15, color: .blue)
+                        .listRowBackground(Color.clear)
+                        
+                    }
+                   
                 }
-               
-            }
+            } header: {
+                HStack {
+                    Text(LocalizedStringKey(self.languagesTitle))
+                        .robotoMono(.semibold, 20)
+                    Spacer()
+                }
+                
+            }.textCase(nil)
             Section {
                 Text("")
             }
@@ -113,8 +128,10 @@ struct LanguageDescriptorPicker: View {
             
             if !text.isEmpty {
                 self.languages = LangDescriptor.allLanguages.filter { $0.rawValue.lowercased().contains("\(text)".lowercased())}
+                self.languagesTitle = LanguageTitle.searchResults.rawValue
             } else {
                 self.languages = self.topLanguages
+                self.languagesTitle = LanguageTitle.topLanguages.rawValue
             }
             
         }

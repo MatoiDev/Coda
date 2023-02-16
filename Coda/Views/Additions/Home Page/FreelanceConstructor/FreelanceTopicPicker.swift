@@ -35,6 +35,8 @@ struct FreelanceTopicPicker: View {
                             .scaledToFill()
                             .frame(width: UIScreen.main.bounds.width / 2 - 16, height: 150)
                         Text("Administration")
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.01)
                             .robotoMono(.semibold, 15, color: .white)
                             .padding()
                     }
