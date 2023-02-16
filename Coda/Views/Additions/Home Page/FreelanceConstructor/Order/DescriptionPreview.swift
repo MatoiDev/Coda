@@ -29,31 +29,19 @@ struct DescriptionPreview: View {
                         .foregroundColor(.primary)
                 }
                 Spacer()
-
             }
-            
-            
-            
             // MARK: - Text
             ScrollView(showsIndicators: false) {
                 Text("")
                 Text(LocalizedStringKey(self.text))
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
-            
-            
             .overlay(alignment: .top, content: {
                 LinearGradient(colors: [.init(red: 0.11, green: 0.11, blue: 0.12), .clear], startPoint: .top, endPoint: .bottom)
                     .frame(height: 15)
             })
-            
-            
-            
-            
-            
         }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
             .padding(.all)
-        
     }
 }
 

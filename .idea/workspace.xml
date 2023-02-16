@@ -5,7 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e73295e2-0254-495e-9ac4-9f931d21ceeb" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/Coda/Views/Additions/MBProgressHUD/Coda-Bridging-Header.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Coda/Views/Additions/MBProgressHUD/MBProgressHUD.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Coda/Views/Additions/MBProgressHUD/MBProgressHUD.m" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Coda.xcodeproj/project.pbxproj" beforeDir="false" afterPath="$PROJECT_DIR$/Coda.xcodeproj/project.pbxproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Coda.xcodeproj/project.xcworkspace/xcuserdata/worm.xcuserdatad/UserInterfaceState.xcuserstate" beforeDir="false" afterPath="$PROJECT_DIR$/Coda.xcodeproj/project.xcworkspace/xcuserdata/worm.xcuserdatad/UserInterfaceState.xcuserstate" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Coda/Info.plist" beforeDir="false" afterPath="$PROJECT_DIR$/Coda/Info.plist" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Coda/Utils/Extensions.swift" beforeDir="false" afterPath="$PROJECT_DIR$/Coda/Utils/Extensions.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Coda/Views/Additions/Home Page/FreelanceConstructor/Order/DescriptionPreview.swift" beforeDir="false" afterPath="$PROJECT_DIR$/Coda/Views/Additions/Home Page/FreelanceConstructor/Order/DescriptionPreview.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Coda/Views/Additions/Home Page/FreelanceConstructor/Order/OrderConstructor.swift" beforeDir="false" afterPath="$PROJECT_DIR$/Coda/Views/Additions/Home Page/FreelanceConstructor/Order/OrderConstructor.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Coda/Views/Additions/UIDocumentPickerViewControllerRepresentable.swift" beforeDir="false" afterPath="$PROJECT_DIR$/Coda/Views/Additions/UIDocumentPickerViewControllerRepresentable.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Coda/ru.lproj/Localizable.strings" beforeDir="false" afterPath="$PROJECT_DIR$/Coda/ru.lproj/Localizable.strings" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -87,6 +98,8 @@
       <workItem from="1674321413027" duration="967000" />
       <workItem from="1675085733672" duration="1053000" />
       <workItem from="1675190249804" duration="510000" />
+      <workItem from="1676630578272" duration="1307000" />
+      <workItem from="1676635414490" duration="8000" />
     </task>
     <servers />
   </component>

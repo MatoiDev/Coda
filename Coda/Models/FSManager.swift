@@ -14,6 +14,7 @@ import Firebase
 import FirebaseStorage
 
 class FSManager: ObservableObject {
+    
     @AppStorage("UserID") private var userID : String = ""
     @AppStorage("LoginUserID") var loginUserID: String = ""
 
@@ -35,25 +36,28 @@ class FSManager: ObservableObject {
     @AppStorage("UserProjects") var userProjects : [String] = []
     @AppStorage("UserPosts") var userPosts : [String] = []
     @AppStorage("UserChats") var userChats: [String] = []
+    
+    @Published var uploadingProgress: Progress?
+    
+    private var cancellabels: Set<AnyCancellable> = Set<AnyCancellable>()
 
     private let db = Firestore.firestore()
     
     // MARK: - Generate IDs (Static)
-    static func generateProjectID() -> String {
+    static func generate64CharactersLongID() -> String {
         let letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
         return String((0..<64).map{ _ in letters.randomElement()! })
     }
     
-    static func generateMessageID() -> String {
+    static func generate128CharactersLongID() -> String {
         let letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-        return String((0..<64).map{ _ in letters.randomElement()! })
+        return String((0..<128).map{ _ in letters.randomElement()! })
     }
     
     static func generateMessageImageID(messageID: String) -> String {
         let letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
         return messageID + String((0..<16).map{ _ in letters.randomElement()! })
     }
-    
     
     // MARK: - Upload functions
     func upload(avatar: UIImage, completion: @escaping (Result<URL, Error>) -> Void) -> Void {
@@ -155,6 +159,126 @@ class FSManager: ObservableObject {
                     return
                 }
                 completion(.success("\(url)"))
+            }
+        }
+    }
+    
+    func upload(FreelanceOrderPreviews previews: [UIImage], completion: @escaping (Result<[String], Error>) -> Void) -> Void {
+        
+        let storage = Storage.storage()
+        
+        var uploadedURLs: [String] = []
+        var uploadCount: Int = 0
+        
+        for preview in previews {
+            
+            guard let imageData = preview.jpegData(compressionQuality: 0.4) else { return }
+            
+            let metadata = StorageMetadata()
+            metadata.contentType = "image/png"
+            
+            let imageID = FSManager.generate128CharactersLongID()
+            
+            let ref = storage.reference().child("FreelanceOrderPreviews").child(imageID)
+            
+            ref.putData(imageData, metadata: metadata) { metadata, error in
+                guard let _ = metadata else {
+                    completion(.failure(error!.localizedDescription))
+                    return
+                }
+                
+                ref.downloadURL { url, error in
+                    if let fileURL = url?.absoluteString {
+                        print(fileURL)
+                        uploadedURLs.append(fileURL)
+                        uploadCount += 1
+                        print("Number of previews successfully uploaded: \(uploadCount)")
+                        if uploadCount == previews.count {
+                            print("All previews are uploaded successfully, uploadedImageUrlsArray: \(uploadedURLs)")
+                            completion(.success(uploadedURLs))
+                        }
+                    }
+                    
+                }
+            }
+        }
+       
+    }
+    
+    private func upload(PDFs files: [URL], completionHandler: @escaping (Result<[String], Error>) -> Void) {
+        
+        let storage = Storage.storage()
+
+        var uploadedURLs: [String] = []
+        var uploadCount: Int = 0
+        
+        
+        for file in files {
+            let imageName = file.deletingPathExtension().lastPathComponent
+            let ref = storage.reference().child("FreelanceOrderFiles").child("\(self.loginUserID)/\(imageName)")
+            moveItemsToTempDirectory(originPath: file) { res in
+                switch res {
+                case .success(let filePath):
+                    ref.putFile(from: filePath, metadata: nil) { metadata, error in
+                        if let error = error {
+                            completionHandler(.failure(error.localizedDescription))
+                        }
+                        else {
+                            ref.downloadURL { url, error in
+                                if let fileURL = url?.absoluteString {
+                                    print(fileURL)
+                                    uploadedURLs.append(fileURL)
+                                    uploadCount += 1
+                                    print("Number of files successfully uploaded: \(uploadCount)")
+                                    if uploadCount == files.count{
+                                        print("All Images are uploaded successfully, uploadedImageUrlsArray: \(uploadedURLs)")
+                                        completionHandler(.success(uploadedURLs))
+                                    }
+                                }
+                                
+                            }
+                        }
+                    }
+                case .failure(let e):
+                    completionHandler(.failure(e.localizedDescription))
+                }
+            }
+           
+        }
+    }
+    
+    
+    // MARK: - Upload Publishers
+    func uploadPublisher(PDFs files: [URL]) -> Future<[String], Error> {
+        Future { promise in
+            if files.count == 0 {
+                promise(.success([]))
+                return
+            }
+            self.upload(PDFs: files) { result in
+                switch result {
+                case .success(let urls):
+                    promise(.success(urls))
+                case .failure(let failure):
+                    promise(.failure(failure))
+                }
+            }
+        }
+    }
+    
+    func uploadPublisher(previews files: [UIImage]) -> Future<[String], Error> {
+        Future { promise in
+            if files.count == 0 {
+                promise(.success([]))
+                return
+            }
+            self.upload(FreelanceOrderPreviews: files) { result in
+                switch result {
+                case .success(let urls):
+                    promise(.success(urls))
+                case .failure(let failure):
+                    promise(.failure(failure))
+                }
             }
         }
     }
@@ -298,9 +422,95 @@ class FSManager: ObservableObject {
         }
     }
     
+    func createFreelanceOrder(owner userID: String,
+                              name: String,
+                              description: String,
+                              priceType: FreelanceOrderTypeReward,
+                              price: String,
+                              per: SpecifiedPriceType,
+                              topic: FreelanceTopic,
+                              
+                              devSubtopic: FreelanceSubTopic.FreelanceDevelopingSubTopic,
+                              adminSubtopic: FreelanceSubTopic.FreelanceAdministrationSubTropic,
+                              designSubtopic: FreelanceSubTopic.FreelanceDesignSubTopic,
+                              testSubtopic: FreelanceSubTopic.FreelanceTestingSubTopic,
+    
+                              languages: [LangDescriptor],
+                              coreSkills: String,
+                              previews: [UIImage]?,
+                              files: [URL]?,
+                              completionHandler: @escaping (Result<String, Error>) -> Void) -> Void {
+        
+            self.uploadPublisher(PDFs: files ?? [])
+                .combineLatest(self.uploadPublisher(previews: previews ?? []))
+                .sink { res in
+                    if case .failure = res {
+                        print(res)
+                    }
+                } receiveValue: { (filesURL, previewsURL) in
+//                    guard let self = self else { return }
+                    print("___fds__")
+                    let orderID: String = FSManager.generate64CharactersLongID()
+                    var subtopic: String = ""
+                    switch topic {
+                    case .Administration:
+                        subtopic = adminSubtopic.rawValue
+                    case .Design:
+                        subtopic = designSubtopic.rawValue
+                    case .Development:
+                        subtopic = devSubtopic.rawValue
+                    case .Testing:
+                        subtopic = testSubtopic.rawValue
+                    }
+                    
+                    var rawedLangs: [String] = []
+                    for lang in languages {
+                        rawedLangs.append(lang.rawValue)
+                    }
+                    
+                    self.db.collection("FreelanceOrder").document(orderID).setData([
+                        
+                        "id" : orderID,
+                        "owner": userID,
+                        "name": name,
+                        "description": description,
+                        "priceType": priceType == .negotiated ? "Negotiated" : "Specified",
+                        "price": price,
+                        "pricePer": per.rawValue,
+                        "topic": topic.rawValue,
+                        "subtopic": subtopic,
+                        "langdescriptors": rawedLangs,
+                        "coreskills": coreSkills,
+                        "previews": previewsURL,
+                        "files": filesURL,
+                        "time": Date().timeIntervalSince1970,
+                        "stars": [],
+                        "responses": 0,
+                        "views": 0,
+                        "date": Date().getFormattedDate(format: "d MMM, HH:mm")
+                        
+                    ]) { err in
+                        print("HUUUISAPHfpnhavnidovlnuahsvf______")
+                        if let err = err {
+                            print("Error writing document: \(err)")
+                            self.showPV = false
+                            completionHandler(.failure("Error with creating post: \(err.localizedDescription)"))
+                        } else {
+                            
+                            completionHandler(.success(orderID))
+                        }
+                    }
+                    
+                    
+                }.store(in: &self.cancellabels)
+
+
+        
+    }
+    
     func createPost(owner userID: String, text: String, image: UIImage?=nil, completion: @escaping (Result<String, Error>) -> Void) {
         
-        let id = FSManager.generateProjectID()
+        let id = FSManager.generate64CharactersLongID()
         
         // If post has image
         if let image = image {
@@ -420,7 +630,7 @@ class FSManager: ObservableObject {
         
         let date: String = Date().getFormattedDate(format: "dd.MM.yyyy")
         let hourAndMinute: String = Date().getFormattedDate(format: "HH:mm")
-        let id: String = FSManager.generateMessageID()
+        let id: String = FSManager.generate64CharactersLongID()
         
         if let image = image {
             

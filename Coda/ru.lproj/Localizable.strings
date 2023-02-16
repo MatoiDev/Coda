@@ -72,3 +72,8 @@
 
 "Files" = "Файлы";
 "Upload the ToR or other documents in .pdf format" = "Загрузите ТЗ или другие документы в формате .pdf";
+"Delete" = "Удалить";
+" GB" = " ГБ";
+" MB" = " МБ";
+" KB" = " КБ";
+" B" = " Б";

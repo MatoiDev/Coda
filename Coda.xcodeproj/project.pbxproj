@@ -14,6 +14,7 @@
 		9503F3B1298992A700E1BDEA /* ExploreHeaderViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9503F3B0298992A700E1BDEA /* ExploreHeaderViewCell.swift */; };
 		9503F3B3298992E900E1BDEA /* JobView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9503F3B2298992E900E1BDEA /* JobView.swift */; };
 		95084A8B29324AF200D8EC96 /* ProjectEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95084A8A29324AF200D8EC96 /* ProjectEditor.swift */; };
+		9509BD15299F597000DA9AF8 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 9509BD14299F597000DA9AF8 /* MBProgressHUD.m */; };
 		951367102909C9CE00FD7C78 /* RegisterBubble.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9513670F2909C9CE00FD7C78 /* RegisterBubble.swift */; };
 		951367132909D5B000FD7C78 /* Blur.swift in Sources */ = {isa = PBXBuildFile; fileRef = 951367122909D5B000FD7C78 /* Blur.swift */; };
 		9515509E2958CE7400A23D1D /* ChatCachedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9515509D2958CE7400A23D1D /* ChatCachedImageView.swift */; };
@@ -97,6 +98,7 @@
 		9595C47929083505004726AD /* InputSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9595C47829083505004726AD /* InputSheet.swift */; };
 		9595C47B29083529004726AD /* RegistrationPageMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9595C47A29083529004726AD /* RegistrationPageMain.swift */; };
 		9595C47D290838C0004726AD /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9595C47C290838C0004726AD /* GoogleService-Info.plist */; };
+		95A329D4299FA5ED0001CD4D /* PDFWebViewControllerRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A329D3299FA5ED0001CD4D /* PDFWebViewControllerRepresentable.swift */; };
 		95AA82782919A4AD00B7975C /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95AA82772919A4AD00B7975C /* ImagePicker.swift */; };
 		95AA827A2919B21600B7975C /* ImageCropper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95AA82792919B21600B7975C /* ImageCropper.swift */; };
 		95BA4C5B2996D18A000590C3 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 95BA4C5D2996D18A000590C3 /* Localizable.strings */; };
@@ -144,6 +146,9 @@
 		9503F3B0298992A700E1BDEA /* ExploreHeaderViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExploreHeaderViewCell.swift; sourceTree = "<group>"; };
 		9503F3B2298992E900E1BDEA /* JobView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JobView.swift; sourceTree = "<group>"; };
 		95084A8A29324AF200D8EC96 /* ProjectEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectEditor.swift; sourceTree = "<group>"; };
+		9509BD12299F597000DA9AF8 /* Coda-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Coda-Bridging-Header.h"; sourceTree = "<group>"; };
+		9509BD13299F597000DA9AF8 /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
+		9509BD14299F597000DA9AF8 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
 		9513670F2909C9CE00FD7C78 /* RegisterBubble.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterBubble.swift; sourceTree = "<group>"; };
 		951367122909D5B000FD7C78 /* Blur.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Blur.swift; sourceTree = "<group>"; };
 		9515509D2958CE7400A23D1D /* ChatCachedImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatCachedImageView.swift; sourceTree = "<group>"; };
@@ -214,6 +219,7 @@
 		9595C47829083505004726AD /* InputSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputSheet.swift; sourceTree = "<group>"; };
 		9595C47A29083529004726AD /* RegistrationPageMain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationPageMain.swift; sourceTree = "<group>"; };
 		9595C47C290838C0004726AD /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		95A329D3299FA5ED0001CD4D /* PDFWebViewControllerRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFWebViewControllerRepresentable.swift; sourceTree = "<group>"; };
 		95AA82772919A4AD00B7975C /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		95AA82792919B21600B7975C /* ImageCropper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCropper.swift; sourceTree = "<group>"; };
 		95BA4C5C2996D18A000590C3 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -300,6 +306,7 @@
 				951C8A3B2988398B00F3BFE0 /* Cells */,
 				95864379298AB2DD00C2E59C /* ProjectConstructor */,
 				9586437E298AB73D00C2E59C /* FreelanceConstructor */,
+				95A329D3299FA5ED0001CD4D /* PDFWebViewControllerRepresentable.swift */,
 			);
 			path = "Home Page";
 			sourceTree = "<group>";
@@ -362,6 +369,16 @@
 				9503F3B0298992A700E1BDEA /* ExploreHeaderViewCell.swift */,
 			);
 			path = Main;
+			sourceTree = "<group>";
+		};
+		9509BD11299F595800DA9AF8 /* MBProgressHUD */ = {
+			isa = PBXGroup;
+			children = (
+				9509BD13299F597000DA9AF8 /* MBProgressHUD.h */,
+				9509BD14299F597000DA9AF8 /* MBProgressHUD.m */,
+				9509BD12299F597000DA9AF8 /* Coda-Bridging-Header.h */,
+			);
+			path = MBProgressHUD;
 			sourceTree = "<group>";
 		};
 		951367112909D59E00FD7C78 /* Components */ = {
@@ -651,6 +668,7 @@
 		9595C473290834C3004726AD /* Additions */ = {
 			isa = PBXGroup;
 			children = (
+				9509BD11299F595800DA9AF8 /* MBProgressHUD */,
 				951C8A392988395300F3BFE0 /* SearchNavigation.swift */,
 				95AA82792919B21600B7975C /* ImageCropper.swift */,
 				95AA82772919A4AD00B7975C /* ImagePicker.swift */,
@@ -841,6 +859,7 @@
 				TargetAttributes = {
 					9595C45A2908343C004726AD = {
 						CreatedOnToolsVersion = 13.4.1;
+						LastSwiftMigration = 1420;
 					};
 				};
 			};
@@ -951,6 +970,7 @@
 				95DB57E12931F96D00B7E7A8 /* UOProject.swift in Sources */,
 				951DC337295D9FAF008010E2 /* MessageBubble.swift in Sources */,
 				953E2DBF2982FBAF00A4A82B /* FreelanceView.swift in Sources */,
+				95A329D4299FA5ED0001CD4D /* PDFWebViewControllerRepresentable.swift in Sources */,
 				95F98FA8299EB55900E7FA71 /* UIDocumentPickerViewControllerRepresentable.swift in Sources */,
 				9503F3B1298992A700E1BDEA /* ExploreHeaderViewCell.swift in Sources */,
 				95C4723C2928FE8B0084C60A /* MoreInfoSheet.swift in Sources */,
@@ -982,6 +1002,7 @@
 				95F1CD38290EDCFA000A3080 /* Tab.swift in Sources */,
 				95E5EC9D297DD19700C82946 /* Articles.swift in Sources */,
 				95E5EC9B297DD19700C82946 /* NewsError.swift in Sources */,
+				9509BD15299F597000DA9AF8 /* MBProgressHUD.m in Sources */,
 				95E5ECA5297DDFE600C82946 /* ArticlePostView.swift in Sources */,
 				95F6AF21298FC51D00004545 /* FreelanceEnums.swift in Sources */,
 				951CC6DE2924191E00096222 /* ContinueBubble.swift in Sources */,
@@ -1137,6 +1158,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Coda/Preview Content\"";
@@ -1163,6 +1185,8 @@
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "Coda/Views/Additions/MBProgressHUD/Coda-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -1173,6 +1197,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Coda/Preview Content\"";
@@ -1199,6 +1224,7 @@
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "Coda/Views/Additions/MBProgressHUD/Coda-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};

@@ -75,9 +75,3 @@ struct TLPhotosPickerViewControllerRepresentable: UIViewControllerRepresentable 
         }
     }
 }
-
-//struct TLPhotosPickerViewControllerRepresentable_Previews: PreviewProvider {
-//    static var previews: some View {
-//        TLPhotosPickerViewControllerRepresentable()
-//    }
-//}

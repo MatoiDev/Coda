@@ -159,4 +159,91 @@ extension UIApplication {
     }
 }
 
+extension URL {
 
+    private var fileSize: Int? {
+        let value = try? resourceValues(forKeys: [.fileSizeKey])
+        return value?.fileSize
+    }
+    
+    private var fileName: String? {
+        let value = try? resourceValues(forKeys: [.nameKey])
+        return value?.name
+    }
+    
+    private var fileExtension: String? {
+        let value = try? resourceValues(forKeys: [.contentTypeKey])
+        
+        if let value = value, value.contentType == .pdf {
+            return "PDF"
+        }
+        return nil
+    }
+    
+    var fileAttributes: (name: String, extension: String, size: Int)? {
+        if let fileName: String = self.fileName?.components(separatedBy: ".")[0],
+           let fileExtension: String = self.fileExtension,
+           let fileSize: Int = self.fileSize {
+            print("We have")
+            return (name: fileName, extension: fileExtension, size: fileSize)
+        }
+        return nil
+    }
+}
+
+extension Double {
+    
+    func rounded(toPlaces places:Int) -> Double {
+        let divisor = pow(10.0, Double(places))
+        return (self * divisor).rounded() / divisor
+    }
+    
+    func bytesToHumanReadFormat() -> String {
+        if self >= 1024 * 1024 * 1024 {
+            return String(Double(self / Double(1024 * 1024 * 1024)).rounded(toPlaces: 2)) + (LocalizedStringKey(" GB").stringValue() ?? " MB")
+        }
+        else if self >= 1024 * 1024 {
+            return String(Double(self / Double(1024 * 1024)).rounded(toPlaces: 2)) + (LocalizedStringKey(" MB").stringValue() ?? " MB")
+        } else if self >= 1024 {
+            return String(Double(self / 1024.0).rounded(toPlaces: 2)) + (LocalizedStringKey(" KB").stringValue() ?? " KB")
+        }
+        return String(self) + (LocalizedStringKey(" B").stringValue() ?? " B")
+    }
+    
+}
+
+extension String {
+    func count(of needle: Character) -> Int {
+        return reduce(0) {
+            $1 == needle ? $0 + 1 : $0
+        }
+    }
+}
+
+extension String {
+    static func localizedString(for key: String,
+                                locale: Locale = .current) -> String {
+        
+        let language = locale.languageCode
+        let path = Bundle.main.path(forResource: language, ofType: "lproj")!
+        let bundle = Bundle(path: path)!
+        let localizedString = NSLocalizedString(key, bundle: bundle, comment: "")
+        
+        return localizedString
+    }
+}
+
+extension LocalizedStringKey {
+    var stringKey: String? {
+        Mirror(reflecting: self).children.first(where: { $0.label == "key" })?.value as? String
+    }
+    
+    func stringValue(locale: Locale = .current) -> String? {
+        guard let stringKey = self.stringKey else { return nil }
+        let language = locale.languageCode
+        guard let path = Bundle.main.path(forResource: language, ofType: "lproj") else { return stringKey }
+        guard let bundle = Bundle(path: path) else { return stringKey }
+        let localizedString = NSLocalizedString(stringKey, bundle: bundle, comment: "")
+        return localizedString
+    }
+}

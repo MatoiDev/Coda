@@ -12,11 +12,12 @@ struct SearchNavigation<Content: View>: UIViewControllerRepresentable {
     var search: () -> Void
     var cancel: () -> Void
     var content: () -> Content
+    var accentColor: UIColor = .blue
 
     func makeUIViewController(context: Context) -> UINavigationController {
         let navigationController = UINavigationController(rootViewController: context.coordinator.rootViewController)
         navigationController.navigationBar.prefersLargeTitles = true
-        
+        navigationController.navigationBar.tintColor = self.accentColor
         context.coordinator.searchController.searchBar.delegate = context.coordinator
         
         return navigationController

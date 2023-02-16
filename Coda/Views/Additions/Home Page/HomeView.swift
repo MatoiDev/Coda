@@ -79,10 +79,10 @@ struct HomeView: View {
                 .listRowInsets(EdgeInsets.init(top: 0, leading: 0, bottom: 0, trailing: 0))
                 
                 Text("")
-
+                
                     .listRowBackground(Color.clear)
             }.navigationBarTitle("Home")
-        }).edgesIgnoringSafeArea(.top)
+        }, accentColor: UIColor(Color.cyan)).edgesIgnoringSafeArea(.top)
             
         
     }

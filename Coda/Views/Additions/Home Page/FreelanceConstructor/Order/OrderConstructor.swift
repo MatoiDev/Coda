@@ -9,28 +9,25 @@ import SwiftUI
 import UIKit
 import TLPhotoPicker
 import Combine
-import Introspect
-
-
-
 
 
 /*
  
  Order [Freelance]
- - id: String
+ - id: String ✅
  - title: String ✅
  - description: String ✅
- - customerID: userID
+ - customerID: userID ✅
  - reward: String || Int ✅
  - topic: FreelanceTopic (enum) ✅
  - subTopic: FreelanceSubTopic.rawValue ✅
- - dateOfPublish: String
- - responses:  Int
- - views: Int
- - upvotes: Int
+ - dateOfPublish: String ✅
+ - responses: Int ✅
+ - views: Int ✅
  - descriptors: [LangDescriptor] ✅
- - imageExamplesURLs: [String]    —>    In Storage: FreelanceOrdersExamples
+ - Core skills: [String] ✅
+ - Files : [URL] ✅      ->      In Storage: FreelanceOrderFiles
+ - imageExamplesURLs: [String] ✅    —>    In Storage: FreelanceOrdersExamples
  
  */
 
@@ -42,6 +39,9 @@ enum SpecifiedPriceType: String, CaseIterable, Identifiable {
 
 struct OrderConstructor: View {
     
+    
+    @AppStorage("LoginUserID") var loginUserID: String = ""
+    
     // Edit properties
     @State private var title: String = ""
     @State private var description: String = ""
@@ -50,6 +50,7 @@ struct OrderConstructor: View {
     @State private var pricePer: SpecifiedPriceType = .perHour
     @State private var topic: FreelanceTopic = .Development
     @State private var languageDescriptors: [LangDescriptor] = [LangDescriptor.defaultValue]
+    @State private var selectedPDFs: [URL] = []
     
     @State private var devSubtopic: FreelanceSubTopic.FreelanceDevelopingSubTopic = .Offtop
     @State private var adminSubtopic: FreelanceSubTopic.FreelanceAdministrationSubTropic = .Offtop
@@ -63,6 +64,9 @@ struct OrderConstructor: View {
     @State private var showPreviewDescription: Bool = false
     @State private var showDocumentPicker: Bool = false
     
+    @State private var showPDFView: Bool = false
+    @State private var pdfURLToOpen: URL?
+    
     @State private var showLinkAlert: Bool = false
     @State private var TFAlertText: String? // Текст, который ввели в алерте
     @State private var stub: String?
@@ -72,9 +76,9 @@ struct OrderConstructor: View {
     
     @State private var coreSkills: String = ""
     
-    
-    
     let textAlertHandler : TextAlertHandler = TextAlertHandler.sharedInstance
+    
+    @ObservedObject private var fsmanager: FSManager = FSManager()
     
     
     var body: some View {
@@ -89,6 +93,7 @@ struct OrderConstructor: View {
                     
                 MultilineListRowTextField("Order description", text: self.$description, alertTrigger: self.$showLinkAlert)
                     .robotoMono(.medium, 13)
+                    .offset(x: -4)
                     .fixedSize(horizontal: false, vertical: true)
                     
             } header: {
@@ -104,7 +109,7 @@ struct OrderConstructor: View {
                         self.showPreviewDescription.toggle()
                     } label: {
                         Text("Preview")
-                            .robotoMono(.medium, 12, color: .blue)
+                            .robotoMono(.medium, 12, color: .cyan)
                     }
                     Spacer()
                     Text("\(self.description.count)/5000")
@@ -282,7 +287,6 @@ struct OrderConstructor: View {
                                         Image(uiImage: image)
                                             .resizable()
                                             .scaledToFill()
-                                        
                                     } else {
                                         ZStack {
                                             Color(red: 0.11, green: 0.11, blue: 0.12)
@@ -292,9 +296,7 @@ struct OrderConstructor: View {
                                                 .foregroundColor(.primary)
                                                 .frame(width: 50, height: 50)
                                         }
-                                        
                                     }
-                                
                             }
                             .frame(width: 250, height: 150)
                             .clipShape(RoundedRectangle(cornerRadius: 25))
@@ -321,11 +323,8 @@ struct OrderConstructor: View {
                                 .foregroundColor(Color("Register2"))
                                 .frame(width: 20, height: 20)
                                 .font(.system(size: 20).bold())
-                                
                         }
                     }
-                   
-                    
                 }
             }
             .textCase(nil)
@@ -335,37 +334,88 @@ struct OrderConstructor: View {
             
             // MARK: - Files
             // MARK: - Files Picker
-            Section {
-                Button {
-                    self.showDocumentPicker.toggle()
-                } label: {
-                    RoundedRectangle(cornerRadius: 25).foregroundColor(Color.clear)
-                        .frame(height: 150)
-                        .overlay {
-                            RoundedRectangle(cornerRadius: 25)
-                                .stroke(Color.white, style: StrokeStyle(lineWidth: 2, dash: [10], dashPhase: 4))
-                        }
-                        .overlay {
-                            Image("RoseCloud")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(height: 150)
-                        }
-                        
+            if self.selectedPDFs.count < 3 {
+                Section {
+                    Button {
+                        self.showDocumentPicker.toggle()
+                    } label: {
+                        RoundedRectangle(cornerRadius: 25).foregroundColor(Color.clear)
+                            .frame(height: 150)
+                            .overlay {
+                                RoundedRectangle(cornerRadius: 25)
+                                    .stroke(Color.white, style: StrokeStyle(lineWidth: 2, dash: [10], dashPhase: 4))
+                            }
+                            .overlay {
+                                Image("RoseCloud")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(height: 150)
+                            }
+                    }
+                } header: {
+                    Text("Files")
+                        .robotoMono(.semibold, 20)
+                        .foregroundColor(.white)
+//                        .padding(.leading, 20)
+                } footer: {
+                    Text("Upload the ToR or other documents in .pdf format")
                 }
-
-            } header: {
-                Text("Files")
-                    .robotoMono(.semibold, 20)
-                    .foregroundColor(.white)
-                    .padding(.leading, 20)
-            } footer: {
-                Text("Upload the ToR or other documents in .pdf format")
+                .textCase(nil)
+                .listRowBackground(Color.clear)
+    //            .listRowInsets(EdgeInsets.init(top: 8, leading: 0, bottom: 8, trailing: 0))
+                .buttonStyle(.plain)
             }
-            .textCase(nil)
-            .listRowBackground(Color.clear)
-//            .listRowInsets(EdgeInsets.init(top: 8, leading: 0, bottom: 8, trailing: 0))
-            .buttonStyle(.plain)
+            Section {
+                ForEach(self.selectedPDFs, id: \.self) { url in
+                    if let attributes = url.fileAttributes {
+                        Button {
+                            self.pdfURLToOpen = url
+                            self.showPDFView.toggle()
+                        } label: {
+                            HStack {
+                                Image(systemName: "doc.viewfinder")
+                                        .resizable()
+                                        .frame(width: 35, height: 35)
+                                        .symbolRenderingMode(.hierarchical)
+                                        .foregroundColor(.primary)
+                                
+                                Text(attributes.name)
+                                    .robotoMono(.semibold, 12)
+                                    .frame(maxWidth: 120, maxHeight: 45)
+                                    .lineLimit(1)
+                                Spacer()
+                                Text(attributes.extension)
+                                        .foregroundColor(.secondary)
+                                Spacer()
+                                Text(Double(attributes.size).bytesToHumanReadFormat())
+                                        .foregroundColor(.secondary)
+                                        .robotoMono(.semibold, 13)
+                            }.robotoMono(.semibold, 15)
+                        }
+                    }
+                }
+                .onDelete(perform: self.onDelete)
+                .onMove(perform: self.onMove)
+            } header: {
+                if self.selectedPDFs.count == 3 {
+                    Text("Files")
+                        .robotoMono(.semibold, 20, color: .primary)
+                }
+            }.textCase(nil)
+            
+            Button {
+                self.fsmanager.createFreelanceOrder(owner: self.loginUserID, name: self.title, description: self.description, priceType: self.reward, price: self.price, per: self.pricePer, topic: self.topic, devSubtopic: self.devSubtopic, adminSubtopic: self.adminSubtopic, designSubtopic: self.designSubtopic, testSubtopic: self.testSubtopic, languages: self.languageDescriptors, coreSkills: self.coreSkills, previews: self.assetsToImage(assets: self.selectedAssets), files: self.selectedPDFs) { res in
+                    switch res {
+                    case .success(let success):
+                        print(success)
+                    case .failure(_):
+                        print("fail")
+                    }
+                }
+            } label: {
+                Text("Test")
+            }
+
             
            Text("")
                 .padding()
@@ -378,7 +428,7 @@ struct OrderConstructor: View {
             }
         })
         .sheet(isPresented: self.$showDocumentPicker, content: {
-            UIDocumentPickerViewControllerRepresentable()
+            UIDocumentPickerViewControllerRepresentable(documentURLs: self.$selectedPDFs)
         })
         .toolbar {
             ToolbarItem(placement: .principal) {
@@ -401,9 +451,32 @@ struct OrderConstructor: View {
         .sheet(isPresented: self.$showPreviewDescription) {
             DescriptionPreview(text: self.description)
         }
+        .sheet(isPresented: self.$showPDFView, content: {
+            PDFWebViewControllerRepresentable(with: self.$pdfURLToOpen)
+                .edgesIgnoringSafeArea(.all)
+        })
         .fullScreenCover(isPresented: self.$showTLPhotosPicker) {
             TLPhotosPickerViewControllerRepresentable(assets: self.$selectedAssets)
         } 
+    }
+    
+    private func assetsToImage(assets: [TLPHAsset]) -> [UIImage] {
+        var images: [UIImage] = []
+        for asset in assets {
+            if let image = asset.fullResolutionImage {
+                images.append(image)
+            }
+            
+        }
+        return images
+    }
+    
+    private func onDelete(offsets: IndexSet) {
+        self.selectedPDFs.remove(atOffsets: offsets)
+    }
+    
+    private func onMove(source: IndexSet, destination: Int) {
+        self.selectedPDFs.move(fromOffsets: source, toOffset: destination)
     }
     
     private func getLineFromDescriptors(_ descriptors: [LangDescriptor]) -> String {
@@ -425,10 +498,7 @@ struct OrderConstructor: View {
 }
 
 
-extension String {
-    func count(of needle: Character) -> Int {
-        return reduce(0) {
-            $1 == needle ? $0 + 1 : $0
-        }
-    }
-}
+
+
+
+
