@@ -37,6 +37,17 @@ enum SpecifiedPriceType: String, CaseIterable, Identifiable {
     var id: Self { self }
 }
 
+extension View {
+    func hookMBProgressHUD(isPresented: Binding<Bool>, progressInPercentages: Binding<Double>) -> some View {
+        ZStack {
+            self
+            if isPresented.wrappedValue {
+                MBProgressHUDRepresentable(percent: progressInPercentages, show: isPresented)
+            }
+        }
+    }
+}
+
 struct OrderConstructor: View {
     
     
@@ -71,6 +82,9 @@ struct OrderConstructor: View {
     @State private var TFAlertText: String? // Текст, который ввели в алерте
     @State private var stub: String?
     
+    @State private var MBProgressHook: Bool = false
+    @State private var MBProgressInPercentages: Double = 0
+    
     @State private var showTLPhotosPicker: Bool = false
     @State private var selectedAssets: [TLPHAsset] = [TLPHAsset]() // Images
     
@@ -79,7 +93,8 @@ struct OrderConstructor: View {
     let textAlertHandler : TextAlertHandler = TextAlertHandler.sharedInstance
     
     @ObservedObject private var fsmanager: FSManager = FSManager()
-    
+    @ObservedObject private var observeManager: FirebaseFilesUploadingProgreessManager = FirebaseFilesUploadingProgreessManager()
+
     
     var body: some View {
         List {
@@ -404,7 +419,8 @@ struct OrderConstructor: View {
             }.textCase(nil)
             
             Button {
-                self.fsmanager.createFreelanceOrder(owner: self.loginUserID, name: self.title, description: self.description, priceType: self.reward, price: self.price, per: self.pricePer, topic: self.topic, devSubtopic: self.devSubtopic, adminSubtopic: self.adminSubtopic, designSubtopic: self.designSubtopic, testSubtopic: self.testSubtopic, languages: self.languageDescriptors, coreSkills: self.coreSkills, previews: self.assetsToImage(assets: self.selectedAssets), files: self.selectedPDFs) { res in
+                self.MBProgressHook.toggle()
+                self.fsmanager.createFreelanceOrder(owner: self.loginUserID, name: self.title, description: self.description, priceType: self.reward, price: self.price, per: self.pricePer, topic: self.topic, devSubtopic: self.devSubtopic, adminSubtopic: self.adminSubtopic, designSubtopic: self.designSubtopic, testSubtopic: self.testSubtopic, languages: self.languageDescriptors, coreSkills: self.coreSkills, previews: self.assetsToImage(assets: self.selectedAssets), files: self.selectedPDFs, observeManager: self.observeManager) { res in
                     switch res {
                     case .success(let success):
                         print(success)
@@ -421,6 +437,7 @@ struct OrderConstructor: View {
                 .padding()
                 .listRowBackground(Color.clear)
         }
+        .hookMBProgressHUD(isPresented: self.$MBProgressHook, progressInPercentages: self.$observeManager.amountPercentage)
         .navigationBarTitleDisplayMode(.inline)
         .onChange(of: self.coreSkills, perform: { string in
             if string.count(of: ",") > 9 && string.last! == "," {
@@ -457,7 +474,8 @@ struct OrderConstructor: View {
         })
         .fullScreenCover(isPresented: self.$showTLPhotosPicker) {
             TLPhotosPickerViewControllerRepresentable(assets: self.$selectedAssets)
-        } 
+        }
+        
     }
     
     private func assetsToImage(assets: [TLPHAsset]) -> [UIImage] {

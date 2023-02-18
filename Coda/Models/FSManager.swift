@@ -13,6 +13,73 @@ import FirebaseFirestore
 import Firebase
 import FirebaseStorage
 
+
+class FirebaseFilesUploadingProgreessManager: ObservableObject {
+
+//    @Published var images: [(StorageTaskStatus, @escaping (StorageTaskSnapshot) -> Void) -> String] = []
+//    @Published var files: [(StorageTaskStatus, @escaping (StorageTaskSnapshot) -> Void) -> String] = []
+    
+    init() {
+        self.addPublisherToProgressSnapshot()
+    }
+    
+    @Published var imagesProgressSnapshots: [StorageTaskSnapshot : Double] = [:]
+    @Published var filesProgressSnapshots: [StorageTaskSnapshot : Double] = [:]
+    
+    @Published var imagePercentage: Double = 0
+    @Published var filesPercentage: Double = 0
+    
+    @Published var amountPercentage: Double = 0
+    
+    var cancellabels: Set<AnyCancellable> = Set<AnyCancellable>()
+
+//    func getAmountPercentageOfImageUploadings(completion: @escaping (Double) -> ()) {
+//        var amount: Double = 0
+//        for snapshot in self.imagesProgressSnapshots.keys {
+//            print("_______")
+//            amount += imagesProgressSnapshots[snapshot]!
+//        }
+//        completion(amount)
+//    }
+    
+    func addPublisherToProgressSnapshot() {
+        $imagesProgressSnapshots
+            .combineLatest($filesProgressSnapshots)
+            .sink { completionResult in
+                switch completionResult {
+                case .finished:
+                    print("ALL IMAGES AND FILES HAVE UPLOADED")
+                case .failure(let err):
+                    print("error with uploading files: \(err)")
+                }
+            } receiveValue: { [weak self] (dictOfImages, dictOfFiles) in
+                guard let self = self else { return }
+                guard self.imagePercentage != 100.0 && self.filesPercentage != 100.0 else {
+                    self.amountPercentage = 90
+                    return
+                }
+                var amount: Double = 0
+                if !dictOfFiles.isEmpty {
+                    for snapshot in dictOfFiles.keys {
+                        amount += dictOfFiles[snapshot]!
+                    }
+                }
+                if !dictOfImages.isEmpty {
+                    for snapshot in dictOfImages.keys {
+                        amount += dictOfImages[snapshot]!
+                    }
+                }
+                self.amountPercentage = amount / (Double(dictOfFiles.keys.count) + Double(dictOfImages.count))
+                print(self.amountPercentage)
+            }
+            .store(in: &self.cancellabels)
+
+            
+    }
+
+}
+
+
 class FSManager: ObservableObject {
     
     @AppStorage("UserID") private var userID : String = ""
@@ -163,7 +230,7 @@ class FSManager: ObservableObject {
         }
     }
     
-    func upload(FreelanceOrderPreviews previews: [UIImage], completion: @escaping (Result<[String], Error>) -> Void) -> Void {
+    func upload(FreelanceOrderPreviews previews: [UIImage], observeManager: FirebaseFilesUploadingProgreessManager, completion: @escaping (Result<[String], Error>) -> Void) -> Void {
         
         let storage = Storage.storage()
         
@@ -181,7 +248,7 @@ class FSManager: ObservableObject {
             
             let ref = storage.reference().child("FreelanceOrderPreviews").child(imageID)
             
-            ref.putData(imageData, metadata: metadata) { metadata, error in
+            let uploadTask = ref.putData(imageData, metadata: metadata) { metadata, error in
                 guard let _ = metadata else {
                     completion(.failure(error!.localizedDescription))
                     return
@@ -201,11 +268,18 @@ class FSManager: ObservableObject {
                     
                 }
             }
+           
+            let observer = uploadTask.observe(.progress) { snapshot in
+//                print(snapshot, "----------->>>>>>><<<<<<<----------")
+                let percentComplete = 100.0 * Double(snapshot.progress!.completedUnitCount) / Double(snapshot.progress!.totalUnitCount)
+                observeManager.imagesProgressSnapshots[snapshot] = percentComplete
+            }
+            
         }
        
     }
     
-    private func upload(PDFs files: [URL], completionHandler: @escaping (Result<[String], Error>) -> Void) {
+    private func upload(PDFs files: [URL], observeManager: FirebaseFilesUploadingProgreessManager, completionHandler: @escaping (Result<[String], Error>) -> Void) {
         
         let storage = Storage.storage()
 
@@ -219,7 +293,7 @@ class FSManager: ObservableObject {
             moveItemsToTempDirectory(originPath: file) { res in
                 switch res {
                 case .success(let filePath):
-                    ref.putFile(from: filePath, metadata: nil) { metadata, error in
+                    let uploadTask = ref.putFile(from: filePath, metadata: nil) { metadata, error in
                         if let error = error {
                             completionHandler(.failure(error.localizedDescription))
                         }
@@ -231,7 +305,8 @@ class FSManager: ObservableObject {
                                     uploadCount += 1
                                     print("Number of files successfully uploaded: \(uploadCount)")
                                     if uploadCount == files.count{
-                                        print("All Images are uploaded successfully, uploadedImageUrlsArray: \(uploadedURLs)")
+                                        print("All files are uploaded successfully, uploadedImageUrlsArray: \(uploadedURLs)")
+                                        
                                         completionHandler(.success(uploadedURLs))
                                     }
                                 }
@@ -239,6 +314,13 @@ class FSManager: ObservableObject {
                             }
                         }
                     }
+                    
+                    let observer = uploadTask.observe(.progress) { snapshot in
+        //                print(snapshot, "----------->>>>>>><<<<<<<----------")
+                        let percentComplete = 100.0 * Double(snapshot.progress!.completedUnitCount) / Double(snapshot.progress!.totalUnitCount)
+                        observeManager.filesProgressSnapshots[snapshot] = percentComplete
+                    }
+                    
                 case .failure(let e):
                     completionHandler(.failure(e.localizedDescription))
                 }
@@ -249,15 +331,16 @@ class FSManager: ObservableObject {
     
     
     // MARK: - Upload Publishers
-    func uploadPublisher(PDFs files: [URL]) -> Future<[String], Error> {
+    func uploadPublisher(PDFs files: [URL], observeManager: FirebaseFilesUploadingProgreessManager) -> Future<[String], Error> {
         Future { promise in
             if files.count == 0 {
                 promise(.success([]))
                 return
             }
-            self.upload(PDFs: files) { result in
+            self.upload(PDFs: files, observeManager: observeManager) { result in
                 switch result {
                 case .success(let urls):
+                    observeManager.filesPercentage = 100.0
                     promise(.success(urls))
                 case .failure(let failure):
                     promise(.failure(failure))
@@ -266,16 +349,18 @@ class FSManager: ObservableObject {
         }
     }
     
-    func uploadPublisher(previews files: [UIImage]) -> Future<[String], Error> {
+    func uploadPublisher(previews files: [UIImage], observeManager: FirebaseFilesUploadingProgreessManager) -> Future<[String], Error> {
         Future { promise in
             if files.count == 0 {
                 promise(.success([]))
                 return
             }
-            self.upload(FreelanceOrderPreviews: files) { result in
+            self.upload(FreelanceOrderPreviews: files, observeManager: observeManager) { result in
                 switch result {
                 case .success(let urls):
+                    observeManager.imagePercentage = 100.0
                     promise(.success(urls))
+                    
                 case .failure(let failure):
                     promise(.failure(failure))
                 }
@@ -439,17 +524,16 @@ class FSManager: ObservableObject {
                               coreSkills: String,
                               previews: [UIImage]?,
                               files: [URL]?,
+                              observeManager: FirebaseFilesUploadingProgreessManager,
                               completionHandler: @escaping (Result<String, Error>) -> Void) -> Void {
         
-            self.uploadPublisher(PDFs: files ?? [])
-                .combineLatest(self.uploadPublisher(previews: previews ?? []))
+            self.uploadPublisher(PDFs: files ?? [], observeManager: observeManager)
+                .combineLatest(self.uploadPublisher(previews: previews ?? [], observeManager: observeManager))
                 .sink { res in
                     if case .failure = res {
                         print(res)
                     }
                 } receiveValue: { (filesURL, previewsURL) in
-//                    guard let self = self else { return }
-                    print("___fds__")
                     let orderID: String = FSManager.generate64CharactersLongID()
                     var subtopic: String = ""
                     switch topic {
@@ -496,7 +580,7 @@ class FSManager: ObservableObject {
                             self.showPV = false
                             completionHandler(.failure("Error with creating post: \(err.localizedDescription)"))
                         } else {
-                            
+                            observeManager.amountPercentage = 100
                             completionHandler(.success(orderID))
                         }
                     }
