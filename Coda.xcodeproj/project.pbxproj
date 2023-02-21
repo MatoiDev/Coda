@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		37C71976C935813CE712F5EC /* TabItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37C715763F3521CCCF09C230 /* TabItem.swift */; };
+		95012A8829A3F2C800867188 /* OrderPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95012A8729A3F2C800867188 /* OrderPreview.swift */; };
 		9503F3A8298991FA00E1BDEA /* ProjectsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9503F3A7298991FA00E1BDEA /* ProjectsListView.swift */; };
 		9503F3AC2989923100E1BDEA /* SummariesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9503F3AB2989923100E1BDEA /* SummariesView.swift */; };
 		9503F3AF2989928300E1BDEA /* ExploreViewHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9503F3AE2989928300E1BDEA /* ExploreViewHeader.swift */; };
@@ -72,6 +73,7 @@
 		95450D87295BAC7200B64C65 /* FirebaseStorageCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = 95450D86295BAC7200B64C65 /* FirebaseStorageCombine-Community */; };
 		9545E4142924ADCD009579BA /* ChooseLanguageButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545E4132924ADCD009579BA /* ChooseLanguageButton.swift */; };
 		9545E4162924B158009579BA /* LanguagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9545E4152924B158009579BA /* LanguagePicker.swift */; };
+		95471A8A29A54F2600ED354A /* WrappedHStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95471A8929A54F2600ED354A /* WrappedHStack.swift */; };
 		9548C018299435FC00C341D8 /* TLPhotoPicker in Frameworks */ = {isa = PBXBuildFile; productRef = 9548C017299435FC00C341D8 /* TLPhotoPicker */; };
 		9548C01A299436F600C341D8 /* TLPhotosPickerViewControllerRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9548C019299436F600C341D8 /* TLPhotosPickerViewControllerRepresentable.swift */; };
 		954ADF45291FBF32001300EA /* AvatarImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 954ADF44291FBF32001300EA /* AvatarImageView.swift */; };
@@ -141,6 +143,7 @@
 
 /* Begin PBXFileReference section */
 		37C715763F3521CCCF09C230 /* TabItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabItem.swift; sourceTree = "<group>"; };
+		95012A8729A3F2C800867188 /* OrderPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderPreview.swift; sourceTree = "<group>"; };
 		9503F3A7298991FA00E1BDEA /* ProjectsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectsListView.swift; sourceTree = "<group>"; };
 		9503F3AB2989923100E1BDEA /* SummariesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummariesView.swift; sourceTree = "<group>"; };
 		9503F3AE2989928300E1BDEA /* ExploreViewHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExploreViewHeader.swift; sourceTree = "<group>"; };
@@ -197,6 +200,7 @@
 		95421D082911914000980E52 /* ProjectCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectCell.swift; sourceTree = "<group>"; };
 		9545E4132924ADCD009579BA /* ChooseLanguageButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseLanguageButton.swift; sourceTree = "<group>"; };
 		9545E4152924B158009579BA /* LanguagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguagePicker.swift; sourceTree = "<group>"; };
+		95471A8929A54F2600ED354A /* WrappedHStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WrappedHStack.swift; sourceTree = "<group>"; };
 		9548C019299436F600C341D8 /* TLPhotosPickerViewControllerRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TLPhotosPickerViewControllerRepresentable.swift; sourceTree = "<group>"; };
 		954ADF44291FBF32001300EA /* AvatarImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarImageView.swift; sourceTree = "<group>"; };
 		954ADF46291FBFFF001300EA /* CachedImageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CachedImageModel.swift; sourceTree = "<group>"; };
@@ -688,6 +692,7 @@
 				95F6AF25298FD3F100004545 /* UIKitAlertWithTextField.swift */,
 				9548C019299436F600C341D8 /* TLPhotosPickerViewControllerRepresentable.swift */,
 				95F98FA7299EB55900E7FA71 /* UIDocumentPickerViewControllerRepresentable.swift */,
+				95471A8929A54F2600ED354A /* WrappedHStack.swift */,
 			);
 			path = Additions;
 			sourceTree = "<group>";
@@ -795,6 +800,7 @@
 			children = (
 				9539D90B298AEDD200654069 /* OrderConstructor.swift */,
 				95F6AF23298FC5DB00004545 /* DescriptionPreview.swift */,
+				95012A8729A3F2C800867188 /* OrderPreview.swift */,
 			);
 			path = Order;
 			sourceTree = "<group>";
@@ -928,6 +934,7 @@
 				9545E4142924ADCD009579BA /* ChooseLanguageButton.swift in Sources */,
 				95F6AF24298FC5DB00004545 /* DescriptionPreview.swift in Sources */,
 				95F1CD36290EDC8D000A3080 /* CodaTabBar.swift in Sources */,
+				95471A8A29A54F2600ED354A /* WrappedHStack.swift in Sources */,
 				953AEBFF294A30D600170772 /* PostView.swift in Sources */,
 				9595C47929083505004726AD /* InputSheet.swift in Sources */,
 				95E5ECA6297DDFE600C82946 /* ArticleImageAsync.swift in Sources */,
@@ -963,6 +970,7 @@
 				9519B05529087E1800504B03 /* LoginOption.swift in Sources */,
 				95AA827A2919B21600B7975C /* ImageCropper.swift in Sources */,
 				95F0FD8D295375E100648213 /* Vibro.swift in Sources */,
+				95012A8829A3F2C800867188 /* OrderPreview.swift in Sources */,
 				951DBBF22910394C00FAB2E3 /* BottomSheetPositions.swift in Sources */,
 				951367102909C9CE00FD7C78 /* RegisterBubble.swift in Sources */,
 				9526C7A2291441E60005C285 /* DataEditor.swift in Sources */,

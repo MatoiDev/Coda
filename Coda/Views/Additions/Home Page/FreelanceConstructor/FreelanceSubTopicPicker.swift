@@ -157,7 +157,7 @@ struct FreelanceSubTopicPicker: View {
     }
     
     var body: some View {
-        ZStack(alignment: .topLeading) {
+        ZStack(alignment: .topTrailing) {
             ScrollView {
                 VStack(alignment: .leading) {
                     VStack(alignment: .leading, spacing: 10) {
@@ -255,6 +255,7 @@ struct FreelanceSubTopicPicker: View {
             .navigationBarHidden(true)
             .edgesIgnoringSafeArea(.all)
             
+            // MARK: - Cancell Button
             Button {
                 self.dissmiss.callAsFunction()
             } label: {
@@ -262,8 +263,8 @@ struct FreelanceSubTopicPicker: View {
                     .resizable()
                     .symbolRenderingMode(.hierarchical)
                     .foregroundColor(.primary)
-                    .frame(width: 35, height: 35)
-                    .padding(.leading, 24)
+                    .frame(width: 30, height: 30)
+                    .padding(.trailing, 24)
             }
         }
     }
