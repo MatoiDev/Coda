@@ -13,6 +13,8 @@ struct FreelanceConstructorCrossroadView: View {
     @State private var linkToOrder: Bool = false
     @State private var linkToService: Bool = false
     
+    @Binding var rootViewIsActive: Bool
+    
     var body: some View {
         List {
             
@@ -38,9 +40,12 @@ struct FreelanceConstructorCrossroadView: View {
             }.overlay(
                 NavigationLink(
                     isActive: self.$linkToService,
-                    destination: { Text("FreelanceServicePreview") },
+                    destination: { ServiceConstructor(rootViewIsActive: self.$rootViewIsActive) },
                     label: { EmptyView() }
-                ).opacity(0)
+                )
+                .isDetailLink(false)
+                .opacity(0)
+                
             )
             .listRowBackground(Color.clear)
             
@@ -69,9 +74,11 @@ struct FreelanceConstructorCrossroadView: View {
             .overlay(
                 NavigationLink(
                     isActive: self.$linkToOrder,
-                    destination: { OrderConstructor() },
+                    destination: { OrderConstructor(rootViewIsActive: self.$rootViewIsActive) },
                     label: { EmptyView() }
-                ).opacity(0)
+                )
+                .isDetailLink(false)
+                .opacity(0)
             )
             .listRowBackground(Color.clear)
     
@@ -94,6 +101,6 @@ struct FreelanceConstructorCrossroadView: View {
 
 struct FreelanceConstructorCrossroadView_Previews: PreviewProvider {
     static var previews: some View {
-        FreelanceConstructorCrossroadView()
+        FreelanceConstructorCrossroadView(rootViewIsActive: .constant(true))
     }
 }

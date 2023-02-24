@@ -41,7 +41,8 @@ struct FreelanceTopicPicker: View {
                             .padding()
                     }
                     
-                }.clipShape(RoundedRectangle(cornerRadius: 25))
+                }.isDetailLink(false)
+                .clipShape(RoundedRectangle(cornerRadius: 25))
                 
                 NavigationLink {
                     FreelanceSubTopicPicker(.Design, setTo: self.$topic, devSubtopic: self.$devSubtopic, adminSubtopic: self.$adminSubtopic, designSubtopic: self.$designSubtopic, testSubtopic: self.$testSubtopic, killOn: self.$isPickerAlive)

@@ -82,6 +82,7 @@ struct FreelanceSubTopicPicker: View {
         self._designSubtopic = designSubtopic
         self._testSubtopic = testSubtopic
         self._killPicker = killPicker
+        
     }
     
     private let imageHeight: CGFloat = 175
@@ -252,7 +253,7 @@ struct FreelanceSubTopicPicker: View {
                 }.frame(height: imageHeight)
                     .offset(x: 0, y: -(articleContent.startingRect?.maxY ?? UIScreen.main.bounds.height))
             }
-            .navigationBarHidden(true)
+            .navigationBarHidden(self.killPicker)
             .edgesIgnoringSafeArea(.all)
             
             // MARK: - Cancell Button

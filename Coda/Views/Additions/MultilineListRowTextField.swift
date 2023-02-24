@@ -9,16 +9,7 @@ import SwiftUI
 import UIKit
 import Combine
 
-//struct URLAlertKey: EnvironmentKey {
-//    static let defaultValue: String = ""
-//}
-//
-//extension EnvironmentValues {
-//    var URLAlertValue: String {
-//        get { self[URLAlertKey.self] }
-//        set { self[URLAlertKey.self] = newValue }
-//    }
-//}
+
 
 class TextAlertHandler: ObservableObject {
     
@@ -124,6 +115,8 @@ fileprivate struct UITextViewWrapper: UIViewRepresentable {
         }
         
         func textViewDidChange(_ textView: UITextView) {
+            
+            if textView.text.isEmpty && self.text.count > 1  { return } //  Чтобы значение не сбрасывалось при обновлении ячейки
             self.text = textView.text
             UITextViewWrapper.recalculateHeight(view: textView, result: calculatedHeight)
         }

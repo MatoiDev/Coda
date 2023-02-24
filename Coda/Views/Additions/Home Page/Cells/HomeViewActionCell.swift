@@ -9,12 +9,16 @@ import SwiftUI
 
 struct HomeViewActionCell<Content: View>: View {
     
+    @State var isActive: Bool = false
+    
     let title: String
     let image: String
-    @ViewBuilder let destination: Content
+    @ViewBuilder let destination: (_ active: Binding<Bool>) ->  Content
     
     var body: some View {
-        NavigationLink(destination: destination) {
+        NavigationLink(isActive: self.$isActive) {
+            destination($isActive)
+        } label: {
             HStack {
                 Image(image)
                     .resizable()
@@ -26,8 +30,15 @@ struct HomeViewActionCell<Content: View>: View {
             }
             
             .frame(maxWidth: .infinity, alignment: .leading)
-        }.padding(.leading, 12)
+        }
+
+    
+        .isDetailLink(false)
+        .padding(.leading, 12)
             .padding(.trailing)
             .padding(.vertical, 12)
+            .onChange(of: self.isActive) { newValue in
+                print("Change the new value, need to close the root view: \(newValue)")
+            }
     }
 }

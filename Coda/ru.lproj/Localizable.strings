@@ -65,6 +65,8 @@
 "Language Requirements" = "Используемые Языки";
 
 "Order name" = "Название заказа";
+"Service name" = "Название услуги";
+"Service description" = "Описание услуги";
 "Order description" = "Описание заказа";
 "Сore Skills" = "Ключевые Навыки";
 
@@ -80,4 +82,13 @@
 "Previews" = "Изображения";
 "Preview" = "Предпросмотр";
 "New Order" = "Разместить Заказ";
+"New Service" = "Разместить Услугу";
 "[Constructor]" = "[Конструктор]";
+"Save" = "Сохранить";
+"Customer" = "Заказчик";
+"Vendor" = "Поставщик услуги";
+
+"Confirm & Publish" = "Подтвердить & Опубликовать";
+"Languages used" = "Используемые Языки";
+
+"Сost Of Service" = "Цена услуги";

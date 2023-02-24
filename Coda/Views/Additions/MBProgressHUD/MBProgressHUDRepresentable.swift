@@ -12,9 +12,12 @@ struct MBProgressHUDRepresentable: UIViewControllerRepresentable {
     @Binding var percent: Double
     @Binding var show: Bool
     
-    init(percent: Binding<Double>, show: Binding<Bool>) {
+    let completion: () -> ()
+    
+    init(percent: Binding<Double>, show: Binding<Bool>, completion: @escaping () -> ()) {
         self._percent = percent
         self._show = show
+        self.completion = completion
     }
     
     private var progressHud: Progress = Progress(totalUnitCount: 100)
@@ -46,20 +49,24 @@ struct MBProgressHUDRepresentable: UIViewControllerRepresentable {
                 
                     let roundedPercent = Int64(self.percent)
                     self.progressHud.completedUnitCount = roundedPercent
-                    print("AND WE SET \(roundedPercent) to progressHUD")
-                    print(self.progressHud.completedUnitCount)
+//                    print("AND WE SET \(roundedPercent) to progressHUD")
+//                    print(self.progressHud.completedUnitCount)
                     if self.progressHud.completedUnitCount == 100 {
                         DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(500)) {
+                            
                             withAnimation {
                                 let image: UIImage = UIImage(systemName: "checkmark")!
                             
                                 hud.mode = .customView
                                 hud.customView = UIImageView(image: image.withTintColor(UIColor(named: "Register2")!))
+                                
                             }
+                            self.completion()
                             hud.hide(animated: true, afterDelay: 1)
                             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                                 self.show = false
                             }
+                            
 
                             
                         }

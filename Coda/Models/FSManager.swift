@@ -110,6 +110,10 @@ class FSManager: ObservableObject {
 
     private let db = Firestore.firestore()
     
+    enum UploadFolderType {
+        case order, service
+    }
+    
     // MARK: - Generate IDs (Static)
     static func generate64CharactersLongID() -> String {
         let letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
@@ -230,7 +234,7 @@ class FSManager: ObservableObject {
         }
     }
     
-    func upload(FreelanceOrderPreviews previews: [UIImage], observeManager: FirebaseFilesUploadingProgreessManager, completion: @escaping (Result<[String], Error>) -> Void) -> Void {
+    private func upload(FreelancePreviews previews: [UIImage], to folder: UploadFolderType, observeManager: FirebaseFilesUploadingProgreessManager, completion: @escaping (Result<[String], Error>) -> Void) -> Void {
         
         let storage = Storage.storage()
         
@@ -246,7 +250,7 @@ class FSManager: ObservableObject {
             
             let imageID = FSManager.generate128CharactersLongID()
             
-            let ref = storage.reference().child("FreelanceOrderPreviews").child(imageID)
+            let ref = storage.reference().child(folder == .order ? "FreelanceOrderPreviews" : "FreelanceServicePreviews").child(imageID)
             
             let uploadTask = ref.putData(imageData, metadata: metadata) { metadata, error in
                 guard let _ = metadata else {
@@ -279,7 +283,7 @@ class FSManager: ObservableObject {
        
     }
     
-    private func upload(PDFs files: [URL], observeManager: FirebaseFilesUploadingProgreessManager, completionHandler: @escaping (Result<[String], Error>) -> Void) {
+    func upload(PDFs files: [URL], observeManager: FirebaseFilesUploadingProgreessManager, completionHandler: @escaping (Result<[String], Error>) -> Void) {
         
         let storage = Storage.storage()
 
@@ -349,22 +353,23 @@ class FSManager: ObservableObject {
         }
     }
     
-    func uploadPublisher(previews files: [UIImage], observeManager: FirebaseFilesUploadingProgreessManager) -> Future<[String], Error> {
+    func uploadPublisher(previews files: [UIImage], observeManager: FirebaseFilesUploadingProgreessManager, folder: UploadFolderType = .order) -> Future<[String], Error> {
         Future { promise in
             if files.count == 0 {
                 promise(.success([]))
                 return
             }
-            self.upload(FreelanceOrderPreviews: files, observeManager: observeManager) { result in
-                switch result {
-                case .success(let urls):
-                    observeManager.imagePercentage = 100.0
-                    promise(.success(urls))
-                    
-                case .failure(let failure):
-                    promise(.failure(failure))
+            
+                self.upload(FreelancePreviews: files, to: folder, observeManager: observeManager) { result in
+                    switch result {
+                    case .success(let urls):
+                        observeManager.imagePercentage = 100.0
+                        promise(.success(urls))
+                        
+                    case .failure(let failure):
+                        promise(.failure(failure))
+                    }
                 }
-            }
         }
     }
     
@@ -510,7 +515,7 @@ class FSManager: ObservableObject {
     func createFreelanceOrder(owner userID: String,
                               name: String,
                               description: String,
-                              priceType: FreelanceOrderTypeReward,
+                              priceType: FreelancePriceType,
                               price: String,
                               per: SpecifiedPriceType,
                               topic: FreelanceTopic,
@@ -528,7 +533,7 @@ class FSManager: ObservableObject {
                               completionHandler: @escaping (Result<String, Error>) -> Void) -> Void {
         
             self.uploadPublisher(PDFs: files ?? [], observeManager: observeManager)
-                .combineLatest(self.uploadPublisher(previews: previews ?? [], observeManager: observeManager))
+            .combineLatest(self.uploadPublisher(previews: previews ?? [], observeManager: observeManager, folder: .order))
                 .sink { res in
                     if case .failure = res {
                         print(res)
@@ -574,7 +579,6 @@ class FSManager: ObservableObject {
                         "date": Date().getFormattedDate(format: "d MMM, HH:mm")
                         
                     ]) { err in
-                        print("HUUUISAPHfpnhavnidovlnuahsvf______")
                         if let err = err {
                             print("Error writing document: \(err)")
                             self.showPV = false
@@ -582,6 +586,88 @@ class FSManager: ObservableObject {
                         } else {
                             observeManager.amountPercentage = 100
                             completionHandler(.success(orderID))
+                        }
+                    }
+                    
+                    
+                }.store(in: &self.cancellabels)
+
+
+        
+    }
+    
+    func createFreelanceService(owner userID: String,
+                              name: String,
+                              description: String,
+                              priceType: FreelancePriceType,
+                              price: String,
+                              per: SpecifiedPriceType,
+                              topic: FreelanceTopic,
+                              
+                              devSubtopic: FreelanceSubTopic.FreelanceDevelopingSubTopic,
+                              adminSubtopic: FreelanceSubTopic.FreelanceAdministrationSubTropic,
+                              designSubtopic: FreelanceSubTopic.FreelanceDesignSubTopic,
+                              testSubtopic: FreelanceSubTopic.FreelanceTestingSubTopic,
+    
+                              languages: [LangDescriptor],
+                              coreSkills: String,
+                              previews: [UIImage]?,
+                              observeManager: FirebaseFilesUploadingProgreessManager,
+                              completionHandler: @escaping (Result<String, Error>) -> Void) -> Void {
+        
+        self.uploadPublisher(previews: previews ?? [], observeManager: observeManager, folder: .service)
+                .sink { res in
+                    if case .failure = res {
+                        print(res)
+                    }
+                } receiveValue: { (previewsURL) in
+                    let serviceID: String = FSManager.generate64CharactersLongID()
+                    var subtopic: String = ""
+                    switch topic {
+                    case .Administration:
+                        subtopic = adminSubtopic.rawValue
+                    case .Design:
+                        subtopic = designSubtopic.rawValue
+                    case .Development:
+                        subtopic = devSubtopic.rawValue
+                    case .Testing:
+                        subtopic = testSubtopic.rawValue
+                    }
+                    
+                    var rawedLangs: [String] = []
+                    for lang in languages {
+                        rawedLangs.append(lang.rawValue)
+                    }
+                    
+                    self.db.collection("FreelanceService").document(serviceID).setData([
+                        
+                        "id" : serviceID,
+                        "owner": userID,
+                        "name": name,
+                        "description": description,
+                        "priceType": priceType == .negotiated ? "Negotiated" : "Specified",
+                        "price": price,
+                        "pricePer": per.rawValue,
+                        "topic": topic.rawValue,
+                        "subtopic": subtopic,
+                        "langdescriptors": rawedLangs,
+                        "coreskills": coreSkills,
+                        "previews": previewsURL,
+                        "time": Date().timeIntervalSince1970,
+                        "stars": [],
+                        "responses": 0,
+                        "views": 0,
+                        "date": Date().getFormattedDate(format: "d MMM, HH:mm")
+                        
+                    ]) { err in
+                
+                        if let err = err {
+                            print("Error writing document: \(err)")
+                            self.showPV = false
+                            completionHandler(.failure("Error with creating post: \(err.localizedDescription)"))
+                        } else {
+                            observeManager.amountPercentage = 100
+                            completionHandler(.success(serviceID))
                         }
                     }
                     

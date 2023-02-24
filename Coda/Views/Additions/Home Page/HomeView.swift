@@ -52,23 +52,23 @@ struct HomeView: View {
                          content: {
             List {
                 Section {
-                    HomeViewActionCell(title: "New Project", image: "HomeViewProjectIcon") {
+                    HomeViewActionCell(title: "New Project", image: "HomeViewProjectIcon") {active in
                         ProjectConstructorMain()
                     }
-                    HomeViewActionCell(title: "New Idea", image: "HomeViewIdeaIcon") {
+                    HomeViewActionCell(title: "New Idea", image: "HomeViewIdeaIcon") {active in
                         Text("Here is Idea constructor")
                     }
-                    HomeViewActionCell(title: "Find Team", image: "HomeViewTeamIcon") {
+                    HomeViewActionCell(title: "Find Team", image: "HomeViewTeamIcon") {active in
                         Text("Here is Team request constructor")
                     }
-                    HomeViewActionCell(title: "New Vacation", image: "HomeViewVacationIcon") {
+                    HomeViewActionCell(title: "New Vacation", image: "HomeViewVacationIcon") {active in
                         Text("Here is Vacation constructor")
                     }
-                    HomeViewActionCell(title: "Create Resume", image: "HomeViewResumeIcon") {
+                    HomeViewActionCell(title: "Create Resume", image: "HomeViewResumeIcon") {active in
                         Text("Here is Resume constructor")
                     }
-                    HomeViewActionCell(title: "Freelance", image: "HomeViewFreelanceIcon") {
-                        FreelanceConstructorCrossroadView()
+                    HomeViewActionCell(title: "Freelance", image: "HomeViewFreelanceIcon") {active in
+                        FreelanceConstructorCrossroadView(rootViewIsActive: active)
                     }
                 } header: {
                     Text("New Discussion")

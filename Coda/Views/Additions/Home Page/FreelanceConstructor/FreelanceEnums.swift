@@ -85,7 +85,7 @@ struct FreelanceSubTopic {
 
 // MARK: - Order
 
-enum FreelanceOrderTypeReward: Equatable {
+enum FreelancePriceType: Equatable {
     case negotiated
     case specified(price: String)
 }
