@@ -25,7 +25,7 @@ struct HomeViewActionCell<Content: View>: View {
                     .frame(width: 40, height: 40)
                     .cornerRadius(10)
                     .padding(.trailing, 6)
-                Text(title)
+                Text(LocalizedStringKey(title))
                     .font(.custom("RobotoMono-SemiBold", size: 17))
             }
             

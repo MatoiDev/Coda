@@ -15,7 +15,7 @@ struct ExploreHeaderViewCell: View {
     
     var body: some View {
         HStack {
-            Text(self.title)
+            Text(LocalizedStringKey(self.title))
                 .padding(.leading, 4)
                 .padding(.vertical, 2)
                 

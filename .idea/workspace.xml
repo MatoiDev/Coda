@@ -5,17 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e73295e2-0254-495e-9ac4-9f931d21ceeb" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Coda/Views/Additions/MBProgressHUD/Coda-Bridging-Header.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Coda/Views/Additions/MBProgressHUD/MBProgressHUD.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Coda/Views/Additions/MBProgressHUD/MBProgressHUD.m" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Coda/Utils/russian-cities.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Coda.xcodeproj/project.pbxproj" beforeDir="false" afterPath="$PROJECT_DIR$/Coda.xcodeproj/project.pbxproj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Coda.xcodeproj/project.xcworkspace/xcuserdata/worm.xcuserdatad/UserInterfaceState.xcuserstate" beforeDir="false" afterPath="$PROJECT_DIR$/Coda.xcodeproj/project.xcworkspace/xcuserdata/worm.xcuserdatad/UserInterfaceState.xcuserstate" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Coda/Info.plist" beforeDir="false" afterPath="$PROJECT_DIR$/Coda/Info.plist" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Coda/Utils/Extensions.swift" beforeDir="false" afterPath="$PROJECT_DIR$/Coda/Utils/Extensions.swift" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Coda/Views/Additions/Home Page/FreelanceConstructor/Order/DescriptionPreview.swift" beforeDir="false" afterPath="$PROJECT_DIR$/Coda/Views/Additions/Home Page/FreelanceConstructor/Order/DescriptionPreview.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Coda/Views/Additions/Explore Page/Main/ExploreHeaderViewCell.swift" beforeDir="false" afterPath="$PROJECT_DIR$/Coda/Views/Additions/Explore Page/Main/ExploreHeaderViewCell.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Coda/Views/Additions/Explore Page/News/NewsViewMain.swift" beforeDir="false" afterPath="$PROJECT_DIR$/Coda/Views/Additions/Explore Page/News/NewsViewMain.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Coda/Views/Additions/Home Page/Cells/HomeViewActionCell.swift" beforeDir="false" afterPath="$PROJECT_DIR$/Coda/Views/Additions/Home Page/Cells/HomeViewActionCell.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Coda/Views/Additions/Home Page/FreelanceConstructor/FreelanceConstructorCrossroadView.swift" beforeDir="false" afterPath="$PROJECT_DIR$/Coda/Views/Additions/Home Page/FreelanceConstructor/FreelanceConstructorCrossroadView.swift" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Coda/Views/Additions/Home Page/FreelanceConstructor/Order/OrderConstructor.swift" beforeDir="false" afterPath="$PROJECT_DIR$/Coda/Views/Additions/Home Page/FreelanceConstructor/Order/OrderConstructor.swift" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Coda/Views/Additions/UIDocumentPickerViewControllerRepresentable.swift" beforeDir="false" afterPath="$PROJECT_DIR$/Coda/Views/Additions/UIDocumentPickerViewControllerRepresentable.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Coda/Views/Additions/Home Page/FreelanceConstructor/Service/ServiceConstructor.swift" beforeDir="false" afterPath="$PROJECT_DIR$/Coda/Views/Additions/Home Page/FreelanceConstructor/Service/ServiceConstructor.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Coda/en.lproj/Localizable.strings" beforeDir="false" afterPath="$PROJECT_DIR$/Coda/en.lproj/Localizable.strings" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Coda/ru.lproj/Localizable.strings" beforeDir="false" afterPath="$PROJECT_DIR$/Coda/ru.lproj/Localizable.strings" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -100,6 +100,7 @@
       <workItem from="1675190249804" duration="510000" />
       <workItem from="1676630578272" duration="1307000" />
       <workItem from="1676635414490" duration="8000" />
+      <workItem from="1677317468334" duration="1342000" />
     </task>
     <servers />
   </component>

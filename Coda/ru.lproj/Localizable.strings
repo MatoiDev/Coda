@@ -57,7 +57,7 @@
 
 
 "Budget" = "Бюджет";
-"Сontractual price" = "Договорная цена";
+"Contractual price" = "Договорная цена";
 "Specified price" = "Указанная цена";
 
 "Main Info" = "Основная Информация";
@@ -92,3 +92,29 @@
 "Languages used" = "Используемые Языки";
 
 "Сost Of Service" = "Цена услуги";
+"Home" = "Главная";
+"Profile" = "Профиль";
+"Chats" = "Чаты";
+"News" = "Новости";
+"Trending" = "Тренды";
+"Projects" = "Проекты";
+"Ideas" = "Идеи";
+"Job" = "Работа";
+"Settings" = "Настройки";
+"Freelance" = "Фриланс";
+"Service" = "Услуга";
+"Order" = "Заказ";
+
+"Specialization" = "Специализация";
+"City search" = "Поиск города";
+"Choose city" = "Выберите город";
+"Location" = "Местоположение";
+"Can work remotely" = "Можно удалённо";
+"Office work" = "Работа в офисе";
+"Dollars" = "Доллары";
+"Rubles" = "Рубли";
+"Euros" = "Евро";
+"Contractual salary" = "Договорная оплата";
+"Specified salary" = "Указанная оплата";
+
+"Type Of Employment" = "Тип Занятости";

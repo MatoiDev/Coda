@@ -1,8 +1,8 @@
 //
-//  ServiceConstructor.swift
+//  VacationConstructorMain.swift
 //  Coda
 //
-//  Created by Matoi on 24.02.2023.
+//  Created by Matoi on 25.02.2023.
 //
 
 import SwiftUI
@@ -12,26 +12,68 @@ import Combine
 import Introspect
 
 /*
- Service [Freelance]
  
- - id
- - title: String
- - description: String
- - executorID: userID
- - salary: Int || String
- - topic: FreelanceTopic (enum)
- - subtopic: FreelanceSubtopic
+ 
+ Vacation
+ 
+ - id: String
+ - (e) title: String +
+ - (e) description: String +
+ - (e) topic: ScopeTopic (enum) 
+ - (e) Location: String
+ - (e) TypeOfEmployment: String
+ - (e) Requirements: [String] { Языки, Квалификация гражданство и т д }
+ - (e) currency: CurrencyType (enum)
+ - (e) Salary Type: SalaryType
+ - (e) salary: Int || String
+ - (e) Languages: [LangDescriptor]
+
+ - (e) companyImage: UIImage
+ - (e) CompanyName: String
+ - (e) LinkToCompany: String?
+ 
+ - (e) email: String?
  - dateOfPublish: String
- - requests:  Int
  - views: Int
- - upvotes: Int
- - descriptors: [LangDescriptor]
- - Core skills: [String]
- - imageExamplesURLs: [String]    —>    In Storage: FreelanceServicesExamples
- 
+
+
  */
 
-struct ServiceConstructor: View {
+enum TypeOfEmployment: String {
+    case FullTime = "Full-Time"
+    case PartTime = "Part-Time"
+    case Temporary = "Temporary"
+    case Seasonal = "Seasonal"
+    case Leased = "Leased"
+}
+
+enum DeveloperQualificationType: String {
+    case Intern = "Intern"
+    case Junior = "Junior"
+    case Middle = "Middle"
+    case Senior = "Senior"
+    case Lead = "Lead"
+}
+
+enum CurrencyType: String {
+    case dollar = "Dollar"
+    case ruble = "Ruble"
+    case euro = "Euro"
+}
+
+enum LocationType: Equatable {
+    case free
+    case specified
+}
+
+enum SalaryType: String {
+    
+    case сontractual = "Contractual"
+    case specified = "Specified"
+    
+}
+
+struct VacationConstructorMain: View {
     
     @AppStorage("LoginUserID") var loginUserID: String = ""
     
@@ -40,17 +82,21 @@ struct ServiceConstructor: View {
     // Edit properties
     @State private var title: String = ""
     @State private var description: String = ""
-    @State private var salaryType: FreelancePriceType = .negotiated
-    @State private var salary: String = ""
+    @State private var specialization: FreelanceTopic = .Development
+    
+    @State private var locationType: LocationType = .free
+    @State private var specifiedLocation: String = "Москва, Москва, Центральный"
+    
+    @State private var typeOfEmployment: TypeOfEmployment = .FullTime
+    
+    @State private var salaryType: SalaryType = .сontractual
+    @State private var currency: CurrencyType = .ruble
+    @State private var salaryLowerBound: String = ""
+    @State private var salaryUpperBound: String = ""
     @State private var pricePer: SpecifiedPriceType = .perHour
-    @State private var topic: FreelanceTopic = .Development
+
     @State private var languageDescriptors: [LangDescriptor] = [LangDescriptor.defaultValue]
     
-    
-    @State private var devSubtopic: FreelanceSubTopic.FreelanceDevelopingSubTopic = .Offtop
-    @State private var adminSubtopic: FreelanceSubTopic.FreelanceAdministrationSubTropic = .Offtop
-    @State private var designSubtopic: FreelanceSubTopic.FreelanceDesignSubTopic = .Offtop
-    @State private var testSubtopic: FreelanceSubTopic.FreelanceTestingSubTopic = .Software
     
     @State private var topicPickerAlive: Bool = false // Закрывает линки для выбора подтопика
     
@@ -77,11 +123,7 @@ struct ServiceConstructor: View {
     
     private func areAllFormsCompleted() -> Bool {
 
-        if self.salaryType == .negotiated {
-            return (!self.title.isEmpty && !self.description.isEmpty &&
-                    !self.coreSkills.isEmpty)
-        }
-        return (!self.title.isEmpty && !self.description.isEmpty && !self.coreSkills.isEmpty && self.salary.isCorrect())
+        return (!self.title.isEmpty && !self.description.isEmpty && !self.coreSkills.isEmpty && self.salaryLowerBound.isCorrect() && self.salaryLowerBound.isCorrect())
         
     }
  
@@ -91,7 +133,6 @@ struct ServiceConstructor: View {
             // MARK: - Main Info sections
             // MARK: - Title
             Section {
-                
                 TextField(LocalizedStringKey("Service name"), text: self.$title)
                     .robotoMono(.semibold, 17)
                 // MARK: - Description
@@ -123,23 +164,82 @@ struct ServiceConstructor: View {
                 
             }.textCase(nil)
             
+            // MARK: - Specialization Picker
+            Section  {
+              
+                NavigationLink(isActive: self.$topicPickerAlive) {
+                    ScopeTopicPicker(topic: self.$specialization, isPickerAlive: self.$topicPickerAlive)
+                } label: {
+                    
+                    Text(LocalizedStringKey(self.specialization.rawValue))
+                        .robotoMono(.semibold, 15)
+                }.isDetailLink(false)
+
+            } header: {
+                HStack {
+                    Text("Specialization")
+                        .robotoMono(.semibold, 20)
+                    Spacer()
+                }
+                
+            }.textCase(nil)
+            
+            // MARK: - Location And Type Of Employment
+            Section {
+                Picker(selection: self.$locationType) {
+                    Text(LocalizedStringKey("Can work remotely")).tag(LocationType.free)
+                    Text(LocalizedStringKey("Office work")).tag(LocationType.specified)
+                } label: {}
+                if self.locationType == .specified {
+                    NavigationLink {
+                        RussianCityPicker(city: self.$specifiedLocation)
+                    } label: {
+                        Text(self.specifiedLocation)
+                    }
+                }
+               
+
+            } header: {
+                Text("Location")
+                    .robotoMono(.semibold, 20)
+            }.textCase(nil)
+            
+            Section {
+                Picker(selection: self.$typeOfEmployment) {
+                    
+                    Text(LocalizedStringKey(TypeOfEmployment.FullTime.rawValue)).tag(TypeOfEmployment.FullTime)
+                    Text(LocalizedStringKey(TypeOfEmployment.PartTime.rawValue)).tag(TypeOfEmployment.PartTime)
+                    Text(LocalizedStringKey(TypeOfEmployment.Temporary.rawValue)).tag(TypeOfEmployment.Temporary)
+                    Text(LocalizedStringKey(TypeOfEmployment.Seasonal.rawValue)).tag(TypeOfEmployment.Seasonal)
+                    Text(LocalizedStringKey(TypeOfEmployment.Leased.rawValue)).tag(TypeOfEmployment.Leased)
+                    
+                } label: {}
+               
+               
+
+            } header: {
+                Text("Type Of Employment")
+                    .robotoMono(.semibold, 20)
+            }.textCase(nil)
+            
+            
             // MARK: - Reward
             Section {
                 Menu {
                     
                     Button {
-                        self.salaryType = .negotiated
+                        self.salaryType = .сontractual
                     } label: {
                         HStack {
-                            Text("Contractual price")
+                            Text("Contractual salary")
                         }
                     }
                     
                     Button {
-                        self.salaryType = .specified(price: self.salary)
+                        self.salaryType = .specified
                     } label: {
                         HStack {
-                            Text("Specified price")
+                            Text("Specified salary")
                             Spacer()
                             Image(systemName: "character.cursor.ibeam")
                         }
@@ -147,7 +247,7 @@ struct ServiceConstructor: View {
                     
                 } label: {
                     HStack {
-                        Text(self.salaryType == FreelancePriceType.negotiated ? "Contractual price" : "Specified price")
+                        Text(self.salaryType == .сontractual ? "Contractual salary" : "Specified salary")
                             .robotoMono(.semibold, 15)
                         Spacer()
                         Image(systemName: "contextualmenu.and.cursorarrow")
@@ -161,11 +261,16 @@ struct ServiceConstructor: View {
                 
                     }
                 }
-                if self.salaryType != .negotiated {
+                if self.salaryType == .specified {
                     HStack {
-//                        TextFieldWithDisabledPasting(text: self.$price, placeHolder: "0")
-                        TextField("0", text: self.$salary)
-                            .foregroundColor(self.salary.isCorrect() ? Color.white : Color.red)
+                        TextField("From:", text: self.$salaryLowerBound)
+                            .foregroundColor(self.salaryLowerBound.isCorrect() ? Color.white : Color.red)
+                            .robotoMono(.semibold, 17)
+                            .keyboardType(.decimalPad)
+                            .autocorrectionDisabled(true)
+                            .textInputAutocapitalization(.none)
+                        TextField("To:", text: self.$salaryUpperBound)
+                            .foregroundColor(self.salaryUpperBound.isCorrect() ? Color.white : Color.red)
                             .robotoMono(.semibold, 17)
                             .keyboardType(.decimalPad)
                             .autocorrectionDisabled(true)
@@ -193,48 +298,7 @@ struct ServiceConstructor: View {
             }.textCase(nil)
             
             
-            // MARK: - Topic Picker
-            Section  {
-              
-                NavigationLink(isActive: self.$topicPickerAlive) {
-                    FreelanceTopicPicker(topic: self.$topic,
-                                         isPickerAlive: self.$topicPickerAlive,
-                                         devSubtopic: self.$devSubtopic,
-                                         adminSubtopic: self.$adminSubtopic,
-                                         designSubtopic: self.$designSubtopic,
-                                         testSubtopic: self.$testSubtopic)
-                } label: {
-                    switch self.topic {
-                    case .Administration:
-                        Group {
-                            Text(LocalizedStringKey(self.topic.rawValue)) + Text(": ") + Text(LocalizedStringKey(self.adminSubtopic.rawValue))
-                        }.robotoMono(.semibold, 15)
-                       
-                    case .Testing:
-                        Group {
-                            Text(LocalizedStringKey(self.topic.rawValue)) + Text(": ") + Text(LocalizedStringKey(self.testSubtopic.rawValue))
-                        }.robotoMono(.semibold, 15)
-                       
-                    case .Development:
-                        Group {
-                        Text(LocalizedStringKey(self.topic.rawValue)) + Text(": ") + Text(LocalizedStringKey(self.devSubtopic.rawValue))
-                    }.robotoMono(.semibold, 15)
-                    case .Design:
-                        Group {
-                        Text(LocalizedStringKey(self.topic.rawValue)) + Text(": ") + Text(LocalizedStringKey(self.designSubtopic.rawValue))
-                        }.robotoMono(.semibold, 15)
-                    }
-                }.isDetailLink(false)
 
-
-            } header: {
-                HStack {
-                    Text("Scope Of Activity")
-                        .robotoMono(.semibold, 20)
-                    Spacer()
-                }
-                
-            }.textCase(nil)
             
             // MARK: - Language Section
             Section {
@@ -356,18 +420,18 @@ struct ServiceConstructor: View {
                         .clipShape(RoundedRectangle(cornerRadius: 10))
                 }
                 
-                .overlay(
-                    
-                    NavigationLink(
-                        isActive: self.$showServicePreview,
-                        destination: { ServicePreview(title: self.title, description: self.description, priceType: self.salaryType, price: self.salary, per: self.pricePer, topic: self.topic, devSubtopic: self.devSubtopic, adminSubtopic: self.adminSubtopic, designSubtopic: self.designSubtopic, testSubtopic: self.testSubtopic, languages: self.languageDescriptors, coreSkills: self.coreSkills, previews: self.assetsToImage(assets: self.selectedAssets), imageLoader: FirebaseTemporaryImageLoaderVM(with: URL(string: avatarURL)), doneTrigger: self.$doneUploading, rootViewIsActive: self.$rootViewIsActive) },
-                        label: { EmptyView() }
-                            
-                    )
-                    .isDetailLink(false)
-                    .disabled(!self.areAllFormsCompleted())
-                    .opacity(0)
-                )
+//                .overlay(
+//
+//                    NavigationLink(
+//                        isActive: self.$showServicePreview,
+//                        destination: { ServicePreview(title: self.title, description: self.description, priceType: self.salaryType, price: self.salary, per: self.pricePer, topic: self.topic, devSubtopic: self.devSubtopic, adminSubtopic: self.adminSubtopic, designSubtopic: self.designSubtopic, testSubtopic: self.testSubtopic, languages: self.languageDescriptors, coreSkills: self.coreSkills, previews: self.assetsToImage(assets: self.selectedAssets), imageLoader: FirebaseTemporaryImageLoaderVM(with: URL(string: avatarURL)), doneTrigger: self.$doneUploading, rootViewIsActive: self.$rootViewIsActive) },
+//                        label: { EmptyView() }
+//
+//                    )
+//                    .isDetailLink(false)
+//                    .disabled(!self.areAllFormsCompleted())
+//                    .opacity(0)
+//                )
                 .overlay {
                     RoundedRectangle(cornerRadius: 10)
                         .stroke(LinearGradient(colors: [self.areAllFormsCompleted() ? Color("Register2") : Color(red: 0.3, green: 0.3, blue: 0.3), self.areAllFormsCompleted() ? .cyan : Color(red: 0.8, green: 0.8, blue: 0.8)], startPoint: .topLeading, endPoint: .bottomTrailing), lineWidth: 2)
@@ -442,3 +506,12 @@ struct ServiceConstructor: View {
     return rawedDescriptors[..<3].joined(separator: ", ") + " and \(rawedDescriptors.count - 3) more"
     }
 }
+
+
+
+
+//struct VacationConstructorMain_Previews: PreviewProvider {
+//    static var previews: some View {
+//        VacationConstructorMain()
+//    }
+//}

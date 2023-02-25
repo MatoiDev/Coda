@@ -171,7 +171,7 @@ struct OrderConstructor: View {
                         self.reward = .negotiated
                     } label: {
                         HStack {
-                            Text("Сontractual price")
+                            Text("Contractual price")
                         }
                     }
                     
@@ -181,13 +181,13 @@ struct OrderConstructor: View {
                         HStack {
                             Text("Specified price")
                             Spacer()
-                            Image(systemName: "dollarsign")
+                            Image(systemName: "character.cursor.ibeam")
                         }
                     }
                     
                 } label: {
                     HStack {
-                        Text(self.reward == FreelancePriceType.negotiated ? "Сontractual price" : "Specified price")
+                        Text(self.reward == FreelancePriceType.negotiated ? "Contractual price" : "Specified price")
                             .robotoMono(.semibold, 15)
                         Spacer()
                         Image(systemName: "contextualmenu.and.cursorarrow")

@@ -86,12 +86,11 @@ struct FreelanceConstructorCrossroadView: View {
         .onAppear {
             UITableView.appearance().separatorColor = UIColor.clear
         }
-//        .listRowInsets(EdgeInsets.init(top: 0, leading: 0, bottom: 0, trailing: 0))
         .listRowSeparator(.hidden)
         .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {
-                    Text("New Freelance")
+                    Text("Freelance")
                         .robotoMono(.semibold, 18)
                 }
             }

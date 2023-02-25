@@ -44,6 +44,9 @@ struct NewsViewMain: View {
                         }
                         
                     }
+                    Text("")
+                        .frame(height: 50)
+                        .listRowBackground(Color.clear)
                     
                 }
                 .navigationBarHidden(true)
