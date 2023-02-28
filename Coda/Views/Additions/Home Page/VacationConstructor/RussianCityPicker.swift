@@ -24,24 +24,25 @@ struct RussianCityPicker: View {
     }
     var body: some View {
         List {
-            Section {
-                ForEach(0..<(self.filteredCities.count > 10 ? 10 : self.filteredCities.count), id: \.self) { cityInd in
-                    let name = self.filteredCities[cityInd].name
-                    let subject = self.filteredCities[cityInd].subject
-                    let district = self.filteredCities[cityInd].district
-                    
-                    Button {
-                        self.city = "\(name), \(subject), \(district)"
-                        self.dismiss.callAsFunction()
-                    } label: {
-                        Text("\(name), \(subject), \(district)")
-                    }.onAppear {
-                        print("\(name), \(subject), \(district)")
-                    }
+            
+            ForEach(0..<(self.filteredCities.count > 250 ? 250 : self.filteredCities.count), id: \.self) { cityInd in
+                let name = self.filteredCities[cityInd].name
+                let subject = self.filteredCities[cityInd].subject
+                let district = self.filteredCities[cityInd].district
+                
+                Button {
+                    self.city = "\(name), \(subject), \(district)"
+                    self.dismiss.callAsFunction()
+                } label: {
+                    Text("\(name), \(subject), \(district)")
+                        .robotoMono(.semibold, 15)
                 }
             }
+            Text("")
+                .frame(height: 50)
+                
             
-        }
+        }.listStyle(.plain)
         .onAppear {
             if let citiesData = RussianCitiesJSONParser.readLocalJSONFile(forName: "RussianCities"),
                let cities = RussianCitiesJSONParser.parse(jsonData: citiesData)
@@ -62,12 +63,17 @@ struct RussianCityPicker: View {
         }
         .navigationTitle("Choose city")
         .navigationBarTitleDisplayMode(.inline)
-        .searchable(text: self.$queryString, prompt: Text(LocalizedStringKey("City search"))) {
+        .searchable(text: self.$queryString, placement: .navigationBarDrawer(displayMode: .always), prompt: Text(LocalizedStringKey("City search"))) {
             Text("Москва").searchCompletion("Москва, Москва, Центральный")
+                .robotoMono(.medium, 15, color: .blue)
             Text("Санкт-Петербург").searchCompletion("Санкт-Петербург, Санкт-Петербург, Северо-Западный")
+                .robotoMono(.medium, 15, color: .blue)
             Text("Новосибирск").searchCompletion("Новосибирск, Новосибирская область, Сибирский")
+                .robotoMono(.medium, 15, color: .blue)
             Text("Екатеринбург").searchCompletion("Екатеринбург, Свердловская область, Уральский")
+                .robotoMono(.medium, 15, color: .blue)
             Text("Казань").searchCompletion("Казань, Татарстан, Приволжский")
+                .robotoMono(.medium, 15, color: .blue)
             
         }
         .onChange(of: self.queryString) { text in

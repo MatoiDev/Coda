@@ -61,8 +61,8 @@ struct HomeView: View {
                     HomeViewActionCell(title: "Find Team", image: "HomeViewTeamIcon") {active in
                         Text("Here is Team request constructor")
                     }
-                    HomeViewActionCell(title: "New Vacation", image: "HomeViewVacationIcon") {active in
-                        VacationConstructorMain(rootViewIsActive: active)
+                    HomeViewActionCell(title: "New Vacancy", image: "HomeViewVacancyIcon") {active in
+                                                VacancyConstructorMain(rootViewIsActive: active)
                     }
                     HomeViewActionCell(title: "Create Resume", image: "HomeViewResumeIcon") {active in
                         Text("Here is Resume constructor")

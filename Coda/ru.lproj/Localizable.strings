@@ -118,3 +118,35 @@
 "Specified salary" = "Указанная оплата";
 
 "Type Of Employment" = "Тип Занятости";
+
+"From:" = "От:";
+"To:" = "До:";
+"You can leave the \"To:\" field empty" = "Вы может оставить поле \"До:\" пустым";
+"Salary" = "Оклад";
+
+"Dollar" = "Доллар";
+"Ruble" = "Рубль";
+"Euro" = "Евро";
+
+"Enter from 1 to 10 requirements, separating them with a comma" = "Введите от 1 до 10 требований, разделяя их запятой";
+"Requirements" = "Требования";
+
+
+"Qualification" = "Квалификация";
+"Intern" = "Стажёр";
+"Junior" = "Младший (Junior)";
+"Middle" = "Средний (Middle)";
+"Senior" = "Старший (Senior)";
+"Lead" = "Ведущий (Lead)";
+
+"Vacancy name" = "Название вакансии";
+"Vacancy description" = "Описание вакансии";
+"Languages" = "Языки";
+"Full-Time" = "Полная";
+"Part-Time" = "Частичная";
+"Temporary" = "Временная";
+"Seasonal" = "Сезонная";
+
+"New Vacancy" = "Разместить Вакансию";
+
+

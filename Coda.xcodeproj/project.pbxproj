@@ -24,7 +24,7 @@
 		95170556290AEEE2008C137F /* RobotoMono-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 95170555290AEEE2008C137F /* RobotoMono-Bold.ttf */; };
 		9519B05229087DBA00504B03 /* AuthentificationState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9519B05129087DBA00504B03 /* AuthentificationState.swift */; };
 		9519B05529087E1800504B03 /* LoginOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9519B05429087E1800504B03 /* LoginOption.swift */; };
-		951BB77B29AA0B96001C4A23 /* VacationConstructorMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 951BB77A29AA0B96001C4A23 /* VacationConstructorMain.swift */; };
+		951BB77B29AA0B96001C4A23 /* 						VacancyConstructorMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 951BB77A29AA0B96001C4A23 /* 						VacancyConstructorMain.swift */; };
 		951C8A3A2988395300F3BFE0 /* SearchNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 951C8A392988395300F3BFE0 /* SearchNavigation.swift */; };
 		951C8A3D298839A000F3BFE0 /* HomeViewActionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 951C8A3C298839A000F3BFE0 /* HomeViewActionCell.swift */; };
 		951CC6DE2924191E00096222 /* ContinueBubble.swift in Sources */ = {isa = PBXBuildFile; fileRef = 951CC6DD2924191E00096222 /* ContinueBubble.swift */; };
@@ -57,7 +57,7 @@
 		953E2DB52982FB1E00A4A82B /* TeamSearchingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 953E2DB42982FB1E00A4A82B /* TeamSearchingView.swift */; };
 		953E2DB92982FB6F00A4A82B /* TrendingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 953E2DB82982FB6F00A4A82B /* TrendingView.swift */; };
 		953E2DBB2982FB8600A4A82B /* IdeasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 953E2DBA2982FB8600A4A82B /* IdeasView.swift */; };
-		953E2DBD2982FB9900A4A82B /* VacationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 953E2DBC2982FB9900A4A82B /* VacationsView.swift */; };
+		953E2DBD2982FB9900A4A82B /* VacancyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 953E2DBC2982FB9900A4A82B /* VacancyView.swift */; };
 		953E2DBF2982FBAF00A4A82B /* FreelanceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 953E2DBE2982FBAF00A4A82B /* FreelanceView.swift */; };
 		953E5F392950FA64006810CC /* ImageSaver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 953E5F382950FA64006810CC /* ImageSaver.swift */; };
 		95421D092911914000980E52 /* ProjectCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95421D082911914000980E52 /* ProjectCell.swift */; };
@@ -172,7 +172,7 @@
 		95170555290AEEE2008C137F /* RobotoMono-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "RobotoMono-Bold.ttf"; sourceTree = "<group>"; };
 		9519B05129087DBA00504B03 /* AuthentificationState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthentificationState.swift; sourceTree = "<group>"; };
 		9519B05429087E1800504B03 /* LoginOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginOption.swift; sourceTree = "<group>"; };
-		951BB77A29AA0B96001C4A23 /* VacationConstructorMain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VacationConstructorMain.swift; sourceTree = "<group>"; };
+		951BB77A29AA0B96001C4A23 /* 						VacancyConstructorMain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "\t\t\t\t\t\tVacancyConstructorMain.swift"; sourceTree = "<group>"; };
 		951C8A392988395300F3BFE0 /* SearchNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchNavigation.swift; sourceTree = "<group>"; };
 		951C8A3C298839A000F3BFE0 /* HomeViewActionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewActionCell.swift; sourceTree = "<group>"; };
 		951CC6DD2924191E00096222 /* ContinueBubble.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContinueBubble.swift; sourceTree = "<group>"; };
@@ -206,7 +206,7 @@
 		953E2DB42982FB1E00A4A82B /* TeamSearchingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamSearchingView.swift; sourceTree = "<group>"; };
 		953E2DB82982FB6F00A4A82B /* TrendingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrendingView.swift; sourceTree = "<group>"; };
 		953E2DBA2982FB8600A4A82B /* IdeasView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdeasView.swift; sourceTree = "<group>"; };
-		953E2DBC2982FB9900A4A82B /* VacationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VacationsView.swift; sourceTree = "<group>"; };
+		953E2DBC2982FB9900A4A82B /* VacancyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VacancyView.swift; sourceTree = "<group>"; };
 		953E2DBE2982FBAF00A4A82B /* FreelanceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FreelanceView.swift; sourceTree = "<group>"; };
 		953E5F382950FA64006810CC /* ImageSaver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageSaver.swift; sourceTree = "<group>"; };
 		95421D082911914000980E52 /* ProjectCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectCell.swift; sourceTree = "<group>"; };
@@ -467,7 +467,7 @@
 		951BB77929AA09FD001C4A23 /* VacationConstructor */ = {
 			isa = PBXGroup;
 			children = (
-				951BB77A29AA0B96001C4A23 /* VacationConstructorMain.swift */,
+				951BB77A29AA0B96001C4A23 /* 						VacancyConstructorMain.swift */,
 				9573A92029AA2AC7003B6F29 /* ScopeTopicPicker.swift */,
 				9584468329AA6A7E00DDA62D /* RussianCityPicker.swift */,
 			);
@@ -582,7 +582,7 @@
 		953E2DAF2982F9AC00A4A82B /* Vacations */ = {
 			isa = PBXGroup;
 			children = (
-				953E2DBC2982FB9900A4A82B /* VacationsView.swift */,
+				953E2DBC2982FB9900A4A82B /* VacancyView.swift */,
 			);
 			path = Vacations;
 			sourceTree = "<group>";
@@ -1078,7 +1078,7 @@
 				951CC6DE2924191E00096222 /* ContinueBubble.swift in Sources */,
 				9595C45F2908343C004726AD /* CodaApp.swift in Sources */,
 				95BFE390299BEC5A00702E72 /* LanguageDescriptorPicker.swift in Sources */,
-				953E2DBD2982FB9900A4A82B /* VacationsView.swift in Sources */,
+				953E2DBD2982FB9900A4A82B /* VacancyView.swift in Sources */,
 				956EEC5029464A03006C7895 /* PostEditor.swift in Sources */,
 				95EE3333298537FE0037F811 /* TrailingFullScreenCover.swift in Sources */,
 				954ADF47291FBFFF001300EA /* CachedImageModel.swift in Sources */,
@@ -1086,7 +1086,7 @@
 				95F6AF26298FD3F100004545 /* UIKitAlertWithTextField.swift in Sources */,
 				951DBBF42910431700FAB2E3 /* PLanguages.swift in Sources */,
 				951CC6E029241B4300096222 /* DataEditorInputBubble.swift in Sources */,
-				951BB77B29AA0B96001C4A23 /* VacationConstructorMain.swift in Sources */,
+				951BB77B29AA0B96001C4A23 /* 						VacancyConstructorMain.swift in Sources */,
 				95F1CD40290EE58F000A3080 /* HomeView.swift in Sources */,
 				9573A92129AA2AC7003B6F29 /* ScopeTopicPicker.swift in Sources */,
 				9545E4162924B158009579BA /* LanguagePicker.swift in Sources */,

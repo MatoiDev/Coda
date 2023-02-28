@@ -158,7 +158,7 @@ struct FreelanceSubTopicPicker: View {
     }
     
     var body: some View {
-        ZStack(alignment: .topTrailing) {
+        ZStack(alignment: .topLeading) {
             ScrollView {
                 VStack(alignment: .leading) {
                     VStack(alignment: .leading, spacing: 10) {
@@ -265,7 +265,7 @@ struct FreelanceSubTopicPicker: View {
                     .symbolRenderingMode(.hierarchical)
                     .foregroundColor(.primary)
                     .frame(width: 30, height: 30)
-                    .padding(.trailing, 24)
+                    .padding(.leading, 24)
             }
         }
     }

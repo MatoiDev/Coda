@@ -39,7 +39,7 @@ struct ExploreView: View {
 //            AnnouncementsView().pagerTabItem { EmptyView() }.tag(2)
 //            ProjectsView().pagerTabItem { EmptyView() }.tag(3)
 //            IdeasView().pagerTabItem { EmptyView() }.tag(4)
-//            VacationsView().pagerTabItem { EmptyView() }.tag(5)
+//            VacancyView().pagerTabItem { EmptyView() }.tag(5)
 //            FreelanceView().pagerTabItem { EmptyView() }.tag(6)
 //
 //        }
@@ -56,7 +56,7 @@ struct ExploreView: View {
 //            AnnouncementsView().tag(2)
 //            ProjectsView().tag(3)
 //            IdeasView().tag(4)
-//            VacationsView().tag(5)
+//            VacancyView().tag(5)
 //            FreelanceView().tag(6)
 //
 //        }

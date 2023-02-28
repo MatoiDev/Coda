@@ -1,9 +1,11 @@
 //
-//  VacationConstructorMain.swift
+//  VacancyConstructorMain.swift
 //  Coda
 //
 //  Created by Matoi on 25.02.2023.
 //
+
+/* Данный контроллер будет доступен только для аккаунтов компаний */
 
 import SwiftUI
 import UIKit
@@ -11,28 +13,32 @@ import TLPhotoPicker
 import Combine
 import Introspect
 
+// TODO: Сделать 2 типа аккаунта, для компаний и для физических лиц.
+
 /*
  
  
- Vacation
+ Vacancy
  
  - id: String
  - (e) title: String +
  - (e) description: String +
- - (e) topic: ScopeTopic (enum) 
- - (e) Location: String
- - (e) TypeOfEmployment: String
- - (e) Requirements: [String] { Языки, Квалификация гражданство и т д }
- - (e) currency: CurrencyType (enum)
- - (e) Salary Type: SalaryType
- - (e) salary: Int || String
- - (e) Languages: [LangDescriptor]
-
- - (e) companyImage: UIImage
- - (e) CompanyName: String
- - (e) LinkToCompany: String?
+ - (e) specialization: ScopeTopic (enum) +
+ - (e) qualification: DeveloperQualificationType (enum) +
+ - (e) Location: String +
+ - (e) TypeOfEmployment: String +
  
- - (e) email: String?
+ - (e) Requirements: [String] { Языки, гражданство и т д } +
+ 
+
+ 
+ - (e) currency: CurrencyType (enum) +
+ - (e) salary: Int || String +
+ - (e) Languages: [LangDescriptor] +
+ 
+ - (e) LinkToCompany: String? + [В настройках ЮР. аккаунта]
+ - (e) email: String? + [В настройках ЮР. аккаунта]
+ 
  - dateOfPublish: String
  - views: Int
 
@@ -44,7 +50,6 @@ enum TypeOfEmployment: String {
     case PartTime = "Part-Time"
     case Temporary = "Temporary"
     case Seasonal = "Seasonal"
-    case Leased = "Leased"
 }
 
 enum DeveloperQualificationType: String {
@@ -73,7 +78,7 @@ enum SalaryType: String {
     
 }
 
-struct VacationConstructorMain: View {
+struct VacancyConstructorMain: View {
     
     @AppStorage("LoginUserID") var loginUserID: String = ""
     
@@ -83,6 +88,7 @@ struct VacationConstructorMain: View {
     @State private var title: String = ""
     @State private var description: String = ""
     @State private var specialization: FreelanceTopic = .Development
+    @State private var qualification: DeveloperQualificationType = .Intern
     
     @State private var locationType: LocationType = .free
     @State private var specifiedLocation: String = "Москва, Москва, Центральный"
@@ -94,6 +100,9 @@ struct VacationConstructorMain: View {
     @State private var salaryLowerBound: String = ""
     @State private var salaryUpperBound: String = ""
     @State private var pricePer: SpecifiedPriceType = .perHour
+    
+    @State private var email: String = ""
+    @State private var companyLink: String = ""
 
     @State private var languageDescriptors: [LangDescriptor] = [LangDescriptor.defaultValue]
     
@@ -133,11 +142,11 @@ struct VacationConstructorMain: View {
             // MARK: - Main Info sections
             // MARK: - Title
             Section {
-                TextField(LocalizedStringKey("Service name"), text: self.$title)
+                TextField(LocalizedStringKey("Vacancy name"), text: self.$title)
                     .robotoMono(.semibold, 17)
                 // MARK: - Description
                     
-                MultilineListRowTextField("Service description", text: self.$description, alertTrigger: self.$showLinkAlert)
+                MultilineListRowTextField("Vacancy description", text: self.$description, alertTrigger: self.$showLinkAlert)
                     .robotoMono(.medium, 13)
                     .offset(x: -4)
                     .fixedSize(horizontal: false, vertical: true)
@@ -172,7 +181,7 @@ struct VacationConstructorMain: View {
                 } label: {
                     
                     Text(LocalizedStringKey(self.specialization.rawValue))
-                        .robotoMono(.semibold, 15)
+                        .robotoMono(.medium, 15)
                 }.isDetailLink(false)
 
             } header: {
@@ -184,12 +193,96 @@ struct VacationConstructorMain: View {
                 
             }.textCase(nil)
             
+            // MARK: - Qualification
+            
+            Section {
+                Menu {
+                    
+                    Button {
+                        self.qualification = .Intern
+                    } label:  {
+                        Text(LocalizedStringKey(DeveloperQualificationType.Intern.rawValue))
+                    }
+                    Button {
+                        self.qualification = .Junior
+                    } label:  {
+                        Text(LocalizedStringKey(DeveloperQualificationType.Junior.rawValue))
+                    }
+                    Button {
+                        self.qualification = .Middle
+                    } label:  {
+                        Text(LocalizedStringKey(DeveloperQualificationType.Middle.rawValue))
+                    }
+                    Button {
+                        self.qualification = .Senior
+                    } label:  {
+                        Text(LocalizedStringKey(DeveloperQualificationType.Senior.rawValue))
+                    }
+                    Button {
+                        self.qualification = .Lead
+                    } label:  {
+                        Text(LocalizedStringKey(DeveloperQualificationType.Lead.rawValue))
+                    }
+                    
+                } label: {
+                    HStack {
+                        Text(LocalizedStringKey(self.qualification.rawValue))
+                            .robotoMono(.medium, 15)
+                        Spacer()
+                        Image("qualification")
+                            .resizable()
+                            .foregroundColor(.white)
+                            .scaledToFit()
+                            .frame(height: 20)
+                    }
+       
+                }
+            } header: {
+                Text("Qualification")
+                    .robotoMono(.semibold, 20)
+            }.textCase(nil)
+            
             // MARK: - Location And Type Of Employment
             Section {
+                // Location
+                Menu {
+                    Button {
+                        
+                        self.locationType = .free
+                    } label: {
+                        HStack {
+                            Text(LocalizedStringKey("Can work remotely"))
+                            Spacer()
+                            Image(systemName: "cup.and.saucer.fill")
+                        }
+                        
+                    }
+                    
+                    Button {
+                        self.locationType = .specified
+                    } label: {
+                        HStack {
+                            Text(LocalizedStringKey("Office work"))
+                            Spacer()
+                            Image(systemName: "mappin.and.ellipse")
+                        }
+                    }
+                } label: {
+                    HStack {
+                        Text(LocalizedStringKey(self.locationType == .free ? "Can work remotely" : "Office work"))
+                            .robotoMono(.medium, 15)
+                        Spacer()
+                        Image(systemName: self.locationType == .free ? "cup.and.saucer.fill" : "mappin.and.ellipse")
+                            .foregroundColor(.white)
+                    }
+                    
+                }
+                /*
                 Picker(selection: self.$locationType) {
                     Text(LocalizedStringKey("Can work remotely")).tag(LocationType.free)
                     Text(LocalizedStringKey("Office work")).tag(LocationType.specified)
                 } label: {}
+                 */
                 if self.locationType == .specified {
                     NavigationLink {
                         RussianCityPicker(city: self.$specifiedLocation)
@@ -205,15 +298,59 @@ struct VacationConstructorMain: View {
             }.textCase(nil)
             
             Section {
-                Picker(selection: self.$typeOfEmployment) {
+                // Type Of Employment
+                Menu {
+                    Button {
+                        self.typeOfEmployment = .FullTime
+                    } label: {
+                        Text(LocalizedStringKey(TypeOfEmployment.FullTime.rawValue))
+                            .robotoMono(.medium, 15)
+                    }
                     
-                    Text(LocalizedStringKey(TypeOfEmployment.FullTime.rawValue)).tag(TypeOfEmployment.FullTime)
-                    Text(LocalizedStringKey(TypeOfEmployment.PartTime.rawValue)).tag(TypeOfEmployment.PartTime)
-                    Text(LocalizedStringKey(TypeOfEmployment.Temporary.rawValue)).tag(TypeOfEmployment.Temporary)
-                    Text(LocalizedStringKey(TypeOfEmployment.Seasonal.rawValue)).tag(TypeOfEmployment.Seasonal)
-                    Text(LocalizedStringKey(TypeOfEmployment.Leased.rawValue)).tag(TypeOfEmployment.Leased)
+                    Button {
+                        self.typeOfEmployment = .PartTime
+                    } label: {
+                        Text(LocalizedStringKey(TypeOfEmployment.PartTime.rawValue))
+                            .robotoMono(.medium, 15)
+                    }
                     
-                } label: {}
+                    Button {
+                        self.typeOfEmployment = .Temporary
+                    } label: {
+                        Text(LocalizedStringKey(TypeOfEmployment.Temporary.rawValue))
+                            .robotoMono(.medium, 15)
+                    }
+                    
+                    Button {
+                        self.typeOfEmployment = .Seasonal
+                    } label: {
+                        Text(LocalizedStringKey(TypeOfEmployment.Seasonal.rawValue))
+                            .robotoMono(.medium, 15)
+                    }
+                } label: {
+                    HStack  {
+                        Text(LocalizedStringKey(self.typeOfEmployment.rawValue))
+                            .robotoMono(.medium, 15)
+                        Spacer()
+                        Image("OfficeWorker")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(height: 25)
+                            .foregroundColor(.white)
+                    }
+                
+                }
+                
+                
+//                Picker(selection: self.$typeOfEmployment) {
+//
+//                    Text(LocalizedStringKey(TypeOfEmployment.FullTime.rawValue)).tag(TypeOfEmployment.FullTime)
+//                    Text(LocalizedStringKey(TypeOfEmployment.PartTime.rawValue)).tag(TypeOfEmployment.PartTime)
+//                    Text(LocalizedStringKey(TypeOfEmployment.Temporary.rawValue)).tag(TypeOfEmployment.Temporary)
+//                    Text(LocalizedStringKey(TypeOfEmployment.Seasonal.rawValue)).tag(TypeOfEmployment.Seasonal)
+//                    Text(LocalizedStringKey(TypeOfEmployment.Leased.rawValue)).tag(TypeOfEmployment.Leased)
+//
+//                } label: {}
                
                
 
@@ -223,7 +360,54 @@ struct VacationConstructorMain: View {
             }.textCase(nil)
             
             
-            // MARK: - Reward
+         
+            
+            
+
+
+            
+            // MARK: - Requirements
+            Section {
+                NavigationLink {
+                    LanguageDescriptorPicker(langDescriptors: self.$languageDescriptors)
+                } label: {
+                    if self.languageDescriptors == [LangDescriptor.defaultValue] || self.languageDescriptors.isEmpty {
+                        Text("Languages")
+                            .robotoMono(.medium, 15, color: .white)
+                    } else {
+                        Text(self.getLineFromDescriptors(self.languageDescriptors))
+                            .robotoMono(.medium, 15, color: .white)
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.01)
+                    }
+         
+                        
+                }
+                
+                    ZStack(alignment: .leading) {
+                        if self.coreSkills.isEmpty {
+                            Text(LocalizedStringKey("SCRUM, Jira ..."))
+                                .robotoMono(.semibold, 14, color: Color(red: 0.36, green: 0.36, blue: 0.36))
+                                .padding(.horizontal, 4)
+                        }
+                        
+                        TextEditor(text: self.$coreSkills)
+                            .robotoMono(.semibold, 14)
+                            .autocapitalization(.none)
+                            .autocorrectionDisabled(true)
+                    }
+                
+                
+            } header: {
+                Text("Requirements")
+                    .robotoMono(.semibold, 20)
+                    .foregroundColor(.white)
+            } footer: {
+                Text("Enter from 1 to 10 requirements, separating them with a comma")
+            }
+            .textCase(nil)
+            
+            // MARK: - Salary
             Section {
                 Menu {
                     
@@ -232,6 +416,10 @@ struct VacationConstructorMain: View {
                     } label: {
                         HStack {
                             Text("Contractual salary")
+                            Spacer()
+                            Image("Handshake")
+                                .resizable()
+                                .foregroundColor(.white)
                         }
                     }
                     
@@ -241,7 +429,7 @@ struct VacationConstructorMain: View {
                         HStack {
                             Text("Specified salary")
                             Spacer()
-                            Image(systemName: "character.cursor.ibeam")
+                            Image("buxx")
                         }
                     }
                     
@@ -250,14 +438,12 @@ struct VacationConstructorMain: View {
                         Text(self.salaryType == .сontractual ? "Contractual salary" : "Specified salary")
                             .robotoMono(.semibold, 15)
                         Spacer()
-                        Image(systemName: "contextualmenu.and.cursorarrow")
-                        
+                        Image(self.salaryType == .сontractual ? "Handshake" : "buxx")
                             .resizable()
+                            .foregroundColor(.white)
                             .scaledToFit()
-                            .symbolRenderingMode(.hierarchical)
                             .frame(height: 20)
-                            .foregroundColor(.primary)
-                            .font(.system(size: 12).bold())
+                        
                 
                     }
                 }
@@ -277,14 +463,20 @@ struct VacationConstructorMain: View {
                             .textInputAutocapitalization(.none)
         
                         Divider()
-                        Picker(selection: self.$pricePer) {
-                            Text(LocalizedStringKey("per hour")).tag(SpecifiedPriceType.perHour)
-                            Text(LocalizedStringKey("per project")).tag(SpecifiedPriceType.perProject)
-                                .robotoMono(.semibold, 15)
-                                                            .lineLimit(1)
-                                                            .minimumScaleFactor(0.01)
+                        Picker(selection: self.$currency) {
+                            
+                            Text(LocalizedStringKey("Ruble")).tag(CurrencyType.ruble)
+                                .robotoMono(.medium, 15)
+                            Text(LocalizedStringKey("Dollar")).tag(CurrencyType.dollar)
+                                .robotoMono(.medium, 15)
+                            Text(LocalizedStringKey("Euro")).tag(CurrencyType.euro)
+                                .robotoMono(.medium, 15)
+                            
                         } label: {
-                        }.fixedSize(horizontal: true, vertical: false)
+                        }
+                       
+                        .robotoMono(.medium, 15)
+                        .fixedSize(horizontal: true, vertical: false)
 
                     }
                     
@@ -292,118 +484,30 @@ struct VacationConstructorMain: View {
              
 
             } header: {
-                Text("Сost Of Service")
-                    .robotoMono(.semibold, 20)
-                    .foregroundColor(.white)
-            }.textCase(nil)
-            
-            
-
-            
-            // MARK: - Language Section
-            Section {
-                NavigationLink {
-                    LanguageDescriptorPicker(langDescriptors: self.$languageDescriptors)
-                } label: {
-                    
-                    Text(self.getLineFromDescriptors(self.languageDescriptors))
-                        .robotoMono(.semibold, 14, color: .white)
-                        .lineLimit(1)
-                        .minimumScaleFactor(0.01)
-                        
-                }
-                
-            } header: {
-                Text("Languages used")
-                    .robotoMono(.semibold, 20)
-                    .foregroundColor(.white)
-            }.textCase(nil)
-            
-            Section {
-                
-                    ZStack(alignment: .leading) {
-                        if self.coreSkills.isEmpty {
-                            Text(LocalizedStringKey("MVVM, Firebase, ..."))
-                                .robotoMono(.semibold, 14, color: Color(red: 0.36, green: 0.36, blue: 0.36))
-                                .padding(.horizontal, 4)
-                        }
-                        
-                        TextEditor(text: self.$coreSkills)
-                            .robotoMono(.semibold, 14)
-                            .autocapitalization(.none)
-                            .autocorrectionDisabled(true)
-                    }
-                
-                
-            } header: {
-                Text("Сore Skills")
+                Text("Salary")
                     .robotoMono(.semibold, 20)
                     .foregroundColor(.white)
             } footer: {
-                Text("Enter from 1 to 10 key skills, separating them with a comma")
+                Text("You can leave the \"To:\" field empty")
             }
             .textCase(nil)
+        
             
-            // MARK: - Previews
-            // MARK: - Photos Picker
-            Section {
-                if !self.selectedAssets.isEmpty {
-                    ScrollView(.horizontal, showsIndicators: false) {
-                        HStack(spacing: 8) {
-                            ForEach(0..<(self.selectedAssets.count >= 3 ? 3 : self.selectedAssets.count + 1), id: \.self) { assetIndex in
-                            Button {
-                                self.showTLPhotosPicker.toggle()
-                            } label: {
-                                
-                                    if let asset = self.selectedAssets[safe: assetIndex],
-                                       let image: UIImage = asset.fullResolutionImage {
-                                        Image(uiImage: image)
-                                            .resizable()
-                                            .scaledToFill()
-                                    } else {
-                                        ZStack {
-                                            Color(red: 0.11, green: 0.11, blue: 0.12)
-                                            Image(systemName: "plus.circle.fill")
-                                                .resizable()
-                                                .symbolRenderingMode(.hierarchical)
-                                                .foregroundColor(.primary)
-                                                .frame(width: 50, height: 50)
-                                        }
-                                    }
-                            }
-                            .frame(width: 250, height: 150)
-                            .clipShape(RoundedRectangle(cornerRadius: 25))
-                        }
-                    }.padding(.leading)
-                    }.frame(height: 175)
-                }
-         
-
-            } header: {
-                HStack {
-                    Text("Previews")
-                        .robotoMono(.semibold, 20)
-                        .foregroundColor(.white)
-                        .padding(.leading, 20)
-                    Spacer()
-                    if self.selectedAssets.count < 3 {
-                        Button {
-                            self.showTLPhotosPicker.toggle()
-                        } label: {
-                            Image(systemName: "plus")
-                                .resizable()
-                                .scaledToFit()
-                                .foregroundColor(Color("Register2"))
-                                .frame(width: 20, height: 20)
-                                .font(.system(size: 20).bold())
-                        }
-                    }
-                }
-            }
-            .textCase(nil)
-            .listRowBackground(Color.clear)
-            .listRowInsets(EdgeInsets.init(top: 8, leading: 0, bottom: 8, trailing: 0))
-            .buttonStyle(.plain)
+            // MARK: - Contact details
+            /// Будет браться из данных юр. аккаунта
+//            Section {
+//                TextField("Email", text: self.$email)
+//                    .robotoMono(.medium, 15)
+//                    .autocorrectionDisabled(true)
+//                    .autocapitalization(.none)
+//                TextField("Link to web", text: self.$companyLink)
+//                    .robotoMono(.medium, 15)
+//                    .autocorrectionDisabled(true)
+//                    .autocapitalization(.none)
+//            } header: {
+//                Text(LocalizedStringKey("Contact Details"))
+//                    .robotoMono(.semibold, 20)
+//            }.textCase(nil)
             
             
             // MARK: - Preview Button
@@ -496,6 +600,8 @@ struct VacationConstructorMain: View {
         for descriptor in descriptors {
             rawedDescriptors.append(descriptor.rawValue)
         }
+        
+        guard rawedDescriptors.count > 0 else { return "None" }
         if rawedDescriptors.count == 1 {
             return rawedDescriptors[0]
         } else if rawedDescriptors.count == 2 {
@@ -510,8 +616,8 @@ struct VacationConstructorMain: View {
 
 
 
-//struct VacationConstructorMain_Previews: PreviewProvider {
+//struct VacancyConstructorMain_Previews: PreviewProvider {
 //    static var previews: some View {
-//        VacationConstructorMain()
+//        VacancyConstructorMain()
 //    }
 //}
