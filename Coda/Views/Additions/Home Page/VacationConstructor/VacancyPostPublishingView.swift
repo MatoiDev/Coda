@@ -1,13 +1,14 @@
 //
-//  PreviewPostPublishingView.swift
+//  VacancyPostPublishingView.swift
 //  Coda
 //
-//  Created by Matoi on 24.02.2023.
+//  Created by Matoi on 01.03.2023.
 //
+
 
 import SwiftUI
 
-struct ServicePostPublishingView: View {
+struct VacancyPostPublishingView: View {
     
     let onOKButtonPress: () -> ()
     
@@ -21,11 +22,11 @@ struct ServicePostPublishingView: View {
         ZStack {
             VStack {
                 if Reachability.isConnectedToNetwork() {
-                    LottieView(named: "engagedDeveloper", loop: true)
+                    LottieView(named: "JobInterview", loop: true)
                         .scaledToFit()
                         .frame(width: UIScreen.main.bounds.width - 32)
                     
-                    Text("The service was successfully published.")
+                    Text("The vacancy was successfully published.")
                         .robotoMono(.bold, 15)
                     Spacer()
                     Button {
@@ -73,4 +74,9 @@ struct ServicePostPublishingView: View {
         
     }
 }
-
+//
+//struct VacancyPostPublishingView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        VacancyPostPublishingView()
+//    }
+//}

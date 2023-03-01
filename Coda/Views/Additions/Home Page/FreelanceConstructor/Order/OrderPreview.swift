@@ -75,10 +75,12 @@ class FirebaseAvatarImageServer: ObservableObject {
 }
 
 enum BusinessCardType {
-    case customer, vendor
+    case customer, vendor, company
 }
 
 struct BusinessCard: View {
+    
+    
     
     let type: BusinessCardType
     
@@ -125,7 +127,7 @@ struct BusinessCard: View {
                 }.robotoMono(.semibold, 17)
                 HStack {
                     
-                    Text(LocalizedStringKey(self.type == .customer ? "Customer" : "Vendor") )
+                    Text(LocalizedStringKey(self.type == .customer ? "Customer" : self.type == .vendor ? "Vendor" : "Company") )
                         .robotoMono(.medium, 16, color:.secondary)
                     
                     Divider().frame(maxHeight: 20)
@@ -260,14 +262,58 @@ struct OrderPreview: View {
                     .padding(.leading, 24)
                     .padding(.top, 2)
                     
-                    // MARK: - Date, responses & views
+//                    // MARK: - Date, responses & views
+//
+//                    HStack(alignment: .center) {
+//                        Text(self.currentDate)
+//                            .padding(.leading, 24)
+//                            .robotoMono(.light, 12, color: Color(red: 0.80, green: 0.80, blue: 0.80))
+//
+//                        Divider()
+//                        HStack {
+//                            Text("\(self.responsesCount)")
+//                                .foregroundColor(.white)
+//                                .robotoMono(.medium, 14)
+//                            Image(systemName: "person.wave.2")
+//                                .robotoMono(.light, 12, color: Color(red: 0.80, green: 0.80, blue: 0.80))
+//                                .padding(.trailing)
+//                            Text("\(self.viewsCount)")
+//                                .foregroundColor(.white)
+//                                .robotoMono(.medium, 14)
+//                            Image(systemName: "eye")
+//                                .robotoMono(.light, 12, color: Color(red: 0.80, green: 0.80, blue: 0.80))
+//                        }
+//                        .padding(2)
+//                        .padding(.horizontal, 4)
+//                        .background(Color("BubbleMessageRecievedColor"), in: RoundedRectangle(cornerRadius: 30))
+//                        .overlay {
+//                            RoundedRectangle(cornerRadius: 30)
+//                                .stroke(Color(red: 0.80, green: 0.80, blue: 0.80), lineWidth: 1)
+//                        }
+//                        .padding(4)
+//                        .fixedSize()
+//
+//
+//                    }.padding(.top, -12)
                     
+                    // MARK: - Tags
+                    WrappingHStack(tags: self.languages.compactMap {
+                        $0 == LangDescriptor.defaultValue ? nil : $0.rawValue
+                    } + self.getTags(from: self.coreSkills))
+                        .padding(.horizontal)
+                    
+                    
+                    // MARK: - Business card
+                    
+                    BusinessCard(type: .customer, image: self.$imageLoader.image, error: self.$imageLoader.errorLog, firstName: self.userFirstName, lastName: self.userLastName, reputation: self.userReputation)
+                        .padding()
+                    // MARK: - Date, responses & views
                     HStack(alignment: .center) {
                         Text(self.currentDate)
                             .padding(.leading, 24)
                             .robotoMono(.light, 12, color: Color(red: 0.80, green: 0.80, blue: 0.80))
                     
-                        Divider()
+                        Spacer()
                         HStack {
                             Text("\(self.responsesCount)")
                                 .foregroundColor(.white)
@@ -281,6 +327,7 @@ struct OrderPreview: View {
                             Image(systemName: "eye")
                                 .robotoMono(.light, 12, color: Color(red: 0.80, green: 0.80, blue: 0.80))
                         }
+                   
                         .padding(2)
                         .padding(.horizontal, 4)
                         .background(Color("BubbleMessageRecievedColor"), in: RoundedRectangle(cornerRadius: 30))
@@ -288,23 +335,13 @@ struct OrderPreview: View {
                             RoundedRectangle(cornerRadius: 30)
                                 .stroke(Color(red: 0.80, green: 0.80, blue: 0.80), lineWidth: 1)
                         }
+                        .padding(.trailing)
                         .padding(4)
                         .fixedSize()
                         
          
-                    }.padding(.top, -12)
+                    }.padding(.top, -8)
                     
-                    // MARK: - Tags
-                    WrappingHStack(tags: self.languages.compactMap {
-                        $0 == LangDescriptor.defaultValue ? nil : $0.rawValue
-                    } + self.getTags(from: self.coreSkills))
-                        .padding(.horizontal)
-                    
-                    
-                    // MARK: - Business card
-                    
-                    BusinessCard(type: .customer, image: self.$imageLoader.image, error: self.$imageLoader.errorLog, firstName: self.userFirstName, lastName: self.userLastName, reputation: self.userReputation)
-                        .padding()
                     // MARK: - Previews
                     if let previews = self.previews, !previews.isEmpty {
                         ScrollView(.horizontal, showsIndicators: false) {
@@ -320,11 +357,19 @@ struct OrderPreview: View {
                         }.frame(height: 175)
                     }
                     
+                
                     // MARK: - Description
-                    VStack {
+                    VStack(alignment: .leading) {
+                        HStack {
+                            Text("Order Description")
+                                .robotoMono(.semibold, 18, color: .secondary)
+                                Spacer()
+                        }.padding(.horizontal, 8)
+                            .padding(.bottom, 4)
+                     
                         Text(LocalizedStringKey(self.description))
                     }
-                    .padding()
+                    .padding(.horizontal)
                     
                     // MARK: - Files
                     if let files = self.files, !files.isEmpty {
@@ -356,8 +401,8 @@ struct OrderPreview: View {
                                             
                                         }
                                         .frame(
-                                            width: UIScreen.main.bounds.width / 3,
-                                            height: UIScreen.main.bounds.width / 3
+                                            width: UIScreen.main.bounds.width / 3.5,
+                                            height: UIScreen.main.bounds.width / 3.5
                                         )
                                         .clipShape(RoundedRectangle(cornerRadius: 20))
                                         .overlay {

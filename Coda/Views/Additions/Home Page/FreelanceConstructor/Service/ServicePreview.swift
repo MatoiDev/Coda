@@ -107,39 +107,39 @@ struct ServicePreview: View {
                     .padding(.leading, 24)
                     .padding(.top, 2)
                     
-                    // MARK: - Date, responses & views
-                    
-                    HStack(alignment: .center) {
-                        Text(self.currentDate)
-                            .padding(.leading, 24)
-                            .robotoMono(.light, 12, color: Color(red: 0.80, green: 0.80, blue: 0.80))
-                    
-                        Divider()
-                        HStack {
-                            Text("\(self.responsesCount)")
-                                .foregroundColor(.white)
-                                .robotoMono(.medium, 14)
-                            Image(systemName: "person.wave.2")
-                                .robotoMono(.light, 12, color: Color(red: 0.80, green: 0.80, blue: 0.80))
-                                .padding(.trailing)
-                            Text("\(self.viewsCount)")
-                                .foregroundColor(.white)
-                                .robotoMono(.medium, 14)
-                            Image(systemName: "eye")
-                                .robotoMono(.light, 12, color: Color(red: 0.80, green: 0.80, blue: 0.80))
-                        }
-                        .padding(2)
-                        .padding(.horizontal, 4)
-                        .background(Color("BubbleMessageRecievedColor"), in: RoundedRectangle(cornerRadius: 30))
-                        .overlay {
-                            RoundedRectangle(cornerRadius: 30)
-                                .stroke(Color(red: 0.80, green: 0.80, blue: 0.80), lineWidth: 1)
-                        }
-                        .padding(4)
-                        .fixedSize()
-                        
-         
-                    }.padding(.top, -12)
+
+//
+//                    HStack(alignment: .center) {
+//                        Text(self.currentDate)
+//                            .padding(.leading, 24)
+//                            .robotoMono(.light, 12, color: Color(red: 0.80, green: 0.80, blue: 0.80))
+//
+//                        Divider()
+//                        HStack {
+//                            Text("\(self.responsesCount)")
+//                                .foregroundColor(.white)
+//                                .robotoMono(.medium, 14)
+//                            Image(systemName: "person.wave.2")
+//                                .robotoMono(.light, 12, color: Color(red: 0.80, green: 0.80, blue: 0.80))
+//                                .padding(.trailing)
+//                            Text("\(self.viewsCount)")
+//                                .foregroundColor(.white)
+//                                .robotoMono(.medium, 14)
+//                            Image(systemName: "eye")
+//                                .robotoMono(.light, 12, color: Color(red: 0.80, green: 0.80, blue: 0.80))
+//                        }
+//                        .padding(2)
+//                        .padding(.horizontal, 4)
+//                        .background(Color("BubbleMessageRecievedColor"), in: RoundedRectangle(cornerRadius: 30))
+//                        .overlay {
+//                            RoundedRectangle(cornerRadius: 30)
+//                                .stroke(Color(red: 0.80, green: 0.80, blue: 0.80), lineWidth: 1)
+//                        }
+//                        .padding(4)
+//                        .fixedSize()
+//
+//
+//                    }.padding(.top, -12)
                     
                     // MARK: - Tags
                     WrappingHStack(tags: self.languages.compactMap {
@@ -167,11 +167,54 @@ struct ServicePreview: View {
                         }.frame(height: 175)
                     }
                     
+                    // MARK: - Date, responses & views
+                    HStack(alignment: .center) {
+                        Text(self.currentDate)
+                            .padding(.leading, 24)
+                            .robotoMono(.light, 12, color: Color(red: 0.80, green: 0.80, blue: 0.80))
+                    
+                        Spacer()
+                        HStack {
+                            Text("\(self.responsesCount)")
+                                .foregroundColor(.white)
+                                .robotoMono(.medium, 14)
+                            Image(systemName: "person.wave.2")
+                                .robotoMono(.light, 12, color: Color(red: 0.80, green: 0.80, blue: 0.80))
+                                .padding(.trailing)
+                            Text("\(self.viewsCount)")
+                                .foregroundColor(.white)
+                                .robotoMono(.medium, 14)
+                            Image(systemName: "eye")
+                                .robotoMono(.light, 12, color: Color(red: 0.80, green: 0.80, blue: 0.80))
+                        }
+                   
+                        .padding(2)
+                        .padding(.horizontal, 4)
+                        .background(Color("BubbleMessageRecievedColor"), in: RoundedRectangle(cornerRadius: 30))
+                        .overlay {
+                            RoundedRectangle(cornerRadius: 30)
+                                .stroke(Color(red: 0.80, green: 0.80, blue: 0.80), lineWidth: 1)
+                        }
+                        .padding(.trailing)
+                        .padding(4)
+                        .fixedSize()
+                        
+         
+                    }.padding(.top, -8)
+                    
+                    
                     // MARK: - Description
-                    VStack {
+                    VStack(alignment: .leading) {
+                        HStack {
+                            Text("Service Description")
+                                .robotoMono(.semibold, 18, color: .secondary)
+                                Spacer()
+                        }.padding(.horizontal, 8)
+                            .padding(.bottom, 4)
+                     
                         Text(LocalizedStringKey(self.description))
                     }
-                    .padding()
+                    .padding(.horizontal)
                 
                     
                     // MARK: - Deploy Button

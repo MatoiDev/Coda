@@ -85,6 +85,7 @@ struct VacancyConstructorMain: View {
     @Binding var rootViewIsActive: Bool
     
     // Edit properties
+    // _____________________________________________________________________________________
     @State private var title: String = ""
     @State private var description: String = ""
     @State private var specialization: FreelanceTopic = .Development
@@ -97,32 +98,21 @@ struct VacancyConstructorMain: View {
     
     @State private var salaryType: SalaryType = .сontractual
     @State private var currency: CurrencyType = .ruble
-    @State private var salaryLowerBound: String = ""
-    @State private var salaryUpperBound: String = ""
-    @State private var pricePer: SpecifiedPriceType = .perHour
-    
-    @State private var email: String = ""
-    @State private var companyLink: String = ""
-
+    @State private var salaryLowerBound: String = "" // Цена с
+    @State private var salaryUpperBound: String = "" // Цена до
+    @State private var requirements: String = ""
     @State private var languageDescriptors: [LangDescriptor] = [LangDescriptor.defaultValue]
-    
-    
+    // _____________________________________________________________________________________
     @State private var topicPickerAlive: Bool = false // Закрывает линки для выбора подтопика
     
-    
     @State private var showPreviewDescription: Bool = false
-    @State private var showDocumentPicker: Bool = false
-    
+
     @State private var showLinkAlert: Bool = false // Алерт для вызова филда под ссылку
     @State private var TFAlertText: String? // Текст, который ввели в алерте
     @State private var stub: String? // В текст, изменяемый алертом, в данном view используется Future-Promise, так что оставлю заглушкой
     
     @State private var showServicePreview: Bool = false
     
-    @State private var showTLPhotosPicker: Bool = false
-    @State private var selectedAssets: [TLPHAsset] = [TLPHAsset]() // Images
-    
-    @State private var coreSkills: String = ""
     
     let textAlertHandler : TextAlertHandler = TextAlertHandler.sharedInstance
     
@@ -131,8 +121,18 @@ struct VacancyConstructorMain: View {
     
     
     private func areAllFormsCompleted() -> Bool {
-
-        return (!self.title.isEmpty && !self.description.isEmpty && !self.coreSkills.isEmpty && self.salaryLowerBound.isCorrect() && self.salaryLowerBound.isCorrect())
+        
+        if self.salaryType == .specified {
+            return (!self.title.isEmpty &&
+                    !self.description.isEmpty &&
+                    !self.requirements.isEmpty &&
+                    self.salaryLowerBound.isCorrect() &&
+                    self.salaryLowerBound.isCorrect())
+        }
+        return (!self.title.isEmpty &&
+               !self.description.isEmpty &&
+               !self.requirements.isEmpty)
+    
         
     }
  
@@ -253,7 +253,7 @@ struct VacancyConstructorMain: View {
                         HStack {
                             Text(LocalizedStringKey("Can work remotely"))
                             Spacer()
-                            Image(systemName: "cup.and.saucer.fill")
+                            Image("RemoteWorkFemale")
                         }
                         
                     }
@@ -264,7 +264,7 @@ struct VacancyConstructorMain: View {
                         HStack {
                             Text(LocalizedStringKey("Office work"))
                             Spacer()
-                            Image(systemName: "mappin.and.ellipse")
+                            Image("Office")
                         }
                     }
                 } label: {
@@ -272,7 +272,10 @@ struct VacancyConstructorMain: View {
                         Text(LocalizedStringKey(self.locationType == .free ? "Can work remotely" : "Office work"))
                             .robotoMono(.medium, 15)
                         Spacer()
-                        Image(systemName: self.locationType == .free ? "cup.and.saucer.fill" : "mappin.and.ellipse")
+                        Image(self.locationType == .free ? "RemoteWorkFemale" : "Office")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(height: 25)
                             .foregroundColor(.white)
                     }
                     
@@ -385,13 +388,13 @@ struct VacancyConstructorMain: View {
                 }
                 
                     ZStack(alignment: .leading) {
-                        if self.coreSkills.isEmpty {
+                        if self.requirements.isEmpty {
                             Text(LocalizedStringKey("SCRUM, Jira ..."))
                                 .robotoMono(.semibold, 14, color: Color(red: 0.36, green: 0.36, blue: 0.36))
                                 .padding(.horizontal, 4)
                         }
                         
-                        TextEditor(text: self.$coreSkills)
+                        TextEditor(text: self.$requirements)
                             .robotoMono(.semibold, 14)
                             .autocapitalization(.none)
                             .autocorrectionDisabled(true)
@@ -524,18 +527,18 @@ struct VacancyConstructorMain: View {
                         .clipShape(RoundedRectangle(cornerRadius: 10))
                 }
                 
-//                .overlay(
-//
-//                    NavigationLink(
-//                        isActive: self.$showServicePreview,
-//                        destination: { ServicePreview(title: self.title, description: self.description, priceType: self.salaryType, price: self.salary, per: self.pricePer, topic: self.topic, devSubtopic: self.devSubtopic, adminSubtopic: self.adminSubtopic, designSubtopic: self.designSubtopic, testSubtopic: self.testSubtopic, languages: self.languageDescriptors, coreSkills: self.coreSkills, previews: self.assetsToImage(assets: self.selectedAssets), imageLoader: FirebaseTemporaryImageLoaderVM(with: URL(string: avatarURL)), doneTrigger: self.$doneUploading, rootViewIsActive: self.$rootViewIsActive) },
-//                        label: { EmptyView() }
-//
-//                    )
-//                    .isDetailLink(false)
-//                    .disabled(!self.areAllFormsCompleted())
-//                    .opacity(0)
-//                )
+                .overlay(
+
+                    NavigationLink(
+                        isActive: self.$showServicePreview,
+                        destination: { VacancyPreview(title: self.title, description: self.description, specialization: self.specialization, qualification: self.qualification, locationType: self.locationType, specifiedLocation: self.specifiedLocation, typeOfEmployment: self.typeOfEmployment, salaryType: self.salaryType, currency: self.currency, salaryLowerBound: self.salaryLowerBound, salaryUpperBound: self.salaryUpperBound, requirements: self.requirements, languageDescriptors: self.languageDescriptors, imageLoader: FirebaseTemporaryImageLoaderVM(with: URL(string: loginUserID)), doneUploading: self.$doneUploading, rootViewIsActive: self.$rootViewIsActive) },
+                        label: { EmptyView() }
+
+                    )
+                    .isDetailLink(false)
+                    .disabled(!self.areAllFormsCompleted())
+                    .opacity(0)
+                )
                 .overlay {
                     RoundedRectangle(cornerRadius: 10)
                         .stroke(LinearGradient(colors: [self.areAllFormsCompleted() ? Color("Register2") : Color(red: 0.3, green: 0.3, blue: 0.3), self.areAllFormsCompleted() ? .cyan : Color(red: 0.8, green: 0.8, blue: 0.8)], startPoint: .topLeading, endPoint: .bottomTrailing), lineWidth: 2)
@@ -552,9 +555,9 @@ struct VacancyConstructorMain: View {
         }
         .onAppear(perform: UIApplication.shared.addTapGestureRecognizer)
         .navigationBarTitleDisplayMode(.inline)
-        .onChange(of: self.coreSkills, perform: { string in
+        .onChange(of: self.requirements, perform: { string in
             if string.count(of: ",") > 9 && string.last! == "," {
-                self.coreSkills = String(string.dropLast())
+                self.requirements = String(string.dropLast())
             }
         })
         .toolbar {
@@ -577,9 +580,6 @@ struct VacancyConstructorMain: View {
         })
         .sheet(isPresented: self.$showPreviewDescription) {
             DescriptionPreview(text: self.description)
-        }
-        .fullScreenCover(isPresented: self.$showTLPhotosPicker) {
-            TLPhotosPickerViewControllerRepresentable(assets: self.$selectedAssets)
         }
         
     }

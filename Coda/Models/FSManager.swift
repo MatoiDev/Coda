@@ -512,6 +512,68 @@ class FSManager: ObservableObject {
         }
     }
     
+    func createVacancy(company companyID: String,
+                       title: String,
+                       description: String,
+                       specialization: FreelanceTopic,
+                       qualification: DeveloperQualificationType,
+                       locationType: LocationType,
+                       specifiedLocation: String,
+                       typeOfEmployment: TypeOfEmployment,
+                       salaryType: SalaryType,
+                       currency: CurrencyType,
+                       salaryLowerBound: String,
+                       salaryUpperBound: String,
+                       requirements: String,
+                       languages: [LangDescriptor],
+                       observeManager: FirebaseFilesUploadingProgreessManager,
+                       completion: @escaping (Result<String, Error>) -> Void
+                       
+    ) {
+        
+        guard Reachability.isConnectedToNetwork() else { observeManager.amountPercentage = -1; return }
+        let vacancyID: String = FSManager.generate64CharactersLongID()
+        self.db.collection("Vacancy").document(vacancyID).setData([
+            
+            "id" : vacancyID,
+            "company": companyID,
+            "title": title,
+            "description": description,
+            "specialization": specialization.rawValue,
+            "qualification":  qualification.rawValue,
+            "locationType": locationType == .free ? "free" : "specified",
+            "specifiedLocation": locationType == .free ? "not specified" : specifiedLocation,
+            "typeOfEmployment": typeOfEmployment.rawValue,
+            "salaryType": salaryType.rawValue,
+            "currency": currency.rawValue,
+            "salaryLowerBound": salaryLowerBound,
+            "salaryUpperBound": salaryUpperBound,
+            "requirements": requirements,
+            "languages": languages.map({$0.rawValue}),
+            "time": Date().timeIntervalSince1970,
+            "responses": 0,
+            "views": 0,
+            "date": Date().getFormattedDate(format: "d MMM, HH:mm")
+            
+        ]) { err in
+            if let err = err {
+                print("Error writing document: \(err)")
+                self.showPV = false
+                observeManager.amountPercentage = -1
+                completion(.failure("Error with creating post: \(err.localizedDescription)"))
+            } else {
+                observeManager.amountPercentage = 100
+                completion(.success(vacancyID))
+            }
+        }
+        
+//        let observer = uploadTask.observe(.progress) { snapshot in
+//
+//            let percentComplete = 100.0 * Double(snapshot.progress!.completedUnitCount) / Double(snapshot.progress!.totalUnitCount)
+//            observeManager.filesProgressSnapshots[snapshot] = percentComplete
+//        }
+    }
+    
     func createFreelanceOrder(owner userID: String,
                               name: String,
                               description: String,
@@ -531,7 +593,7 @@ class FSManager: ObservableObject {
                               files: [URL]?,
                               observeManager: FirebaseFilesUploadingProgreessManager,
                               completionHandler: @escaping (Result<String, Error>) -> Void) -> Void {
-        
+        guard Reachability.isConnectedToNetwork() else { observeManager.amountPercentage = -1; return }
             self.uploadPublisher(PDFs: files ?? [], observeManager: observeManager)
             .combineLatest(self.uploadPublisher(previews: previews ?? [], observeManager: observeManager, folder: .order))
                 .sink { res in
@@ -539,8 +601,10 @@ class FSManager: ObservableObject {
                         print(res)
                     }
                 } receiveValue: { (filesURL, previewsURL) in
+                    
                     let orderID: String = FSManager.generate64CharactersLongID()
                     var subtopic: String = ""
+                    
                     switch topic {
                     case .Administration:
                         subtopic = adminSubtopic.rawValue
@@ -550,11 +614,6 @@ class FSManager: ObservableObject {
                         subtopic = devSubtopic.rawValue
                     case .Testing:
                         subtopic = testSubtopic.rawValue
-                    }
-                    
-                    var rawedLangs: [String] = []
-                    for lang in languages {
-                        rawedLangs.append(lang.rawValue)
                     }
                     
                     self.db.collection("FreelanceOrder").document(orderID).setData([
@@ -568,7 +627,7 @@ class FSManager: ObservableObject {
                         "pricePer": per.rawValue,
                         "topic": topic.rawValue,
                         "subtopic": subtopic,
-                        "langdescriptors": rawedLangs,
+                        "langdescriptors": languages.map({$0.rawValue}),
                         "coreskills": coreSkills,
                         "previews": previewsURL,
                         "files": filesURL,
@@ -582,6 +641,7 @@ class FSManager: ObservableObject {
                         if let err = err {
                             print("Error writing document: \(err)")
                             self.showPV = false
+                            observeManager.amountPercentage = -1
                             completionHandler(.failure("Error with creating post: \(err.localizedDescription)"))
                         } else {
                             observeManager.amountPercentage = 100
@@ -603,18 +663,16 @@ class FSManager: ObservableObject {
                               price: String,
                               per: SpecifiedPriceType,
                               topic: FreelanceTopic,
-                              
                               devSubtopic: FreelanceSubTopic.FreelanceDevelopingSubTopic,
                               adminSubtopic: FreelanceSubTopic.FreelanceAdministrationSubTropic,
                               designSubtopic: FreelanceSubTopic.FreelanceDesignSubTopic,
                               testSubtopic: FreelanceSubTopic.FreelanceTestingSubTopic,
-    
                               languages: [LangDescriptor],
                               coreSkills: String,
                               previews: [UIImage]?,
                               observeManager: FirebaseFilesUploadingProgreessManager,
                               completionHandler: @escaping (Result<String, Error>) -> Void) -> Void {
-        
+        guard Reachability.isConnectedToNetwork() else { observeManager.amountPercentage = -1; return }
         self.uploadPublisher(previews: previews ?? [], observeManager: observeManager, folder: .service)
                 .sink { res in
                     if case .failure = res {
@@ -634,10 +692,6 @@ class FSManager: ObservableObject {
                         subtopic = testSubtopic.rawValue
                     }
                     
-                    var rawedLangs: [String] = []
-                    for lang in languages {
-                        rawedLangs.append(lang.rawValue)
-                    }
                     
                     self.db.collection("FreelanceService").document(serviceID).setData([
                         
@@ -650,7 +704,7 @@ class FSManager: ObservableObject {
                         "pricePer": per.rawValue,
                         "topic": topic.rawValue,
                         "subtopic": subtopic,
-                        "langdescriptors": rawedLangs,
+                        "langdescriptors": languages.map({$0.rawValue}),
                         "coreskills": coreSkills,
                         "previews": previewsURL,
                         "time": Date().timeIntervalSince1970,
@@ -664,6 +718,7 @@ class FSManager: ObservableObject {
                         if let err = err {
                             print("Error writing document: \(err)")
                             self.showPV = false
+                            observeManager.amountPercentage = -1
                             completionHandler(.failure("Error with creating post: \(err.localizedDescription)"))
                         } else {
                             observeManager.amountPercentage = 100

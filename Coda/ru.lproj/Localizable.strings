@@ -149,4 +149,13 @@
 
 "New Vacancy" = "Разместить Вакансию";
 
+"Order Description" = "Описание Заказа";
+"Service Description" = "Описание Услуги";
+"Vacancy Description" = "Описание Вакансии";
+
+"Whooops..." = "Упс...";
+"Connection Lost" = "Потеря Соединения";
+"The vacancy was successfully published." = "Вакансия успешно размещена!";
+"The order was successfully published." = "Заказ успешно размещён!";
+"The service was successfully published." = "Услуга успешно размещена!";
 

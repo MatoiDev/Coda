@@ -11,6 +11,8 @@ struct OrderPostPublishingView: View {
     
     let onOKButtonPress: () -> ()
     
+    @Environment(\.dismiss) var dismiss
+    
     init(onOKButtonPress: @escaping () -> Void) {
         self.onOKButtonPress = onOKButtonPress
     }
@@ -18,26 +20,54 @@ struct OrderPostPublishingView: View {
     var body: some View {
         ZStack {
             VStack {
-                LottieView(named: "engagedDeveloper", loop: true)
-                    .scaledToFit()
-                    .frame(width: UIScreen.main.bounds.width - 32)
-                
-                Text("The order was successfully published.")
-                    .robotoMono(.bold, 15)
-                Spacer()
-                Button {
-                    self.onOKButtonPress()
-                } label: {
-                    Text("OK")
-                        .robotoMono(.bold, 20, color: .black)
-                        .frame(maxWidth: .infinity)
+                if Reachability.isConnectedToNetwork() {
+                    LottieView(named: "engagedDeveloper", loop: true)
+                        .scaledToFit()
+                        .frame(width: UIScreen.main.bounds.width - 32)
+                    
+                    Text("The order was successfully published.")
+                        .robotoMono(.bold, 15)
+                    Spacer()
+                    Button {
+                        self.onOKButtonPress()
+                    } label: {
+                        Text("OK")
+                            .robotoMono(.bold, 20, color: .black)
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                           
+                           
+                            .background(Color.green)
+                            .clipShape(RoundedRectangle(cornerRadius: 30))
+                            .padding(.horizontal, 32)
+                    }
+                } else {
+                    LottieView(named: "connectionErrorMan", loop: true)
+                        .scaledToFit()
+                        .frame(width: UIScreen.main.bounds.width - 32)
+                    Text("Whooops...")
                         .padding()
-                       
-                       
-                        .background(Color.green)
-                        .clipShape(RoundedRectangle(cornerRadius: 30))
-                        .padding(.horizontal, 32)
+                        .robotoMono(.bold, 45)
+                    Text("Connection Lost")
+                        .robotoMono(.bold, 15)
+                    Spacer()
+                    Button {
+
+                        self.dismiss.callAsFunction()
+                        
+                    } label: {
+                        Text("OK")
+                            .robotoMono(.bold, 20, color: .black)
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                           
+                           
+                            .background(Color.orange)
+                            .clipShape(RoundedRectangle(cornerRadius: 30))
+                            .padding(.horizontal, 32)
+                    }
                 }
+              
             }
         }.padding()
         
