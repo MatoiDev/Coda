@@ -166,22 +166,27 @@ struct OrderConstructor: View {
             // MARK: - Reward
             Section {
                 Menu {
-                    
-                    Button {
-                        self.reward = .negotiated
-                    } label: {
-                        HStack {
-                            Text("Contractual price")
+                    if self.reward != .negotiated
+                    {
+                        Button {
+                            self.reward = .negotiated
+                        } label: {
+                            HStack {
+                                Text("Contractual price")
+                            }
                         }
+                        
                     }
                     
-                    Button {
-                        self.reward = .specified(price: self.price)
-                    } label: {
-                        HStack {
-                            Text("Specified price")
-                            Spacer()
-                            Image(systemName: "character.cursor.ibeam")
+                    if self.reward != .specified(price: self.price){
+                        Button {
+                            self.reward = .specified(price: self.price)
+                        } label: {
+                            HStack {
+                                Text("Specified price")
+                                Spacer()
+                                Image(systemName: "character.cursor.ibeam")
+                            }
                         }
                     }
                     

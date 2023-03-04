@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+//TODO: Добавить все языки для выбора + searchbar
+
 struct LanguagePicker: View {
     
     @Environment(\.dismiss)
@@ -35,8 +37,7 @@ struct LanguagePicker: View {
                                     RoundedRectangle(cornerRadius: 15)
                                         .stroke(LinearGradient(colors: [Color("Register2"), .cyan], startPoint: .topLeading, endPoint: .bottomTrailing), style: .init(lineWidth: 2))
                                     Text(lang.rawValue)
-                                        .foregroundColor(.white)
-                                        .font(.custom("RobotoMono-SemiBold", size: 20))
+                                        .robotoMono(.medium, 20)
                                 }
                                 
                             }

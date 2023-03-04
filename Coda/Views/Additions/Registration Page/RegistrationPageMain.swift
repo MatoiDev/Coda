@@ -20,15 +20,15 @@ struct RegistrationPageMain: View {
             VStack {
                 HStack {
                     Text(authType.footerText)
-                        .font(.custom("RobotoMono-Medium", size: 15))
+                        .robotoMono(.medium, 15)
+                        
                         .lineLimit(1)
                         .minimumScaleFactor(0.01)
                     Button {
                         self.authType = self.authType == .login ? .register : .login
                     } label: {
                         Text(self.authType.text)
-                            .font(.custom("RobotoMono-Medium", size: 15))
-                            .lineLimit(1)
+                            .robotoMono(.medium, 15)                            .lineLimit(1)
                             .minimumScaleFactor(0.01)
                     }
 

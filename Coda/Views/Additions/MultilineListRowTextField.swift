@@ -12,7 +12,12 @@ import Combine
 
 
 class TextAlertHandler: ObservableObject {
-    
+    /*
+     
+     Простой класс-паблишер для передачи URL-ссылки,
+     введённой в алерт
+     
+     */
     static let sharedInstance: TextAlertHandler = TextAlertHandler()
     var url: PassthroughSubject<String, Never> = PassthroughSubject<String, Never>()
     

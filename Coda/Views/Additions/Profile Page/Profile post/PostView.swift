@@ -136,7 +136,7 @@ struct PostView<Logo: View>: View {
         ZStack {
             
             VStack {
-                if let date = self.date, let postBody = self.postBody, let stars = self.postStars {
+                if let date = self.date, let postBody = self.postBody, let _ = self.postStars {
                     VStack(alignment: .leading) {
                         HStack(alignment: .top) {
                             self.logo
@@ -146,15 +146,15 @@ struct PostView<Logo: View>: View {
                                 if let name = self.ownerName {
                                     // MARK: - Name
                                     Text(name)
-                                        .foregroundColor(.primary)
-                                        .font(.custom("RobotoMono-SemiBold", size: 16))
+                                        
+                                        .robotoMono(.semibold, 16)
+                                        
                                 } else {
                                     ProgressView()
                                 }
                                 // MARK: - Date
                                 Text(date)
-                                    .foregroundColor(.secondary)
-                                    .font(.custom("RobotoMono-Medium", size: 10))
+                                    .robotoMono(.medium, 10, color: .secondary)
                             }
                             Spacer()
                             // MARK: - Ellipses menu
@@ -202,10 +202,8 @@ struct PostView<Logo: View>: View {
                                             Text(self.userHasLikedThisPost ? "Unlike this post" : "Like this post")
                                             Spacer()
                                             Image(systemName: !self.userHasLikedThisPost ? "star.fill" : "star")
-                                        }.font(.custom("RobotoMono-SemiBold", size: 14))
-                                        
-                                            .foregroundColor(.primary)
-                                            
+                                        }
+                                        .robotoMono(.semibold, 14)
                                     }
                                     Divider()
                                     Button(role: .destructive) {
@@ -227,8 +225,7 @@ struct PostView<Logo: View>: View {
                                             Text("Delete Post")
                                             Image(systemName: "trash")
                                         }
-                                        .foregroundColor(.red)
-                                        .font(.custom("RobotoMono-SemiBold", size: 14))
+                                        .robotoMono(.semibold, 14, color: .red)
                                         
                                     }
                                 } else {
@@ -246,8 +243,8 @@ struct PostView<Logo: View>: View {
                                                 Text("Save photo")
                                                 Spacer()
                                                 Image(systemName: "arrow.down.circle")
-                                            }.font(.custom("RobotoMono-SemiBold", size: 14))
-
+                                            }
+                                            .robotoMono(.semibold, 14)
                                         }
                                     }
                                     Button {
@@ -283,14 +280,9 @@ struct PostView<Logo: View>: View {
                                             Text(self.userHasLikedThisPost ? "Unlike this post" : "Like this post")
                                             Spacer()
                                             Image(systemName: !self.userHasLikedThisPost ? "star.fill" : "star")
-                                        }.font(.custom("RobotoMono-SemiBold", size: 14))
-                                        
-                                            .foregroundColor(.primary)
-                                            
+                                        }.robotoMono(.semibold, 14)
                                     }
-                                    
                                 }
-                                
                             } label: {
                                 Image(systemName: "ellipsis.circle.fill")
                                     .resizable()
@@ -309,8 +301,7 @@ struct PostView<Logo: View>: View {
                         // MARK: - Post Body
 //                        HTMLText(html: postBody)
                         Text(LocalizedStringKey(postBody))
-                            .foregroundColor(.primary)
-                            .font(.custom("RobotoMono-SemiBold", size: 14))
+                            .robotoMono(.semibold, 14)
                             .multilineTextAlignment(.leading)
                         
                         if self.postHasAnImage {
@@ -336,8 +327,8 @@ struct PostView<Logo: View>: View {
                                                     Text("Save photo")
                                                     Spacer()
                                                     Image(systemName: "arrow.down.circle")
-                                                }.font(.custom("RobotoMono-SemiBold", size: 14))
-
+                                                }
+                                                .robotoMono(.semibold, 14)
                                             }
                                         }
                                 } else {

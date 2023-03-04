@@ -33,8 +33,7 @@ struct RegisterBubble: View {
                             RoundedRectangle(cornerRadius: 15).strokeBorder(LinearGradient(colors: [Color("Register2").opacity(0.7), .cyan], startPoint: .topLeading, endPoint: .bottomTrailing), lineWidth: 1)
                         }
                     Text("Register")
-                        .font(.custom("RobotoMono-Medium", size: 20))
-                        .foregroundColor(.primary)
+                        .robotoMono(.medium, 20)
                 }
                 
             }
@@ -43,7 +42,7 @@ struct RegisterBubble: View {
                 Text(authState.errorHandler)
                     .frame(height: 10)
                     .foregroundColor(.red)
-                    .font(.custom("RobotoMono-Medium", size: 300))  // 1
+                    .robotoMono(.medium, 200)
                     .minimumScaleFactor(0.035)
             }
         }

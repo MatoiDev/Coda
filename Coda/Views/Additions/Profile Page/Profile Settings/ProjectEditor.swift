@@ -34,8 +34,8 @@ struct BackButton: View {
                 Image(systemName: "chevron.backward")
                 Text("Back")
 
-            }.foregroundColor(Color("Register2"))
-                .font(.custom("RobotoMono-Bold", size: 17))
+            }
+                .robotoMono(.bold, 17, color: Color("Register2"))
         }
     }
 }
@@ -257,7 +257,7 @@ struct ProjectEditor: View {
                 if self.name != nil {
                     List {
                         // MARK: - Image picker
-                        Section(header: Text("Preview").foregroundColor(.cyan).font(.custom("RobotoMono-SemiBold", size: 13)), footer: Text("Recommended resolution:").font(.custom("RobotoMono-SemiBold", size: 12)) + Text(" 1920x1080").foregroundColor(.red).font(.custom("RobotoMono-SemiBold", size: 12)) + Text(".").font(.custom("RobotoMono-SemiBold", size: 12))) {
+                        Section(header: Text("Preview").robotoMono(.semibold, 13, color: .cyan), footer: (Text("Recommended resolution:").robotoMono(.semibold, 12) as! Text) + (Text(" 1920x1080").robotoMono(.semibold, 12, color: .red) as! Text) + (Text(".").robotoMono(.semibold, 12) as! Text)) {
                             HStack {
                                 Spacer()
                                 Button {
@@ -299,19 +299,16 @@ struct ProjectEditor: View {
                                 Spacer()
                             }
                             
-                        }.listRowBackground(Color.clear)
+                        }
+                        .textCase(nil)
+                        .listRowBackground(Color.clear)
                         Section(header: Text("Info")
-                                
-                            .foregroundColor(.cyan)
-                            .font(.custom("RobotoMono-SemiBold", size: 13)),
+                            .robotoMono(.semibold, 13, color: .cyan),
                                 
                                 footer: Text(self.resultLog)
-                            .foregroundColor(.red)
+                            .robotoMono(.bold, 12, color: .red)
                             .lineLimit(1)
-                            .minimumScaleFactor(0.01)
-                            .font(.custom("RobotoMono-Bold", size: 12)))
-                        
-                        {
+                            .minimumScaleFactor(0.01)) {
                             
                             // MARK: - Name editor
                             TextField(self.name!.isEmpty ? "Name" : self.name!, text: Binding(self.$name)!)
@@ -330,11 +327,12 @@ struct ProjectEditor: View {
                                 .keyboardType(.URL)
 
                         }
+                            .textCase(nil)
                         .autocapitalization(.none)
                         .disableAutocorrection(true)
                         .lineLimit(1)
                         .minimumScaleFactor(1)
-                        .font(.custom("RobotoMono-SemiBold", size: 14))
+                        .robotoMono(.semibold, 14)
                         
                         Section(footer: Text(self.done ? "Done" : "").foregroundColor(Color.green)) {
                             // MARK: - Save project
@@ -361,17 +359,19 @@ struct ProjectEditor: View {
                                     Spacer()
                                     Text("Save Changes")
                                     Spacer()
-                                }.foregroundColor(Color.blue)
-                                    .font(.custom("RobotoMono-Bold", size: 17))
+                                }
+                                    .robotoMono(.bold, 17, color: .blue)
                             }
                             
-                        }
+                        }.textCase(nil)
                         
                     }.navigationBarTitleDisplayMode(.inline)
                         .toolbar {
                             ToolbarItem(placement: .principal) {
                                 VStack {
-                                    Text("Settings").font(.custom("RobotoMono-SemiBold", size: 23)).lineSpacing(0.1)
+                                    Text("Settings")
+                                        .robotoMono(.semibold, 23)
+                                        .lineSpacing(0.1)
                                 }
                             }
                         } .toolbar {
@@ -391,7 +391,7 @@ struct ProjectEditor: View {
                 // MARK: - Create project
                 List {
                     // MARK: - Image picker
-                    Section(header: Text("Preview").foregroundColor(.cyan).font(.custom("RobotoMono-SemiBold", size: 13)), footer: Text("Recommended resolution:").font(.custom("RobotoMono-SemiBold", size: 12)) + Text(" 1920x1080").foregroundColor(.red).font(.custom("RobotoMono-SemiBold", size: 12)) + Text(".").font(.custom("RobotoMono-SemiBold", size: 12))) {
+                    Section(header: Text("Preview").robotoMono(.semibold, 13, color: .cyan), footer: (Text("Recommended resolution:").robotoMono(.semibold, 12) as! Text) + (Text(" 1920x1080").robotoMono(.semibold, 12, color: .red) as! Text) + (Text(".").robotoMono(.semibold, 12) as! Text)) {
                         HStack {
                             Spacer()
                             Button {
@@ -437,7 +437,8 @@ struct ProjectEditor: View {
                         }
                         
                     }.listRowBackground(Color.clear)
-                    Section(header: Text("Info").foregroundColor(.cyan).font(.custom("RobotoMono-SemiBold", size: 13)), footer: Text(self.resultLog).foregroundColor(.red)) {
+                        .textCase(nil)
+                    Section(header: Text("Info").robotoMono(.semibold, 13, color: .cyan), footer: Text(self.resultLog).foregroundColor(.red)) {
                         
                         // MARK: - Name editor
                         TextField(self.name!.isEmpty ? "Name" : self.name!, text: Binding(self.$name)!)
@@ -456,11 +457,12 @@ struct ProjectEditor: View {
                             .keyboardType(.URL)
 
                     }
+                    .textCase(nil)
                     .autocapitalization(.none)
                     .disableAutocorrection(true)
                     .lineLimit(1)
                     .minimumScaleFactor(1)
-                    .font(.custom("RobotoMono-SemiBold", size: 14))
+                    .robotoMono(.semibold, 14)
                     
                     Section(footer: Text(self.done ? "Done" : "").foregroundColor(Color.green)) {
                         // MARK: - Save project
@@ -487,17 +489,19 @@ struct ProjectEditor: View {
                                 Text("Create a project")
                                 Spacer()
                             }.foregroundColor(Color.blue)
-                                .font(.custom("RobotoMono-Bold", size: 17))
+                                .robotoMono(.bold, 17)
                         
                         }
                         
-                    }
+                    }.textCase(nil)
                     
                 }.navigationBarTitleDisplayMode(.inline)
                     .toolbar {
                         ToolbarItem(placement: .principal) {
                             VStack {
-                                Text("Settings").font(.custom("RobotoMono-SemiBold", size: 23)).lineSpacing(0.1)
+                                Text("Settings")
+                                    .robotoMono(.semibold, 23)
+                                    .lineSpacing(0.1)
                             }
                         }
                     } .toolbar {

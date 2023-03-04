@@ -37,8 +37,7 @@ struct ExploreHeaderViewCell: View {
                     
             }
         }
-        .foregroundColor(.white)
-        .font(.custom("RobotoMono-SemiBold", size: 15))
+        .robotoMono(.semibold, 15, color: .white)
         .padding(4)
         .background(
             self.selected ? LinearGradient(colors: [Color("Register2").opacity(0.45), .cyan.opacity(0.45)], startPoint: .topLeading, endPoint: .bottomTrailing) :

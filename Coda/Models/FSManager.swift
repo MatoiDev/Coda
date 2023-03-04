@@ -111,7 +111,7 @@ class FSManager: ObservableObject {
     private let db = Firestore.firestore()
     
     enum UploadFolderType {
-        case order, service
+        case order, service, idea
     }
     
     // MARK: - Generate IDs (Static)
@@ -234,12 +234,24 @@ class FSManager: ObservableObject {
         }
     }
     
-    private func upload(FreelancePreviews previews: [UIImage], to folder: UploadFolderType, observeManager: FirebaseFilesUploadingProgreessManager, completion: @escaping (Result<[String], Error>) -> Void) -> Void {
+    private func upload(previews: [UIImage], to folder: UploadFolderType, observeManager: FirebaseFilesUploadingProgreessManager, completion: @escaping (Result<[String], Error>) -> Void) -> Void {
         
         let storage = Storage.storage()
         
         var uploadedURLs: [String] = []
         var uploadCount: Int = 0
+        
+        var folderName: String {
+            switch folder {
+            case .order:
+                return "FreelanceOrderPreviews"
+            case .service:
+                return "FreelanceServicePreviews"
+            case .idea:
+                return "IdeaPreviews"
+                
+            }
+        }
         
         for preview in previews {
             
@@ -250,7 +262,7 @@ class FSManager: ObservableObject {
             
             let imageID = FSManager.generate128CharactersLongID()
             
-            let ref = storage.reference().child(folder == .order ? "FreelanceOrderPreviews" : "FreelanceServicePreviews").child(imageID)
+            let ref = storage.reference().child(folderName).child(imageID)
             
             let uploadTask = ref.putData(imageData, metadata: metadata) { metadata, error in
                 guard let _ = metadata else {
@@ -283,17 +295,30 @@ class FSManager: ObservableObject {
        
     }
     
-    func upload(PDFs files: [URL], observeManager: FirebaseFilesUploadingProgreessManager, completionHandler: @escaping (Result<[String], Error>) -> Void) {
+    func upload(PDFs files: [URL], to folder: UploadFolderType, observeManager: FirebaseFilesUploadingProgreessManager, completionHandler: @escaping (Result<[String], Error>) -> Void) {
         
         let storage = Storage.storage()
 
         var uploadedURLs: [String] = []
         var uploadCount: Int = 0
         
+        var folderName: String {
+            switch folder {
+            case .order:
+                return "FreelanceOrderFiles"
+            case .service:
+                return "FreelanceServiceFiles"
+            case .idea:
+                return "IdeaFiles"
+                
+            }
+        }
+        
         
         for file in files {
             let imageName = file.deletingPathExtension().lastPathComponent
-            let ref = storage.reference().child("FreelanceOrderFiles").child("\(self.loginUserID)/\(imageName)")
+            
+            let ref = storage.reference().child(folderName).child("\(self.loginUserID)/\(imageName)")
             moveItemsToTempDirectory(originPath: file) { res in
                 switch res {
                 case .success(let filePath):
@@ -335,13 +360,13 @@ class FSManager: ObservableObject {
     
     
     // MARK: - Upload Publishers
-    func uploadPublisher(PDFs files: [URL], observeManager: FirebaseFilesUploadingProgreessManager) -> Future<[String], Error> {
+    func uploadPublisher(PDFs files: [URL], observeManager: FirebaseFilesUploadingProgreessManager, folder: UploadFolderType = .order) -> Future<[String], Error> {
         Future { promise in
             if files.count == 0 {
                 promise(.success([]))
                 return
             }
-            self.upload(PDFs: files, observeManager: observeManager) { result in
+            self.upload(PDFs: files, to: folder, observeManager: observeManager) { result in
                 switch result {
                 case .success(let urls):
                     observeManager.filesPercentage = 100.0
@@ -353,14 +378,14 @@ class FSManager: ObservableObject {
         }
     }
     
-    func uploadPublisher(previews files: [UIImage], observeManager: FirebaseFilesUploadingProgreessManager, folder: UploadFolderType = .order) -> Future<[String], Error> {
+    func uploadPublisher(previews: [UIImage], observeManager: FirebaseFilesUploadingProgreessManager, folder: UploadFolderType = .order) -> Future<[String], Error> {
         Future { promise in
-            if files.count == 0 {
+            if previews.count == 0 {
                 promise(.success([]))
                 return
             }
             
-                self.upload(FreelancePreviews: files, to: folder, observeManager: observeManager) { result in
+                self.upload(previews: previews, to: folder, observeManager: observeManager) { result in
                     switch result {
                     case .success(let urls):
                         observeManager.imagePercentage = 100.0
@@ -512,6 +537,67 @@ class FSManager: ObservableObject {
         }
     }
     
+    func createIdea(owner userID: String,
+                    title: String,
+                    text: String,
+                    category: FreelanceTopic,
+                    difficultyLevel: IdeaDifficultyLevel,
+                    languages: [LangDescriptor],
+                    coreSkills: String,
+                    previews: [UIImage]?,
+                    files: [URL]?,
+                    observeManager: FirebaseFilesUploadingProgreessManager,
+                    completionHandler: @escaping (Result<String, Error>) -> Void) -> Void {
+        
+        guard Reachability.isConnectedToNetwork() else { observeManager.amountPercentage = -1; return }
+        
+        self.uploadPublisher(PDFs: files ?? [], observeManager: observeManager, folder: .idea)
+            .combineLatest(self.uploadPublisher(previews: previews ?? [], observeManager: observeManager, folder: .idea))
+                .sink { res in
+                    if case .failure = res {
+                        print(res)
+                    }
+                } receiveValue: { (filesURL, previewsURL) in
+                    
+                    let ideaID: String = FSManager.generate64CharactersLongID()
+                    
+                    
+                    self.db.collection("Ideas").document(ideaID).setData([
+                        
+                        "id" : ideaID,
+                        "owner": userID,
+                        "title": title,
+                        "text": text,
+                        "category": category.rawValue,
+                        "difficultylevel": difficultyLevel.rawValue,
+                        "langdescriptors": languages.map({$0.rawValue}),
+                        "coreskills": coreSkills,
+                        "previews": previewsURL,
+                        "files": filesURL,
+                        "time": Date().timeIntervalSince1970,
+                        "stars": [],
+                        "responses": [],
+                        "views": [],
+                        "date": Date().getFormattedDate(format: "d MMM, HH:mm")
+                        
+                    ]) { err in
+                        if let err = err {
+                            print("Error writing document: \(err)")
+                            self.showPV = false
+                            observeManager.amountPercentage = -1
+                            completionHandler(.failure("Error with creating post: \(err.localizedDescription)"))
+                        } else {
+                            observeManager.amountPercentage = 100
+                            completionHandler(.success(ideaID))
+                        }
+                    }
+                    
+                    
+                }.store(in: &self.cancellabels)
+        
+        
+    }
+    
     func createVacancy(company companyID: String,
                        title: String,
                        description: String,
@@ -532,6 +618,7 @@ class FSManager: ObservableObject {
     ) {
         
         guard Reachability.isConnectedToNetwork() else { observeManager.amountPercentage = -1; return }
+        
         let vacancyID: String = FSManager.generate64CharactersLongID()
         self.db.collection("Vacancy").document(vacancyID).setData([
             
@@ -551,8 +638,8 @@ class FSManager: ObservableObject {
             "requirements": requirements,
             "languages": languages.map({$0.rawValue}),
             "time": Date().timeIntervalSince1970,
-            "responses": 0,
-            "views": 0,
+            "responses": [],
+            "views": [],
             "date": Date().getFormattedDate(format: "d MMM, HH:mm")
             
         ]) { err in
@@ -593,6 +680,7 @@ class FSManager: ObservableObject {
                               files: [URL]?,
                               observeManager: FirebaseFilesUploadingProgreessManager,
                               completionHandler: @escaping (Result<String, Error>) -> Void) -> Void {
+        
         guard Reachability.isConnectedToNetwork() else { observeManager.amountPercentage = -1; return }
             self.uploadPublisher(PDFs: files ?? [], observeManager: observeManager)
             .combineLatest(self.uploadPublisher(previews: previews ?? [], observeManager: observeManager, folder: .order))
@@ -633,8 +721,8 @@ class FSManager: ObservableObject {
                         "files": filesURL,
                         "time": Date().timeIntervalSince1970,
                         "stars": [],
-                        "responses": 0,
-                        "views": 0,
+                        "responses": [],
+                        "views": [],
                         "date": Date().getFormattedDate(format: "d MMM, HH:mm")
                         
                     ]) { err in
@@ -709,8 +797,8 @@ class FSManager: ObservableObject {
                         "previews": previewsURL,
                         "time": Date().timeIntervalSince1970,
                         "stars": [],
-                        "responses": 0,
-                        "views": 0,
+                        "responses": [],
+                        "views": [],
                         "date": Date().getFormattedDate(format: "d MMM, HH:mm")
                         
                     ]) { err in

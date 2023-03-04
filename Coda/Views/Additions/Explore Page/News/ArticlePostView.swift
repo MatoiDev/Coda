@@ -49,7 +49,8 @@ struct ArticlePostView: View {
             // MARK: - Title
             
             Text("\(article.title)")
-                .font(.custom("RobotoMono-Bold", size: 15))
+            
+                .robotoMono(.bold, 15)
                 .padding(.all, 2)
             
             // MARK: - Image
@@ -66,9 +67,10 @@ struct ArticlePostView: View {
             // MARK: - Description
             
             Text("\( article.description != nil ? article.description! : "")")
-                .font(.custom("RobotoMono-Light", size: 11))
+
+                .robotoMono(.light, 11, color: .white)
                 .lineLimit(13)
-                .foregroundColor(.white)
+                
             Divider()
             
             // MARK: - Safari Link
@@ -93,7 +95,7 @@ struct ArticlePostView: View {
                             Image(self.respectPost ? "arrowshape.fill" : "arrowshape")
                                 .resizable()
                                 .rotationEffect(Angle(radians: .pi / 2))
-                                .font(.custom("RobotoMono-SemiBold", size: 18))
+                                .robotoMono(.semibold, 18)
                                 .foregroundStyle(
                                     LinearGradient(colors:
                                                     self.respectPost ?  [.cyan, Color("Register2")] : [.gray]
@@ -124,7 +126,7 @@ struct ArticlePostView: View {
                             Image(self.disRespectPost ? "arrowshape.fill" : "arrowshape")
                                 .resizable()
                                 .rotationEffect(Angle(radians: .pi / -2))
-                                .font(.custom("RobotoMono-SemiBold", size: 18))
+                                .robotoMono(.semibold, 18)
                                 .foregroundStyle(
                                     LinearGradient(colors:
                                                     self.disRespectPost ? [.orange, .red, .gray] : [.gray]
@@ -159,8 +161,7 @@ struct ArticlePostView: View {
                         
                     }.buttonStyle(PlainButtonStyle())
                 }
-                .foregroundColor(.gray)
-                .font(.custom("RobotoMono-SemiBold", size: 12))
+                .robotoMono(.semibold, 12, color: .gray)
                 
             }
             
@@ -275,7 +276,8 @@ struct ArticlePostView: View {
                         Text("Save image")
                         Spacer()
                         Image(systemName: "arrow.down.circle")
-                    }.font(.custom("RobotoMono-SemiBold", size: 14))
+                    }
+                        .robotoMono(.semibold, 14)
                     
                 }
                 

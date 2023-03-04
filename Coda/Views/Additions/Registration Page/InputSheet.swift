@@ -35,14 +35,12 @@ struct InputSheet: View {
                         VStack {
                             VStack {
                                 Text("Coda")
-                                        .font(.custom("RobotoMono-Bold", size: 72))
-                                        .foregroundColor(.primary)
+                                    .robotoMono(.bold, 72)
                                 Text(self.authType == .login ? "Log in" : "Create an account")
-                                        .font(.custom("RobotoMono-Medium", size: 36))
+                                    .robotoMono(.medium, 36, color: .secondary)
                                         .minimumScaleFactor(0.05)
                                         .lineLimit(1)
                                         .padding(.horizontal, 32)
-                                        .foregroundColor(.secondary)
                             }.padding(0)
 
                             Spacer()

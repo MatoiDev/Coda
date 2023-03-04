@@ -65,11 +65,9 @@ struct ProjectCell: View, Equatable {
                     VStack {
         
                         Text(name)
-                            .foregroundColor(.primary)
-                            .font(.custom("RobotoMono-SemiBold", size: 35))
+                            .robotoMono(.semibold, 35)
                         Text(description)
-                            .foregroundColor(.secondary)
-                            .font(.custom("RobotoMono-Light", size: 20))
+                            .robotoMono(.light, 20, color: .secondary)
                             .lineLimit(1)
                             .minimumScaleFactor(0.01)
                             

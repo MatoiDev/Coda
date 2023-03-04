@@ -60,13 +60,13 @@ struct ProfileSheet<Logo: View, LanguageAndReputation: View>: View {
                             
                             
                             Text(self.username)
-                                .foregroundColor(.primary)
-                                .font(.custom("RobotoMono-Bold", size: 20))
+                                .robotoMono(.bold, 20)
                                 .minimumScaleFactor(0.01)
                                 .lineLimit(1)
                             
                             HStack(alignment: .top) {
                                 Text("\(self.realName) \(self.realSurname)")
+//                                    .robotoMono(.light, 15)
                                     .font(.custom("RobotoMono-Light", size: 15).bold())
                                     .lineLimit(1)
                             }.foregroundColor(.secondary)
@@ -134,8 +134,7 @@ struct ProfileSheet<Logo: View, LanguageAndReputation: View>: View {
                     HStack {
                         Image(systemName: "pin")
                         Text("Pinned")
-                    }.foregroundColor(Color.primary)
-                        .font(.custom("RobotoMono-Bold", size: 17))
+                    }.robotoMono(.bold, 17)
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(.horizontal, 32)
                         .padding(.vertical, 16)
@@ -165,8 +164,7 @@ struct ProfileSheet<Logo: View, LanguageAndReputation: View>: View {
                 HStack {
                     Image(systemName: "list.dash.header.rectangle")
                     Text("Posts")
-                }.foregroundColor(Color.primary)
-                    .font(.custom("RobotoMono-Bold", size: 17))
+                }.robotoMono(.bold, 17)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.horizontal, 32)
                     .padding(.vertical, 16)
@@ -184,8 +182,7 @@ struct ProfileSheet<Logo: View, LanguageAndReputation: View>: View {
                         HStack {
                             Spacer()
                             Text("No posts")
-                                .foregroundColor(.secondary)
-                                .font(.custom("RobotoMono-Bold", size: 17))
+                                .robotoMono(.bold, 17, color: .secondary)
                             Spacer()
                             
                         }
@@ -194,8 +191,7 @@ struct ProfileSheet<Logo: View, LanguageAndReputation: View>: View {
                             HStack {
                                 Spacer()
                                 Text("\(self.userPosts.count) posts")
-                                    .foregroundColor(.secondary)
-                                    .font(.custom("RobotoMono-Bold", size: 17))
+                                    .robotoMono(.bold, 17, color: .secondary)
                                 Spacer()                                
                             }
                             Spacer()

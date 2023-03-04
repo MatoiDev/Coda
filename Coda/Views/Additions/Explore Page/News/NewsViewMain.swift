@@ -23,7 +23,8 @@ struct NewsViewMain: View {
                     ForEach(-1..<self.ArticlesVM.articles.count, id: \.self) { articleIndex in
                         if articleIndex == -1 {
                             HStack {
-                                Text("Today News").font(.custom("RobotoMono-Bold", size: 20)).foregroundColor(.primary)
+                                Text("Today News")
+                                    .robotoMono(.bold, 20, color: .primary)
                                 Spacer()
                             }.listRowBackground(Color.clear)
                         }

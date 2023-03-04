@@ -76,8 +76,8 @@ struct ProfileView: View {
         self.fsmanager.getUsersData(withID: self.userID)
         self.loadAvatar = true
         
-        print(self.userID == self.loginUserID, self.userMode)
-        print(self.userReputation)
+//        print(self.userID == self.loginUserID, self.userMode)
+//        print(self.userReputation)
 
     }
     
@@ -158,11 +158,11 @@ struct ProfileView: View {
                                         HStack {
                                             // MARK: - Reputation
                                             Text(self.userReputation)
-                                                .font(.custom("RobotoMono-SemiBold", size: 30 - 10 * bottomSheetTranslationProrated))
+                                                .robotoMono(.semibold, 30 - 10 * bottomSheetTranslationProrated)
                                             // MARK: - Separator
                                             if !(self.bottomSheetTranslationProrated != 1) {
                                                 Text("|")
-                                                    .font(.custom("RobotoMono-SemiBold", size: 25))
+                                                    .robotoMono(.semibold, 25)
                                                     .opacity(self.bottomSheetTranslationProrated < 1 ? 0 : 1)
                                                     .offset(y: -2)
                                             }
@@ -174,13 +174,15 @@ struct ProfileView: View {
                                             }
                                         }
                                         
-                                        .font(.custom("RobotoMono-SemiBold", size: 20))
+                                    
+                                        .robotoMono(.semibold, 20, color: self.bottomSheetTranslationProrated != 0 ? .secondary : .primary)
                                         .minimumScaleFactor(0.01)
-                                        .foregroundColor(self.bottomSheetTranslationProrated != 0 ? .secondary : .primary)
+                                    
                                         .lineLimit(1)
                                     
                                 }
-                                .font(.custom("RobotoMono-SemiBold", size: 30 - 14 * bottomSheetTranslationProrated))
+                                .robotoMono(.semibold, 30 - 14 * bottomSheetTranslationProrated)
+
                             }
                         }
                     }
@@ -211,11 +213,11 @@ struct ProfileView: View {
                                     HStack {
                                         // MARK: - Reputation
                                         Text(self.userReputation)
-                                            .font(.custom("RobotoMono-SemiBold", size: 30 - 10 * bottomSheetTranslationProrated))
+                                            .robotoMono(.semibold, 30 - 10 * bottomSheetTranslationProrated)
                                         // MARK: - Separator
                                         if !(self.bottomSheetTranslationProrated != 1) {
                                             Text("|")
-                                                .font(.custom("RobotoMono-SemiBold", size: 25))
+                                                .robotoMono(.semibold, 25)
                                                 .opacity(self.bottomSheetTranslationProrated < 1 ? 0 : 1)
                                                 .offset(y: -2)
                                         }
@@ -227,15 +229,16 @@ struct ProfileView: View {
                                         }
                                     }
                                     
-                                    .font(.custom("RobotoMono-SemiBold", size: 20))
+                                    
+                                    .robotoMono(.semibold, 20, color: self.bottomSheetTranslationProrated != 0 ? .secondary : .primary)
                                     .minimumScaleFactor(0.01)
-                                    .foregroundColor(self.bottomSheetTranslationProrated != 0 ? .secondary : .primary)
                                     .lineLimit(1)
                                 
-                            }.offset(x: starPositionX, y: 70 * bottomSheetTranslationProrated)
+                            }
+                            .offset(x: starPositionX, y: 70 * bottomSheetTranslationProrated)
                             .frame(maxWidth: 300, maxHeight: .infinity, alignment: .top)
                             .padding(8)
-                            .font(.custom("RobotoMono-SemiBold", size: 30 - 14 * bottomSheetTranslationProrated))
+                            .robotoMono(.semibold, 30 - 14 * bottomSheetTranslationProrated)
                         }
                         .offset(y: -self.yAxisScrollViewOnBottomSheetOffset / 2)
                         

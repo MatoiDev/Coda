@@ -113,27 +113,23 @@ struct ChatCell: View {
             
             VStack(alignment: .leading) {
                 Text(self.userName ?? "")
-                    .foregroundColor(.primary)
-                    .font(.custom("RobotoMono-Bold", size: 17))
+                    .robotoMono(.bold, 17)
                 if let messageImageURL = self.messageImageURL, messageImageURL != "" {
                     HStack {
                         ChatCachedImageView(with: messageImageURL, for: .CellMessage)
                             .fixedSize()
                         if let lastMessage = self.lastMessage, lastMessage.isEmpty {
                             Text("Photo")
-                                .foregroundColor(.secondary)
-                                .font(.custom("RobotoMono-Bold", size: 12))
+                                .robotoMono(.bold, 12, color: .secondary)
                         } else {
                             Text(self.lastMessage != nil ? self.lastMessage!.count > 16 ? self.lastMessage![0..<16] + "..." : self.lastMessage! : "")
-                                .foregroundColor(.secondary)
-                                .font(.custom("RobotoMono-Bold", size: 12))
+                                .robotoMono(.bold, 12, color: .secondary)
                         }
                        
                     }.offset(y:-5)
                 } else {
                     Text(self.lastMessage != nil ? self.lastMessage!.count > 21 ? self.lastMessage![0..<21] + "..." : self.lastMessage! : "")
-                        .foregroundColor(.secondary)
-                        .font(.custom("RobotoMono-Bold", size: 12))
+                        .robotoMono(.bold, 12, color: .secondary)
                 }
                 
                 Spacer()
@@ -169,7 +165,7 @@ struct ChatCell: View {
                     }
                 }
                 .colorMultiply(.secondary)
-                .font(.custom("RobotoMono-Bold", size: 13))
+                .robotoMono(.bold, 13, color: .secondary)
                 Spacer()
             }
             .fixedSize()

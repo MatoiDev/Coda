@@ -17,13 +17,14 @@ struct IFooterTextForMainSettings: View {
     var body: some View {
         if #available(iOS 16, *) {
             Text(self.text)
-                .font(.custom("RobotoMono-SemiBold", size: 11))
+                
+                .robotoMono(.semibold, 11)
                 .lineLimit(10)
                 .kerning(0.01) // ios 16 and above
                 .lineSpacing(0.3)
         } else {
             Text(self.text)
-                .font(.custom("RobotoMono-SemiBold", size: 11))
+                .robotoMono(.semibold, 11)
                 .lineLimit(10)
                 .lineSpacing(0.3)
         }
@@ -150,8 +151,7 @@ struct ProfileSettingsMain: View {
                                 Spacer()
                             }
                             Text("Set New Photo")
-                                .foregroundColor(.blue)
-                                .font(.custom("RobotoMono-SemiBold", size: 15))
+                                .robotoMono(.semibold, 15, color: .blue)
                                 .onTapGesture {
                                     self.pickImage.toggle()
                                 }
@@ -159,9 +159,9 @@ struct ProfileSettingsMain: View {
                     }
                     
                     // MARK: - Profile info
-                    Section(header: Text("Profile").foregroundColor(.cyan).font(.custom("RobotoMono-SemiBold", size: 15)),
+                    Section(header: Text("Profile").robotoMono(.semibold, 15, color: .cyan),
                             footer: Text("Enter your new username, first name, last name, or edit a profile photo.")
-                        .font(.custom("RobotoMono-SemiBold", size: 11))
+                        .robotoMono(.semibold, 11)
                         .lineLimit(10)
                         .lineSpacing(0.3)
                         
@@ -188,13 +188,14 @@ struct ProfileSettingsMain: View {
                     .disableAutocorrection(true)
                     .lineLimit(1)
                     .minimumScaleFactor(1)
-                    .font(.custom("RobotoMono-SemiBold", size: 16))
+                    .robotoMono(.semibold, 16)
                     
                     
                     // MARK: - Bio
                     Section(footer:
                             Text("Any details such as your age, occupation or city. Example: 23 y.o. Web programmer from St. Petersburg.")
-                                .font(.custom("RobotoMono-SemiBold", size: 11))
+
+                                .robotoMono(.semibold, 11)
                                 .lineLimit(10)
                                 .lineSpacing(0.3)) {
                                     TextField(self.bio.isEmpty ? "Bio" : self.bio, text: self.$bio)
@@ -204,7 +205,8 @@ struct ProfileSettingsMain: View {
                                 .disableAutocorrection(true)
                                 .lineLimit(1)
                                 .minimumScaleFactor(0.8)
-                                .font(.custom("RobotoMono-SemiBold", size: 16))
+                                
+                                .robotoMono(.semibold, 16)
                             .onAppear {
                                 self.bio = self.userBio
                             }
@@ -212,7 +214,7 @@ struct ProfileSettingsMain: View {
                     
                     // MARK: - Projects
                     
-                    Section(header: Text("Pinned Projects").foregroundColor(.cyan).font(.custom("RobotoMono-SemiBold", size: 15))) {
+                    Section(header: Text("Pinned Projects").robotoMono(.semibold, 15, color: .cyan)) {
                         
                         if self.projects.count > 0 {
                             ForEach(0..<self.projects.count, id: \.self) { ind in
@@ -241,8 +243,7 @@ struct ProfileSettingsMain: View {
                                             Image(systemName: "square.and.pencil")
                                             Text("Edit")
                                     }
-                                    .foregroundColor(Color.blue)
-                                    .font(.custom("RobotoMono-SemiBold", size: 15))
+                                    .robotoMono(.semibold, 15, color: .blue)
 
                                 }
                             }
@@ -255,7 +256,7 @@ struct ProfileSettingsMain: View {
                      .textCase(nil)
                      .lineLimit(1)
                      .minimumScaleFactor(1)
-                     .font(.custom("RobotoMono-SemiBold", size: 16))
+                     .robotoMono(.semibold, 16)
                     
                     // MARK: - Pin a project
                     Section {
@@ -263,8 +264,7 @@ struct ProfileSettingsMain: View {
                             ProjectEditor(with: "", projects: self.$projects)
                         } label: {
                             Text("Pin a project")
-                                .foregroundColor(Color.blue)
-                                .font(.custom("RobotoMono-Medium", size: 15))
+                                .robotoMono(.medium, 15, color: .blue)
                             
                             
                         }
@@ -286,8 +286,7 @@ struct ProfileSettingsMain: View {
                             HStack {
                                 Spacer()
                                 Text("Log Out")
-                                    .foregroundColor(.red)
-                                    .font(.custom("RobotoMono-Bold", size: 17))
+                                    .robotoMono(.bold, 17, color: .red)
                                 Spacer()
                             }
                             
@@ -300,7 +299,9 @@ struct ProfileSettingsMain: View {
                 .toolbar {
                     ToolbarItem(placement: .principal) {
                         VStack {
-                            Text("Settings").font(.custom("RobotoMono-SemiBold", size: 23)).lineSpacing(0.1)
+                            Text("Settings")
+                                .robotoMono(.semibold, 23)
+                                .lineSpacing(0.1)
                                 .offset(y:-6)
                         }
                     }
@@ -319,8 +320,7 @@ struct ProfileSettingsMain: View {
                                     Text("")
                                 }
                             }
-                            .foregroundColor(Color.green)
-                            .font(.custom("RobotoMono-Medium", size: 15))
+                            .robotoMono(.medium, 15, color: .green)
                             
                         }
                     }
@@ -331,9 +331,7 @@ struct ProfileSettingsMain: View {
                             self.saveSettings()
                         } label: {
                             Text("Done")
-                                .foregroundColor(.cyan)
-                                .font(.custom("RobotoMono-Bold", size: 18))
-                                .fontWeight(.black)
+                                .robotoMono(.bold, 18, color: .cyan)
                         }
                     }
                 }
@@ -347,8 +345,8 @@ struct ProfileSettingsMain: View {
                                 Image(systemName: "chevron.backward")
                                 Text("Back")
 
-                            }.foregroundColor(Color("Register2"))
-                                .font(.custom("RobotoMono-Bold", size: 17))
+                            }
+                                .robotoMono(.medium, 17, color: Color("Register2"))
                             
                         }
                     }

@@ -28,8 +28,8 @@ struct ChooseLanguageButton: View {
                 .overlay {
                     HStack {
                         Text(language.rawValue)
-                            .font(.custom("RobotoMono-Medium", size: 20))
-                            .foregroundColor(.primary)
+                            .robotoMono(.medium, 20)
+
                             .multilineTextAlignment(.leading)
                         Spacer()
                     }.padding(.horizontal, 20)

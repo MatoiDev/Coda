@@ -86,6 +86,9 @@
 		955C668229AF312D0079BC91 /* VacancyPostPublishingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 955C668129AF312D0079BC91 /* VacancyPostPublishingView.swift */; };
 		955C668629AF34900079BC91 /* violetCoder.json in Resources */ = {isa = PBXBuildFile; fileRef = 955C668529AF34900079BC91 /* violetCoder.json */; };
 		955C668829AF34B30079BC91 /* JobInterview.json in Resources */ = {isa = PBXBuildFile; fileRef = 955C668729AF34B30079BC91 /* JobInterview.json */; };
+		956099F729AFAFBC0012465C /* IdeaConstructorMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 956099F629AFAFBC0012465C /* IdeaConstructorMain.swift */; };
+		956099F929AFAFD90012465C /* IdeaPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 956099F829AFAFD90012465C /* IdeaPreview.swift */; };
+		956099FB29AFAFE90012465C /* IdeaPostPublishingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 956099FA29AFAFE90012465C /* IdeaPostPublishingView.swift */; };
 		95680B952951C19300DFD85A /* PostRedactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95680B942951C19300DFD85A /* PostRedactor.swift */; };
 		956EEC4E29464865006C7895 /* PostCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 956EEC4D29464865006C7895 /* PostCreator.swift */; };
 		956EEC5029464A03006C7895 /* PostEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 956EEC4F29464A03006C7895 /* PostEditor.swift */; };
@@ -119,6 +122,10 @@
 		95AA82782919A4AD00B7975C /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95AA82772919A4AD00B7975C /* ImagePicker.swift */; };
 		95AA827A2919B21600B7975C /* ImageCropper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95AA82792919B21600B7975C /* ImageCropper.swift */; };
 		95BA4C5B2996D18A000590C3 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 95BA4C5D2996D18A000590C3 /* Localizable.strings */; };
+		95BBB28E29B1DB2D00131388 /* IdeaDone.json in Resources */ = {isa = PBXBuildFile; fileRef = 95BBB28D29B1DB2D00131388 /* IdeaDone.json */; };
+		95BBB29029B1DBC600131388 /* uploadToCloud.json in Resources */ = {isa = PBXBuildFile; fileRef = 95BBB28F29B1DBC600131388 /* uploadToCloud.json */; };
+		95BBB29229B1DD1300131388 /* uploadToCloud2.json in Resources */ = {isa = PBXBuildFile; fileRef = 95BBB29129B1DD1300131388 /* uploadToCloud2.json */; };
+		95BBB29429B1DD9400131388 /* uploadToCloud3.json in Resources */ = {isa = PBXBuildFile; fileRef = 95BBB29329B1DD9400131388 /* uploadToCloud3.json */; };
 		95BFE38E299BE6C500702E72 /* LangDescriptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95BFE38D299BE6C500702E72 /* LangDescriptor.swift */; };
 		95BFE390299BEC5A00702E72 /* LanguageDescriptorPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95BFE38F299BEC5A00702E72 /* LanguageDescriptorPicker.swift */; };
 		95C472382928F9690084C60A /* ProfileSettingsMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95C472372928F9690084C60A /* ProfileSettingsMain.swift */; };
@@ -229,6 +236,9 @@
 		955C668129AF312D0079BC91 /* VacancyPostPublishingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VacancyPostPublishingView.swift; sourceTree = "<group>"; };
 		955C668529AF34900079BC91 /* violetCoder.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = violetCoder.json; sourceTree = "<group>"; };
 		955C668729AF34B30079BC91 /* JobInterview.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = JobInterview.json; path = ../../../../../Downloads/JobInterview.json; sourceTree = "<group>"; };
+		956099F629AFAFBC0012465C /* IdeaConstructorMain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdeaConstructorMain.swift; sourceTree = "<group>"; };
+		956099F829AFAFD90012465C /* IdeaPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdeaPreview.swift; sourceTree = "<group>"; };
+		956099FA29AFAFE90012465C /* IdeaPostPublishingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdeaPostPublishingView.swift; sourceTree = "<group>"; };
 		95680B942951C19300DFD85A /* PostRedactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostRedactor.swift; sourceTree = "<group>"; };
 		956EEC4D29464865006C7895 /* PostCreator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostCreator.swift; sourceTree = "<group>"; };
 		956EEC4F29464A03006C7895 /* PostEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostEditor.swift; sourceTree = "<group>"; };
@@ -261,6 +271,10 @@
 		95AA82792919B21600B7975C /* ImageCropper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCropper.swift; sourceTree = "<group>"; };
 		95BA4C5C2996D18A000590C3 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		95BA4C5E2996D1C6000590C3 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
+		95BBB28D29B1DB2D00131388 /* IdeaDone.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = IdeaDone.json; sourceTree = "<group>"; };
+		95BBB28F29B1DBC600131388 /* uploadToCloud.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = uploadToCloud.json; sourceTree = "<group>"; };
+		95BBB29129B1DD1300131388 /* uploadToCloud2.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = uploadToCloud2.json; sourceTree = "<group>"; };
+		95BBB29329B1DD9400131388 /* uploadToCloud3.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = uploadToCloud3.json; sourceTree = "<group>"; };
 		95BFE38D299BE6C500702E72 /* LangDescriptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LangDescriptor.swift; sourceTree = "<group>"; };
 		95BFE38F299BEC5A00702E72 /* LanguageDescriptorPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageDescriptorPicker.swift; sourceTree = "<group>"; };
 		95C472372928F9690084C60A /* ProfileSettingsMain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingsMain.swift; sourceTree = "<group>"; };
@@ -344,6 +358,7 @@
 			children = (
 				95F1CD3F290EE58F000A3080 /* HomeView.swift */,
 				951C8A3B2988398B00F3BFE0 /* Cells */,
+				956099F529AFAFA20012465C /* IdeaConstructor */,
 				951BB77929AA09FD001C4A23 /* VacationConstructor */,
 				95864379298AB2DD00C2E59C /* ProjectConstructor */,
 				9586437E298AB73D00C2E59C /* FreelanceConstructor */,
@@ -481,8 +496,6 @@
 			isa = PBXGroup;
 			children = (
 				951BB77A29AA0B96001C4A23 /* VacancyConstructorMain.swift */,
-				9573A92029AA2AC7003B6F29 /* ScopeTopicPicker.swift */,
-				9584468329AA6A7E00DDA62D /* RussianCityPicker.swift */,
 				95D5B8CD29AE451C00C15C2F /* VacancyPreview.swift */,
 				955C668129AF312D0079BC91 /* VacancyPostPublishingView.swift */,
 			);
@@ -566,6 +579,10 @@
 		952BCF80290981B30046FB02 /* Animations */ = {
 			isa = PBXGroup;
 			children = (
+				95BBB28F29B1DBC600131388 /* uploadToCloud.json */,
+				95BBB29129B1DD1300131388 /* uploadToCloud2.json */,
+				95BBB29329B1DD9400131388 /* uploadToCloud3.json */,
+				95BBB28D29B1DB2D00131388 /* IdeaDone.json */,
 				955C668729AF34B30079BC91 /* JobInterview.json */,
 				955C668529AF34900079BC91 /* violetCoder.json */,
 				955C667F29AF2F5F0079BC91 /* connectionErrorMan.json */,
@@ -636,6 +653,16 @@
 				951DC334295D9F60008010E2 /* MessageBubble */,
 			);
 			path = CorrespondenceView;
+			sourceTree = "<group>";
+		};
+		956099F529AFAFA20012465C /* IdeaConstructor */ = {
+			isa = PBXGroup;
+			children = (
+				956099F629AFAFBC0012465C /* IdeaConstructorMain.swift */,
+				956099F829AFAFD90012465C /* IdeaPreview.swift */,
+				956099FA29AFAFE90012465C /* IdeaPostPublishingView.swift */,
+			);
+			path = IdeaConstructor;
 			sourceTree = "<group>";
 		};
 		95864379298AB2DD00C2E59C /* ProjectConstructor */ = {
@@ -741,6 +768,8 @@
 				9548C019299436F600C341D8 /* TLPhotosPickerViewControllerRepresentable.swift */,
 				95471A8929A54F2600ED354A /* WrappedHStack.swift */,
 				95A329D3299FA5ED0001CD4D /* PDFWebViewControllerRepresentable.swift */,
+				9573A92029AA2AC7003B6F29 /* ScopeTopicPicker.swift */,
+				9584468329AA6A7E00DDA62D /* RussianCityPicker.swift */,
 				95F6AF25298FD3F100004545 /* UIKitAlertWithTextField.swift */,
 				95E5ECAA297DE2B100C82946 /* SafariView.swift */,
 				9526C7A0291441C50005C285 /* Data Editor */,
@@ -975,6 +1004,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				95BBB29229B1DD1300131388 /* uploadToCloud2.json in Resources */,
 				9595C4662908343D004726AD /* Preview Assets.xcassets in Resources */,
 				95170556290AEEE2008C137F /* RobotoMono-Bold.ttf in Resources */,
 				95170552290AD634008C137F /* githubLogoWhite.json in Resources */,
@@ -983,6 +1013,7 @@
 				955C668029AF2F5F0079BC91 /* connectionErrorMan.json in Resources */,
 				955C668629AF34900079BC91 /* violetCoder.json in Resources */,
 				951DBBFB2910611500FAB2E3 /* RobotoMono-SemiBold.ttf in Resources */,
+				95BBB29429B1DD9400131388 /* uploadToCloud3.json in Resources */,
 				951DBBF929104A1400FAB2E3 /* RobotoMono-Light.ttf in Resources */,
 				952BCF84290981DA0046FB02 /* githubLogo.json in Resources */,
 				952BCF86290981EA0046FB02 /* dragToGithub.json in Resources */,
@@ -992,7 +1023,9 @@
 				952BCF88290981F90046FB02 /* macOnMatrix.json in Resources */,
 				958DFA6F29A7F86D009751E6 /* engagedDeveloper.json in Resources */,
 				95170554290AEC3F008C137F /* RobotoMono-Medium.ttf in Resources */,
+				95BBB29029B1DBC600131388 /* uploadToCloud.json in Resources */,
 				9595C47D290838C0004726AD /* GoogleService-Info.plist in Resources */,
+				95BBB28E29B1DB2D00131388 /* IdeaDone.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1013,6 +1046,7 @@
 				95E5ECA6297DDFE600C82946 /* ArticleImageAsync.swift in Sources */,
 				952BCF79290968380046FB02 /* LoginBubble.swift in Sources */,
 				95C4723A2928FAB40084C60A /* ProfileActionCell.swift in Sources */,
+				956099F729AFAFBC0012465C /* IdeaConstructorMain.swift in Sources */,
 				9515509E2958CE7400A23D1D /* ChatCachedImageView.swift in Sources */,
 				954ADF45291FBF32001300EA /* AvatarImageView.swift in Sources */,
 				95680B952951C19300DFD85A /* PostRedactor.swift in Sources */,
@@ -1055,6 +1089,7 @@
 				95F1CD3E290EE586000A3080 /* ExploreView.swift in Sources */,
 				95C472382928F9690084C60A /* ProfileSettingsMain.swift in Sources */,
 				95E5EC9C297DD19700C82946 /* NewsImageLoader+Cacher.swift in Sources */,
+				956099FB29AFAFE90012465C /* IdeaPostPublishingView.swift in Sources */,
 				9548C01A299436F600C341D8 /* TLPhotosPickerViewControllerRepresentable.swift in Sources */,
 				9595C4612908343C004726AD /* ContentView.swift in Sources */,
 				95DB57E12931F96D00B7E7A8 /* UOProject.swift in Sources */,
@@ -1081,6 +1116,7 @@
 				953E5F392950FA64006810CC /* ImageSaver.swift in Sources */,
 				95F1CD3A290EE573000A3080 /* ProfileView.swift in Sources */,
 				952BCF8A290982CF0046FB02 /* LottieView.swift in Sources */,
+				956099F929AFAFD90012465C /* IdeaPreview.swift in Sources */,
 				957B9B5229520CBE00BFA814 /* AppConfiguration.swift in Sources */,
 				952BCF7529095A7D0046FB02 /* SecuredDataBubble.swift in Sources */,
 				95A3A61629A8DC1500981E6F /* ServicePreview.swift in Sources */,

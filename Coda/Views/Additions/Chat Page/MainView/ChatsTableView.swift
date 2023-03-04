@@ -51,8 +51,9 @@ struct ChatsTableView: View {
                 .toolbar {
                     ToolbarItem(placement: .navigationBarLeading) {
                         EditButton()
-                            .font(.custom("RobotoMono-Medium", size: 16)).lineSpacing(0.1)
-                            .foregroundColor(.cyan)
+                            .robotoMono(.medium, 16, color: .cyan)
+                            .lineSpacing(0.1)
+                            
                     }
                 }
                         .toolbar {
@@ -69,8 +70,10 @@ struct ChatsTableView: View {
                         .toolbar {
                             ToolbarItem(placement: .principal) {
                                 VStack {
-                                    Text("Chats").font(.custom("RobotoMono-SemiBold", size: 20)).lineSpacing(0.1)
-                                            .foregroundStyle(LinearGradient(colors: [.cyan, Color("Register2")], startPoint: .topLeading, endPoint: .bottomTrailing))
+                                    Text("Chats")
+                                        .robotoMono(.semibold, 20)
+                                        .lineSpacing(0.1)
+//                                        .foregroundStyle(LinearGradient(colors: [.cyan, Color("Register2")], startPoint: .topLeading, endPoint: .bottomTrailing))
                                 }
                             }
                         }

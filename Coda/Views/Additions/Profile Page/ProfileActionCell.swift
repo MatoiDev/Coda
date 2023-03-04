@@ -46,8 +46,7 @@ struct ProfileActionCell: View {
                             Text(self.text)
                             Spacer()
                         }.padding(.horizontal, 16)
-                            .foregroundColor(.white)
-                            .font(.custom("RobotoMono-Bold", size: 15))
+                            .robotoMono(.bold, 15, color: .white)
                     }.cornerRadius(15)
             }
             

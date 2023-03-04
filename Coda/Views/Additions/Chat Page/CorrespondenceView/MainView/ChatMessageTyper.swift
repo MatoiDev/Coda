@@ -104,7 +104,7 @@ struct ChatMessageTyper: View {
     var body: some View {
 
             MultilineTextFieldRepresentable(placeholder: "Write a message...", text: self.$messageText, contentHeight: self.$textFieldHeight)
-                .font(.custom("RobotoMono-SemiBold", size: 15))
+                .robotoMono(.semibold, 15)
                 .frame(maxWidth: .infinity)
                 .frame(height: textFieldHeight)
                 .multilineTextAlignment(TextAlignment.center)

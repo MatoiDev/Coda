@@ -85,16 +85,15 @@ struct PostEditor: View {
             }
             if self.postBody.isEmpty {
                 Text("Your text here...")
-                    .foregroundColor(.secondary)
-                    .font(.custom("RobotoMono-SemiBold", size: 16))
+                    .robotoMono(.semibold, 16, color: .secondary)
                     .frame(maxHeight: .infinity, alignment: .top)
                     .padding(.top, 8)
                     .padding(.horizontal, 7)
             }
             
             
-        }.font(.custom("RobotoMono-SemiBold", size: 16))
-            .foregroundColor(.primary)
+        }
+        .robotoMono(.semibold, 16)
             .padding(.horizontal)
             .sheet(isPresented: self.$showImagePicker) {
                 ImagePicker(sourceType: .photoLibrary) { result in

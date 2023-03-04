@@ -78,7 +78,7 @@ struct MBProgressHUDRepresentable: UIViewControllerRepresentable {
                             hud.customView = UIImageView(image: image.withTintColor(UIColor(named: "Register2")!))
                             
                         }
-                        self.completion()
+//                        self.completion()
                         hud.hide(animated: true, afterDelay: 1)
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                             self.show = false

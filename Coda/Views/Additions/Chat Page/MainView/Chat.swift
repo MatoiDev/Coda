@@ -126,10 +126,11 @@ struct Chat: View {
                                                 if body != "" {
                                                     HStack {
                                                         Text(LocalizedStringKey(body))
-                                                            .font(.custom("RobotoMono-SemiBold", size: 15))
+                                                            
+                                                            .robotoMono(.semibold, 15, color: .white)
                                                             .padding(.all, 10)
                                                             .padding(.leading, 4)
-                                                            .foregroundColor(Color.white)
+                                                            
                                                         if imageID != "" {
                                                             Spacer()
                                                         }
@@ -155,9 +156,10 @@ struct Chat: View {
                                                     if body != "" {
                                                         HStack {
                                                             Text(LocalizedStringKey(body))
-                                                            .font(.custom("RobotoMono-SemiBold", size: 15))
+
+                                                            .robotoMono(.semibold, 15, color: .white)
                                                             .padding(.all, 10)
-                                                            .foregroundColor(Color.white)
+                                                    
                                                         if imageID != "" {
                                                             Spacer()
                                                         }
@@ -204,7 +206,7 @@ struct Chat: View {
                         if self.editMessage {
                             HStack {
                                 Image(systemName: "pencil")
-                                    .font(.custom("RobotoMono-SemiBold", size: 20))
+                                    .robotoMono(.semibold, 20)
                                 Divider()
                                     .foregroundColor(Color("Register2"))
                                     .frame(width: 3)
@@ -214,7 +216,8 @@ struct Chat: View {
                                     
                                     Text(self.editBarText ?? "")
                                         .foregroundColor(Color.primary)
-                                        .font(.custom("RobotoMono-SemiBold", size: 13))
+
+                                        .robotoMono(.semibold, 13, color: .primary)
                                         .onAppear {
                                             self.editBarText = self.editBarText == nil ? self.messageText : self.editBarText
                                         }
@@ -237,10 +240,12 @@ struct Chat: View {
                                     
                                 } label: {
                                     Image(systemName: "multiply")
-                                }.font(.custom("RobotoMono-SemiBold", size: 20))
+                                }
+                                .robotoMono(.semibold, 20)
                             
-                            }.foregroundColor(Color("Register2"))
-                                .font(.custom("RobotoMono-SemiBold", size: 15))
+                            
+                            }
+                                .robotoMono(.semibold, 15, color: Color("Register2"))
                                 .fixedSize(horizontal: false, vertical: true)
                             
                             if self.messageImage != UIImage() {
@@ -451,7 +456,7 @@ struct Chat: View {
                 ToolbarItem(placement: .principal) {
                     if let chatName = self.chatName {
                         Text(chatName)
-                            .font(.custom("RobotoMono-SemiBold", size: 20))
+                            .robotoMono(.semibold, 20)
                     } else {
                         ProgressView()
                     }

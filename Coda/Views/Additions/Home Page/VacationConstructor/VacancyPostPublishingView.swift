@@ -74,9 +74,11 @@ struct VacancyPostPublishingView: View {
         
     }
 }
-//
-//struct VacancyPostPublishingView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        VacancyPostPublishingView()
-//    }
-//}
+
+struct VacancyPostPublishingView_Previews: PreviewProvider {
+    static var previews: some View {
+        VacancyPostPublishingView {
+            print("Hello, world!")
+        }
+    }
+}

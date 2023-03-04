@@ -31,22 +31,18 @@ struct LoginBubble: View {
                                 RoundedRectangle(cornerRadius: 15).strokeBorder(LinearGradient(colors: [Color("Register2").opacity(0.7), .cyan], startPoint: .topLeading, endPoint: .bottomTrailing), lineWidth: 1)
                             }
                         Text("Log in")
-                            .font(.custom("RobotoMono-Medium", size: 20))
-                            .foregroundColor(.primary)
+                            .robotoMono(.medium, 20)
                     }
                     
                 }
                 .frame(width: 200, height: 50, alignment: .center)
                 Text(authState.errorHandler)
-                    .foregroundColor(.red)
-                    .font(.custom("RobotoMono-Medium", size: 20))
+                    .robotoMono(.medium, 20, color: .red)
                     .lineLimit(2)
                     .minimumScaleFactor(0.1)
                     .padding(.horizontal, 32)
                     .multilineTextAlignment(.center)
-            
-                    
-            
+
         }
     }
 }

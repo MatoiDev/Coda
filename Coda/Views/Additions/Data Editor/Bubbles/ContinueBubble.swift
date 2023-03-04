@@ -27,8 +27,8 @@ struct ContinueBubble: View {
                     ProgressView()
                 } else {
                     Text("Continue")
-                        .font(.custom("RobotoMono-Medium", size: 20))
-                        .foregroundColor(.primary)
+                        .robotoMono(.medium, 20)
+
                 }
                 
             }

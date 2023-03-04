@@ -14,8 +14,7 @@ struct UppercasedListHeader: ViewModifier {
     
     func body(content: Content) -> some View {
         content
-            .font(.custom("RobotoMono-Bold", size: 17))
-            .foregroundColor(self.tintColor)
+            .robotoMono(.bold, 17, color: self.tintColor)
     }
     
 }
@@ -26,8 +25,7 @@ struct LowercasedListHeader: ViewModifier {
     
     func body(content: Content) -> some View {
         content
-            .font(.custom("RobotoMono-SemiBold", size: 11))
-            .foregroundColor(self.tintColor)
+            .robotoMono(.semibold, 11, color: self.tintColor)
     }
 }
 
@@ -56,7 +54,7 @@ struct HomeView: View {
                         ProjectConstructorMain()
                     }
                     HomeViewActionCell(title: "New Idea", image: "HomeViewIdeaIcon") {active in
-                        Text("Here is Idea constructor")
+                        IdeaConstructorMain(rootViewIsActive: active)
                     }
                     HomeViewActionCell(title: "Find Team", image: "HomeViewTeamIcon") {active in
                         Text("Here is Team request constructor")

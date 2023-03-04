@@ -29,13 +29,12 @@ struct MoreInfoSheet<Logo: View>: View {
                     Divider()
                     HStack(alignment: .top) {
                         Image(systemName: "c.circle")
-                            .foregroundColor(.secondary)
-                            .font(.custom("RobotoMono-Bold", size: 15))
+                            .robotoMono(.bold, 15, color: .secondary)
                         Text(self.userBio.isEmpty ? "..." : self.userBio)
                             .offset(x: self.bioOffset)
                            Spacer()
                     }.padding(.top, 16)
-                    .font(.custom("RobotoMono-SemiBold", size: 13))
+                        .robotoMono(.semibold, 13)
                     .onAppear {
                         withAnimation(Animation.easeOut(duration: 0.5)) {
                                 self.bioOffset = 0
@@ -46,38 +45,38 @@ struct MoreInfoSheet<Logo: View>: View {
                     }
                     HStack {
                         Image(systemName: "calendar")
-                            .foregroundColor(.secondary)
-                            .font(.custom("RobotoMono-Bold", size: 15))
+                            .robotoMono(.bold, 15, color: .secondary)
                         Text(self.userRegisterDate)
                             .offset(x: self.dateOffset)
                            Spacer()
                     }.padding(.top, 4)
-                    .font(.custom("RobotoMono-SemiBold", size: 13))
+                        .robotoMono(.semibold, 13)
+                
                     
                     HStack {
                         Image(systemName: "shippingbox")
-                            .foregroundColor(.secondary)
-                            .font(.custom("RobotoMono-Bold", size: 15))
+                            
+                            .robotoMono(.bold, 15, color: .secondary)
+                            
                         Text(self.userProjects.count > 0 ? "Projects: \(self.userProjects.count)" : "No projects")
                             .offset(x: self.projectsOffset)
                            Spacer()
                     }.padding(.top, 4)
-                    .font(.custom("RobotoMono-SemiBold", size: 13))
+                
+                    .robotoMono(.semibold, 13)
                     
                     HStack {
                         Image(systemName: "list.dash.header.rectangle")
-                            .foregroundColor(.secondary)
-                            .font(.custom("RobotoMono-Bold", size: 15))
+                            .robotoMono(.bold, 15, color: .secondary)
                         Text(self.userPosts.count > 0 ? "Posts: \(self.userPosts.count)" : "No posts")
                             .offset(x: self.postsOffset)
                            Spacer()
                     }.padding(.top, 4)
-                    .font(.custom("RobotoMono-SemiBold", size: 13))
+                    .robotoMono(.semibold, 13)
                     
                     Divider().padding()
                 }.frame(maxHeight: .infinity, alignment: .top)
-                    .foregroundColor(.primary)
-                    .font(.custom("RobotoMono-Bold", size: 20))
+                    .robotoMono(.bold, 20)
             }.listRowBackground(Color.clear)
                 .padding(.horizontal, -8)
         

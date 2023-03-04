@@ -198,30 +198,40 @@ struct VacancyConstructorMain: View {
             Section {
                 Menu {
                     
-                    Button {
-                        self.qualification = .Intern
-                    } label:  {
-                        Text(LocalizedStringKey(DeveloperQualificationType.Intern.rawValue))
+                    if self.qualification != .Intern {
+                        Button {
+                            self.qualification = .Intern
+                        } label:  {
+                            Text(LocalizedStringKey(DeveloperQualificationType.Intern.rawValue))
+                        }
                     }
-                    Button {
-                        self.qualification = .Junior
-                    } label:  {
-                        Text(LocalizedStringKey(DeveloperQualificationType.Junior.rawValue))
+                    if self.qualification != .Junior {
+                        Button {
+                            self.qualification = .Junior
+                        } label:  {
+                            Text(LocalizedStringKey(DeveloperQualificationType.Junior.rawValue))
+                        }
                     }
-                    Button {
-                        self.qualification = .Middle
-                    } label:  {
-                        Text(LocalizedStringKey(DeveloperQualificationType.Middle.rawValue))
+                    if self.qualification != .Middle{
+                        Button {
+                            self.qualification = .Middle
+                        } label:  {
+                            Text(LocalizedStringKey(DeveloperQualificationType.Middle.rawValue))
+                        }
                     }
-                    Button {
-                        self.qualification = .Senior
-                    } label:  {
-                        Text(LocalizedStringKey(DeveloperQualificationType.Senior.rawValue))
+                    if self.qualification != .Senior {
+                        Button {
+                            self.qualification = .Senior
+                        } label:  {
+                            Text(LocalizedStringKey(DeveloperQualificationType.Senior.rawValue))
+                        }
                     }
-                    Button {
-                        self.qualification = .Lead
-                    } label:  {
-                        Text(LocalizedStringKey(DeveloperQualificationType.Lead.rawValue))
+                    if self.qualification != .Lead{
+                        Button {
+                            self.qualification = .Lead
+                        } label:  {
+                            Text(LocalizedStringKey(DeveloperQualificationType.Lead.rawValue))
+                        }
                     }
                     
                 } label: {
@@ -246,25 +256,28 @@ struct VacancyConstructorMain: View {
             Section {
                 // Location
                 Menu {
-                    Button {
-                        
-                        self.locationType = .free
-                    } label: {
-                        HStack {
-                            Text(LocalizedStringKey("Can work remotely"))
-                            Spacer()
-                            Image("RemoteWorkFemale")
+                    
+                    if self.locationType != .free {
+                        Button {
+                            self.locationType = .free
+                        } label: {
+                            HStack {
+                                Text(LocalizedStringKey("Can work remotely"))
+                                Spacer()
+                                Image("RemoteWorkFemale")
+                            }
                         }
-                        
                     }
                     
-                    Button {
-                        self.locationType = .specified
-                    } label: {
-                        HStack {
-                            Text(LocalizedStringKey("Office work"))
-                            Spacer()
-                            Image("Office")
+                    if self.locationType != .specified {
+                        Button {
+                            self.locationType = .specified
+                        } label: {
+                            HStack {
+                                Text(LocalizedStringKey("Office work"))
+                                Spacer()
+                                Image("Office")
+                            }
                         }
                     }
                 } label: {
@@ -303,32 +316,40 @@ struct VacancyConstructorMain: View {
             Section {
                 // Type Of Employment
                 Menu {
-                    Button {
-                        self.typeOfEmployment = .FullTime
-                    } label: {
-                        Text(LocalizedStringKey(TypeOfEmployment.FullTime.rawValue))
-                            .robotoMono(.medium, 15)
+                    if self.typeOfEmployment != .FullTime {
+                        Button {
+                            self.typeOfEmployment = .FullTime
+                        } label: {
+                            Text(LocalizedStringKey(TypeOfEmployment.FullTime.rawValue))
+                                .robotoMono(.medium, 15)
+                        }
                     }
                     
-                    Button {
-                        self.typeOfEmployment = .PartTime
-                    } label: {
-                        Text(LocalizedStringKey(TypeOfEmployment.PartTime.rawValue))
-                            .robotoMono(.medium, 15)
+                    if self.typeOfEmployment != .PartTime{
+                        Button {
+                            self.typeOfEmployment = .PartTime
+                        } label: {
+                            Text(LocalizedStringKey(TypeOfEmployment.PartTime.rawValue))
+                                .robotoMono(.medium, 15)
+                        }
                     }
                     
-                    Button {
-                        self.typeOfEmployment = .Temporary
-                    } label: {
-                        Text(LocalizedStringKey(TypeOfEmployment.Temporary.rawValue))
-                            .robotoMono(.medium, 15)
+                    if self.typeOfEmployment != .Temporary{
+                        Button {
+                            self.typeOfEmployment = .Temporary
+                        } label: {
+                            Text(LocalizedStringKey(TypeOfEmployment.Temporary.rawValue))
+                                .robotoMono(.medium, 15)
+                        }
                     }
                     
-                    Button {
-                        self.typeOfEmployment = .Seasonal
-                    } label: {
-                        Text(LocalizedStringKey(TypeOfEmployment.Seasonal.rawValue))
-                            .robotoMono(.medium, 15)
+                    if self.typeOfEmployment != .Seasonal{
+                        Button {
+                            self.typeOfEmployment = .Seasonal
+                        } label: {
+                            Text(LocalizedStringKey(TypeOfEmployment.Seasonal.rawValue))
+                                .robotoMono(.medium, 15)
+                        }
                     }
                 } label: {
                     HStack  {
@@ -414,25 +435,29 @@ struct VacancyConstructorMain: View {
             Section {
                 Menu {
                     
-                    Button {
-                        self.salaryType = .сontractual
-                    } label: {
-                        HStack {
-                            Text("Contractual salary")
-                            Spacer()
-                            Image("Handshake")
-                                .resizable()
-                                .foregroundColor(.white)
+                    if self.salaryType != .сontractual {
+                        Button {
+                            self.salaryType = .сontractual
+                        } label: {
+                            HStack {
+                                Text("Contractual salary")
+                                Spacer()
+                                Image("Handshake")
+                                    .resizable()
+                                    .foregroundColor(.white)
+                            }
                         }
                     }
                     
-                    Button {
-                        self.salaryType = .specified
-                    } label: {
-                        HStack {
-                            Text("Specified salary")
-                            Spacer()
-                            Image("buxx")
+                    if self.salaryType != .specified{
+                        Button {
+                            self.salaryType = .specified
+                        } label: {
+                            HStack {
+                                Text("Specified salary")
+                                Spacer()
+                                Image("buxx")
+                            }
                         }
                     }
                     

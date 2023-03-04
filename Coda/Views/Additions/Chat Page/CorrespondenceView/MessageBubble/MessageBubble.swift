@@ -138,10 +138,11 @@ struct MessageBubble<Content>: View where Content: View {
                                     if messageBody != "" {
                                         HStack {
                                             Text(LocalizedStringKey(messageBody))
-                                                .font(.custom("RobotoMono-SemiBold", size: 15))
+                                                
+                                                .robotoMono(.semibold, 15, color: .white)
                                                 .padding(.all, 10)
                                                 .padding(.leading, self.direction == .left ? 4 : 0)
-                                                .foregroundColor(Color.white)
+                                                
                                             if imageID != "" {
                                                 Spacer()
                                             }
@@ -228,7 +229,7 @@ struct MessageBubble<Content>: View where Content: View {
                     }
                     .padding(1)
                         .padding(.horizontal, 4)
-                    .font(.custom("RobotoMono-Light", size: 11))
+                    .robotoMono(.light, 11)
                         .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 30))
                         .frame(height: 15)
                         .fixedSize()
@@ -262,7 +263,9 @@ struct MessageBubble<Content>: View where Content: View {
                                 Text("Edit")
                                 Spacer()
                                 Image(systemName: "square.and.pencil")
-                            }.font(.custom("RobotoMono-SemiBold", size: 14))
+                            }
+                            .robotoMono(.semibold, 14)
+                        
                             
                         }
                     }
@@ -277,7 +280,9 @@ struct MessageBubble<Content>: View where Content: View {
                                 Text("Save photo")
                                 Spacer()
                                 Image(systemName: "arrow.down.circle")
-                            }.font(.custom("RobotoMono-SemiBold", size: 14))
+                            }
+                            .robotoMono(.semibold, 14)
+                            
 
                         }
                     } else if let inputImage = self.imageToSave {
@@ -291,7 +296,8 @@ struct MessageBubble<Content>: View where Content: View {
                                 Text("Save photo")
                                 Spacer()
                                 Image(systemName: "arrow.down.circle")
-                            }.font(.custom("RobotoMono-SemiBold", size: 14))
+                            }
+                                .robotoMono(.semibold, 14)
 
                         }
                     }
@@ -306,7 +312,8 @@ struct MessageBubble<Content>: View where Content: View {
                                 Text("Save photo")
                                 Spacer()
                                 Image(systemName: "arrow.down.circle")
-                            }.font(.custom("RobotoMono-SemiBold", size: 14))
+                            }
+                                .robotoMono(.semibold, 14)
 
                         }
                     }
@@ -318,7 +325,8 @@ struct MessageBubble<Content>: View where Content: View {
                                 Text("Copy text")
                                 Spacer()
                                 Image(systemName: "doc.on.doc")
-                            }.font(.custom("RobotoMono-SemiBold", size: 14))
+                            }
+                                .robotoMono(.semibold, 14)
                         }
                     }
                     
@@ -335,11 +343,10 @@ struct MessageBubble<Content>: View where Content: View {
                                 Text("Delete")
                                 Spacer()
                                 Image(systemName: "trash")
-                            }.font(.custom("RobotoMono-SemiBold", size: 14))
+                            }
+                            .robotoMono(.semibold, 14)
                         }
-
                     }
-                    
                 })
             .task {
                 // MARK: - Observeing for message updates

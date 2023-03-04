@@ -273,6 +273,7 @@ struct ServicePreview: View {
             self.doneUploading = true
             
         })
+
         .toolbar {
             ToolbarItem(placement: .principal) {
                 Text("")

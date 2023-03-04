@@ -56,7 +56,9 @@ struct PostCreator: View {
                     self.dismiss.callAsFunction()
                 } label: {
                     Image(systemName: "xmark.circle")
-                }.font(.custom("RobotoMono-Light", size: 22))
+                }
+                .robotoMono(.light, 22)
+                
                 
                 Spacer()
                 // MARK: - Title
@@ -114,13 +116,12 @@ struct PostCreator: View {
 
                     } label: {
                         Image(systemName: "arrow.up.circle.fill")
-                    }.font(.custom("RobotoMono-SemiBold", size: 27))
-                        .foregroundColor(self.postBody.isEmpty ? .secondary : .primary)
+                    }
+                    .robotoMono(.semibold, 27, color: self.postBody.isEmpty ? .secondary : .primary)
                         .disabled(self.postBody.isEmpty)
                 }
             }
-            .font(.custom("RobotoMono-Bold", size: 23))
-            .foregroundColor(.primary)
+            .robotoMono(.bold, 23)
             .padding(.top, 16)
             .padding(.horizontal, 16)
             Divider()

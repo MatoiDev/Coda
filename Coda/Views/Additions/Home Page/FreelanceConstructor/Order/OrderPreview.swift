@@ -75,7 +75,7 @@ class FirebaseAvatarImageServer: ObservableObject {
 }
 
 enum BusinessCardType {
-    case customer, vendor, company
+    case customer, vendor, company, author
 }
 
 struct BusinessCard: View {
@@ -126,10 +126,20 @@ struct BusinessCard: View {
                     
                 }.robotoMono(.semibold, 17)
                 HStack {
-                    
-                    Text(LocalizedStringKey(self.type == .customer ? "Customer" : self.type == .vendor ? "Vendor" : "Company") )
-                        .robotoMono(.medium, 16, color:.secondary)
-                    
+                    switch self.type {
+                    case .customer:
+                        Text(LocalizedStringKey("Customer"))
+                            .robotoMono(.medium, 16, color:.secondary)
+                    case .vendor:
+                        Text(LocalizedStringKey("Vendor"))
+                            .robotoMono(.medium, 16, color:.secondary)
+                    case .company:
+                        Text(LocalizedStringKey("Company"))
+                            .robotoMono(.medium, 16, color:.secondary)
+                    case .author:
+                        Text(LocalizedStringKey("Author"))
+                            .robotoMono(.medium, 16, color:.secondary)
+                    }
                     Divider().frame(maxHeight: 20)
                     Image(systemName: "star")
                         .rotationEffect(Angle(degrees: self.starRotationCoefficent))

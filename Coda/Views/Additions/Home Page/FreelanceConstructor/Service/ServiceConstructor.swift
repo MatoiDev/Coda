@@ -22,12 +22,13 @@ import Introspect
  - topic: FreelanceTopic (enum)
  - subtopic: FreelanceSubtopic
  - dateOfPublish: String
- - requests:  Int
- - views: Int
  - upvotes: Int
  - descriptors: [LangDescriptor]
  - Core skills: [String]
  - imageExamplesURLs: [String]    —>    In Storage: FreelanceServicesExamples
+ 
+ - requests: [userID]
+ - views: [userID]
  
  */
 
@@ -127,21 +128,25 @@ struct ServiceConstructor: View {
             Section {
                 Menu {
                     
-                    Button {
-                        self.salaryType = .negotiated
-                    } label: {
-                        HStack {
-                            Text("Contractual price")
+                    if self.salaryType != .negotiated{
+                        Button {
+                            self.salaryType = .negotiated
+                        } label: {
+                            HStack {
+                                Text("Contractual price")
+                            }
                         }
                     }
                     
-                    Button {
-                        self.salaryType = .specified(price: self.salary)
-                    } label: {
-                        HStack {
-                            Text("Specified price")
-                            Spacer()
-                            Image(systemName: "character.cursor.ibeam")
+                    if self.salaryType != .specified(price: self.salary) {
+                        Button {
+                            self.salaryType = .specified(price: self.salary)
+                        } label: {
+                            HStack {
+                                Text("Specified price")
+                                Spacer()
+                                Image(systemName: "character.cursor.ibeam")
+                            }
                         }
                     }
                     
