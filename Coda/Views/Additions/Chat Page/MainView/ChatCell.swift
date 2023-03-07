@@ -100,6 +100,7 @@ struct ChatCell: View {
     
     var body: some View {
         HStack {
+            // MARK: - Image
             Group {
                 if let url = self.imageURL {
                     ChatCachedImageView(with: url, for: .Cell)
@@ -112,8 +113,11 @@ struct ChatCell: View {
             
             
             VStack(alignment: .leading) {
+                // MARK: - Username
                 Text(self.userName ?? "")
                     .robotoMono(.bold, 17)
+                
+                // MARK: - Message Photo (if it exists)
                 if let messageImageURL = self.messageImageURL, messageImageURL != "" {
                     HStack {
                         ChatCachedImageView(with: messageImageURL, for: .CellMessage)
@@ -125,9 +129,9 @@ struct ChatCell: View {
                             Text(self.lastMessage != nil ? self.lastMessage!.count > 16 ? self.lastMessage![0..<16] + "..." : self.lastMessage! : "")
                                 .robotoMono(.bold, 12, color: .secondary)
                         }
-                       
                     }.offset(y:-5)
                 } else {
+                    // MARK: - Message Text
                     Text(self.lastMessage != nil ? self.lastMessage!.count > 21 ? self.lastMessage![0..<21] + "..." : self.lastMessage! : "")
                         .robotoMono(.bold, 12, color: .secondary)
                 }
@@ -139,6 +143,7 @@ struct ChatCell: View {
             Spacer()
             VStack {
                 HStack {
+                    // MARK: - Seen Message Badge
                     if let whoHaveSeen = self.whoHaveSeen, let members = self.members, let sender = self.sender {
                         if sender != self.loginUserID {
                             if !whoHaveSeen.contains(self.loginUserID) {
@@ -148,6 +153,7 @@ struct ChatCell: View {
                                     .foregroundStyle(LinearGradient(colors: [.cyan, Color("Register2")], startPoint: .topLeading, endPoint: .bottomTrailing))
                             }
                         } else {
+                            // MARK: - Seen Message tick
                             Image(whoHaveSeen.contains(self.getInterlocutor(from: members)) ? "tick.double" : "tick")
                                 .renderingMode(.template)
                                 .resizable()
@@ -158,8 +164,11 @@ struct ChatCell: View {
                     } else {
                         EmptyView()
                     }
+                    // MARK: - Time
                     if let time = self.time {
                         Text(time)
+                            .robotoMono(.bold, 13, color: Color(red: 0.8, green: 0.8, blue: 0.8))
+                        
                     } else {
                         EmptyView()
                     }

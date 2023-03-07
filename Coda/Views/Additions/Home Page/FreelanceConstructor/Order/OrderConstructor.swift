@@ -219,6 +219,9 @@ struct OrderConstructor: View {
                         Divider()
                         Picker(selection: self.$pricePer) {
                             Text(LocalizedStringKey("per hour")).tag(SpecifiedPriceType.perHour)
+                                .robotoMono(.semibold, 15)
+                                                            .lineLimit(1)
+                                                            .minimumScaleFactor(0.01)
                             Text(LocalizedStringKey("per project")).tag(SpecifiedPriceType.perProject)
                                 .robotoMono(.semibold, 15)
                                                             .lineLimit(1)
@@ -399,9 +402,15 @@ struct OrderConstructor: View {
                                 RoundedRectangle(cornerRadius: 25)
                                     .stroke(Color.white, style: StrokeStyle(lineWidth: 2, dash: [10], dashPhase: 4))
                             }
+//                            .overlay {
+//                                Image("RoseCloud")
+//                                    .resizable()
+//                                    .scaledToFit()
+//                                    .frame(height: 150)
+//                            }
                             .overlay {
-                                Image("RoseCloud")
-                                    .resizable()
+                                LottieView(named: "uploadToCloud3", loop: true)
+
                                     .scaledToFit()
                                     .frame(height: 150)
                             }

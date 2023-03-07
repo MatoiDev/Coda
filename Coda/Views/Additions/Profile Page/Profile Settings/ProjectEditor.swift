@@ -257,7 +257,7 @@ struct ProjectEditor: View {
                 if self.name != nil {
                     List {
                         // MARK: - Image picker
-                        Section(header: Text("Preview").robotoMono(.semibold, 13, color: .cyan), footer: (Text("Recommended resolution:").robotoMono(.semibold, 12) as! Text) + (Text(" 1920x1080").robotoMono(.semibold, 12, color: .red) as! Text) + (Text(".").robotoMono(.semibold, 12) as! Text)) {
+                        Section(header: Text("Preview").foregroundColor(.cyan).font(.custom("RobotoMono-SemiBold", size: 13)), footer: Text("Recommended resolution:").font(.custom("RobotoMono-SemiBold", size: 12)) + Text(" 1920x1080").foregroundColor(.red).font(.custom("RobotoMono-SemiBold", size: 12)) + Text(".").font(.custom("RobotoMono-SemiBold", size: 12))) {
                             HStack {
                                 Spacer()
                                 Button {
@@ -267,8 +267,9 @@ struct ProjectEditor: View {
                                     if let image = self.image {
                                         Image(uiImage: image)
                                             .resizable()
-                                            .frame(width: 267, height: 150, alignment: .center)
-                                            .scaledToFit()
+                                            .scaledToFill()
+//                                            .frame(width: 267, height: 150, alignment: .center)
+                                          
                                         
                                     } else {
                                         ProgressView()
@@ -391,7 +392,7 @@ struct ProjectEditor: View {
                 // MARK: - Create project
                 List {
                     // MARK: - Image picker
-                    Section(header: Text("Preview").robotoMono(.semibold, 13, color: .cyan), footer: (Text("Recommended resolution:").robotoMono(.semibold, 12) as! Text) + (Text(" 1920x1080").robotoMono(.semibold, 12, color: .red) as! Text) + (Text(".").robotoMono(.semibold, 12) as! Text)) {
+                    Section(header: Text("Preview").foregroundColor(.cyan).font(.custom("RobotoMono-SemiBold", size: 13)), footer: Text("Recommended resolution:").font(.custom("RobotoMono-SemiBold", size: 12)) + Text(" 1920x1080").foregroundColor(.red).font(.custom("RobotoMono-SemiBold", size: 12)) + Text(".").font(.custom("RobotoMono-SemiBold", size: 12))) {
                         HStack {
                             Spacer()
                             Button {
