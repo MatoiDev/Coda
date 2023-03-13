@@ -137,6 +137,8 @@
 		95C4723A2928FAB40084C60A /* ProfileActionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95C472392928FAB40084C60A /* ProfileActionCell.swift */; };
 		95C4723C2928FE8B0084C60A /* MoreInfoSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95C4723B2928FE8B0084C60A /* MoreInfoSheet.swift */; };
 		95D42C4D29BFB13B00D87BA8 /* ProjectPostPublishingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95D42C4C29BFB13B00D87BA8 /* ProjectPostPublishingView.swift */; };
+		95D42C4F29BFB73E00D87BA8 /* doneProject.json in Resources */ = {isa = PBXBuildFile; fileRef = 95D42C4E29BFB73E00D87BA8 /* doneProject.json */; };
+		95D42C5129BFBCE800D87BA8 /* freelanceOrderDone.json in Resources */ = {isa = PBXBuildFile; fileRef = 95D42C5029BFBCE800D87BA8 /* freelanceOrderDone.json */; };
 		95D5B8CE29AE451C00C15C2F /* VacancyPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95D5B8CD29AE451C00C15C2F /* VacancyPreview.swift */; };
 		95D814D1297C6DBC00BBAE02 /* MultilineTextField in Frameworks */ = {isa = PBXBuildFile; productRef = 95D814D0297C6DBC00BBAE02 /* MultilineTextField */; };
 		95DB57E12931F96D00B7E7A8 /* UOProject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95DB57E02931F96D00B7E7A8 /* UOProject.swift */; };
@@ -292,6 +294,8 @@
 		95C472392928FAB40084C60A /* ProfileActionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileActionCell.swift; sourceTree = "<group>"; };
 		95C4723B2928FE8B0084C60A /* MoreInfoSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreInfoSheet.swift; sourceTree = "<group>"; };
 		95D42C4C29BFB13B00D87BA8 /* ProjectPostPublishingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectPostPublishingView.swift; sourceTree = "<group>"; };
+		95D42C4E29BFB73E00D87BA8 /* doneProject.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = doneProject.json; sourceTree = "<group>"; };
+		95D42C5029BFBCE800D87BA8 /* freelanceOrderDone.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = freelanceOrderDone.json; sourceTree = "<group>"; };
 		95D5B8CD29AE451C00C15C2F /* VacancyPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VacancyPreview.swift; sourceTree = "<group>"; };
 		95DB57E02931F96D00B7E7A8 /* UOProject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UOProject.swift; sourceTree = "<group>"; };
 		95DC87DA29A0FAFD00E0BA2F /* MBProgressHUDRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MBProgressHUDRepresentable.swift; sourceTree = "<group>"; };
@@ -592,6 +596,8 @@
 		952BCF80290981B30046FB02 /* Animations */ = {
 			isa = PBXGroup;
 			children = (
+				95D42C5029BFBCE800D87BA8 /* freelanceOrderDone.json */,
+				95D42C4E29BFB73E00D87BA8 /* doneProject.json */,
 				952510BD29B9F17100ED908A /* TeamFinderDone.json */,
 				95BBB28F29B1DBC600131388 /* uploadToCloud.json */,
 				95BBB29129B1DD1300131388 /* uploadToCloud2.json */,
@@ -1035,9 +1041,11 @@
 				95170556290AEEE2008C137F /* RobotoMono-Bold.ttf in Resources */,
 				95170552290AD634008C137F /* githubLogoWhite.json in Resources */,
 				9595C4632908343D004726AD /* Assets.xcassets in Resources */,
+				95D42C4F29BFB73E00D87BA8 /* doneProject.json in Resources */,
 				952BCF8C290989B00046FB02 /* progress.json in Resources */,
 				955C668029AF2F5F0079BC91 /* connectionErrorMan.json in Resources */,
 				955C668629AF34900079BC91 /* violetCoder.json in Resources */,
+				95D42C5129BFBCE800D87BA8 /* freelanceOrderDone.json in Resources */,
 				952510BE29B9F17100ED908A /* TeamFinderDone.json in Resources */,
 				951DBBFB2910611500FAB2E3 /* RobotoMono-SemiBold.ttf in Resources */,
 				95BBB29429B1DD9400131388 /* uploadToCloud3.json in Resources */,

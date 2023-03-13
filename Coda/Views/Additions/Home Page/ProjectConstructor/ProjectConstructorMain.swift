@@ -201,6 +201,9 @@ struct ProjectConstructorMain: View {
             // MARK: - Other
             Section {
                 TextField(LocalizedStringKey(" Link to the sources"), text: self.$linkToSource)
+                    .keyboardType(UIKeyboardType.URL)
+                    .autocapitalization(.none)
+                    .autocorrectionDisabled(true)
                     .robotoMono(.medium, 15)
                     ZStack(alignment: .leading) {
                         if self.projectDetails.isEmpty {
@@ -384,7 +387,10 @@ struct ProjectConstructorMain: View {
                     NavigationLink(
                         isActive: self.$showOrderPreview,
                         destination: {
-//                            OrderPreview(title: self.title, description: self.description, priceType: self.reward, price: self.price, per: self.pricePer, topic: self.topic, devSubtopic: self.devSubtopic, adminSubtopic: self.adminSubtopic, designSubtopic: self.designSubtopic, testSubtopic: self.testSubtopic, languages: self.languageDescriptors, projectDetails: self.projectDetails, previews: self.assetsToImage(assets: self.selectedAssets), files: self.selectedPDFs, imageLoader: FirebaseTemporaryImageLoaderVM(with: URL(string: avatarURL)), doneTrigger: self.$doneUploading, rootViewIsActive: self.$rootViewIsActive)
+                            ProjectPreview(title: self.title, description: self.description, category: self.topic, devSubtopic: self.devSubtopic, adminSubtopic: self.adminSubtopic, designSubtopic: self.designSubtopic, testSubtopic: self.testSubtopic, languages: self.languageDescriptors, projectDetails: self.projectDetails, linkToTheSource: self.linkToSource,
+                                           previews: self.selectedAssets.compactMap({$0.fullResolutionImage}),
+                                           files: self.selectedPDFs,
+                                           imageLoader: FirebaseTemporaryImageLoaderVM(with: URL(string: self.loginUserID)), doneTrigger: self.$doneUploading, rootViewIsActive: self.$rootViewIsActive)
                             
                         },
                         label: { EmptyView() }

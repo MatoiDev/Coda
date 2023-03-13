@@ -75,3 +75,10 @@ struct ServicePostPublishingView: View {
 }
 
 
+struct ServicePostPublishingView_Previews: PreviewProvider {
+    static var previews: some View {
+        ServicePostPublishingView {
+            print("OK!")
+        }
+    }
+}

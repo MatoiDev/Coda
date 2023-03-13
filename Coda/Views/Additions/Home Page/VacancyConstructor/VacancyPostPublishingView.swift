@@ -1,13 +1,14 @@
 //
-//  OrderPostPublishingView.swift
+//  VacancyPostPublishingView.swift
 //  Coda
 //
-//  Created by Matoi on 23.02.2023.
+//  Created by Matoi on 01.03.2023.
 //
+
 
 import SwiftUI
 
-struct OrderPostPublishingView: View {
+struct VacancyPostPublishingView: View {
     
     let onOKButtonPress: () -> ()
     
@@ -21,11 +22,11 @@ struct OrderPostPublishingView: View {
         ZStack {
             VStack {
                 if Reachability.isConnectedToNetwork() {
-                    LottieView(named: "freelanceOrderDone", loop: true)
+                    LottieView(named: "JobInterview", loop: true)
                         .scaledToFit()
                         .frame(width: UIScreen.main.bounds.width - 32)
                     
-                    Text("The order was successfully published.")
+                    Text("The vacancy was successfully published.")
                         .robotoMono(.bold, 15)
                     Spacer()
                     Button {
@@ -37,7 +38,7 @@ struct OrderPostPublishingView: View {
                             .padding()
                            
                            
-                            .background(Color(red: 113 / 255, green: 140 / 255, blue: 213 / 255))
+                            .background(Color(red: 0.99, green: 0.788, blue: 0.27))
                             .clipShape(RoundedRectangle(cornerRadius: 30))
                             .padding(.horizontal, 32)
                     }
@@ -74,10 +75,10 @@ struct OrderPostPublishingView: View {
     }
 }
 
-struct OrderPostPublishingView_Previews: PreviewProvider {
+struct VacancyPostPublishingView_Previews: PreviewProvider {
     static var previews: some View {
-        OrderPostPublishingView {
-            print("OK")
+        VacancyPostPublishingView {
+            print("Hello, world!")
         }
     }
 }

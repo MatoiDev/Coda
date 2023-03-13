@@ -1,13 +1,13 @@
 //
-//  OrderPostPublishingView.swift
+//  ProjectPostPublishingView.swift
 //  Coda
 //
-//  Created by Matoi on 23.02.2023.
+//  Created by Matoi on 13.03.2023.
 //
 
 import SwiftUI
 
-struct OrderPostPublishingView: View {
+struct ProjectPostPublishingView: View {
     
     let onOKButtonPress: () -> ()
     
@@ -21,11 +21,11 @@ struct OrderPostPublishingView: View {
         ZStack {
             VStack {
                 if Reachability.isConnectedToNetwork() {
-                    LottieView(named: "freelanceOrderDone", loop: true)
+                    LottieView(named: "doneProject", loop: true)
                         .scaledToFit()
                         .frame(width: UIScreen.main.bounds.width - 32)
-                    
-                    Text("The order was successfully published.")
+                    Spacer()
+                    Text("The project was successfully published.")
                         .robotoMono(.bold, 15)
                     Spacer()
                     Button {
@@ -37,7 +37,7 @@ struct OrderPostPublishingView: View {
                             .padding()
                            
                            
-                            .background(Color(red: 113 / 255, green: 140 / 255, blue: 213 / 255))
+                            .background(Color(red: 0.5, green: 0.35, blue: 0.965))
                             .clipShape(RoundedRectangle(cornerRadius: 30))
                             .padding(.horizontal, 32)
                     }
@@ -74,10 +74,10 @@ struct OrderPostPublishingView: View {
     }
 }
 
-struct OrderPostPublishingView_Previews: PreviewProvider {
+struct ProjectPostPublishingView_Previews: PreviewProvider {
     static var previews: some View {
-        OrderPostPublishingView {
-            print("OK")
+        ProjectPostPublishingView {
+            print("OK!")
         }
     }
 }

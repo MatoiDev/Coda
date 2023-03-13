@@ -111,7 +111,7 @@ class FSManager: ObservableObject {
     private let db = Firestore.firestore()
     
     enum UploadFolderType {
-        case order, service, idea, teamFinder
+        case order, service, idea, teamFinder, project
     }
     
     // MARK: - Generate IDs (Static)
@@ -251,6 +251,8 @@ class FSManager: ObservableObject {
                 return "IdeaPreviews"
             case .teamFinder:
                 return "TeamFinderPreviews"
+            case .project:
+                return "ProjectPreviews"
                 
             }
         }
@@ -314,7 +316,8 @@ class FSManager: ObservableObject {
                 return "IdeaFiles"
             case .teamFinder:
                 return "TeamFinderFiles"
-                
+            case .project:
+                return "ProjectFiles"
             }
         }
         
@@ -586,7 +589,7 @@ class FSManager: ObservableObject {
                         "recruitsCount": recruitsCount,
                         "recruited": [],
                         "time": Date().timeIntervalSince1970,
-                        "views": [],
+                        "views": [userID],
                         "comments": [],
                         "date": Date().getFormattedDate(format: "d MMM, HH:mm")
                         
@@ -648,7 +651,7 @@ class FSManager: ObservableObject {
                         "time": Date().timeIntervalSince1970,
                         "stars": [],
                         "responses": [],
-                        "views": [],
+                        "views": [userID],
                         "comments": [],
                         "date": Date().getFormattedDate(format: "d MMM, HH:mm")
                         
@@ -711,7 +714,7 @@ class FSManager: ObservableObject {
             "languages": languages.map({$0.rawValue}),
             "time": Date().timeIntervalSince1970,
             "responses": [],
-            "views": [],
+            "views": [companyID],
             "comments": [],
             "date": Date().getFormattedDate(format: "d MMM, HH:mm")
             
@@ -732,6 +735,83 @@ class FSManager: ObservableObject {
 //            let percentComplete = 100.0 * Double(snapshot.progress!.completedUnitCount) / Double(snapshot.progress!.totalUnitCount)
 //            observeManager.filesProgressSnapshots[snapshot] = percentComplete
 //        }
+    }
+    
+    func createProject(
+        author: String,
+        title: String,
+                       description: String,
+                       category: FreelanceTopic,
+                       devSubtopic: FreelanceSubTopic.FreelanceDevelopingSubTopic,
+                       adminSubtopic: FreelanceSubTopic.FreelanceAdministrationSubTropic,
+                       designSubtopic: FreelanceSubTopic.FreelanceDesignSubTopic,
+                       testSubtopic: FreelanceSubTopic.FreelanceTestingSubTopic,
+                       languages: [LangDescriptor],
+                       projectDetails: String,
+                       linkToTheSource: String,
+                       previews: [UIImage]? = nil,
+                       files: [URL]? = nil,
+                       observeManager: FirebaseFilesUploadingProgreessManager,
+                       completionHandler: @escaping (Result<String, Error>) -> Void) {
+        guard Reachability.isConnectedToNetwork() else { observeManager.amountPercentage = -1; return }
+        self.uploadPublisher(PDFs: files ?? [], observeManager: observeManager, folder: .project)
+            .combineLatest(self.uploadPublisher(previews: previews ?? [], observeManager: observeManager, folder: .project))
+                .sink { res in
+                    if case .failure = res {
+                        print(res)
+                    }
+                } receiveValue: { (filesURL, previewsURL) in
+                    
+                    let orderID: String = FSManager.generate64CharactersLongID()
+                    var subtopic: String = ""
+                    
+                    switch category {
+                    case .Administration:
+                        subtopic = adminSubtopic.rawValue
+                    case .Design:
+                        subtopic = designSubtopic.rawValue
+                    case .Development:
+                        subtopic = devSubtopic.rawValue
+                    case .Testing:
+                        subtopic = testSubtopic.rawValue
+                    }
+                    
+                    self.db.collection("FreelanceOrder").document(orderID).setData([
+                        
+                        "id" : orderID,
+                        "author": author,
+                        "title": title,
+                        "description": description,
+                        "category": category.rawValue,
+                        "subtopic": subtopic,
+                        "langdescriptors": languages.map({$0.rawValue}),
+                        "projectDetails": projectDetails,
+                        "linkToTheSource": linkToTheSource,
+                        "previews": previewsURL,
+                        "files": filesURL,
+                        
+                        "time": Date().timeIntervalSince1970,
+                        "upvotes": [],
+                        "downvotes": [],
+                        "comments": [],
+                        "views": [author],
+                        "date": Date().getFormattedDate(format: "d MMM, HH:mm")
+                        
+                    ]) { err in
+                        if let err = err {
+                            print("Error writing document: \(err)")
+                            self.showPV = false
+                            observeManager.amountPercentage = -1
+                            completionHandler(.failure("Error with creating project: \(err.localizedDescription)"))
+                        } else {
+                            observeManager.amountPercentage = 100
+                            completionHandler(.success(orderID))
+                        }
+                    }
+                    
+                    
+                }.store(in: &self.cancellabels)
+        
     }
     
     func createFreelanceOrder(owner userID: String,
@@ -795,7 +875,7 @@ class FSManager: ObservableObject {
                         "time": Date().timeIntervalSince1970,
                         "stars": [],
                         "responses": [],
-                        "views": [],
+                        "views": [userID],
                         "date": Date().getFormattedDate(format: "d MMM, HH:mm")
                         
                     ]) { err in
@@ -871,7 +951,7 @@ class FSManager: ObservableObject {
                         "time": Date().timeIntervalSince1970,
                         "stars": [],
                         "responses": [],
-                        "views": [],
+                        "views": [userID],
                         "date": Date().getFormattedDate(format: "d MMM, HH:mm")
                         
                     ]) { err in
