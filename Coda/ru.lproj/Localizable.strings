@@ -160,6 +160,9 @@
 "The vacancy was successfully published." = "Вакансия успешно размещена!";
 "The order was successfully published." = "Заказ успешно размещён!";
 "The service was successfully published." = "Услуга успешно размещена!";
+"The idea was successfully published." = "Идея успешно опубликована!"
+"The announcement was successfully published." = "Объявление успешно размещено!";
+"The project was successfully published." = "Проект был успешно опубликован!";
 
 "Company" = "Компания";
 
@@ -168,6 +171,7 @@
 "Title" = "Заголовок";
 "Description" = "Описание";
 "New Idea" = "Новая Идея";
+"New Project" = "Новый Проект";
 
 "Difficulty Level" = "Уровень Сложности";
 "How would you rate the complexity of your Idea?" = "Как бы вы оценили сложность реализации вашей идеи?";
@@ -175,3 +179,16 @@
 "Enter from 1 to 10 skills or tools, separating them with a comma" = "Введите от 1 до 10 навыков или инструментов, разделяя их запятой";
 
 "Idea Description" = "Описание Идеи";
+
+"Skills" = "Навыки";
+
+"Enter from 1 to 10 skills, separating them with a comma" = "Введите от 1 до 10 навыков, разделяя их запятой";
+"Find Team" = "Найти Команду";
+"Number Of Teammates" = "Количество Сокомандников";
+"Project name" = "Имя проекта";
+"Link to the sources" = "Ссылка на исходники";
+"Other" = "Другое";
+"Specify the tools, main libraries, architecture, etc. that were used in your project, separating them with a comma " = "Укажите инструменты, основные библиотеки, архитектуру и т.д., которые использовались в вашем проекте, разделяя их запятой ";
+"Languages used in your project." = "Языки, используемые в вашем проекте.";
+"Project name" = "Название проекта";
+

@@ -50,22 +50,22 @@ struct HomeView: View {
                          content: {
             List {
                 Section {
-                    HomeViewActionCell(title: "New Project", image: "HomeViewProjectIcon") {active in
-                        ProjectConstructorMain()
+                    HomeViewActionCell(title: "New Project", image: "HomeViewProjectIcon") { active in
+                        ProjectConstructorMain(rootViewIsActive: active)
                     }
-                    HomeViewActionCell(title: "New Idea", image: "HomeViewIdeaIcon") {active in
+                    HomeViewActionCell(title: "New Idea", image: "HomeViewIdeaIcon") { active in
                         IdeaConstructorMain(rootViewIsActive: active)
                     }
-                    HomeViewActionCell(title: "Find Team", image: "HomeViewTeamIcon") {active in
-                        Text("Here is Team request constructor")
+                    HomeViewActionCell(title: "Find Team", image: "HomeViewTeamIcon") { active in
+                        FindTeamConstructor(rootViewIsActive: active)
                     }
-                    HomeViewActionCell(title: "New Vacancy", image: "HomeViewVacancyIcon") {active in
-                                                VacancyConstructorMain(rootViewIsActive: active)
+                    HomeViewActionCell(title: "New Vacancy", image: "HomeViewVacancyIcon") { active in
+                        VacancyConstructorMain(rootViewIsActive: active)
                     }
-                    HomeViewActionCell(title: "Create Resume", image: "HomeViewResumeIcon") {active in
+                    HomeViewActionCell(title: "Create Resume", image: "HomeViewResumeIcon") { active in
                         Text("Here is Resume constructor")
                     }
-                    HomeViewActionCell(title: "Freelance", image: "HomeViewFreelanceIcon") {active in
+                    HomeViewActionCell(title: "Freelance", image: "HomeViewFreelanceIcon") { active in
                         FreelanceConstructorCrossroadView(rootViewIsActive: active)
                     }
                 } header: {

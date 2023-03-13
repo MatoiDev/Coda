@@ -1,5 +1,5 @@
 //
-//  FreelanceTopicPicker.swift
+//  ScopeTopicPickerExtended.swift
 //  Coda
 //
 //  Created by Matoi on 09.02.2023.
@@ -8,7 +8,7 @@
 import SwiftUI
 
 
-struct FreelanceTopicPicker: View {
+struct ScopeTopicPickerExtended: View {
     
     @Binding var topic: FreelanceTopic
     
@@ -98,8 +98,8 @@ struct FreelanceTopicPicker: View {
     }
 }
 
-//struct FreelanceTopicPicker_Previews: PreviewProvider {
+//struct ScopeTopicPickerExtended_Previews: PreviewProvider {
 //    static var previews: some View {
-//        FreelanceTopicPicker()
+//        ScopeTopicPickerExtended()
 //    }
 //}

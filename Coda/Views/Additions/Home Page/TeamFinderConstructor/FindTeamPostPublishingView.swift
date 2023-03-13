@@ -1,14 +1,13 @@
 //
-//  VacancyPostPublishingView.swift
+//  FindTeamPostPublishingView.swift
 //  Coda
 //
-//  Created by Matoi on 01.03.2023.
+//  Created by Matoi on 09.03.2023.
 //
-
 
 import SwiftUI
 
-struct VacancyPostPublishingView: View {
+struct FindTeamPostPublishingView: View {
     
     let onOKButtonPress: () -> ()
     
@@ -22,11 +21,11 @@ struct VacancyPostPublishingView: View {
         ZStack {
             VStack {
                 if Reachability.isConnectedToNetwork() {
-                    LottieView(named: "JobInterview", loop: true)
+                    LottieView(named: "TeamFinderDone", loop: true)
                         .scaledToFit()
                         .frame(width: UIScreen.main.bounds.width - 32)
                     
-                    Text("The vacancy was successfully published.")
+                    Text("The announcement was successfully published.")
                         .robotoMono(.bold, 15)
                     Spacer()
                     Button {
@@ -38,7 +37,7 @@ struct VacancyPostPublishingView: View {
                             .padding()
                            
                            
-                            .background(Color.green)
+                            .background(Color.pink)
                             .clipShape(RoundedRectangle(cornerRadius: 30))
                             .padding(.horizontal, 32)
                     }
@@ -75,10 +74,10 @@ struct VacancyPostPublishingView: View {
     }
 }
 
-struct VacancyPostPublishingView_Previews: PreviewProvider {
+struct FindTeamPostPublishingView_Previews: PreviewProvider {
     static var previews: some View {
-        VacancyPostPublishingView {
-            print("Hello, world!")
+        FindTeamPostPublishingView {
+            print("OK")
         }
     }
 }

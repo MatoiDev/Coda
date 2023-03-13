@@ -81,6 +81,7 @@ struct ProfileView: View {
 
     }
     
+    // TODO: Переделать способ получения и кеширования изображения через mvvm паттерн
     func getImageURL() async {
         while true {
             

@@ -383,48 +383,57 @@ struct OrderPreview: View {
                     
                     // MARK: - Files
                     if let files = self.files, !files.isEmpty {
-
-                        HStack(alignment: .center, spacing: 8) {
-                            Spacer()
-                                ForEach(files, id: \.self) { url in
-                                    
-                                    if let file_Attr = url.fileAttributes {
-                                        VStack(alignment: .center) {
-                                            
-                                            Image(systemName: "doc.viewfinder")
-                                                    .resizable()
-                                                    .frame(width: 45, height: 45)
-                                                    .symbolRenderingMode(.hierarchical)
-                                                    .foregroundColor(.primary)
-                                                    .padding(.top)
-                                            Spacer()
-                                            Text(file_Attr.name)
-                                                .lineLimit(1)
-                                                .padding(.horizontal)
-                                                .robotoMono(.semibold, 13)
-                                            
-                                            Text(Double(file_Attr.size).bytesToHumanReadFormat())
-                                                .lineLimit(1)
-                                                .padding(.horizontal)
-                                                .robotoMono(.semibold, 10, color: .secondary)
-                                                .padding(.bottom)
-                                            
+                        
+                        VStack {
+                            HStack {
+                                Text("Files")
+                                    .robotoMono(.semibold, 18, color: .secondary)
+                                    Spacer()
+                            }.padding(.horizontal, 8)
+                                .padding(.bottom, 4)
+                                .padding(.horizontal)
+                            HStack(alignment: .center, spacing: 8) {
+                                Spacer()
+                                    ForEach(files, id: \.self) { url in
+                                        
+                                        if let file_Attr = url.fileAttributes {
+                                            VStack(alignment: .center) {
+                                                
+                                                Image(systemName: "doc.viewfinder")
+                                                        .resizable()
+                                                        .frame(width: 45, height: 45)
+                                                        .symbolRenderingMode(.hierarchical)
+                                                        .foregroundColor(.primary)
+                                                        .padding(.top)
+                                                Spacer()
+                                                Text(file_Attr.name)
+                                                    .lineLimit(1)
+                                                    .padding(.horizontal)
+                                                    .robotoMono(.semibold, 13)
+                                                
+                                                Text(Double(file_Attr.size).bytesToHumanReadFormat())
+                                                    .lineLimit(1)
+                                                    .padding(.horizontal)
+                                                    .robotoMono(.semibold, 10, color: .secondary)
+                                                    .padding(.bottom)
+                                                
+                                            }
+                                            .frame(
+                                                width: UIScreen.main.bounds.width / 3.5,
+                                                height: UIScreen.main.bounds.width / 3.5
+                                            )
+                                            .clipShape(RoundedRectangle(cornerRadius: 20))
+                                            .overlay {
+                                                RoundedRectangle(cornerRadius: 20)
+                                                    .stroke(Color.secondary, lineWidth: 4)
+                                            }
                                         }
-                                        .frame(
-                                            width: UIScreen.main.bounds.width / 3.5,
-                                            height: UIScreen.main.bounds.width / 3.5
-                                        )
-                                        .clipShape(RoundedRectangle(cornerRadius: 20))
-                                        .overlay {
-                                            RoundedRectangle(cornerRadius: 20)
-                                                .stroke(Color.secondary, lineWidth: 4)
-                                        }
-                                    }
-                                  
-                                   
-                            }
-                            Spacer()
-                        }.padding(.horizontal)
+                                      
+                                       
+                                }
+                                Spacer()
+                            }.padding(.horizontal)
+                        }
                     }
                     
                     // MARK: - Deploy Button

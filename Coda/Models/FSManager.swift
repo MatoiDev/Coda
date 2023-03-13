@@ -111,7 +111,7 @@ class FSManager: ObservableObject {
     private let db = Firestore.firestore()
     
     enum UploadFolderType {
-        case order, service, idea
+        case order, service, idea, teamFinder
     }
     
     // MARK: - Generate IDs (Static)
@@ -249,6 +249,8 @@ class FSManager: ObservableObject {
                 return "FreelanceServicePreviews"
             case .idea:
                 return "IdeaPreviews"
+            case .teamFinder:
+                return "TeamFinderPreviews"
                 
             }
         }
@@ -310,6 +312,8 @@ class FSManager: ObservableObject {
                 return "FreelanceServiceFiles"
             case .idea:
                 return "IdeaFiles"
+            case .teamFinder:
+                return "TeamFinderFiles"
                 
             }
         }
@@ -537,6 +541,73 @@ class FSManager: ObservableObject {
         }
     }
     
+    func createFindTeamAnnouncement(owner userID: String,
+                    title: String,
+                    text: String,
+                    category: FreelanceTopic,
+                    devSubtopic: FreelanceSubTopic.FreelanceDevelopingSubTopic,
+                    adminSubtopic: FreelanceSubTopic.FreelanceAdministrationSubTropic,
+                    designSubtopic: FreelanceSubTopic.FreelanceDesignSubTopic,
+                    testSubtopic: FreelanceSubTopic.FreelanceTestingSubTopic,
+                    languages: [LangDescriptor],
+                    coreSkills: String,
+                    previews: [UIImage]?,
+                    recruitsCount: Int,
+                    observeManager: FirebaseFilesUploadingProgreessManager,
+                    completionHandler: @escaping (Result<String, Error>) -> Void) -> Void {
+        
+        guard Reachability.isConnectedToNetwork() else { observeManager.amountPercentage = -1; return }
+        
+        
+        self.uploadPublisher(previews: previews ?? [], observeManager: observeManager, folder: .teamFinder)
+                .sink { res in
+                    if case .failure = res {
+                        print(res)
+                    }
+                } receiveValue: { previewsURL in
+                    
+                    let teamFinderID: String = FSManager.generate64CharactersLongID()
+                    
+                    
+                    self.db.collection("TeamAnnouncements").document(teamFinderID).setData([
+                        
+                        "id" : teamFinderID,
+                        "owner": userID,
+                        "title": title,
+                        "text": text,
+                        "category": category.rawValue,
+                        "devSubtopic": devSubtopic.rawValue,
+                        "adminSubtopic": adminSubtopic.rawValue,
+                        "designSubtopic": designSubtopic.rawValue,
+                        "testSubtopic": testSubtopic.rawValue,
+                        "langdescriptors": languages.map({$0.rawValue}),
+                        "coreskills": coreSkills,
+                        "previews": previewsURL,
+                        "recruitsCount": recruitsCount,
+                        "recruited": [],
+                        "time": Date().timeIntervalSince1970,
+                        "views": [],
+                        "comments": [],
+                        "date": Date().getFormattedDate(format: "d MMM, HH:mm")
+                        
+                    ]) { err in
+                        if let err = err {
+                            print("Error writing document: \(err)")
+                            self.showPV = false
+                            observeManager.amountPercentage = -1
+                            completionHandler(.failure("Error with creating team announcement: \(err.localizedDescription)"))
+                        } else {
+                            observeManager.amountPercentage = 100
+                            completionHandler(.success(teamFinderID))
+                        }
+                    }
+                    
+                    
+                }.store(in: &self.cancellabels)
+        
+        
+    }
+    
     func createIdea(owner userID: String,
                     title: String,
                     text: String,
@@ -578,6 +649,7 @@ class FSManager: ObservableObject {
                         "stars": [],
                         "responses": [],
                         "views": [],
+                        "comments": [],
                         "date": Date().getFormattedDate(format: "d MMM, HH:mm")
                         
                     ]) { err in
@@ -640,6 +712,7 @@ class FSManager: ObservableObject {
             "time": Date().timeIntervalSince1970,
             "responses": [],
             "views": [],
+            "comments": [],
             "date": Date().getFormattedDate(format: "d MMM, HH:mm")
             
         ]) { err in

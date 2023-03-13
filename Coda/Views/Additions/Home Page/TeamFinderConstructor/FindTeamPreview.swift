@@ -1,18 +1,13 @@
 //
-//  IdeaPreview.swift
+//  FindTeamPreview.swift
 //  Coda
 //
-//  Created by Matoi on 01.03.2023.
+//  Created by Matoi on 09.03.2023.
 //
 
 import SwiftUI
-import Foundation
-import Combine
 
-// TODO: Настроить отображение уровня сложности, а так же рейтинга идеи.
-
-
-struct IdeaPreview: View {
+struct FindTeamPreview: View {
     
     @AppStorage("LoginUserID") var loginUserID: String = ""
     @AppStorage("UserFirstName") var userFirstName: String = ""
@@ -22,11 +17,16 @@ struct IdeaPreview: View {
     var title: String
     var text: String
     var category: FreelanceTopic
-    var difficultyLevel: IdeaDifficultyLevel
+    
+    var devSubtopic: FreelanceSubTopic.FreelanceDevelopingSubTopic
+    var adminSubtopic: FreelanceSubTopic.FreelanceAdministrationSubTropic
+    var designSubtopic: FreelanceSubTopic.FreelanceDesignSubTopic
+    var testSubtopic: FreelanceSubTopic.FreelanceTestingSubTopic
+    
+    var recruitsCount: Int
     var languages: [LangDescriptor]
     var coreSkills: String
     var previews: [UIImage]?
-    var files: [URL]?
     
     @StateObject var imageLoader: FirebaseTemporaryImageLoaderVM
     
@@ -40,6 +40,7 @@ struct IdeaPreview: View {
     
     private let commentsCount = 100
     private let viewsCount = 1
+    private let recruited = 0 // Сколько пользователей уже набрали
     
     @Environment(\.dismiss) var dissmiss
     
@@ -50,40 +51,46 @@ struct IdeaPreview: View {
     init(title: String,
          text: String,
          category: FreelanceTopic,
-         difficultyLevel: IdeaDifficultyLevel,
+         devSubtopic: FreelanceSubTopic.FreelanceDevelopingSubTopic,
+         adminSubtopic: FreelanceSubTopic.FreelanceAdministrationSubTropic,
+         designSubtopic: FreelanceSubTopic.FreelanceDesignSubTopic,
+         testSubtopic: FreelanceSubTopic.FreelanceTestingSubTopic,
+         recruitsCount: Int,
          languages: [LangDescriptor],
          coreSkills: String,
-         previews: [UIImage]? = nil, files: [URL]? = nil,
+         previews: [UIImage]? = nil,
          imageLoader: FirebaseTemporaryImageLoaderVM, doneTrigger: Binding<Bool>, rootViewIsActive: Binding<Bool>
          ) {
+        
         self._imageLoader = StateObject(wrappedValue: imageLoader)
         
         
         self.title = title
         self.text = text
         self.category = category
-        self.difficultyLevel = difficultyLevel
+        
+        self.recruitsCount = recruitsCount
         self.languages = languages
         self.coreSkills = coreSkills
         self.previews = previews
-        self.files = files
         
-        
-        
+        self.devSubtopic = devSubtopic
+        self.adminSubtopic = adminSubtopic
+        self.designSubtopic = designSubtopic
+        self.testSubtopic = testSubtopic
         
         self._doneUploading = doneTrigger
         self._rootViewIsActive = rootViewIsActive
     }
     
 
-    
     var body: some View {
         ZStack {
             ScrollView {
                 VStack(alignment: .leading) {
-                    
+
                     // MARK: - Title
-                    
+
                     HStack {
                         Text(title)
                             .robotoMono(.bold, 25)
@@ -92,28 +99,46 @@ struct IdeaPreview: View {
                         Spacer()
                     }
                     .padding([.leading, .top], 24)
+                    .padding(.bottom, 2)
+                        
                     
+//                    HStack {
+//                        Text("\(recruited)/\(recruitsCount)")
+//                        Image(systemName: "person")
+//                            .symbolRenderingMode(.hierarchical)
+//                    }
+//                    .padding(.horizontal, 32)
+//                    .padding()
                     
+
                     // MARK: - Tags
                     WrappingHStack(tags: self.languages.compactMap {
                         $0 == LangDescriptor.defaultValue ? nil : $0.rawValue
                     } + self.getTags(from: self.coreSkills))
                         .padding(.horizontal)
-                    
-                    
+
+
                     // MARK: - Business card
-                    
+
                     BusinessCard(type: .author, image: self.$imageLoader.image, error: self.$imageLoader.errorLog, firstName: self.userFirstName, lastName: self.userLastName, reputation: self.userReputation)
                         .padding()
-                    
+
                     // MARK: - Date, comments & views
                     HStack(alignment: .center) {
                         Text(self.currentDate)
                             .padding(.leading, 24)
                             .robotoMono(.light, 12, color: Color(red: 0.80, green: 0.80, blue: 0.80))
-                    
+
                         Spacer()
                         HStack {
+                            
+                            Text("\(recruited)/\(recruitsCount)")
+                                .foregroundColor(.white)
+                                .robotoMono(.medium, 14)
+                            Image(systemName: "person")
+                                .symbolRenderingMode(.hierarchical)
+                                .robotoMono(.light, 12, color: Color(red: 0.80, green: 0.80, blue: 0.80))
+                            Divider()
                             Text("\(self.commentsCount)")
                                 .foregroundColor(.white)
                                 .robotoMono(.medium, 14)
@@ -129,8 +154,9 @@ struct IdeaPreview: View {
                                 .robotoMono(.medium, 14)
                             Image(systemName: "eye")
                                 .robotoMono(.light, 12, color: Color(red: 0.80, green: 0.80, blue: 0.80))
+                            
                         }
-                   
+
                         .padding(2)
                         .padding(.horizontal, 4)
                         .background(Color("BubbleMessageRecievedColor"), in: RoundedRectangle(cornerRadius: 30))
@@ -141,10 +167,10 @@ struct IdeaPreview: View {
                         .padding(.trailing)
                         .padding(4)
                         .fixedSize()
-                        
-         
+
+
                     }.padding(.top, -8)
-                    
+
                     // MARK: - Previews
                     if let previews = self.previews, !previews.isEmpty {
                         ScrollView(.horizontal, showsIndicators: false) {
@@ -159,122 +185,75 @@ struct IdeaPreview: View {
                         }.padding(.horizontal)
                         }.frame(height: 175)
                     }
-                    
-                    
-                    // MARK: - Files
-                    if let files = self.files, !files.isEmpty {
 
-                        VStack {
-                            HStack {
-                                Text("Files")
-                                    .robotoMono(.semibold, 18, color: .secondary)
-                                    Spacer()
-                            }.padding(.horizontal, 8)
-                                .padding(.bottom, 4)
-                                .padding(.horizontal)
-                            HStack(alignment: .center, spacing: 8) {
-                                Spacer()
-                                    ForEach(files, id: \.self) { url in
-                                        
-                                        if let file_Attr = url.fileAttributes {
-                                            VStack(alignment: .center) {
-                                                
-                                                Image(systemName: "doc.viewfinder")
-                                                        .resizable()
-                                                        .frame(width: 45, height: 45)
-                                                        .symbolRenderingMode(.hierarchical)
-                                                        .foregroundColor(.primary)
-                                                        .padding(.top)
-                                                Spacer()
-                                                Text(file_Attr.name)
-                                                    .lineLimit(1)
-                                                    .padding(.horizontal)
-                                                    .robotoMono(.semibold, 13)
-                                                
-                                                Text(Double(file_Attr.size).bytesToHumanReadFormat())
-                                                    .lineLimit(1)
-                                                    .padding(.horizontal)
-                                                    .robotoMono(.semibold, 10, color: .secondary)
-                                                    .padding(.bottom)
-                                                
-                                            }
-                                            .frame(
-                                                width: UIScreen.main.bounds.width / 3.5,
-                                                height: UIScreen.main.bounds.width / 3.5
-                                            )
-                                            .clipShape(RoundedRectangle(cornerRadius: 20))
-                                            .overlay {
-                                                RoundedRectangle(cornerRadius: 20)
-                                                    .stroke(Color.secondary, lineWidth: 4)
-                                            }
-                                        }
-                                      
-                                       
-                                }
-                                Spacer()
-                            }.padding(.horizontal)
-                        }
-                    }
-                    
-                
+
                     // MARK: - Text
                     VStack(alignment: .leading) {
                         HStack {
-                            Text("Idea Description")
+                            Text("Description")
                                 .robotoMono(.semibold, 18, color: .secondary)
                                 Spacer()
                         }.padding(.horizontal, 8)
                             .padding(.bottom, 4)
-                     
+
                         Text(LocalizedStringKey(self.text))
                     }
                     .padding(.horizontal)
-                    
+
                     // MARK: - Deploy Button
-                    HStack {
+                    VStack {
                         Spacer()
-                        Button {
-                            self.MBProgressHook.toggle()
-                            self.fsmanager.createIdea(owner: self.loginUserID, title: self.title, text: self.text, category: self.category, difficultyLevel: self.difficultyLevel, languages: self.languages, coreSkills: self.coreSkills, previews: self.previews, files: self.files, observeManager: self.observeManager) { res in
-                                switch res {
-                                case .success(let ideaID):
-                                    print(ideaID)
-                                case .failure(let err):
-                                    print("Error with uploading and Idea: \(err)")
-                                }
+                        HStack(alignment: .bottom) {
+                            Spacer()
+                            Button {
+                                self.MBProgressHook.toggle()
+                                self.fsmanager.createFindTeamAnnouncement(owner: self.loginUserID, title: self.title, text: self.text, category: self.category,
+                                                                          devSubtopic: self.devSubtopic,
+                                                                          adminSubtopic: self.adminSubtopic,
+                                                                          designSubtopic: self.designSubtopic,
+                                                                          testSubtopic: self.testSubtopic,
+                                                                          languages: self.languages, coreSkills: self.coreSkills, previews: self.previews, recruitsCount: self.recruitsCount, observeManager: self.observeManager, completionHandler: { res in
+                                    switch res {
+                                    case .success(let success):
+                                        print(success)
+                                    case .failure(let error):
+                                        //TODO: - Обработчик ошибки
+                                        print(error.localizedDescription)
+                                    }
+                                    
+                                })
+                            } label: {
+                                // MARK: - Deploy Button Label
+                                Text("Confirm & Publish")
+                                    .robotoMono(.bold, 20, color: .white)
+                                    .frame(maxWidth: UIScreen.main.bounds.width - 64)
+                                    .frame(height: 45)
+                                    .background(LinearGradient(colors: [Color("Register2").opacity(0.5), .cyan.opacity(0.45)], startPoint: .topLeading, endPoint: .bottomTrailing))
+
+                                    .clipShape(RoundedRectangle(cornerRadius: 10))
+
                             }
-                            
-                        } label: {
-                            // MARK: - Deploy Button Label
-                            Text("Confirm & Publish")
-                                .robotoMono(.bold, 20, color: .white)
-                                .frame(maxWidth: UIScreen.main.bounds.width - 64)
-                                .frame(height: 45)
-                                .background(LinearGradient(colors: [Color("Register2").opacity(0.5), .cyan.opacity(0.45)], startPoint: .topLeading, endPoint: .bottomTrailing))
-                              
-                                .clipShape(RoundedRectangle(cornerRadius: 10))
-                            
+                            .overlay {
+                                RoundedRectangle(cornerRadius: 10)
+                                    .strokeBorder(LinearGradient(colors: [Color("Register2"), .cyan], startPoint: .topLeading, endPoint: .bottomTrailing), lineWidth: 2)
+                            }
+                            Spacer()
                         }
-                        .overlay {
-                            RoundedRectangle(cornerRadius: 10)
-                                .strokeBorder(LinearGradient(colors: [Color("Register2"), .cyan], startPoint: .topLeading, endPoint: .bottomTrailing), lineWidth: 2)
-                        }
-                        Spacer()
-                    }
-                    .frame(maxHeight: .infinity, alignment: .bottom)
+                        .frame(maxHeight: .infinity, alignment: .bottom)
                     .padding()
-                   
-                 
+                    }
+
+
                     Text("")
                         .frame(height: 55)
                 }
             }
-            
+
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color("AdditionDarkBackground"))
         }
         .sheet(isPresented: self.$doneUploading, content: {
-            IdeaPostPublishingView(onOKButtonPress: {
+            FindTeamPostPublishingView(onOKButtonPress: {
                 self.doneUploading = false
             })
         })
@@ -282,12 +261,12 @@ struct IdeaPreview: View {
             if !newValue {
                 self.doneUploading = false
                 self.rootViewIsActive = false
-                
+
             }
         })
         .hookMBProgressHUD(isPresented: self.$MBProgressHook, progressInPercentages: self.$observeManager.amountPercentage, completion: {
             self.doneUploading = true
-            
+
         })
         .toolbar {
             ToolbarItem(placement: .principal) {
@@ -295,15 +274,19 @@ struct IdeaPreview: View {
             }
         }
     }
+    
     private func getTags(from string: String) -> [String] {
         return string.components(separatedBy: ", ")
     }
 }
 
-
-
-struct IdeaPreview_Previews: PreviewProvider {
+struct FindTeamPreview_Previews: PreviewProvider {
     static var previews: some View {
-        IdeaPreview(title: "Написать замену Siri в виде горничной", text: "Кого только не бесит эта сфера, появившаяся ещё в 9 iOS? Хотелось бы иметь возможность убирать её, а так же ставить свои картинки из галереи. Если ещё реализуете возможность добавлять анимированные фотографии или видео - цены вам не будет!", category: .Development, difficultyLevel: .senior, languages: [.Logos], coreSkills: "iOS, jailbreak, Siri, AppCode, ARM-asm, gif", imageLoader: imageLoader, doneTrigger: .constant(false), rootViewIsActive: .constant(true))
+        FindTeamPreview(title: "Ищу команду для разработки мобильного приложения Coda", text: "Сoda - мобильное приложение соц-сеть, написанное для того, чтобы нести радость людям и облегчать поиск работы молодым кадрам в области IT, дизайна, тестирования и системного администрирования. Для написания используется только Swift, что обеспечивает нативность приложения.", category: .Development,
+                        devSubtopic: .Offtop,
+                        adminSubtopic: .Offtop,
+                        designSubtopic: .Offtop,
+                        testSubtopic: .Mobile,
+                        recruitsCount: 5, languages: [.Swift, .ObjectiveC], coreSkills: "Xcode, Appcode, Combine, Networking, Firebase, JSON", imageLoader: imageLoader, doneTrigger: .constant(false), rootViewIsActive: .constant(true))
     }
 }

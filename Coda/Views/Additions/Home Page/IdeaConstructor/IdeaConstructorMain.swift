@@ -30,6 +30,8 @@
  - comments: [commentID]
  - views: [userID]
  
+ - dateOfPublish: String
+ 
  
  */
 
@@ -77,7 +79,7 @@ struct IdeaConstructorMain: View {
     @State private var showTLPhotosPicker: Bool = false
     @State private var showPDFView: Bool = false
     @State private var showLinkAlert: Bool = false
-    @State private var showOrderPreview: Bool = false
+    @State private var showIdeaPreview: Bool = false
     
     
     // Store
@@ -426,7 +428,7 @@ struct IdeaConstructorMain: View {
             // MARK: - Preview Button
             Section {
                 Button {
-                    self.showOrderPreview.toggle()
+                    self.showIdeaPreview.toggle()
                 } label: {
                     Text("Save")
                         .robotoMono(.bold, 20, color: .white)
@@ -440,7 +442,7 @@ struct IdeaConstructorMain: View {
                 .overlay(
 
                     NavigationLink(
-                        isActive: self.$showOrderPreview,
+                        isActive: self.$showIdeaPreview,
                         destination: { IdeaPreview(title: self.title, text: self.text, category: self.category, difficultyLevel: self.difficultyLevel, languages: self.languageDescriptors, coreSkills: self.coreSkills, previews: self.selectedAssets.compactMap({ $0.fullResolutionImage }), files: self.selectedPDFs, imageLoader: FirebaseTemporaryImageLoaderVM(with: URL(string: self.loginUserID)), doneTrigger: self.$doneUploading, rootViewIsActive: self.$rootViewIsActive) },
                         label: { EmptyView() }
 
@@ -528,6 +530,7 @@ struct IdeaConstructorMain: View {
         for descriptor in descriptors {
             rawedDescriptors.append(descriptor.rawValue)
         }
+        guard rawedDescriptors.count > 0 else { return "None" }
         if rawedDescriptors.count == 1 {
             return rawedDescriptors[0]
         } else if rawedDescriptors.count == 2 {

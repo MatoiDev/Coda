@@ -95,7 +95,7 @@ struct ArticlePostView: View {
                             Image(self.respectPost ? "arrowshape.fill" : "arrowshape")
                                 .resizable()
                                 .rotationEffect(Angle(radians: .pi / 2))
-                                .robotoMono(.semibold, 18)
+                                
                                 .foregroundStyle(
                                     LinearGradient(colors:
                                                     self.respectPost ?  [.cyan, Color("Register2")] : [.gray]
@@ -104,6 +104,7 @@ struct ArticlePostView: View {
                                     
                                     
                                 )
+                                .robotoMono(.semibold, 18)
                             
                             
                         }.buttonStyle(PlainButtonStyle())
@@ -126,7 +127,7 @@ struct ArticlePostView: View {
                             Image(self.disRespectPost ? "arrowshape.fill" : "arrowshape")
                                 .resizable()
                                 .rotationEffect(Angle(radians: .pi / -2))
-                                .robotoMono(.semibold, 18)
+                                
                                 .foregroundStyle(
                                     LinearGradient(colors:
                                                     self.disRespectPost ? [.orange, .red, .gray] : [.gray]
@@ -135,6 +136,7 @@ struct ArticlePostView: View {
                                     
                                     
                                 )
+                                .robotoMono(.semibold, 18)
                         }.buttonStyle(PlainButtonStyle())
                         
                     }.padding(.leading, 4)

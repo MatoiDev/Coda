@@ -245,7 +245,7 @@ struct OrderConstructor: View {
             Section  {
               
                 NavigationLink(isActive: self.$topicPickerAlive) {
-                    FreelanceTopicPicker(topic: self.$topic,
+                    ScopeTopicPickerExtended(topic: self.$topic,
                                          isPickerAlive: self.$topicPickerAlive,
                                          devSubtopic: self.$devSubtopic,
                                          adminSubtopic: self.$adminSubtopic,
@@ -256,21 +256,21 @@ struct OrderConstructor: View {
                     case .Administration:
                         Group {
                             Text(LocalizedStringKey(self.topic.rawValue)) + Text(": ") + Text(LocalizedStringKey(self.adminSubtopic.rawValue))
-                        }.robotoMono(.semibold, 15)
+                        }.robotoMono(.medium, 15)
                        
                     case .Testing:
                         Group {
                             Text(LocalizedStringKey(self.topic.rawValue)) + Text(": ") + Text(LocalizedStringKey(self.testSubtopic.rawValue))
-                        }.robotoMono(.semibold, 15)
+                        }.robotoMono(.medium, 15)
                        
                     case .Development:
                         Group {
                         Text(LocalizedStringKey(self.topic.rawValue)) + Text(": ") + Text(LocalizedStringKey(self.devSubtopic.rawValue))
-                    }.robotoMono(.semibold, 15)
+                    }.robotoMono(.medium, 15)
                     case .Design:
                         Group {
                         Text(LocalizedStringKey(self.topic.rawValue)) + Text(": ") + Text(LocalizedStringKey(self.designSubtopic.rawValue))
-                        }.robotoMono(.semibold, 15)
+                        }.robotoMono(.medium, 15)
                     }
                 }.isDetailLink(false)
 
@@ -571,6 +571,7 @@ struct OrderConstructor: View {
         for descriptor in descriptors {
             rawedDescriptors.append(descriptor.rawValue)
         }
+        guard rawedDescriptors.count > 0 else { return "None" }
         if rawedDescriptors.count == 1 {
             return rawedDescriptors[0]
         } else if rawedDescriptors.count == 2 {

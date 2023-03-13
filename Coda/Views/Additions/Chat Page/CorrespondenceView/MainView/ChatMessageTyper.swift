@@ -57,9 +57,9 @@ struct MultilineTextFieldRepresentable: UIViewRepresentable {
         uiView.selectedRange = NSMakeRange(uiView.text.count, 0)
         
         DispatchQueue.main.async {
-            withAnimation(.easeOut) {
+//            withAnimation(.easeOut) {
                 self.setContentSize(size: uiView.contentSize.height)
-            }
+//            }
             
         }
     }
@@ -85,9 +85,9 @@ struct MultilineTextFieldRepresentable: UIViewRepresentable {
             self.text = textView.text
             
             if textView.contentSize.height < self.maxContentHeight {
-                withAnimation(.easeOut) {
+//                withAnimation(.easeOut) {
                     self.contentHeight = textView.contentSize.height
-                }
+//                }
                 
             }
             print(self.contentHeight)

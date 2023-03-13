@@ -1,114 +1,122 @@
 //
-//  ServiceConstructor.swift
+//  FindTeamConstructor.swift
 //  Coda
 //
-//  Created by Matoi on 24.02.2023.
+//  Created by Matoi on 08.03.2023.
 //
 
 import SwiftUI
-import UIKit
 import TLPhotoPicker
-import Combine
-import Introspect
 
 /*
- Service [Freelance]
+    Team Finder
  
- - id
- - title: String
- - description: String
- - executorID: userID
- - salary: Int || String
- - topic: FreelanceTopic (enum)
- - subtopic: FreelanceSubtopic
- - dateOfPublish: String
- - upvotes: Int
- - descriptors: [LangDescriptor]
- - Core skills: [String]
- - imageExamplesURLs: [String]    —>    In Storage: FreelanceServicesExamples
+ - id: String
+ - author: userID
  
- - requests: [userID]
+ - (e) category: ScopeTopic ++
+ - (e) subTopic: Subtopic +
+ - (e) title: String ++
+ - (e) text: String ++
+ - (e) images: UIImage -> IdeaImages ++
+ - (e) languages: LangDescriptor ++
+ - (e) requiredSkills: [String] ++
+ - (e) recruitsCount: Int // Необходимое количество сокомандников
+ 
+ - recruited: [userID] // Список набранных пользователей
+
+ - comments: [commentID]
  - views: [userID]
+ 
+ - dateOfPublish: String
  
  */
 
-struct ServiceConstructor: View {
+
+// TODO: - Идея поиска команды
+/*
+    Пользователь заходит в объявление, нажимает на кнопку "Предложить сотрудничество",
+    У автора есть возможность принять приглашение (которое будет находится у него в чате), тогда id пользователя добавляется в recruited,
+    В объявлении увиличивается количество набранных пользователей [k/n] - где k — уже набранные,
+    n - необходимое количество для набора.
+    Так же автор имеет возможность отказать заявке, в данном случае все счётчики остаются в прежднем положении, а пользователю прийдёт уведомление о том, что его заявка отклонена.
+    
+ 
+ */
+
+struct FindTeamConstructor: View {
     
     @AppStorage("LoginUserID") var loginUserID: String = ""
     
+    // Live cycle
     @Binding var rootViewIsActive: Bool
-    
+    @State private var topicPickerAlive: Bool = false // Закрывает линки для выбора подтопика
+
     // Edit properties
     @State private var title: String = ""
-    @State private var description: String = ""
-    @State private var salaryType: FreelancePriceType = .negotiated
-    @State private var salary: String = ""
-    @State private var pricePer: SpecifiedPriceType = .perHour
-    @State private var topic: FreelanceTopic = .Development
-    @State private var languageDescriptors: [LangDescriptor] = [LangDescriptor.defaultValue]
+    @State private var text: String = ""
     
+    @State private var category: FreelanceTopic = .Development
     
     @State private var devSubtopic: FreelanceSubTopic.FreelanceDevelopingSubTopic = .Offtop
     @State private var adminSubtopic: FreelanceSubTopic.FreelanceAdministrationSubTropic = .Offtop
     @State private var designSubtopic: FreelanceSubTopic.FreelanceDesignSubTopic = .Offtop
     @State private var testSubtopic: FreelanceSubTopic.FreelanceTestingSubTopic = .Software
     
-    @State private var topicPickerAlive: Bool = false // Закрывает линки для выбора подтопика
+    @State private var languageDescriptors: [LangDescriptor] = [LangDescriptor.defaultValue]
     
+    @State private var recruitsCount: Int = 1
     
-    @State private var showPreviewDescription: Bool = false
-    @State private var showDocumentPicker: Bool = false
-    
-    @State private var showLinkAlert: Bool = false // Алерт для вызова филда под ссылку
-    @State private var TFAlertText: String? // Текст, который ввели в алерте
-    @State private var stub: String? // В текст, изменяемый алертом, в данном view используется Future-Promise, так что оставлю заглушкой
-    
-    @State private var showServicePreview: Bool = false
-    
-    @State private var showTLPhotosPicker: Bool = false
     @State private var selectedAssets: [TLPHAsset] = [TLPHAsset]() // Images
-    
     @State private var coreSkills: String = ""
+
+
+    // Show triggers
+    @State private var showPreviewDescription: Bool = false /// Вызвать окно предпросмотра введённого  текста идеи
+    @State private var showDocumentPicker: Bool = false
+    @State private var showTLPhotosPicker: Bool = false
+    @State private var showLinkAlert: Bool = false
+    @State private var showTeamFinderPreview: Bool = false
     
+    
+    // Store
+    @State private var TFAlertText: String? // Текст, который ввели в алерте
+    @State private var stub: String?
+
+
     let textAlertHandler : TextAlertHandler = TextAlertHandler.sharedInstance
-    
+
     @State var doneUploading: Bool = false // Закрыть конструктор при успешной загрузке заказа
     @Environment(\.dismiss) var dissmiss
-    
-    
-    private func areAllFormsCompleted() -> Bool {
 
-        if self.salaryType == .negotiated {
-            return (!self.title.isEmpty && !self.description.isEmpty &&
-                    !self.coreSkills.isEmpty)
-        }
-        return (!self.title.isEmpty && !self.description.isEmpty && !self.coreSkills.isEmpty && self.salary.isCorrect())
-        
+
+    private func areAllFormsCompleted() -> Bool {
+        return (!self.title.isEmpty && !self.text.isEmpty && !self.coreSkills.isEmpty)
     }
- 
-    
+
+
     var body: some View {
         List {
             // MARK: - Main Info sections
             // MARK: - Title
             Section {
-                
-                TextField(LocalizedStringKey("Service name"), text: self.$title)
+
+                TextField(LocalizedStringKey("Title"), text: self.$title)
                     .robotoMono(.semibold, 17)
-                // MARK: - Description
-                    
-                MultilineListRowTextField("Service description", text: self.$description, alertTrigger: self.$showLinkAlert)
+                // MARK: - text
+
+                MultilineListRowTextField("Description", text: self.$text, alertTrigger: self.$showLinkAlert)
                     .robotoMono(.medium, 13)
                     .offset(x: -4)
                     .fixedSize(horizontal: false, vertical: true)
-                    
+
             } header: {
                 HStack {
                     Text("Main Info")
                         .robotoMono(.semibold, 20)
                     Spacer()
                 }
-                
+
             } footer: {
                 HStack {
                     Button {
@@ -118,172 +126,112 @@ struct ServiceConstructor: View {
                             .robotoMono(.medium, 12, color: .cyan)
                     }
                     Spacer()
-                    Text("\(self.description.count)/5000")
+                    Text("\(self.text.count)/5000")
                         .robotoMono(.light, 12, color: .secondary)
                 }
-                
-            }.textCase(nil)
-            
-            // MARK: - Reward
-            Section {
-                Menu {
-                    
-                    if self.salaryType != .negotiated{
-                        Button {
-                            self.salaryType = .negotiated
-                        } label: {
-                            HStack {
-                                Text("Contractual price")
-                            }
-                        }
-                    }
-                    
-                    if self.salaryType != .specified(price: self.salary) {
-                        Button {
-                            self.salaryType = .specified(price: self.salary)
-                        } label: {
-                            HStack {
-                                Text("Specified price")
-                                Spacer()
-                                Image(systemName: "character.cursor.ibeam")
-                            }
-                        }
-                    }
-                    
-                } label: {
-                    HStack {
-                        Text(self.salaryType == FreelancePriceType.negotiated ? "Contractual price" : "Specified price")
-                            .robotoMono(.semibold, 15)
-                        Spacer()
-                        Image(systemName: "contextualmenu.and.cursorarrow")
-                        
-                            .resizable()
-                            .scaledToFit()
-                            .symbolRenderingMode(.hierarchical)
-                            .frame(height: 20)
-                            .foregroundColor(.primary)
-                            .font(.system(size: 12).bold())
-                
-                    }
-                }
-                if self.salaryType != .negotiated {
-                    HStack {
-//                        TextFieldWithDisabledPasting(text: self.$price, placeHolder: "0")
-                        TextField("0", text: self.$salary)
-                            .foregroundColor(self.salary.isCorrect() ? Color.white : Color.red)
-                            .robotoMono(.semibold, 17)
-                            .keyboardType(.decimalPad)
-                            .autocorrectionDisabled(true)
-                            .textInputAutocapitalization(.none)
-        
-                        Divider()
-                        Picker(selection: self.$pricePer) {
-                            Text(LocalizedStringKey("per hour")).tag(SpecifiedPriceType.perHour)
-                            Text(LocalizedStringKey("per project")).tag(SpecifiedPriceType.perProject)
-                                .robotoMono(.semibold, 15)
-                                                            .lineLimit(1)
-                                                            .minimumScaleFactor(0.01)
-                        } label: {
-                        }.fixedSize(horizontal: true, vertical: false)
 
-                    }
-                    
-                }
-             
-
-            } header: {
-                Text("Сost Of Service")
-                    .robotoMono(.semibold, 20)
-                    .foregroundColor(.white)
             }.textCase(nil)
-            
-            
-            // MARK: - Topic Picker
+
+
+
+            // MARK: - Category Picker
             Section  {
-              
+                
                 NavigationLink(isActive: self.$topicPickerAlive) {
-                    ScopeTopicPickerExtended(topic: self.$topic,
+                    ScopeTopicPickerExtended(topic: self.$category,
                                          isPickerAlive: self.$topicPickerAlive,
                                          devSubtopic: self.$devSubtopic,
                                          adminSubtopic: self.$adminSubtopic,
                                          designSubtopic: self.$designSubtopic,
                                          testSubtopic: self.$testSubtopic)
                 } label: {
-                    switch self.topic {
+                    switch self.category {
                     case .Administration:
                         Group {
-                            Text(LocalizedStringKey(self.topic.rawValue)) + Text(": ") + Text(LocalizedStringKey(self.adminSubtopic.rawValue))
-                        }.robotoMono(.semibold, 15)
+                            Text(LocalizedStringKey(self.category.rawValue)) + Text(": ") + Text(LocalizedStringKey(self.adminSubtopic.rawValue))
+                        }.robotoMono(.medium, 15)
                        
                     case .Testing:
                         Group {
-                            Text(LocalizedStringKey(self.topic.rawValue)) + Text(": ") + Text(LocalizedStringKey(self.testSubtopic.rawValue))
-                        }.robotoMono(.semibold, 15)
+                            Text(LocalizedStringKey(self.category.rawValue)) + Text(": ") + Text(LocalizedStringKey(self.testSubtopic.rawValue))
+                        }.robotoMono(.medium, 15)
                        
                     case .Development:
                         Group {
-                        Text(LocalizedStringKey(self.topic.rawValue)) + Text(": ") + Text(LocalizedStringKey(self.devSubtopic.rawValue))
-                    }.robotoMono(.semibold, 15)
+                        Text(LocalizedStringKey(self.category.rawValue)) + Text(": ") + Text(LocalizedStringKey(self.devSubtopic.rawValue))
+                    }.robotoMono(.medium, 15)
                     case .Design:
                         Group {
-                        Text(LocalizedStringKey(self.topic.rawValue)) + Text(": ") + Text(LocalizedStringKey(self.designSubtopic.rawValue))
-                        }.robotoMono(.semibold, 15)
+                        Text(LocalizedStringKey(self.category.rawValue)) + Text(": ") + Text(LocalizedStringKey(self.designSubtopic.rawValue))
+                        }.robotoMono(.medium, 15)
                     }
                 }.isDetailLink(false)
 
 
             } header: {
                 HStack {
-                    Text("Scope Of Activity")
+                    Text("Category")
                         .robotoMono(.semibold, 20)
                     Spacer()
                 }
-                
+
             }.textCase(nil)
             
+            // MARK: - Number of teammates
+            
+            Section {
+                Stepper("\(self.recruitsCount)", value: self.$recruitsCount, in: 1...15)
+                    .robotoMono(.medium, 15)
+            } header: {
+                Text("Number Of Teammates")
+                    .robotoMono(.semibold, 20)
+                    .foregroundColor(.white)
+            }.textCase(nil)
+
             // MARK: - Language Section
             Section {
                 NavigationLink {
                     LanguageDescriptorPicker(langDescriptors: self.$languageDescriptors)
                 } label: {
-                    
+
                     Text(self.getLineFromDescriptors(self.languageDescriptors))
                         .robotoMono(.semibold, 14, color: .white)
                         .lineLimit(1)
                         .minimumScaleFactor(0.01)
-                        
+
                 }
-                
+
             } header: {
-                Text("Languages used")
+                Text("Language Requirements")
                     .robotoMono(.semibold, 20)
                     .foregroundColor(.white)
             }.textCase(nil)
-            
+
             Section {
-                
+
                     ZStack(alignment: .leading) {
                         if self.coreSkills.isEmpty {
-                            Text(LocalizedStringKey("MVVM, Firebase, ..."))
+                            Text(LocalizedStringKey("Node.js, Realm, ..."))
                                 .robotoMono(.semibold, 14, color: Color(red: 0.36, green: 0.36, blue: 0.36))
                                 .padding(.horizontal, 4)
                         }
-                        
+
                         TextEditor(text: self.$coreSkills)
                             .robotoMono(.semibold, 14)
                             .autocapitalization(.none)
                             .autocorrectionDisabled(true)
                     }
-                
-                
+
+
             } header: {
-                Text("Сore Skills")
+                Text("Skills")
                     .robotoMono(.semibold, 20)
                     .foregroundColor(.white)
             } footer: {
-                Text("Enter from 1 to 10 key skills, separating them with a comma")
+                Text("Enter from 1 to 10 skills, separating them with a comma")
             }
             .textCase(nil)
+            
             
             // MARK: - Previews
             // MARK: - Photos Picker
@@ -295,7 +243,7 @@ struct ServiceConstructor: View {
                             Button {
                                 self.showTLPhotosPicker.toggle()
                             } label: {
-                                
+
                                     if let asset = self.selectedAssets[safe: assetIndex],
                                        let image: UIImage = asset.fullResolutionImage {
                                         Image(uiImage: image)
@@ -318,7 +266,7 @@ struct ServiceConstructor: View {
                     }.padding(.leading)
                     }.frame(height: 175)
                 }
-         
+
 
             } header: {
                 HStack {
@@ -345,29 +293,30 @@ struct ServiceConstructor: View {
             .listRowBackground(Color.clear)
             .listRowInsets(EdgeInsets.init(top: 8, leading: 0, bottom: 8, trailing: 0))
             .buttonStyle(.plain)
-            
-            
+
             // MARK: - Preview Button
             Section {
                 Button {
-                    self.showServicePreview.toggle()
+                    self.showTeamFinderPreview.toggle()
                 } label: {
                     Text("Save")
                         .robotoMono(.bold, 20, color: .white)
                         .frame(maxWidth: .infinity)
                         .frame(height: 45)
                         .background(Color("AdditionDarkBackground"))
-                      
+
                         .clipShape(RoundedRectangle(cornerRadius: 10))
                 }
-                
+
                 .overlay(
-                    
+
                     NavigationLink(
-                        isActive: self.$showServicePreview,
-                        destination: { ServicePreview(title: self.title, description: self.description, priceType: self.salaryType, price: self.salary, per: self.pricePer, topic: self.topic, devSubtopic: self.devSubtopic, adminSubtopic: self.adminSubtopic, designSubtopic: self.designSubtopic, testSubtopic: self.testSubtopic, languages: self.languageDescriptors, coreSkills: self.coreSkills, previews: self.assetsToImage(assets: self.selectedAssets), imageLoader: FirebaseTemporaryImageLoaderVM(with: URL(string: avatarURL)), doneTrigger: self.$doneUploading, rootViewIsActive: self.$rootViewIsActive) },
+                        isActive: self.$showTeamFinderPreview,
+                        destination: {
+                            FindTeamPreview(title: self.title, text: self.text, category: self.category, devSubtopic: self.devSubtopic, adminSubtopic: self.adminSubtopic, designSubtopic: self.designSubtopic, testSubtopic: self.testSubtopic, recruitsCount: self.recruitsCount, languages: self.languageDescriptors, coreSkills: self.coreSkills, previews: self.assetsToImage(assets: self.selectedAssets), imageLoader: FirebaseTemporaryImageLoaderVM(with: URL(string: self.loginUserID)), doneTrigger: self.$doneUploading, rootViewIsActive: self.$rootViewIsActive)
+                        },
                         label: { EmptyView() }
-                            
+
                     )
                     .isDetailLink(false)
                     .disabled(!self.areAllFormsCompleted())
@@ -380,9 +329,9 @@ struct ServiceConstructor: View {
                 .disabled(!self.areAllFormsCompleted())
                 .listRowBackground(Color.clear)
             }
-         
 
-            
+
+
            Text("")
                 .padding()
                 .listRowBackground(Color.clear)
@@ -397,12 +346,12 @@ struct ServiceConstructor: View {
         .toolbar {
             ToolbarItem(placement: .principal) {
                 VStack {
-                    Text("New Service")
+                    Text("New Idea")
                         .robotoMono(.semibold, 18)
                     Text("[Constructor]")
                         .robotoMono(.medium, 13, color: .secondary)
                 }
-                
+
             }
         }
         .textFieldAlert(isPresented: self.$showLinkAlert, content: {
@@ -413,25 +362,26 @@ struct ServiceConstructor: View {
             }
         })
         .sheet(isPresented: self.$showPreviewDescription) {
-            DescriptionPreview(text: self.description)
+            DescriptionPreview(text: self.text)
         }
         .fullScreenCover(isPresented: self.$showTLPhotosPicker) {
             TLPhotosPickerViewControllerRepresentable(assets: self.$selectedAssets)
         }
-        
+
     }
-    
+
     private func assetsToImage(assets: [TLPHAsset]) -> [UIImage] {
         var images: [UIImage] = []
         for asset in assets {
             if let image = asset.fullResolutionImage {
                 images.append(image)
             }
-            
+
         }
         return images
     }
-    
+
+
     private func getLineFromDescriptors(_ descriptors: [LangDescriptor]) -> String {
         var rawedDescriptors: [String] = []
         for descriptor in descriptors {
@@ -446,5 +396,13 @@ struct ServiceConstructor: View {
             return "\(rawedDescriptors[0]), \(rawedDescriptors[1]) and \(rawedDescriptors[2])"
         }
     return rawedDescriptors[..<3].joined(separator: ", ") + " and \(rawedDescriptors.count - 3) more"
+
+
+    }
+}
+
+struct FindTeamConstructor_Previews: PreviewProvider {
+    static var previews: some View {
+        FindTeamConstructor(rootViewIsActive: .constant(true))
     }
 }

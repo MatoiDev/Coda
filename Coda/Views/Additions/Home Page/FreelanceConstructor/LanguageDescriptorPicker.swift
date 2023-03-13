@@ -28,6 +28,7 @@ struct LanguageDescriptorPicker: View {
         List {
             
             if let descriptors = Array(self.descriptorsToSet),
+               !descriptors.isEmpty,
                descriptors != [LangDescriptor.defaultValue] {
                 Section {
                     ForEach(0..<(descriptors.count), id: \.self) { langIndex in
