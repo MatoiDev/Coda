@@ -172,6 +172,7 @@
 "Description" = "Описание";
 "New Idea" = "Новая Идея";
 "New Project" = "Новый Проект";
+"New Vacancy" = "Новая Вакансия";
 
 "Difficulty Level" = "Уровень Сложности";
 "How would you rate the complexity of your Idea?" = "Как бы вы оценили сложность реализации вашей идеи?";
@@ -191,4 +192,12 @@
 "Specify the tools, main libraries, architecture, etc. that were used in your project, separating them with a comma " = "Укажите инструменты, основные библиотеки, архитектуру и т.д., которые использовались в вашем проекте, разделяя их запятой ";
 "Languages used in your project." = "Языки, используемые в вашем проекте.";
 "Project name" = "Название проекта";
+"In Trend" = "В Тренде";
+"Career" = "Карьера";
+"Create Resume" = "Создать Резюме";
+"New Discussion" = "Cоздать Обсуждение";
+"Select a Category" = "Выберите Категорию";
+"Сompetence" = "Компетенция";
+"Subcategory" = "Подкатегория";
+"Select a Subcategory" = "Выберите Подкатегорию";
 

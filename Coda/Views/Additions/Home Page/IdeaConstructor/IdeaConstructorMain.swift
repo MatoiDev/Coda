@@ -42,6 +42,8 @@ import TLPhotoPicker
 
 enum IdeaDifficultyLevel: String {
     
+    case all = "All Levels"
+    
     case newbie = "Newbie"
     case intern = "Intern"
     case junior = "Junior"
@@ -64,6 +66,11 @@ struct IdeaConstructorMain: View {
     @State private var text: String = ""
     
     @State private var category: FreelanceTopic = .Development
+    @State private var devSubtopic: FreelanceSubTopic.FreelanceDevelopingSubTopic = .Offtop
+    @State private var adminSubtopic: FreelanceSubTopic.FreelanceAdministrationSubTropic = .Offtop
+    @State private var designSubtopic: FreelanceSubTopic.FreelanceDesignSubTopic = .Offtop
+    @State private var testSubtopic: FreelanceSubTopic.FreelanceTestingSubTopic = .Software
+    
     @State private var difficultyLevel: IdeaDifficultyLevel = .middle
     
     @State private var languageDescriptors: [LangDescriptor] = [LangDescriptor.defaultValue]
@@ -142,12 +149,40 @@ struct IdeaConstructorMain: View {
             Section  {
 
                 NavigationLink(isActive: self.$topicPickerAlive) {
-                    ScopeTopicPicker(topic: self.$category, isPickerAlive: self.$topicPickerAlive)
+                    ScopeTopicPickerExtended(topic: self.$category,
+                                         isPickerAlive: self.$topicPickerAlive,
+                                         devSubtopic: self.$devSubtopic,
+                                         adminSubtopic: self.$adminSubtopic,
+                                         designSubtopic: self.$designSubtopic,
+                                         testSubtopic: self.$testSubtopic)
+//                    ScopeTopicPicker(topic: self.$category, isPickerAlive: self.$topicPickerAlive)
                 } label: {
-                    Text(LocalizedStringKey(self.category.rawValue))
-                        .robotoMono(.medium, 15)
+                    switch self.category {
+                    case .Administration:
+                        Group {
+                            Text(LocalizedStringKey(self.category.rawValue)) + Text(": ") + Text(LocalizedStringKey(self.adminSubtopic.rawValue))
+                        }.robotoMono(.medium, 15)
+                        
+                    case .Testing:
+                        Group {
+                            Text(LocalizedStringKey(self.category.rawValue)) + Text(": ") + Text(LocalizedStringKey(self.testSubtopic.rawValue))
+                        }.robotoMono(.medium, 15)
+                        
+                    case .Development:
+                        Group {
+                            Text(LocalizedStringKey(self.category.rawValue)) + Text(": ") + Text(LocalizedStringKey(self.devSubtopic.rawValue))
+                        }.robotoMono(.medium, 15)
+                    case .Design:
+                        Group {
+                            Text(LocalizedStringKey(self.category.rawValue)) + Text(": ") + Text(LocalizedStringKey(self.designSubtopic.rawValue))
+                        }.robotoMono(.medium, 15)
+                    case .all:
+                        Group {
+                            Text(LocalizedStringKey(self.category.rawValue)) + Text(": ") + Text(LocalizedStringKey("All"))
+                        }.robotoMono(.medium, 15)
+                        
+                    }
                 }.isDetailLink(false)
-
 
             } header: {
                 HStack {
@@ -443,7 +478,7 @@ struct IdeaConstructorMain: View {
 
                     NavigationLink(
                         isActive: self.$showIdeaPreview,
-                        destination: { IdeaPreview(title: self.title, text: self.text, category: self.category, difficultyLevel: self.difficultyLevel, languages: self.languageDescriptors, coreSkills: self.coreSkills, previews: self.selectedAssets.compactMap({ $0.fullResolutionImage }), files: self.selectedPDFs, imageLoader: FirebaseTemporaryImageLoaderVM(with: URL(string: self.loginUserID)), doneTrigger: self.$doneUploading, rootViewIsActive: self.$rootViewIsActive) },
+                        destination: { IdeaPreview(title: self.title, text: self.text, category: self.category, devSubtopic: self.devSubtopic, adminSubtopic: self.adminSubtopic, designSubtopic: self.designSubtopic, testSubtopic: self.testSubtopic, difficultyLevel: self.difficultyLevel, languages: self.languageDescriptors, coreSkills: self.coreSkills, previews: self.selectedAssets.compactMap({ $0.fullResolutionImage }), files: self.selectedPDFs, imageLoader: FirebaseTemporaryImageLoaderVM(with: URL(string: self.loginUserID)), doneTrigger: self.$doneUploading, rootViewIsActive: self.$rootViewIsActive) },
                         label: { EmptyView() }
 
                     )

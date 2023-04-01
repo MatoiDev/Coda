@@ -19,8 +19,10 @@ extension Font {
 }
 
 struct FreelanceSubTopicButton<Content: View>: View {
+    var lightBackground: Bool = false
     let action: () -> ()
     @ViewBuilder var label: () -> Content
+    
     
     
     var body: some View {
@@ -29,7 +31,7 @@ struct FreelanceSubTopicButton<Content: View>: View {
         } label: {
             self.label()
                 .frame(width: UIScreen.main.bounds.width - 45, height: 45)
-                .background(Color("AdditionBackground"))
+                .background(lightBackground ? Color.init(red: 0.22, green: 0.22, blue: 0.22) : Color("AdditionBackground"))
                 .clipShape(RoundedRectangle(cornerRadius: 15))
                 .foregroundColor(.primary)
                 .padding(.horizontal)
@@ -51,6 +53,144 @@ fileprivate struct FreelanceSubTopicButtonStyle: ButtonStyle {
 extension View {
     fileprivate func SubTopicButtonStyle() -> some View {
         buttonStyle(FreelanceSubTopicButtonStyle())
+    }
+}
+
+
+struct SubcategoryPickerSheet: View {
+    
+    
+    let topic: FreelanceTopic
+    
+    @Binding var topicToSet: FreelanceTopic
+    @Binding var devSubtopic: FreelanceSubTopic.FreelanceDevelopingSubTopic
+    @Binding var adminSubtopic: FreelanceSubTopic.FreelanceAdministrationSubTropic
+    @Binding var designSubtopic: FreelanceSubTopic.FreelanceDesignSubTopic
+    @Binding var testSubtopic: FreelanceSubTopic.FreelanceTestingSubTopic
+    
+    @Binding var killPicker: Bool
+    
+    @State private var subcategories: Array<String> = FreelanceSubTopic.FreelanceDevelopingSubTopic.values.map({$0.rawValue})
+    
+    init(_ topic: FreelanceTopic,
+         setTo topicToSet: Binding<FreelanceTopic>,
+         devSubtopic: Binding<FreelanceSubTopic.FreelanceDevelopingSubTopic>,
+         adminSubtopic: Binding<FreelanceSubTopic.FreelanceAdministrationSubTropic>,
+         designSubtopic: Binding<FreelanceSubTopic.FreelanceDesignSubTopic>,
+         testSubtopic: Binding<FreelanceSubTopic.FreelanceTestingSubTopic>,
+         killOn killPicker: Binding<Bool>) {
+        
+        self.topic = topic
+        self._topicToSet = topicToSet
+        self._devSubtopic = devSubtopic
+        self._adminSubtopic = adminSubtopic
+        self._designSubtopic = designSubtopic
+        self._testSubtopic = testSubtopic
+        self._killPicker = killPicker
+        
+        self.setSubcategories()
+        
+    }
+    
+    private func setSubcategories() {
+        switch self.topic {
+        case .all:
+            return
+        case .Development:
+            self.subcategories = FreelanceSubTopic.FreelanceDevelopingSubTopic.values.map({$0.rawValue})
+        case .Administration:
+            self.subcategories = FreelanceSubTopic.FreelanceAdministrationSubTropic.values.map({$0.rawValue})
+        case .Testing:
+            self.subcategories = FreelanceSubTopic.FreelanceTestingSubTopic.values.map({$0.rawValue})
+        case .Design:
+            self.subcategories = FreelanceSubTopic.FreelanceDesignSubTopic.values.map({$0.rawValue})
+        }
+    }
+    
+    
+    @Environment(\.dismiss) private var dissmiss
+    
+    
+    
+    
+    var body: some View {
+        NavigationView {
+            ScrollView {
+                VStack {
+//                    Text("")
+//                        .frame(height: 45)
+                    switch self.topic {
+                    case .Administration:
+                        ForEach(FreelanceSubTopic.FreelanceAdministrationSubTropic.values + [.all], id: \.self) { subTopic in
+                            FreelanceSubTopicButton(lightBackground: true) {
+                                self.topicToSet = .Administration
+                                self.adminSubtopic = subTopic
+                                self.killPicker.toggle()
+                            } label: {
+                                Text(LocalizedStringKey(subTopic.rawValue))
+                            }
+                        }
+                        
+                    case .Development:
+                        ForEach([.all] + FreelanceSubTopic.FreelanceDevelopingSubTopic.values, id: \.self) { subTopic in
+                            FreelanceSubTopicButton(lightBackground: true) {
+                                self.topicToSet = .Development
+                                self.devSubtopic = subTopic
+                                self.killPicker.toggle()
+                            } label: {
+                                Text(LocalizedStringKey(subTopic.rawValue))
+                            }
+                        }
+                        
+                    case .Design:
+                        ForEach([.all] + FreelanceSubTopic.FreelanceDesignSubTopic.values, id: \.self) { subTopic in
+                            FreelanceSubTopicButton(lightBackground: true) {
+                                self.topicToSet = .Design
+                                self.designSubtopic = subTopic
+                                self.killPicker.toggle()
+                            } label: {
+                                Text(LocalizedStringKey(subTopic.rawValue))
+                            }
+                        }
+                        
+                    case .Testing:
+                        ForEach([.all] + FreelanceSubTopic.FreelanceTestingSubTopic.values, id: \.self) { subTopic in
+                            FreelanceSubTopicButton(lightBackground: true) {
+                                self.topicToSet = .Testing
+                                self.testSubtopic = subTopic
+                                self.killPicker.toggle()
+                            } label: {
+                                Text(LocalizedStringKey(subTopic.rawValue))
+                            }
+                        }
+                    case .all:
+                        Text("All").robotoMono(.medium, 15)
+                        
+                    }
+                }
+                
+//                ForEach(self.subcategories, id: \.self) { subcategory in
+//                    Button {
+//                        self.topicToSet = subcategory
+//                    } label: {
+//                        HStack(alignment: .center) {
+//
+//                            Text(subcategory)
+//                                .robotoMono(.semibold, 15)
+//                            Spacer()
+//                        }
+//                    }
+//
+//
+//                    .frame(maxWidth: .infinity)
+//                    .frame(height: 25)
+//                    .padding()
+//                    .background(Color(red: 0.22, green: 0.22, blue: 0.22))
+//                    .clipShape(RoundedRectangle(cornerRadius: 15))
+//                    .padding()
+//                }
+            }.navigationTitle(LocalizedStringKey("Select a Subcategory"))
+        }
     }
 }
 
@@ -209,6 +349,8 @@ struct FreelanceSubTopicPicker: View {
                                     Text(LocalizedStringKey(subTopic.rawValue))
                                 }
                             }
+                        case .all:
+                            Text("All").robotoMono(.medium, 15)
                             
                         }
                     }

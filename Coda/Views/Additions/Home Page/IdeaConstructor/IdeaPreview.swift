@@ -22,6 +22,10 @@ struct IdeaPreview: View {
     var title: String
     var text: String
     var category: FreelanceTopic
+    var devSubtopic: FreelanceSubTopic.FreelanceDevelopingSubTopic
+    var adminSubtopic: FreelanceSubTopic.FreelanceAdministrationSubTropic
+    var designSubtopic: FreelanceSubTopic.FreelanceDesignSubTopic
+    var testSubtopic: FreelanceSubTopic.FreelanceTestingSubTopic
     var difficultyLevel: IdeaDifficultyLevel
     var languages: [LangDescriptor]
     var coreSkills: String
@@ -50,6 +54,10 @@ struct IdeaPreview: View {
     init(title: String,
          text: String,
          category: FreelanceTopic,
+         devSubtopic: FreelanceSubTopic.FreelanceDevelopingSubTopic,
+         adminSubtopic: FreelanceSubTopic.FreelanceAdministrationSubTropic,
+         designSubtopic: FreelanceSubTopic.FreelanceDesignSubTopic,
+         testSubtopic: FreelanceSubTopic.FreelanceTestingSubTopic,
          difficultyLevel: IdeaDifficultyLevel,
          languages: [LangDescriptor],
          coreSkills: String,
@@ -62,6 +70,10 @@ struct IdeaPreview: View {
         self.title = title
         self.text = text
         self.category = category
+        self.devSubtopic = devSubtopic
+        self.adminSubtopic = adminSubtopic
+        self.designSubtopic = designSubtopic
+        self.testSubtopic = testSubtopic
         self.difficultyLevel = difficultyLevel
         self.languages = languages
         self.coreSkills = coreSkills
@@ -235,7 +247,20 @@ struct IdeaPreview: View {
                         Spacer()
                         Button {
                             self.MBProgressHook.toggle()
-                            self.fsmanager.createIdea(owner: self.loginUserID, title: self.title, text: self.text, category: self.category, difficultyLevel: self.difficultyLevel, languages: self.languages, coreSkills: self.coreSkills, previews: self.previews, files: self.files, observeManager: self.observeManager) { res in
+                            self.fsmanager.createIdea(owner: self.loginUserID,
+                                                      title: self.title,
+                                                      text: self.text,
+                                                      category: self.category,
+                                                      devSubtopic: self.devSubtopic,
+                                                      adminSubtopic: self.adminSubtopic,
+                                                      designSubtopic: self.designSubtopic,
+                                                      testSubtopic: self.testSubtopic,
+                                                      difficultyLevel: self.difficultyLevel,
+                                                      languages: self.languages,
+                                                      coreSkills: self.coreSkills,
+                                                      previews: self.previews,
+                                                      files: self.files,
+                                                      observeManager: self.observeManager) { res in
                                 switch res {
                                 case .success(let ideaID):
                                     print(ideaID)
@@ -304,6 +329,6 @@ struct IdeaPreview: View {
 
 struct IdeaPreview_Previews: PreviewProvider {
     static var previews: some View {
-        IdeaPreview(title: "Написать замену Siri в виде горничной", text: "Кого только не бесит эта сфера, появившаяся ещё в 9 iOS? Хотелось бы иметь возможность убирать её, а так же ставить свои картинки из галереи. Если ещё реализуете возможность добавлять анимированные фотографии или видео - цены вам не будет!", category: .Development, difficultyLevel: .senior, languages: [.Logos], coreSkills: "iOS, jailbreak, Siri, AppCode, ARM-asm, gif", imageLoader: imageLoader, doneTrigger: .constant(false), rootViewIsActive: .constant(true))
+        IdeaPreview(title: "Написать замену Siri в виде горничной", text: "Кого только не бесит эта сфера, появившаяся ещё в 9 iOS? Хотелось бы иметь возможность убирать её, а так же ставить свои картинки из галереи. Если ещё реализуете возможность добавлять анимированные фотографии или видео - цены вам не будет!", category: .Development, devSubtopic: .Offtop, adminSubtopic: .Offtop, designSubtopic: .Offtop, testSubtopic: .Mobile, difficultyLevel: .senior, languages: [.Logos], coreSkills: "iOS, jailbreak, Siri, AppCode, ARM-asm, gif", imageLoader: imageLoader, doneTrigger: .constant(false), rootViewIsActive: .constant(true))
     }
 }

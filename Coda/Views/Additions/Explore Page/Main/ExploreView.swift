@@ -23,7 +23,7 @@ struct ExploreView: View {
 
             Pages(currentPage: self.$page) {
                 NewsViewMain().tag(0)
-                TrendingView().tag(1)
+                TrendsView().tag(1)
                 ProjectsView().tag(2)
                 IdeasView().tag(3)
                 JobView().tag(4)
@@ -35,7 +35,7 @@ struct ExploreView: View {
 //            NewsViewMain()
 //                .pagerTabItem { EmptyView() }.tag(0)
 //
-//            TrendingView().pagerTabItem { EmptyView() }.tag(1)
+//            TrendsView().pagerTabItem { EmptyView() }.tag(1)
 //            AnnouncementsView().pagerTabItem { EmptyView() }.tag(2)
 //            ProjectsView().pagerTabItem { EmptyView() }.tag(3)
 //            IdeasView().pagerTabItem { EmptyView() }.tag(4)
@@ -52,7 +52,7 @@ struct ExploreView: View {
 //        TabView(selection: self.$page) {
 //
 //            NewsViewMain().tag(0)
-//            TrendingView().tag(1)
+//            TrendsView().tag(1)
 //            AnnouncementsView().tag(2)
 //            ProjectsView().tag(3)
 //            IdeasView().tag(4)

@@ -39,6 +39,8 @@ extension View {
     }
 }
 
+
+
 struct HomeView: View {
     
     @State private var searchResult: String = ""
@@ -49,6 +51,36 @@ struct HomeView: View {
                          cancel: { print("Cancel") },
                          content: {
             List {
+                Section {
+                    VStack(alignment: .center, spacing: 8) {
+                        HStack(alignment: .center, spacing: 12) {
+                            HomeViewRectActionCell(withText: "In Trend", icon: "fireOutline") { active in
+                                TrendsView()
+                            }
+                            
+                            HomeViewRectActionCell(withText: "Projects", icon: "boxOutline") { active in
+                                ProjectsView()
+                            }
+                            
+                        }
+                        .padding(.bottom)
+                        HStack(alignment: .center, spacing: 12) {
+                            HomeViewRectActionCell(withText: "Career", icon: "computerOut") { active in
+                                JobView()
+                            }
+                            
+                            HomeViewRectActionCell(withText: "Ideas", icon: "bulbOutline") { active in
+                                IdeasView()
+                            }
+                           
+                        }
+                    }
+
+                   
+                }
+                .listRowInsets(EdgeInsets(top: 8, leading: 0, bottom: 8, trailing: 0))
+                .listRowBackground(Color.clear)
+                    .buttonStyle(.plain)
                 Section {
                     HomeViewActionCell(title: "New Project", image: "HomeViewProjectIcon") { active in
                         ProjectConstructorMain(rootViewIsActive: active)
@@ -81,6 +113,7 @@ struct HomeView: View {
                     .listRowBackground(Color.clear)
             }.navigationBarTitle("Home")
         }, accentColor: UIColor(Color.cyan)).edgesIgnoringSafeArea(.top)
+            .background(Color.black)
             
         
     }

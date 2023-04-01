@@ -588,7 +588,7 @@ struct VacancyConstructorMain: View {
         .toolbar {
             ToolbarItem(placement: .principal) {
                 VStack {
-                    Text("New Service")
+                    Text("New Vacancy")
                         .robotoMono(.semibold, 18)
                     Text("[Constructor]")
                         .robotoMono(.medium, 13, color: .secondary)

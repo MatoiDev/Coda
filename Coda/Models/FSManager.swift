@@ -14,6 +14,10 @@ import Firebase
 import FirebaseStorage
 
 
+protocol CloudFirestoreItemDelegate {
+    var id: String { get }
+}
+
 class FirebaseFilesUploadingProgreessManager: ObservableObject {
 
 //    @Published var images: [(StorageTaskStatus, @escaping (StorageTaskSnapshot) -> Void) -> String] = []
@@ -615,6 +619,10 @@ class FSManager: ObservableObject {
                     title: String,
                     text: String,
                     category: FreelanceTopic,
+                    devSubtopic: FreelanceSubTopic.FreelanceDevelopingSubTopic,
+                    adminSubtopic: FreelanceSubTopic.FreelanceAdministrationSubTropic,
+                    designSubtopic: FreelanceSubTopic.FreelanceDesignSubTopic,
+                    testSubtopic: FreelanceSubTopic.FreelanceTestingSubTopic,
                     difficultyLevel: IdeaDifficultyLevel,
                     languages: [LangDescriptor],
                     coreSkills: String,
@@ -634,6 +642,19 @@ class FSManager: ObservableObject {
                 } receiveValue: { (filesURL, previewsURL) in
                     
                     let ideaID: String = FSManager.generate64CharactersLongID()
+                    var subtopic: String = ""
+                    switch category {
+                    case .Administration:
+                        subtopic = adminSubtopic.rawValue
+                    case .Design:
+                        subtopic = designSubtopic.rawValue
+                    case .Development:
+                        subtopic = devSubtopic.rawValue
+                    case .Testing:
+                        subtopic = testSubtopic.rawValue
+                    case .all:
+                        subtopic = "All"
+                    }
                     
                     
                     self.db.collection("Ideas").document(ideaID).setData([
@@ -643,6 +664,7 @@ class FSManager: ObservableObject {
                         "title": title,
                         "text": text,
                         "category": category.rawValue,
+                        "subcategory": subtopic,
                         "difficultylevel": difficultyLevel.rawValue,
                         "langdescriptors": languages.map({$0.rawValue}),
                         "coreskills": coreSkills,
@@ -653,6 +675,7 @@ class FSManager: ObservableObject {
                         "responses": [],
                         "views": [userID],
                         "comments": [],
+                        "saves": [],
                         "date": Date().getFormattedDate(format: "d MMM, HH:mm")
                         
                     ]) { err in
@@ -774,6 +797,8 @@ class FSManager: ObservableObject {
                         subtopic = devSubtopic.rawValue
                     case .Testing:
                         subtopic = testSubtopic.rawValue
+                    case .all:
+                        subtopic = "All"
                     }
                     
                     self.db.collection("FreelanceOrder").document(orderID).setData([
@@ -855,6 +880,8 @@ class FSManager: ObservableObject {
                         subtopic = devSubtopic.rawValue
                     case .Testing:
                         subtopic = testSubtopic.rawValue
+                    case .all:
+                        subtopic = "All"
                     }
                     
                     self.db.collection("FreelanceOrder").document(orderID).setData([
@@ -931,6 +958,8 @@ class FSManager: ObservableObject {
                         subtopic = devSubtopic.rawValue
                     case .Testing:
                         subtopic = testSubtopic.rawValue
+                    case .all:
+                        subtopic = "All"
                     }
                     
                     
@@ -1602,6 +1631,137 @@ class FSManager: ObservableObject {
     
     
     // MARK: - Functions for getting stuff
+
+  
+  
+    
+    @MainActor func loadIdeas(sortBy sortParameter: FirestoreSortDescriptor,
+                              category: FreelanceTopic,
+                              subDevCategory: FreelanceSubTopic.FreelanceDevelopingSubTopic,
+                              subAdminCategory: FreelanceSubTopic.FreelanceAdministrationSubTropic,
+                              subDesignCategory: FreelanceSubTopic.FreelanceDesignSubTopic,
+                              subTestCategory: FreelanceSubTopic.FreelanceTestingSubTopic,
+                              difficultLevel: IdeaDifficultyLevel,
+                              languages: Array<LangDescriptor>,
+                              completion: @escaping (_ ideas: Array<Idea>
+                              ) -> Void) -> Void {
+        
+        
+        var difLabel: String? = difficultLevel == .all ? nil : difficultLevel.rawValue
+        var langDescriptors: Array<String>? = languages == [LangDescriptor.None] ? nil : languages.map({$0.rawValue})
+        
+        
+        func containsCommonElement(array1: [String], array2: [String]) -> Bool {
+          let set1 = Set(array1)
+          let set2 = Set(array2)
+          
+          return !set1.isDisjoint(with: set2)
+        }
+
+        
+        
+        db.collection("Ideas").order(by: sortParameter.rawValue, descending: true)
+            .getDocuments(completion: { querySnapshot, error in
+                
+                guard let documents = querySnapshot?.documents else {
+                     print("Error fetching documents: \(error!)")
+                     return
+                  }
+                
+                var ideas: Array<Idea> = Array<Idea>()
+                
+                for i in 0 ..< documents.count {
+                    let dictData = documents[i].data()
+                      guard let id = dictData["id"] as? String,
+                            
+                            let author = dictData["owner"] as? String,
+                            let title = dictData["title"] as? String,
+                            let text = dictData["text"] as? String,
+                            let category = dictData["category"] as? String,
+                            let subcategory = dictData["subcategory"] as? String,
+                            let difficultylevel = dictData["difficultylevel"] as? String,
+                            let langdescriptors = dictData["langdescriptors"] as? Array<String>,
+                            let coreskills = dictData["coreskills"] as? String,
+                            let previews = dictData["previews"] as? Array<String>,
+                            let files = dictData["files"] as? Array<String>,
+
+                            let stars = dictData["stars"] as? Array<String>,
+                            let responses = dictData["responses"] as? Array<String>,
+                            let views = dictData["views"] as? Array<String>,
+                            let comments = dictData["comments"] as? Array<String>,
+                            let saves = dictData["saves"] as? Array<String>,
+                            let date = dictData["date"] as? String else {
+                          print("Invalid Document !!!")
+                          return
+                      }
+                    let newIdea = Idea(id: id, author: author, title: title, text: text, category: category, subcategory: subcategory, difficultyLevel: difficultylevel, skills: coreskills, languages: langdescriptors, images: previews, files: files, comments: comments, stars: stars, responses: responses, views: views, saves: saves, dateOfPublish: date)
+                    ideas.append(newIdea)
+                }
+                
+                // Фильтр по категориям
+                if category != .all {
+                    ideas = ideas.filter({ idea in idea.category == category.rawValue })
+                    var subcategory: String? = nil
+                    switch category {
+                    case .all:
+                        subcategory = nil
+                    case .Administration:
+                        
+                        subcategory = subAdminCategory == .all ? nil : subAdminCategory.rawValue
+                    case .Design:
+                        subcategory = subDesignCategory == .all ? nil : subDesignCategory.rawValue
+                    case .Development:
+                        subcategory = subDevCategory == .all ? nil : subDevCategory.rawValue
+                    case .Testing:
+                        subcategory = subTestCategory == .all ? nil : subTestCategory.rawValue
+                    }
+                    if subcategory != nil { ideas = ideas.filter({ idea in idea.subcategory == subcategory }) }
+                }
+            
+                // Фильтрация по уровню слолжности
+                if difLabel != nil {
+                    ideas = ideas.filter({ idea in idea.difficultyLevel == difLabel!})
+                }
+                
+                // Фильтрация по языкам
+                if langDescriptors != nil {
+                    ideas = ideas.filter({ idea in
+                        !Set(idea.languages).isDisjoint(with: Set(langDescriptors!))
+//                        containsCommonElement(array1: idea.languages, array2: languages)
+                    })
+                }
+            
+    
+                completion(ideas)
+                
+            })
+//                   .addSnapshotListener { (querySnapshot, error) in
+//                   self.messages = []
+//                   if let error = error {
+//                       print(error.localizedDescription)
+//                   } else {
+//                       if let snapshotDocuments = querySnapshot?.documents {
+//
+//                           snapshotDocuments.forEach { doc in
+//                               print(doc.data())
+//                               let data = doc.data()
+//                               if let sender = data[K.FStore.senderField] as? String, let body = data[K.FStore.bodyField] as? String {
+//                                   let newMessage = Message(sender: sender, body: body)
+//                                   self.messages.append(newMessage)
+//
+//                                   DispatchQueue.main.async {
+//                                       self.tableView.reloadData()
+//                                       let indexPath = IndexPath(row: self.messages.count - 1, section: 0)
+//                                       self.tableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
+//
+//                                   }
+//                               }
+//                           }
+//                       }
+//                   }
+//               }
+        
+    }
     
    
 //    @MainActor func getMessageInfoNonAsync(id: String) -> Dictionary<String, Any>? {

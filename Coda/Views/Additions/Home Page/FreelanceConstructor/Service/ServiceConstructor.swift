@@ -213,22 +213,28 @@ struct ServiceConstructor: View {
                     case .Administration:
                         Group {
                             Text(LocalizedStringKey(self.topic.rawValue)) + Text(": ") + Text(LocalizedStringKey(self.adminSubtopic.rawValue))
-                        }.robotoMono(.semibold, 15)
-                       
+                        }.robotoMono(.medium, 15)
+                        
                     case .Testing:
                         Group {
                             Text(LocalizedStringKey(self.topic.rawValue)) + Text(": ") + Text(LocalizedStringKey(self.testSubtopic.rawValue))
-                        }.robotoMono(.semibold, 15)
-                       
+                        }.robotoMono(.medium, 15)
+                        
                     case .Development:
                         Group {
-                        Text(LocalizedStringKey(self.topic.rawValue)) + Text(": ") + Text(LocalizedStringKey(self.devSubtopic.rawValue))
-                    }.robotoMono(.semibold, 15)
+                            Text(LocalizedStringKey(self.topic.rawValue)) + Text(": ") + Text(LocalizedStringKey(self.devSubtopic.rawValue))
+                        }.robotoMono(.medium, 15)
                     case .Design:
                         Group {
-                        Text(LocalizedStringKey(self.topic.rawValue)) + Text(": ") + Text(LocalizedStringKey(self.designSubtopic.rawValue))
-                        }.robotoMono(.semibold, 15)
+                            Text(LocalizedStringKey(self.topic.rawValue)) + Text(": ") + Text(LocalizedStringKey(self.designSubtopic.rawValue))
+                        }.robotoMono(.medium, 15)
+                    case .all:
+                        Group {
+                            Text(LocalizedStringKey(self.topic.rawValue)) + Text(": ") + Text(LocalizedStringKey("All"))
+                        }.robotoMono(.medium, 15)
+                    
                     }
+                    
                 }.isDetailLink(false)
 
 

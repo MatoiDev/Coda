@@ -10,6 +10,7 @@ import Foundation
 
 enum FreelanceTopic: String {
     
+    case all = "All Categories"
     case Administration = "Administration"
     case Design = "Design"
     case Development = "Development"
@@ -20,6 +21,8 @@ enum FreelanceTopic: String {
 struct FreelanceSubTopic {
     
     enum FreelanceDevelopingSubTopic: String {
+        
+        case all = "All Subcategories"
         
         case Backend = "Backend"
         case Frontend = "Frontend"
@@ -40,6 +43,8 @@ struct FreelanceSubTopic {
 
     enum FreelanceTestingSubTopic: String {
         
+        case all = "All Subcategories"
+        
         case Sites = "Sites"
         case Mobile = "Mobile"
         case Software = "Software"
@@ -49,6 +54,8 @@ struct FreelanceSubTopic {
     }
 
     enum FreelanceDesignSubTopic: String {
+        
+        case all = "All Subcategories"
         
         case Sites = "Sites"
         case LandingPages = "Landing pages"
@@ -71,6 +78,8 @@ struct FreelanceSubTopic {
     }
 
     enum FreelanceAdministrationSubTropic: String {
+        
+        case all = "All Subcategories"
         
         case Servers = "Servers"
         case ComputerNetworks = "Computer networks"

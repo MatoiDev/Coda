@@ -164,7 +164,13 @@ struct FindTeamConstructor: View {
                         Group {
                         Text(LocalizedStringKey(self.category.rawValue)) + Text(": ") + Text(LocalizedStringKey(self.designSubtopic.rawValue))
                         }.robotoMono(.medium, 15)
+                    case .all:
+                        Group {
+                        Text(LocalizedStringKey(self.category.rawValue)) + Text(": ") + Text(LocalizedStringKey("All"))
+                        }.robotoMono(.medium, 15)
+                        
                     }
+                    
                 }.isDetailLink(false)
 
 
@@ -346,7 +352,7 @@ struct FindTeamConstructor: View {
         .toolbar {
             ToolbarItem(placement: .principal) {
                 VStack {
-                    Text("New Idea")
+                    Text("Find Team")
                         .robotoMono(.semibold, 18)
                     Text("[Constructor]")
                         .robotoMono(.medium, 13, color: .secondary)

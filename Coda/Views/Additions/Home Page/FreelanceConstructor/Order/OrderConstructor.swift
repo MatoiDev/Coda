@@ -271,6 +271,11 @@ struct OrderConstructor: View {
                         Group {
                         Text(LocalizedStringKey(self.topic.rawValue)) + Text(": ") + Text(LocalizedStringKey(self.designSubtopic.rawValue))
                         }.robotoMono(.medium, 15)
+                    case .all:
+                        Group {
+                        Text(LocalizedStringKey(self.topic.rawValue)) + Text(": ") + Text(LocalizedStringKey("All"))
+                        }.robotoMono(.medium, 15)
+                        
                     }
                 }.isDetailLink(false)
 
