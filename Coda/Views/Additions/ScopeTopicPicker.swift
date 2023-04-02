@@ -94,7 +94,7 @@ struct ScopeTopicPickerSheet: View {
                     
                 }
             
-//            .navigationBarTitleDisplayMode(.inline)
+            .navigationBarTitleDisplayMode(.inline)
             .navigationTitle(LocalizedStringKey("Select a Category"))
         }
     }

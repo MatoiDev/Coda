@@ -189,7 +189,9 @@ struct SubcategoryPickerSheet: View {
 //                    .clipShape(RoundedRectangle(cornerRadius: 15))
 //                    .padding()
 //                }
-            }.navigationTitle(LocalizedStringKey("Select a Subcategory"))
+            }
+            .navigationBarTitleDisplayMode(.inline)
+            .navigationTitle(LocalizedStringKey("Select a Subcategory"))
         }
     }
 }

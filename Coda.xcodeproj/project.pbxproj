@@ -15,6 +15,8 @@
 		9503F3AF2989928300E1BDEA /* ExploreViewHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9503F3AE2989928300E1BDEA /* ExploreViewHeader.swift */; };
 		9503F3B1298992A700E1BDEA /* ExploreHeaderViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9503F3B0298992A700E1BDEA /* ExploreHeaderViewCell.swift */; };
 		9503F3B3298992E900E1BDEA /* JobView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9503F3B2298992E900E1BDEA /* JobView.swift */; };
+		9507EFFA29DA39FD001C475C /* SheetPresentationBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9507EFF929DA39FD001C475C /* SheetPresentationBackground.swift */; };
+		9507EFFC29DA3CCF001C475C /* SortDescriptorsPickerSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9507EFFB29DA3CCF001C475C /* SortDescriptorsPickerSheetView.swift */; };
 		95084A8B29324AF200D8EC96 /* ProjectEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95084A8A29324AF200D8EC96 /* ProjectEditor.swift */; };
 		9509BD15299F597000DA9AF8 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 9509BD14299F597000DA9AF8 /* MBProgressHUD.m */; };
 		951367102909C9CE00FD7C78 /* RegisterBubble.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9513670F2909C9CE00FD7C78 /* RegisterBubble.swift */; };
@@ -206,6 +208,8 @@
 		9503F3AE2989928300E1BDEA /* ExploreViewHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExploreViewHeader.swift; sourceTree = "<group>"; };
 		9503F3B0298992A700E1BDEA /* ExploreHeaderViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExploreHeaderViewCell.swift; sourceTree = "<group>"; };
 		9503F3B2298992E900E1BDEA /* JobView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JobView.swift; sourceTree = "<group>"; };
+		9507EFF929DA39FD001C475C /* SheetPresentationBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetPresentationBackground.swift; sourceTree = "<group>"; };
+		9507EFFB29DA3CCF001C475C /* SortDescriptorsPickerSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortDescriptorsPickerSheetView.swift; sourceTree = "<group>"; };
 		95084A8A29324AF200D8EC96 /* ProjectEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectEditor.swift; sourceTree = "<group>"; };
 		9509BD12299F597000DA9AF8 /* Coda-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Coda-Bridging-Header.h"; sourceTree = "<group>"; };
 		9509BD13299F597000DA9AF8 /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
@@ -507,6 +511,7 @@
 			children = (
 				951367122909D5B000FD7C78 /* Blur.swift */,
 				95EF263429D8B8AB00FED358 /* NavigationBarAppearance.swift */,
+				9507EFF929DA39FD001C475C /* SheetPresentationBackground.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -882,6 +887,7 @@
 				37C719752794896027422A4B /* Chat Page */,
 				37C71BAF8FA3D455BEBC909E /* Explore Page */,
 				37C7196612639077BE828FD5 /* Home Page */,
+				9507EFFB29DA3CCF001C475C /* SortDescriptorsPickerSheetView.swift */,
 			);
 			path = Additions;
 			sourceTree = "<group>";
@@ -1247,6 +1253,7 @@
 				9584468229AA614900DDA62D /* RussianCitiesJSONParser.swift in Sources */,
 				9539D90C298AEDD200654069 /* OrderConstructor.swift in Sources */,
 				953E5F392950FA64006810CC /* ImageSaver.swift in Sources */,
+				9507EFFA29DA39FD001C475C /* SheetPresentationBackground.swift in Sources */,
 				95F1CD3A290EE573000A3080 /* ProfileView.swift in Sources */,
 				952BCF8A290982CF0046FB02 /* LottieView.swift in Sources */,
 				956099F929AFAFD90012465C /* IdeaPreview.swift in Sources */,
@@ -1272,6 +1279,7 @@
 				95F6AF21298FC51D00004545 /* FreelanceEnums.swift in Sources */,
 				951CC6DE2924191E00096222 /* ContinueBubble.swift in Sources */,
 				9595C45F2908343C004726AD /* CodaApp.swift in Sources */,
+				9507EFFC29DA3CCF001C475C /* SortDescriptorsPickerSheetView.swift in Sources */,
 				957D1B0A29D8270B0076A9A1 /* IdeaCellView.swift in Sources */,
 				95BFE390299BEC5A00702E72 /* LanguageDescriptorPicker.swift in Sources */,
 				953E2DBD2982FB9900A4A82B /* VacancyView.swift in Sources */,

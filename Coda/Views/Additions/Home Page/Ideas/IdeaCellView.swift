@@ -14,12 +14,12 @@ struct IdeaCellView: View {
         
     }
     var body: some View {
-        Text(idea.title)
+        Text(idea.title) + Text(" ") + Text("Количество звёзд: \(idea.stars.count)")
     }
 }
 
 struct IdeaCellView_Previews: PreviewProvider {
     static var previews: some View {
-        IdeaCellView(for: Idea(id: "123", author: "Matoi", title: "Write a simple Siri customizer", text: "The Idea's Body", category: "Development", subcategory: "iOS", difficultyLevel: "Lead", skills: "Xcode, AppCode, Logos, iOS", languages: ["Objective-C", "Logos", "Swift"], images: [], files: [], comments: [], stars: [], responses: [], views: [], saves: [], dateOfPublish: "1 Apr at 13:49"))
+        IdeaCellView(for: Idea(id: "123", author: "Matoi", title: "Write a simple Siri customizer", text: "The Idea's Body", category: "Development", subcategory: "iOS", difficultyLevel: "Lead", skills: "Xcode, AppCode, Logos, iOS", languages: ["Objective-C", "Logos", "Swift"], images: [], files: [], time: 12.123, comments: [], stars: [], responses: [], views: [], saves: [], dateOfPublish: "1 Apr at 13:49"))
     }
 }

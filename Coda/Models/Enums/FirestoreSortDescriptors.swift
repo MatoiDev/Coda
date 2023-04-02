@@ -8,6 +8,14 @@
 import SwiftUI
 
 enum FirestoreSortDescriptor: String {
-    case time = "time"
-    case popularity = "stars"
+    
+    case newest = "timeNewest"
+    case oldest = "timeOldest"
+    case moreStars = "moreStars"
+    case lessStars = "lessStars"
+    case mostCommented = "mostCommented"
+    case leastCommented = "leastCommented"
+    case mostViewed = "mostViewed"
+    case leastViewed = "leastViewed"
+    
 }

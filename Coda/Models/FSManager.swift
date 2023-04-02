@@ -1643,12 +1643,13 @@ class FSManager: ObservableObject {
                               subTestCategory: FreelanceSubTopic.FreelanceTestingSubTopic,
                               difficultLevel: IdeaDifficultyLevel,
                               languages: Array<LangDescriptor>,
+                              textStringQuery: String = "",
                               completion: @escaping (_ ideas: Array<Idea>
                               ) -> Void) -> Void {
         
         
-        var difLabel: String? = difficultLevel == .all ? nil : difficultLevel.rawValue
-        var langDescriptors: Array<String>? = languages == [LangDescriptor.None] ? nil : languages.map({$0.rawValue})
+        let difLabel: String? = difficultLevel == .all ? nil : difficultLevel.rawValue
+        let langDescriptors: Array<String>? = languages == [LangDescriptor.None] ? nil : languages.map({$0.rawValue})
         
         
         func containsCommonElement(array1: [String], array2: [String]) -> Bool {
@@ -1659,8 +1660,13 @@ class FSManager: ObservableObject {
         }
 
         
+        db.collection("Ideas")
+//            .order(by: "title", descending: true)
+//            .order(by: sortParameter.rawValue, descending: true)
         
-        db.collection("Ideas").order(by: sortParameter.rawValue, descending: true)
+//            .whereField("title", isGreaterThanOrEqualTo: textStringQuery)
+//            .whereField("title", isLessThanOrEqualTo: textStringQuery + "\u{f8ff}")
+         
             .getDocuments(completion: { querySnapshot, error in
                 
                 guard let documents = querySnapshot?.documents else {
@@ -1673,7 +1679,6 @@ class FSManager: ObservableObject {
                 for i in 0 ..< documents.count {
                     let dictData = documents[i].data()
                       guard let id = dictData["id"] as? String,
-                            
                             let author = dictData["owner"] as? String,
                             let title = dictData["title"] as? String,
                             let text = dictData["text"] as? String,
@@ -1684,7 +1689,7 @@ class FSManager: ObservableObject {
                             let coreskills = dictData["coreskills"] as? String,
                             let previews = dictData["previews"] as? Array<String>,
                             let files = dictData["files"] as? Array<String>,
-
+                            let time = dictData["time"] as? Double,
                             let stars = dictData["stars"] as? Array<String>,
                             let responses = dictData["responses"] as? Array<String>,
                             let views = dictData["views"] as? Array<String>,
@@ -1694,7 +1699,8 @@ class FSManager: ObservableObject {
                           print("Invalid Document !!!")
                           return
                       }
-                    let newIdea = Idea(id: id, author: author, title: title, text: text, category: category, subcategory: subcategory, difficultyLevel: difficultylevel, skills: coreskills, languages: langdescriptors, images: previews, files: files, comments: comments, stars: stars, responses: responses, views: views, saves: saves, dateOfPublish: date)
+                    let newIdea = Idea(id: id, author: author, title: title, text: text, category: category, subcategory: subcategory, difficultyLevel: difficultylevel, skills: coreskills, languages: langdescriptors, images: previews, files: files, time: time, comments: comments, stars: stars, responses: responses, views: views, saves: saves, dateOfPublish: date)
+                    
                     ideas.append(newIdea)
                 }
                 
@@ -1706,7 +1712,6 @@ class FSManager: ObservableObject {
                     case .all:
                         subcategory = nil
                     case .Administration:
-                        
                         subcategory = subAdminCategory == .all ? nil : subAdminCategory.rawValue
                     case .Design:
                         subcategory = subDesignCategory == .all ? nil : subDesignCategory.rawValue
@@ -1716,6 +1721,14 @@ class FSManager: ObservableObject {
                         subcategory = subTestCategory == .all ? nil : subTestCategory.rawValue
                     }
                     if subcategory != nil { ideas = ideas.filter({ idea in idea.subcategory == subcategory }) }
+                }
+                
+                if !textStringQuery.isEmpty {
+                    print("TSQ is not empty: \(textStringQuery)")
+                    ideas = ideas.filter({ idea in idea.title.lowercased().contains(textStringQuery.lowercased())})
+                } else {
+                    print("TSQ is Empty!")
+                    ideas = ideas
                 }
             
                 // Фильтрация по уровню слолжности
@@ -1730,8 +1743,29 @@ class FSManager: ObservableObject {
 //                        containsCommonElement(array1: idea.languages, array2: languages)
                     })
                 }
-            
-    
+                // Сортировка идей
+                ideas = ideas.sorted(by: {
+                    switch sortParameter {
+                    case .newest:
+                        return $0.time > $1.time
+                    case .oldest:
+                        return $0.time < $1.time
+                    case .moreStars:
+                        return $0.stars.count > $1.stars.count
+                    case .lessStars:
+                        return $0.stars.count < $1.stars.count
+                    case .mostCommented:
+                        return $0.comments.count > $1.comments.count
+                    case .leastCommented:
+                        return $0.comments.count < $1.comments.count
+                    case .mostViewed:
+                        return $0.views.count > $1.views.count
+                    case .leastViewed:
+                        return $0.views.count < $1.views.count
+                    }
+                   
+                    
+                })
                 completion(ideas)
                 
             })
