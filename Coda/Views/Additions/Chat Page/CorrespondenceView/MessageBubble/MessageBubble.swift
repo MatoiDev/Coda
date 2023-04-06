@@ -17,7 +17,7 @@ struct MessageBubble<Content>: View where Content: View {
     
     private let fsmanager: FSManager = FSManager()
     
-    @State private var CCImageView : ChatCachedImageView?
+    @State private var CCImageView : CachedImageView?
     
     
     
@@ -123,7 +123,7 @@ struct MessageBubble<Content>: View where Content: View {
                                     // MARK: - Message image
                                     // Если в сообщении есть изображение
                                     if let imageID = self.imageID, imageID != "" {
-                                        let CCImageView : ChatCachedImageView = ChatCachedImageView(with: imageID, for: .Message)
+                                        let CCImageView : CachedImageView = CachedImageView(with: imageID, for: .Message)
                                         CCImageView
                                             .onAppear {
                                                 self.CCImageView = CCImageView

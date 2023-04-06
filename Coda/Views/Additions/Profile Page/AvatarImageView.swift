@@ -9,73 +9,62 @@ import SwiftUI
 import Kingfisher
 
 struct AvatarImageView: View {
-    @ObservedObject var urlImageModel: CachedImageModel
     let onPostImage: Bool
-    @State private var urlString: String?
+    let urlString: String
     @Binding var bottomSheetTranslationProrated: CGFloat
     
     init(urlString: String?, onPost condition: Bool = false, translation: Binding<CGFloat>) {
-        urlImageModel = CachedImageModel(urlString: urlString)
+        self.urlString = urlString ?? "https://firebasestorage.googleapis.com/v0/b/com-erast-coda.appspot.com/o/DefaultImage%2F8d7e9d76ab83277382d33925fa9e4aca.png?alt=media&token=ad231de0-5ea9-46fc-aafe-62d024163492"
         self.onPostImage = condition
-        self.urlString = urlString
         _bottomSheetTranslationProrated = translation
     }
     
-    func updateImage(url: String) {
-        self.urlString = url
-        self.urlImageModel.update(withURL: url)
-    }
-    
     var body: some View {
-        if let urlString: String = self.urlString {
-            if !self.onPostImage {
-//                                Image(uiImage: urlImageModel.image ?? AvatarImageView.defaultImage!)
-                KFImage
-                    .url(URL(string: urlString))
+        
+            Group {
+                if !self.onPostImage {
+                    KFImage
+                        .url(URL(string: urlString))
 
-                    .placeholder({ progress in
-                        CircularProgressView(progress: progress.fractionCompleted)
-                            .fixedSize()
-                    })
-                    .resizable()
-                    .frame(width: 150 - 50 * bottomSheetTranslationProrated, height: 150 - 50 * bottomSheetTranslationProrated)
-                    .clipShape(Circle())
-                    .offset(y: -75 * (1 - bottomSheetTranslationProrated))
-                    
-                    .overlay {
-                        Circle()
-                            .stroke(lineWidth: 7 - 4 * bottomSheetTranslationProrated)
-                            .foregroundColor(.black)
-                            .offset(y: -75 * (1 - bottomSheetTranslationProrated))
-                    }.overlay {
-                        if self.urlImageModel.image == nil {
-                            ProgressView()
+                        .placeholder({ progress in
+                            CircularProgressView(progress: progress.fractionCompleted)
+                                .fixedSize()
+                        })
+                       
+                        .resizable()
+                        .frame(width: 150 - 50 * bottomSheetTranslationProrated, height: 150 - 50 * bottomSheetTranslationProrated)
+                        .clipShape(Circle())
+                        .offset(y: -75 * (1 - bottomSheetTranslationProrated))
+                        
+                        .overlay {
+                            Circle()
+                                .stroke(lineWidth: 7 - 4 * bottomSheetTranslationProrated)
+                                .foregroundColor(.black)
                                 .offset(y: -75 * (1 - bottomSheetTranslationProrated))
                         }
-                    }.padding(self.bottomSheetTranslationProrated * 16)
-            } else {
-                Image(uiImage: urlImageModel.image ?? AvatarImageView.defaultImage!)
-//                KFImage
-//                    .url(URL(string: urlString))
-//
-//                    .placeholder({ progress in
-//                        CircularProgressView(progress: progress.fractionCompleted)
-//                            .fixedSize()
-//                    })
-                    .resizable()
-                    .frame(width: 40, height:40)
-                    .clipShape(Circle())
-                    .overlay {
-                        Circle()
-                            .stroke(lineWidth: 2)
-                            .foregroundColor(.black)
-                    }.overlay {
-                        if self.urlImageModel.image == nil {
-                            ProgressView()
+                        .padding(self.bottomSheetTranslationProrated * 16)
+                } else {
+                    KFImage
+                        .url(URL(string: urlString))
+
+                        .placeholder({ progress in
+                            CircularProgressView(progress: progress.fractionCompleted)
+                                .fixedSize()
+                        })
+                        .resizable()
+                        .frame(width: 40, height: 40)
+                        .clipShape(Circle())
+                        .overlay {
+                            Circle()
+                                .stroke(lineWidth: 2)
+                                .foregroundColor(.black)
                         }
-                    }.padding(self.bottomSheetTranslationProrated * 16)
+                        .padding(self.bottomSheetTranslationProrated * 16)
+                }
             }
-        }
+            .onAppear {
+                print("I'll try to load: \(self.urlString)")
+            }
 
         
     }

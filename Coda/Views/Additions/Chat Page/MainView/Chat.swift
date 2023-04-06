@@ -115,7 +115,7 @@ struct Chat: View {
                                         MessageBubble(id: ind, direction: .left, time: dayTime, wasEdited: wasEdited, editTrigger: self.$editMessage, message: self.$messageText, editMessageID: self.$currentEditMessageID, imageOptionalID: self.$imageOptionalID, uiMessageImage: self.$messageImage) {
                                             VStack {
                                                 if imageID != "" {
-                                                    let CCImageView : ChatCachedImageView = ChatCachedImageView(with: imageID, for: .Message)
+                                                    let CCImageView : CachedImageView = CachedImageView(with: imageID, for: .Message)
                                                     CCImageView
                                                         .onAppear {
                                                             if let image = CCImageView.urlImageModel.image {
@@ -145,7 +145,7 @@ struct Chat: View {
                                             VStack {
                                                 if imageID != "" {
 //                                                    ChatCachedImageView(with: imageID, for: .Message)
-                                                    let CCImageView : ChatCachedImageView = ChatCachedImageView(with: imageID, for: .Message)
+                                                    let CCImageView : CachedImageView = CachedImageView(with: imageID, for: .Message)
                                                     CCImageView
                                                         .onAppear {
                                                             if let image = CCImageView.urlImageModel.image {
@@ -470,7 +470,7 @@ struct Chat: View {
                     } label: {
                         Group {
                             if let imageURL: String = self.imageURL {
-                                ChatCachedImageView(with: imageURL, for: .ChatIntelocutorLogo)
+                                CachedImageView(with: imageURL, for: .ChatIntelocutorLogo)
                             } else {
                                 Circle()
                                     .fill(Color.secondary)

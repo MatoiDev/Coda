@@ -19,61 +19,6 @@ extension Date {
 }
 
 
-class FirebaseAvatarImageServer: ObservableObject {
-    
-    private func fetchedImageHandler(data: Data?, response: URLResponse?) throws -> UIImage {
-        guard let data = data,
-           let image = UIImage(data: data),
-           let response = response as? HTTPURLResponse,
-              response.statusCode >= 200 && response.statusCode < 300 else { throw URLError(.cannotParseResponse) }
-        return image
-    }
-    
-    func getImageFromServer(imageURL url: URL) -> AnyPublisher<UIImage, Error> {
-        
-        URLSession.shared.dataTaskPublisher(for: url)
-            .tryMap(self.fetchedImageHandler)
-            .eraseToAnyPublisher()
-    }
-}
-
- class FirebaseTemporaryImageLoaderVM: ObservableObject {
-    
-    @Published var image: UIImage?
-    @Published var errorLog: String?
-    
-    private var server: FirebaseAvatarImageServer = FirebaseAvatarImageServer()
-    
-    var cancellables: Set<AnyCancellable> = Set<AnyCancellable>()
-    
-    init(with url: URL?) {
-        self.fetchImage(for: url)
-    }
-    
-    private func fetchImage(for url: URL?) -> Void {
-        if let url = url {
-            server.getImageFromServer(imageURL: url)
-                .receive(on: DispatchQueue.main)
-                .sink { completion in
-                    switch completion {
-                    case .finished:
-                        self.errorLog = nil
-                    case .failure(let err):
-                        self.errorLog = err.localizedDescription
-                        self.image = nil
-                    }
-                } receiveValue: { [weak self] image in
-                    self?.image = image
-                }
-                .store(in: &self.cancellables)
-        } else {
-            self.errorLog = URLError(.badURL).localizedDescription
-        }
-       
-
-    }
-}
-
 enum BusinessCardType {
     case customer, vendor, company, author
 }

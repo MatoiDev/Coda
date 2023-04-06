@@ -21,7 +21,7 @@
 		9509BD15299F597000DA9AF8 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 9509BD14299F597000DA9AF8 /* MBProgressHUD.m */; };
 		951367102909C9CE00FD7C78 /* RegisterBubble.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9513670F2909C9CE00FD7C78 /* RegisterBubble.swift */; };
 		951367132909D5B000FD7C78 /* Blur.swift in Sources */ = {isa = PBXBuildFile; fileRef = 951367122909D5B000FD7C78 /* Blur.swift */; };
-		9515509E2958CE7400A23D1D /* ChatCachedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9515509D2958CE7400A23D1D /* ChatCachedImageView.swift */; };
+		9515509E2958CE7400A23D1D /* CachedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9515509D2958CE7400A23D1D /* CachedImageView.swift */; };
 		95170552290AD634008C137F /* githubLogoWhite.json in Resources */ = {isa = PBXBuildFile; fileRef = 95170551290AD634008C137F /* githubLogoWhite.json */; };
 		95170554290AEC3F008C137F /* RobotoMono-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 95170553290AEC3F008C137F /* RobotoMono-Medium.ttf */; };
 		95170556290AEEE2008C137F /* RobotoMono-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 95170555290AEEE2008C137F /* RobotoMono-Bold.ttf */; };
@@ -57,6 +57,8 @@
 		952BCF88290981F90046FB02 /* macOnMatrix.json in Resources */ = {isa = PBXBuildFile; fileRef = 952BCF87290981F90046FB02 /* macOnMatrix.json */; };
 		952BCF8A290982CF0046FB02 /* LottieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 952BCF89290982CF0046FB02 /* LottieView.swift */; };
 		952BCF8C290989B00046FB02 /* progress.json in Resources */ = {isa = PBXBuildFile; fileRef = 952BCF8B290989B00046FB02 /* progress.json */; };
+		952C9F8129DE9D6D0040EAEA /* IdeaContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 952C9F8029DE9D6D0040EAEA /* IdeaContentView.swift */; };
+		952C9F8329DEAE070040EAEA /* BusinessCardAsync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 952C9F8229DEAE070040EAEA /* BusinessCardAsync.swift */; };
 		9539D90C298AEDD200654069 /* OrderConstructor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9539D90B298AEDD200654069 /* OrderConstructor.swift */; };
 		953AEBFF294A30D600170772 /* PostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 953AEBFE294A30D600170772 /* PostView.swift */; };
 		953E2DAD2982F78000A4A82B /* ProjectsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 953E2DAC2982F78000A4A82B /* ProjectsView.swift */; };
@@ -89,6 +91,9 @@
 		954ADF49291FC237001300EA /* ImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 954ADF48291FC237001300EA /* ImageCache.swift */; };
 		954EAEB02997C9B600F4066B /* FreelanceSubTopicPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 954EAEAF2997C9B600F4066B /* FreelanceSubTopicPicker.swift */; };
 		9555119529CB63B400583EFC /* ArticleStubView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9555119429CB63B400583EFC /* ArticleStubView.swift */; };
+		955AD67D29DADEE300624200 /* FirebaseAvatarImageServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 955AD67C29DADEE300624200 /* FirebaseAvatarImageServer.swift */; };
+		955AD67F29DADF1F00624200 /* FirebaseTemporaryImageLoaderVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 955AD67E29DADF1F00624200 /* FirebaseTemporaryImageLoaderVM.swift */; };
+		955AD68229DB58D800624200 /* SwiftUIPager in Frameworks */ = {isa = PBXBuildFile; productRef = 955AD68129DB58D800624200 /* SwiftUIPager */; };
 		955C667E29AF2C030079BC91 /* InternetConnectionChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 955C667D29AF2C030079BC91 /* InternetConnectionChecker.swift */; };
 		955C668029AF2F5F0079BC91 /* connectionErrorMan.json in Resources */ = {isa = PBXBuildFile; fileRef = 955C667F29AF2F5F0079BC91 /* connectionErrorMan.json */; };
 		955C668229AF312D0079BC91 /* VacancyPostPublishingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 955C668129AF312D0079BC91 /* VacancyPostPublishingView.swift */; };
@@ -216,7 +221,7 @@
 		9509BD14299F597000DA9AF8 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
 		9513670F2909C9CE00FD7C78 /* RegisterBubble.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterBubble.swift; sourceTree = "<group>"; };
 		951367122909D5B000FD7C78 /* Blur.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Blur.swift; sourceTree = "<group>"; };
-		9515509D2958CE7400A23D1D /* ChatCachedImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatCachedImageView.swift; sourceTree = "<group>"; };
+		9515509D2958CE7400A23D1D /* CachedImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CachedImageView.swift; sourceTree = "<group>"; };
 		95170551290AD634008C137F /* githubLogoWhite.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = githubLogoWhite.json; sourceTree = "<group>"; };
 		95170553290AEC3F008C137F /* RobotoMono-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "RobotoMono-Medium.ttf"; sourceTree = "<group>"; };
 		95170555290AEEE2008C137F /* RobotoMono-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "RobotoMono-Bold.ttf"; sourceTree = "<group>"; };
@@ -253,6 +258,8 @@
 		952BCF87290981F90046FB02 /* macOnMatrix.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = macOnMatrix.json; sourceTree = "<group>"; };
 		952BCF89290982CF0046FB02 /* LottieView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottieView.swift; sourceTree = "<group>"; };
 		952BCF8B290989B00046FB02 /* progress.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = progress.json; sourceTree = "<group>"; };
+		952C9F8029DE9D6D0040EAEA /* IdeaContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdeaContentView.swift; sourceTree = "<group>"; };
+		952C9F8229DEAE070040EAEA /* BusinessCardAsync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusinessCardAsync.swift; sourceTree = "<group>"; };
 		9539D90B298AEDD200654069 /* OrderConstructor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderConstructor.swift; sourceTree = "<group>"; };
 		953AEBFE294A30D600170772 /* PostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostView.swift; sourceTree = "<group>"; };
 		953E2DAC2982F78000A4A82B /* ProjectsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectsView.swift; sourceTree = "<group>"; };
@@ -273,6 +280,8 @@
 		954ADF48291FC237001300EA /* ImageCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCache.swift; sourceTree = "<group>"; };
 		954EAEAF2997C9B600F4066B /* FreelanceSubTopicPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FreelanceSubTopicPicker.swift; sourceTree = "<group>"; };
 		9555119429CB63B400583EFC /* ArticleStubView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleStubView.swift; sourceTree = "<group>"; };
+		955AD67C29DADEE300624200 /* FirebaseAvatarImageServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseAvatarImageServer.swift; sourceTree = "<group>"; };
+		955AD67E29DADF1F00624200 /* FirebaseTemporaryImageLoaderVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseTemporaryImageLoaderVM.swift; sourceTree = "<group>"; };
 		955C667D29AF2C030079BC91 /* InternetConnectionChecker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternetConnectionChecker.swift; sourceTree = "<group>"; };
 		955C667F29AF2F5F0079BC91 /* connectionErrorMan.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = connectionErrorMan.json; sourceTree = "<group>"; };
 		955C668129AF312D0079BC91 /* VacancyPostPublishingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VacancyPostPublishingView.swift; sourceTree = "<group>"; };
@@ -385,6 +394,7 @@
 			files = (
 				95450D7D295BAC7200B64C65 /* FirebaseDatabaseSwift in Frameworks */,
 				95450D6C295BABC500B64C65 /* Lottie in Frameworks */,
+				955AD68229DB58D800624200 /* SwiftUIPager in Frameworks */,
 				95450D79295BAC7200B64C65 /* FirebaseAuthCombine-Community in Frameworks */,
 				95450D87295BAC7200B64C65 /* FirebaseStorageCombine-Community in Frameworks */,
 				95450D81295BAC7200B64C65 /* FirebaseFirestoreCombine-Community in Frameworks */,
@@ -444,7 +454,7 @@
 			children = (
 				954D9183295A1CB700A22259 /* CorrespondenceView */,
 				95208EC8295733080083F85D /* MainView */,
-				9515509D2958CE7400A23D1D /* ChatCachedImageView.swift */,
+				9515509D2958CE7400A23D1D /* CachedImageView.swift */,
 			);
 			path = "Chat Page";
 			sourceTree = "<group>";
@@ -706,6 +716,8 @@
 			children = (
 				953E2DBA2982FB8600A4A82B /* IdeasView.swift */,
 				957D1B0929D8270B0076A9A1 /* IdeaCellView.swift */,
+				952C9F8029DE9D6D0040EAEA /* IdeaContentView.swift */,
+				952C9F8229DEAE070040EAEA /* BusinessCardAsync.swift */,
 			);
 			path = Ideas;
 			sourceTree = "<group>";
@@ -927,6 +939,7 @@
 			children = (
 				95E5EC92297DD17E00C82946 /* SourcesViewModel.swift */,
 				95E5EC93297DD17E00C82946 /* ArticlesViewModel.swift */,
+				955AD67E29DADF1F00624200 /* FirebaseTemporaryImageLoaderVM.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -959,6 +972,7 @@
 				954ADF48291FC237001300EA /* ImageCache.swift */,
 				954ADF46291FBFFF001300EA /* CachedImageModel.swift */,
 				953E5F382950FA64006810CC /* ImageSaver.swift */,
+				955AD67C29DADEE300624200 /* FirebaseAvatarImageServer.swift */,
 			);
 			path = Image;
 			sourceTree = "<group>";
@@ -1057,6 +1071,7 @@
 				957E89D82984824A00607AA5 /* PagerTabStripView */,
 				95EE333029851FD80037F811 /* Pages */,
 				9548C017299435FC00C341D8 /* TLPhotoPicker */,
+				955AD68129DB58D800624200 /* SwiftUIPager */,
 			);
 			productName = Coda;
 			productReference = 9595C45B2908343C004726AD /* Coda.app */;
@@ -1099,6 +1114,7 @@
 				957E89D72984824A00607AA5 /* XCRemoteSwiftPackageReference "PagerTabStripView" */,
 				95EE332F29851FD80037F811 /* XCRemoteSwiftPackageReference "Pages" */,
 				9548C016299435FC00C341D8 /* XCRemoteSwiftPackageReference "TLPhotoPicker" */,
+				955AD68029DB58D800624200 /* XCRemoteSwiftPackageReference "SwiftUIPager" */,
 			);
 			productRefGroup = 9595C45C2908343C004726AD /* Products */;
 			projectDirPath = "";
@@ -1176,13 +1192,15 @@
 				9555119529CB63B400583EFC /* ArticleStubView.swift in Sources */,
 				953AEBFF294A30D600170772 /* PostView.swift in Sources */,
 				952510BC29B9F0A400ED908A /* FindTeamPostPublishingView.swift in Sources */,
+				955AD67F29DADF1F00624200 /* FirebaseTemporaryImageLoaderVM.swift in Sources */,
 				9595C47929083505004726AD /* InputSheet.swift in Sources */,
 				95E5ECA6297DDFE600C82946 /* ArticleImageAsync.swift in Sources */,
 				952BCF79290968380046FB02 /* LoginBubble.swift in Sources */,
 				95C4723A2928FAB40084C60A /* ProfileActionCell.swift in Sources */,
 				956099F729AFAFBC0012465C /* IdeaConstructorMain.swift in Sources */,
-				9515509E2958CE7400A23D1D /* ChatCachedImageView.swift in Sources */,
+				9515509E2958CE7400A23D1D /* CachedImageView.swift in Sources */,
 				954ADF45291FBF32001300EA /* AvatarImageView.swift in Sources */,
+				952C9F8329DEAE070040EAEA /* BusinessCardAsync.swift in Sources */,
 				95680B952951C19300DFD85A /* PostRedactor.swift in Sources */,
 				95A3A61329A8DA6D00981E6F /* ServiceConstructor.swift in Sources */,
 				95421D092911914000980E52 /* ProjectCell.swift in Sources */,
@@ -1220,6 +1238,7 @@
 				95012A8829A3F2C800867188 /* OrderPreview.swift in Sources */,
 				951DBBF22910394C00FAB2E3 /* BottomSheetPositions.swift in Sources */,
 				951367102909C9CE00FD7C78 /* RegisterBubble.swift in Sources */,
+				952C9F8129DE9D6D0040EAEA /* IdeaContentView.swift in Sources */,
 				9526C7A2291441E60005C285 /* DataEditor.swift in Sources */,
 				95031A6029D87265002B1897 /* FirestoreSortDescriptors.swift in Sources */,
 				9542A25029B91A2A00CF387A /* FindTeamConstructor.swift in Sources */,
@@ -1261,6 +1280,7 @@
 				957B9B5229520CBE00BFA814 /* AppConfiguration.swift in Sources */,
 				952BCF7529095A7D0046FB02 /* SecuredDataBubble.swift in Sources */,
 				95A3A61629A8DC1500981E6F /* ServicePreview.swift in Sources */,
+				955AD67D29DADEE300624200 /* FirebaseAvatarImageServer.swift in Sources */,
 				951367132909D5B000FD7C78 /* Blur.swift in Sources */,
 				9586437D298AB43D00C2E59C /* RobotoMonoFontModifier.swift in Sources */,
 				9579818929B9C5BD00104A96 /* FindTeamPreview.swift in Sources */,
@@ -1554,6 +1574,14 @@
 				minimumVersion = 2.0.0;
 			};
 		};
+		955AD68029DB58D800624200 /* XCRemoteSwiftPackageReference "SwiftUIPager" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/fermoya/SwiftUIPager.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
 		957E89D72984824A00607AA5 /* XCRemoteSwiftPackageReference "PagerTabStripView" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/xmartlabs/PagerTabStripView";
@@ -1672,6 +1700,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 9548C016299435FC00C341D8 /* XCRemoteSwiftPackageReference "TLPhotoPicker" */;
 			productName = TLPhotoPicker;
+		};
+		955AD68129DB58D800624200 /* SwiftUIPager */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 955AD68029DB58D800624200 /* XCRemoteSwiftPackageReference "SwiftUIPager" */;
+			productName = SwiftUIPager;
 		};
 		957E89D82984824A00607AA5 /* PagerTabStripView */ = {
 			isa = XCSwiftPackageProductDependency;

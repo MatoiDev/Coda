@@ -59,6 +59,8 @@ struct ProfileView: View {
         
     private var fsmanager: FSManager = FSManager()
     
+    private let dismissable: Bool
+    
     @State private var yAxisScrollViewOnBottomSheetOffset: CGFloat = CGFloat.zero
     @State private var loadAvatar : Bool = true
     @State var showInfoSheet: Bool = false
@@ -66,35 +68,40 @@ struct ProfileView: View {
     @State private var avatarImage : AvatarImageView = AvatarImageView(urlString: nil, translation: .constant(0))
     @State private var engine: CHHapticEngine?
     
+    @State private var userIDForDataTask: String
+    
 
     @State private var userMode: UserMode!
 
-    init(with userID: String) {
-        
+    init(with userID: String, dismissable: Bool = false) {
+        self.dismissable = dismissable
+        self.userIDForDataTask = userID
+
         self.userMode = self.userID == self.loginUserID ? .owner : .guest
         self.userID = userID
         self.fsmanager.getUsersData(withID: self.userID)
         self.loadAvatar = true
+       
         
 //        print(self.userID == self.loginUserID, self.userMode)
 //        print(self.userReputation)
 
     }
     
-    // TODO: Переделать способ получения и кеширования изображения через mvvm паттерн
-    func getImageURL() async {
-        while true {
-            
-//            fsmanager.getUsersData(withID: self.userID)
-            
-            try? await Task.sleep(nanoseconds: 4 * NSEC_PER_SEC)
-
-            if self.avatarURL != "" {
-                await self.avatarImage.updateImage(url: self.avatarURL)
-                return
-            }
-        }
-    }
+//    // TODO: Переделать способ получения и кеширования изображения через mvvm паттерн
+//    func getImageURL() async {
+//        while true {
+//
+////            fsmanager.getUsersData(withID: self.userID)
+//
+//            try? await Task.sleep(nanoseconds: 4 * NSEC_PER_SEC)
+//
+//            if self.avatarURL != "" {
+//                await self.avatarImage.updateImage(url: self.avatarURL)
+//                return
+//            }
+//        }
+//    }
     
     // MARK: - Bottom Sheet Position
     var bottomSheetTranslationProrated : CGFloat {
@@ -115,7 +122,7 @@ struct ProfileView: View {
             let screenHeight = geometry.size.height + geometry.safeAreaInsets.top + geometry.safeAreaInsets.bottom
             
             ZStack {
-                if self.userID != self.loginUserID {
+                if self.userID != self.loginUserID || dismissable {
                     VStack {
                         HStack {
                             CancelCrossButton()
@@ -143,10 +150,10 @@ struct ProfileView: View {
                                  yAxisOffset: self.$yAxisScrollViewOnBottomSheetOffset,
                                  headerPosition: self.$bottomSheetTranslation)
                     {
-                                if self.avatarURL != "" {
-                                    AvatarImageView(urlString: self.avatarURL, onPost: true, translation: self.$avatarTranslation)
+                                
+                                    AvatarImageView(urlString: self.imageURL, onPost: true, translation: self.$avatarTranslation)
                                         .frame(width: 40, height: 40)
-                                }
+                                
                     } landAndRep: {
                     
                         if self.yAxisScrollViewOnBottomSheetOffset != 0 {
@@ -248,10 +255,7 @@ struct ProfileView: View {
                     // MARK: - Logo
                     VStack {
                         HStack {
-                            if self.avatarURL != "" {
-                                AvatarImageView(urlString: self.avatarURL, translation: self.$avatarTranslation)
-                            }
-                            
+                            AvatarImageView(urlString: self.imageURL, translation: self.$avatarTranslation)
                         }.padding(.horizontal, 32)
                         
                     }
@@ -265,7 +269,16 @@ struct ProfileView: View {
             Vibro.prepareEngine(engine: &self.engine)
         }
         .task {
-            await self.getImageURL()
+            print("ProfileView: Loading \(self.userIDForDataTask)")
+            self.fsmanager.getUserAvatar(withID: self.userIDForDataTask, completion: { res in
+                switch res {
+                case .success(let imageURL):
+                    print("ProfileView: i've managed to load this: \(imageURL)")
+                    self.imageURL = imageURL
+                case .failure(let failure):
+                    print("ProfileView: Cannot load imageURL \(failure.localizedDescription)")
+                }
+            })
         }
         .sheet(isPresented: self.$showInfoSheet) {
             MoreInfoSheet(logo: {

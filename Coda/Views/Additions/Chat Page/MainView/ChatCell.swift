@@ -103,7 +103,7 @@ struct ChatCell: View {
             // MARK: - Image
             Group {
                 if let url = self.imageURL {
-                    ChatCachedImageView(with: url, for: .Cell)
+                    CachedImageView(with: url, for: .Cell)
                 } else {
                     ProgressView()
                 }
@@ -120,7 +120,7 @@ struct ChatCell: View {
                 // MARK: - Message Photo (if it exists)
                 if let messageImageURL = self.messageImageURL, messageImageURL != "" {
                     HStack {
-                        ChatCachedImageView(with: messageImageURL, for: .CellMessage)
+                        CachedImageView(with: messageImageURL, for: .CellMessage)
                             .fixedSize()
                         if let lastMessage = self.lastMessage, lastMessage.isEmpty {
                             Text("Photo")

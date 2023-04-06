@@ -1374,6 +1374,83 @@ class FSManager: ObservableObject {
         }
     }
     
+    func like(idea ideaID: String, user userID: String, owner ownerID: String) {
+        let ideaRef = db.collection("Ideas").document(ideaID)
+        
+        let ownerRef = db.collection("Users").document(ownerID)
+        
+        
+        
+        ideaRef.updateData([
+            "stars": FieldValue.arrayUnion([userID])
+        ]) { err in
+            if let err = err {
+                print(err)
+            } else {
+                ownerRef.updateData([
+                    "reputation": FieldValue.increment(Int64(1))
+                ]) { err in
+                    if let err = err {
+                        print("ERROR: \(err)")
+                    }
+                    
+                }
+            }
+        }
+    }
+    
+    func unlike(idea ideaID: String, user userID: String, owner ownerID: String) {
+        let ideaRef = db.collection("Ideas").document(ideaID)
+        let ownerRef = db.collection("Users").document(ownerID)
+        
+        ideaRef.updateData([
+            "stars": FieldValue.arrayRemove([userID])
+        ]) { err in
+            if let err = err {
+                print(err)
+            } else {
+                ownerRef.updateData([
+                    "reputation": FieldValue.increment(Int64(-1))
+                ])
+            }
+        }
+    }
+    
+    func save(idea ideaID: String, user userID: String, owner ownerID: String) {
+        let ideaRef = db.collection("Ideas").document(ideaID)
+        
+        let ownerRef = db.collection("Users").document(ownerID)
+        
+        
+        
+        ideaRef.updateData([
+            "saves": FieldValue.arrayUnion([userID])
+        ]) { err in
+            if let err = err {
+                print(err)
+            } else {
+                print("FSManager: The Idea was successfully saved by user: \(userID)")
+                // TODO: - Cделать запись в словарик пользователя
+            }
+        }
+    }
+    
+    func removeFromFavs(idea ideaID: String, user userID: String, owner ownerID: String) {
+        let ideaRef = db.collection("Ideas").document(ideaID)
+        let ownerRef = db.collection("Users").document(ownerID)
+        
+        ideaRef.updateData([
+            "saves": FieldValue.arrayRemove([userID])
+        ]) { err in
+            if let err = err {
+                print(err)
+            } else {
+                print("FSManager: The Idea was successfully removed by user: \(userID)")
+                // TODO: - Cделать запись в словарик пользователя
+            }
+        }
+    }
+    
     func like(profilePost postID: String, user userID: String, owner ownerID: String) {
         let postsRef = db.collection("Posts").document(postID)
         
@@ -1632,6 +1709,32 @@ class FSManager: ObservableObject {
     
     // MARK: - Functions for getting stuff
 
+    
+    
+    func getIdeaInfo(id: String, completion: @escaping (Result<Dictionary<String, Any>, Error>) -> Void) -> Void {
+        if id != "" {
+            var res: Dictionary<String, Any> = Dictionary<String, Any>()
+            self.db.collection("Ideas").document(id).addSnapshotListener { documentSnapshot, error in
+                guard let document = documentSnapshot else {
+                    completion(.failure("Error fetching idea: \(error!.localizedDescription)"))
+                    return
+                }
+                guard let data = document.data() else {
+                    completion(.failure("Idea's data was empty."))
+                  return
+                }
+                
+                res["stars"] = (data["stars"] as! Array<String>)
+                res["views"] = (data["views"] as! Array<String>)
+                res["comments"] = (data["comments"] as! Array<String>)
+                res["saves"] = (data["saves"] as! Array<String>)
+                
+                completion(.success(res))
+            }
+        } else {
+            completion(.failure("The idea does not exists"))
+        }
+    }
   
   
     
@@ -2045,6 +2148,22 @@ class FSManager: ObservableObject {
             completion(.failure("Incorrect id"))
         }
         
+    }
+    
+    func getUserInfo(forID id: String, completion: @escaping (Result<Dictionary<String, Any>, Error>) -> Void) async {
+        
+//        var res: Dictionary<String, Any> = Dictionary<String, Any>()
+        
+        let docRef = db.collection("Users").document(id)
+        docRef.getDocument { (document, error) in
+            if let document = document, document.exists {
+                
+                if let res = document.data() {
+                    completion(.success(res))
+                } else { completion(.failure("Username")) }
+                
+            } else { completion(.failure("Username")) }
+        }
     }
     
     func getUserName(forID id: String, completion: @escaping (Result<String, Error>) -> Void) async {

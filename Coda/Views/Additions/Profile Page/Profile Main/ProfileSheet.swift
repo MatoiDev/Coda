@@ -204,7 +204,7 @@ struct ProfileSheet<Logo: View, LanguageAndReputation: View>: View {
             }
             .offset(y: 80 + 20 * bottomSheetTranslationProrated)
         }.onAppear {
-            UIScrollView.appearance().bounces = false
+//            UIScrollView.appearance().bounces = false
             UIScrollView.appearance().showsVerticalScrollIndicator = false
             
         }

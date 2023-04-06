@@ -63,9 +63,9 @@ struct NavigationViewHeaderButton: View {
         .clipShape(RoundedRectangle(cornerRadius: 25))
         .overlay {
             RoundedRectangle(cornerRadius: 25)
-                .stroke(Color.init(red: 0.88, green: 0.88, blue: 0.88), style: .init(lineWidth: 1))
+                .stroke(Color.init(red: 0.75, green: 0.75, blue: 0.79), style: .init(lineWidth: 0.5))
         }
-        .robotoMono(.medium, 12, color: .init(red: 0.88, green: 0.88, blue: 0.88))
+        .robotoMono(.bold, 12, color: .init(red: 0.75, green: 0.75, blue: 0.79))
     }
 }
 
@@ -93,6 +93,14 @@ struct IdeasView: View {
     @State private var openSubcategoryPicker: Bool = false
     @State private var openLanguagePicker: Bool = false
     @State private var openSortDescriptorPicker: Bool = false
+    
+    @State private var linkToTheChosenController: Bool = false
+    
+    @State var selectedItem: Idea? = nil
+
+    
+    private let headerCellBackgroundColor: Color = Color(red: 0.11, green: 0.11, blue: 0.12)
+    private let headerCellTextColor: Color = Color(red: 0.57, green: 0.57, blue: 0.6)
     
     
     var subcategoryLabel: String {
@@ -138,7 +146,7 @@ struct IdeasView: View {
     }
     
     var body: some View {
-        VStack {
+        VStack(alignment: .leading) {
             
          
                 ScrollView(.horizontal, showsIndicators: false) {
@@ -170,7 +178,7 @@ struct IdeasView: View {
                                        Image(systemName: "line.3.horizontal.decrease")
                                             .resizable()
                                             .fixedSize()
-                                            .foregroundColor(.secondary)
+                                            .foregroundColor(self.headerCellTextColor)
                                         Image(systemName: "\(numberOfFiltersApplied).circle.fill")
                                             .resizable()
                                             .fixedSize()
@@ -183,14 +191,14 @@ struct IdeasView: View {
 
                                 .padding(.horizontal, 8)
                                 .padding(.vertical, 6)
-                                .background(Color.init(red: 0.15, green: 0.15, blue: 0.15))
+                                .background(self.headerCellBackgroundColor)
                                
                                 .clipShape(RoundedRectangle(cornerRadius: 25))
                                 .overlay {
                                     RoundedRectangle(cornerRadius: 25)
-                                        .stroke(Color.init(red: 0.88, green: 0.88, blue: 0.88), style: .init(lineWidth: 1))
+                                        .stroke(self.headerCellTextColor, style: .init(lineWidth: 0.5))
                                 }
-                                .robotoMono(.medium, 12, color: .init(red: 0.88, green: 0.88, blue: 0.88))
+                                .robotoMono(.bold, 12, color: self.headerCellTextColor)
                             }
                             // MARK: - Category Header Button
                             Button {
@@ -207,14 +215,14 @@ struct IdeasView: View {
                             }
                             .padding(.horizontal, 8)
                             .padding(.vertical, 6)
-                            .background(self.category == .all ? Color.init(red: 0.15, green: 0.15, blue: 0.15) : Color("BackgroundColor2"))
+                            .background(self.category == .all ? self.headerCellBackgroundColor : Color("BackgroundColor2"))
                            
                             .clipShape(RoundedRectangle(cornerRadius: 25))
                             .overlay {
                                 RoundedRectangle(cornerRadius: 25)
-                                    .stroke(self.category == .all ? Color.init(red: 0.88, green: 0.88, blue: 0.88) : .black, style: .init(lineWidth: 1))
+                                    .stroke(self.category == .all ? self.headerCellTextColor : .black, style: .init(lineWidth: 0.5))
                             }
-                            .robotoMono(.medium, 12, color: self.category == .all ? .init(red: 0.88, green: 0.88, blue: 0.88) : .black)
+                            .robotoMono(.bold, 12, color: self.category == .all ? .init(red: 0.75, green: 0.75, blue: 0.79) : .black)
                             
                             // MARK: - Subcategory Header Button
                             if self.category != .all {
@@ -244,14 +252,14 @@ struct IdeasView: View {
                                 }
                                 .padding(.horizontal, 8)
                                 .padding(.vertical, 6)
-                                .background(subcategoryChosen ? Color.init(red: 0.15, green: 0.15, blue: 0.15) : Color("BackgroundColor2"))
+                                .background(subcategoryChosen ? self.headerCellBackgroundColor : Color("BackgroundColor2"))
                                
                                 .clipShape(RoundedRectangle(cornerRadius: 25))
                                 .overlay {
                                     RoundedRectangle(cornerRadius: 25)
-                                        .stroke(subcategoryChosen ? Color.init(red: 0.88, green: 0.88, blue: 0.88) : .black, style: .init(lineWidth: 1))
+                                        .stroke(subcategoryChosen ? self.headerCellTextColor : .black, style: .init(lineWidth: 0.5))
                                 }
-                                .robotoMono(.medium, 12, color: subcategoryChosen ? .init(red: 0.88, green: 0.88, blue: 0.88) : .black)
+                                .robotoMono(.bold, 12, color: subcategoryChosen ? .init(red: 0.75, green: 0.75, blue: 0.79) : .black)
                             }
                             
                             // MARK: - Language Picker Header Button
@@ -269,14 +277,14 @@ struct IdeasView: View {
                             }
                             .padding(.horizontal, 8)
                             .padding(.vertical, 6)
-                            .background(self.languages == [.None] || self.languages == [] ? Color.init(red: 0.15, green: 0.15, blue: 0.15) : Color("BackgroundColor2"))
+                            .background(self.languages == [.None] || self.languages == [] ? self.headerCellBackgroundColor : Color("BackgroundColor2"))
                            
                             .clipShape(RoundedRectangle(cornerRadius: 25))
                             .overlay {
                                 RoundedRectangle(cornerRadius: 25)
-                                    .stroke(self.languages == [.None] || self.languages == [] ? Color.init(red: 0.88, green: 0.88, blue: 0.88) : .black, style: .init(lineWidth: 1))
+                                    .stroke(self.languages == [.None] || self.languages == [] ? self.headerCellTextColor : .black, style: .init(lineWidth: 0.5))
                             }
-                            .robotoMono(.medium, 12, color: self.languages == [.None] || self.languages == [] ? .init(red: 0.88, green: 0.88, blue: 0.88) : .black)
+                            .robotoMono(.bold, 12, color: self.languages == [.None] || self.languages == [] ? .init(red: 0.75, green: 0.75, blue: 0.79) : .black)
                             
                             
                             // MARK: - Qualification Picker Header Button
@@ -377,15 +385,15 @@ struct IdeasView: View {
                                
                                 }
                             }
-                            .robotoMono(.medium, 12, color: self.difficultLevel == .all ? .init(red: 0.88, green: 0.88, blue: 0.88) : .black)
+                            .robotoMono(.bold, 12, color: self.difficultLevel == .all ? .init(red: 0.75, green: 0.75, blue: 0.79) : .black)
                             .padding(.horizontal, 8)
                             .padding(.vertical, 6)
-                            .background(self.difficultLevel == .all ? Color.init(red: 0.15, green: 0.15, blue: 0.15) : Color("BackgroundColor2"))
+                            .background(self.difficultLevel == .all ? self.headerCellBackgroundColor : Color("BackgroundColor2"))
                                
                             .clipShape(RoundedRectangle(cornerRadius: 25))
                             .overlay {
                                     RoundedRectangle(cornerRadius: 25)
-                                    .stroke(self.difficultLevel == .all ? Color.init(red: 0.88, green: 0.88, blue: 0.88) : .black, style: .init(lineWidth: 1))
+                                    .stroke(self.difficultLevel == .all ? self.headerCellTextColor : .black, style: .init(lineWidth: 0.5))
                                 }
                             RoundedRectangle(cornerRadius: 15)
                                 .frame(width: 1, height: 20)
@@ -424,15 +432,15 @@ struct IdeasView: View {
                                
                                 }
                             }
-                            .robotoMono(.medium, 12, color: self.sortDescriptor == .newest ? .init(red: 0.88, green: 0.88, blue: 0.88) : .black)
+                            .robotoMono(.bold, 12, color: self.sortDescriptor == .newest ? .init(red: 0.75, green: 0.75, blue: 0.79) : .black)
                             .padding(.horizontal, 8)
                             .padding(.vertical, 6)
-                            .background(self.sortDescriptor == .newest ? Color.init(red: 0.15, green: 0.15, blue: 0.15) : Color("BackgroundColor2"))
+                            .background(self.sortDescriptor == .newest ? self.headerCellBackgroundColor : Color("BackgroundColor2"))
                                
                             .clipShape(RoundedRectangle(cornerRadius: 25))
                             .overlay {
                                     RoundedRectangle(cornerRadius: 25)
-                                    .stroke(self.sortDescriptor == .newest ? Color.init(red: 0.88, green: 0.88, blue: 0.88) : .black, style: .init(lineWidth: 1))
+                                    .stroke(self.sortDescriptor == .newest ? self.headerCellTextColor : .black, style: .init(lineWidth: 0.5))
                                 }
                         }
                  
@@ -451,48 +459,85 @@ struct IdeasView: View {
                             .frame(width: 10)
                         }
                 }
-   
-            
-         
             .frame(maxWidth: .infinity)
                 .frame(height: 30)
-//                .background {
-//                    Color(red: 0.11, green: 0.11, blue: 0.11)
-//                }
                 
-            Group {
+            
                
-                    List {
-                        if ideas.count == 0 {
-                           Text("Loading Ideas\nHere have to be a stubs")
+            List {
+                if ideas.count == 0 {
+                    Text("Loading Ideas\nHere have to be a stubs")
+                }
+                ForEach(self.ideas, id: \.self.id) { idea in
+                    Group {
+                        Button {
+                            self.selectedItem = idea
+                        } label: {
+                            
+                            ZStack {
+                                RoundedRectangle(cornerRadius: 5)
+                                    .foregroundColor(Color.init(red: 0.09, green: 0.09, blue: 0.11))
+                                IdeaCellView(for: idea)
+                                    .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
+                                    .listRowSeparator(.hidden)
+                                    .listRowSeparatorTint(Color.clear)
+                                    .listRowBackground(Color.clear)
+                                    .buttonStyle(PlainButtonStyle())
+                            }
+                            
                         }
-                        ForEach(self.ideas, id: \.self.id) { idea in
-                         
-                            IdeaCellView(for: idea)
-                        }
+                        .overlay(
+                            
+                            NavigationLink(
+                                isActive: self.$linkToTheChosenController,
+                                destination: { if let item = self.selectedItem { IdeaContentView(withIdea: item) } },
+                                label: { EmptyView() }
+                            )
+                            .isDetailLink(false)
+                            .opacity(0)
+                        )
+                        .listRowBackground(Color.clear)
+                        .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
+                        .listRowSeparator(.hidden)
+                        .listRowSeparatorTint(Color.clear).frame(width: UIScreen.main.bounds.width, alignment: .center)
+                        .padding(.top)
                     }
-                    .overlay(content: {
-                        VStack {
-                            LinearGradient(colors: [.black, .clear], startPoint: .top, endPoint: .bottom)
-                                .frame(width: UIScreen.main.bounds.width, height: 20, alignment: .top)
-                        }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
-                    })
-                    .task {
-                        fsmanager.loadIdeas(sortBy: sortDescriptor, category: category, subDevCategory: subDevCategory, subAdminCategory: subAdminCategory, subDesignCategory: subDesignCategory, subTestCategory: subTestCategory, difficultLevel: difficultLevel, languages: languages, textStringQuery: self.searchText) { newIdeas in
-                            self.ideas = newIdeas
-                        }
-                    }
-                    .refreshable {
-                        print(self.sortDescriptor, self.category, self.subDevCategory, self.subAdminCategory, self.subDesignCategory, self.subTestCategory, self.difficultLevel, self.languages)
-                        fsmanager.loadIdeas(sortBy: sortDescriptor, category: category, subDevCategory: subDevCategory, subAdminCategory: subAdminCategory, subDesignCategory: subDesignCategory, subTestCategory: subTestCategory, difficultLevel: difficultLevel, languages: languages, textStringQuery: self.searchText) { newIdeas in
-                            print(newIdeas)
-                            self.ideas = newIdeas
-                        }
-                    }
-                
+                    
+                }
+                Text("")
+                    .frame(height: 50)
+                    .listRowBackground(Color.clear)
+                    .listRowSeparator(.hidden)
+                    .listRowSeparatorTint(Color.clear)
             }
+            .listStyle(PlainListStyle())
+            .onAppear {
+                UITableView.appearance().showsVerticalScrollIndicator = false
+                UITableView.appearance().separatorColor = UIColor.clear
+            }
+            .overlay(content: {
+                VStack {
+                    LinearGradient(colors: [.black, .clear], startPoint: .top, endPoint: .bottom)
+                        .frame(width: UIScreen.main.bounds.width, height: 20, alignment: .top)
+                }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+            })
+            .task {
+                fsmanager.loadIdeas(sortBy: sortDescriptor, category: category, subDevCategory: subDevCategory, subAdminCategory: subAdminCategory, subDesignCategory: subDesignCategory, subTestCategory: subTestCategory, difficultLevel: difficultLevel, languages: languages, textStringQuery: self.searchText) { newIdeas in
+                    self.ideas = newIdeas
+                }
+            }
+            .refreshable {
+                print(self.sortDescriptor, self.category, self.subDevCategory, self.subAdminCategory, self.subDesignCategory, self.subTestCategory, self.difficultLevel, self.languages)
+                fsmanager.loadIdeas(sortBy: sortDescriptor, category: category, subDevCategory: subDevCategory, subAdminCategory: subAdminCategory, subDesignCategory: subDesignCategory, subTestCategory: subTestCategory, difficultLevel: difficultLevel, languages: languages, textStringQuery: self.searchText) { newIdeas in
+                    print(newIdeas)
+                    self.ideas = newIdeas
+                }
+            }
+                
+            
         Spacer()
         }
+     
         .onChange(of: self.category, perform: { newValue in
             self.subDevCategory = .all
             self.subTestCategory = .all
@@ -515,7 +560,7 @@ struct IdeasView: View {
                 self.ideas = newIdeas
             }
         })
-//            .navigationBarColor(backgroundColor: .init(red: 0.11, green: 0.11, blue: 0.11, alpha: 1), titleColor: UIColor(white: 1, alpha: 1))
+
             .navigationTitle(LocalizedStringKey("Ideas"))
             .sheet(isPresented: self.$openSortDescriptorPicker, content: {
                 SortDescriptorsPickerSheetView(descriptor: self.$sortDescriptor)

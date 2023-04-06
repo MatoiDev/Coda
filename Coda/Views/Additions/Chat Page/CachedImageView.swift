@@ -12,10 +12,15 @@ import Combine
 import Kingfisher
 
 enum ImageType {
+    
+    case Default
+    
     case Cell
     case ChatIntelocutorLogo
     case Message
     case CellMessage
+    case Avatar
+    
 }
 
 //enum ImageDataConverter: String {
@@ -111,7 +116,7 @@ struct CircularProgressView: View {
 }
 
 
-struct ChatCachedImageView: View {
+struct CachedImageView: View {
     @ObservedObject var urlImageModel: CachedImageModel
     
     var type: ImageType
@@ -129,8 +134,18 @@ struct ChatCachedImageView: View {
     
     
     var body: some View {
-
-            if self.type == .Message {
+        
+        if self.type == .Default{
+            KFImage
+                .url(URL(string: self.urlString))
+                
+                .placeholder({ progress in
+                    CircularProgressView(progress: progress.fractionCompleted)
+                        .fixedSize()
+                })
+                .resizable()
+//                .aspectRatio(contentMode: .fit)
+        } else if self.type == .Message {
                 KFImage
                     .url(URL(string: self.urlString))
                     
@@ -151,7 +166,7 @@ struct ChatCachedImageView: View {
                     .clipShape(RoundedRectangle(cornerRadius: 5))
                     .frame(width: 20, height: 20)
             }
-            else {
+        else {
                 KFImage
                     .url(URL(string: self.urlString))
                     
