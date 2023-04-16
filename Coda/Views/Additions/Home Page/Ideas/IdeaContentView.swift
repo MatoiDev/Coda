@@ -10,25 +10,241 @@
 import SwiftUI
 import Foundation
 import Combine
+import SwiftUIPager
+import Introspect
 
 // TODO: Настроить отображение уровня сложности, а так же рейтинга идеи.
 
 
+
+
+
+
+
+//struct MultilineTextField: View {
+//
+//    private var placeholder: String
+//    private var onCommit: (() -> Void)?
+//    @State private var viewHeight: CGFloat = 40
+//    @State private var shouldShowPlaceholder = false
+//    @Binding private var text: String
+//
+//    private var internalText: Binding<String> {
+//        Binding<String>(get: { self.text } ) {
+//            self.text = $0
+//            self.shouldShowPlaceholder = $0.isEmpty
+//        }
+//    }
+//
+//    var body: some View {
+//        UITextViewWrapper(text: self.internalText, calculatedHeight: $viewHeight, onDone: onCommit)
+//            .frame(minHeight: viewHeight, maxHeight: viewHeight)
+//            .background(placeholderView, alignment: .topLeading)
+//    }
+//
+//    var placeholderView: some View {
+//        Group {
+//            if shouldShowPlaceholder {
+//                Text(placeholder).foregroundColor(.gray)
+//                    .padding(.leading, 4)
+//                    .padding(.top, 8)
+//            }
+//        }
+//    }
+//
+//    init (_ placeholder: String = "", text: Binding<String>, onCommit: (() -> Void)? = nil) {
+//        self.placeholder = placeholder
+//        self.onCommit = onCommit
+//        self._text = text
+//        self._shouldShowPlaceholder = State<Bool>(initialValue: self.text.isEmpty)
+//    }
+//
+//}
+//
+//
+//private struct UITextViewWrapper: UIViewRepresentable {
+//    typealias UIViewType = UITextView
+//
+//    @Binding var text: String
+//    @Binding var calculatedHeight: CGFloat
+//    var onDone: (() -> Void)?
+//
+//    func makeUIView(context: UIViewRepresentableContext<UITextViewWrapper>) -> UITextView {
+//        let textField = UITextView()
+//        textField.delegate = context.coordinator
+//
+//        textField.isEditable = true
+//        textField.font = UIFont.preferredFont(forTextStyle: .body)
+//        textField.isSelectable = true
+//        textField.isUserInteractionEnabled = true
+//        textField.isScrollEnabled = false
+//        textField.backgroundColor = UIColor.clear
+//        if nil != onDone {
+//            textField.returnKeyType = .done
+//        }
+//
+//        textField.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+//        return textField
+//    }
+//
+//    func updateUIView(_ uiView: UITextView, context: UIViewRepresentableContext<UITextViewWrapper>) {
+//        if uiView.text != self.text {
+//            uiView.text = self.text
+//        }
+//        if uiView.window != nil, !uiView.isFirstResponder {
+//            uiView.becomeFirstResponder()
+//        }
+//        UITextViewWrapper.recalculateHeight(view: uiView, result: $calculatedHeight)
+//    }
+//
+//    private static func recalculateHeight(view: UIView, result: Binding<CGFloat>) {
+//        let newSize = view.sizeThatFits(CGSize(width: view.frame.size.width, height: CGFloat.greatestFiniteMagnitude))
+//        if result.wrappedValue != newSize.height {
+//            DispatchQueue.main.async {
+//                result.wrappedValue = newSize.height // call in next render cycle.
+//            }
+//        }
+//    }
+//
+//    func makeCoordinator() -> Coordinator {
+//        return Coordinator(text: $text, height: $calculatedHeight, onDone: onDone)
+//    }
+//
+//    final class Coordinator: NSObject, UITextViewDelegate {
+//        var text: Binding<String>
+//        var calculatedHeight: Binding<CGFloat>
+//        var onDone: (() -> Void)?
+//
+//        init(text: Binding<String>, height: Binding<CGFloat>, onDone: (() -> Void)? = nil) {
+//            self.text = text
+//            self.calculatedHeight = height
+//            self.onDone = onDone
+//        }
+//
+//        func textViewDidChange(_ uiView: UITextView) {
+//            text.wrappedValue = uiView.text
+//            UITextViewWrapper.recalculateHeight(view: uiView, result: calculatedHeight)
+//        }
+//
+//        func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+//            if let onDone = self.onDone, text == "\n" {
+//                textView.resignFirstResponder()
+//                onDone()
+//                return false
+//            }
+//            return true
+//        }
+//    }
+//
+//}
+
+//struct TextEditorView: View {
+//
+//    @Binding var string: String
+//    @State var textEditorHeight : CGFloat = 20
+//
+//
+//    var body: some View {
+//
+//        ZStack(alignment: .leading) {
+//            Text(string)
+//                .font(.system(.body))
+//                .foregroundColor(.clear)
+//                .padding(14)
+//                .background(GeometryReader {
+//                    Color.clear.preference(key: ViewHeightKey.self,
+//                                           value: $0.frame(in: .local).size.height)
+//                })
+//
+//            TextEditor(text: $string)
+//                .foregroundColor(.white)
+//                .font(.system(.body))
+//                .frame(height: max(40,textEditorHeight))
+//                .cornerRadius(10.0)
+//                            .shadow(radius: 1.0)
+//        }
+//        .background(Color.clear)
+//        .onPreferenceChange(ViewHeightKey.self) { textEditorHeight = $0 }
+//
+//    }
+//
+//}
+
+
+struct ViewHeightKey: PreferenceKey {
+    static var defaultValue: CGFloat { 0 }
+    static func reduce(value: inout Value, nextValue: () -> Value) {
+        value = value + nextValue()
+    }
+}
+
+enum BottomSheetPositionPost: CGFloat, CaseIterable {
+    case bottom = 60
+    case middle = 400
+}
+
 struct IdeaContentView: View {
     
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    @AppStorage("LoginUserID") var loginUserID: String = ""
+    private let fsmanager: FSManager = FSManager()
     
     @State private var showAuthorProfileView: Bool = false
-    
+    @State private var controlOpacity: CGFloat = 1
+    @State var textFieldHeight: CGFloat = 30
     private let idea: Idea
     
-    init(withIdea idea: Idea) {
+    @State private var comments: Array<String> = []
+    @State private var views: Array<String> = []
+    @State private var saves: Array<String> = []
+    @State private var stars: Array<String> = []
+    
+    @Binding var hideTabBar: Bool
+    
+    @State var position: BottomSheetPosition = .relativeBottom(0.125)
+    
+    @State private var commentMessage: String = ""
+    @State private var commentsTextFieldIsFirstResponder: Bool = false
+    
+    @State private var forceTopPosition: Bool = false
+
+    
+    
+    init(withIdea idea: Idea, hideTabBar: Binding<Bool>) {
+        
         self.idea = idea
+        self._hideTabBar = hideTabBar
+        
+ 
+        self.comments = self.idea.comments
+        self.stars = self.idea.stars
+        self.saves = self.idea.saves
+        self.views = self.idea.views
+       
+        
+        self.theIdeaWasSavedByTheLoginUser =  self.idea.saves.contains(self.loginUserID)
+        self.theIdeaWasStarredByTheLoginUser = self.idea.comments.contains(self.loginUserID)
+        
+        
     }
+    @State private var showCommentController: Bool = false
+    
+    @State private var starYellowed: CGFloat = 0
+    @State private var bookmarkBlued: CGFloat = 0
+    
+    @State private var theIdeaWasStarredByTheLoginUser: Bool = false
+    @State private var theIdeaWasSavedByTheLoginUser: Bool = false
+    
+    @StateObject private var page: Page = .first()
+    
+    @ObservedObject var timer: CombineTimer = CombineTimer(2)
+    
+    @State var bottomSheetPosition: BottomSheetPositionPost = .bottom
     
     
     var body: some View {
-        ZStack {
+ 
+            
             ScrollView {
                 VStack(alignment: .leading) {
                     
@@ -36,7 +252,8 @@ struct IdeaContentView: View {
                     Button {
                         self.showAuthorProfileView.toggle()
                     } label: {
-                        BusinessCardAsync(withType: .author, userID: self.idea.author)
+//                        BusinessCardAsync(withType: .author, userID: self.idea.author)
+                        IdeaHeaderView(with: self.idea.author, time: self.idea.dateOfPublish)
                             .padding(.horizontal)
                             .padding(.top)
                     }
@@ -52,69 +269,102 @@ struct IdeaContentView: View {
                             .minimumScaleFactor(0.2)
                         Spacer()
                     }
-                    .padding(.top, 8)
-                    .padding(.leading, 24)
+                    .padding(.top, 4)
+                    .padding(.horizontal, 24)
                     
                     
                     // MARK: - Tags
                     
                     WrappingHStack(tags: self.idea.languages + self.getTags(from: self.idea.skills))
                         .padding(.horizontal)
+                        .padding(.top, -8)
                     
                 
 //                    BusinessCard(type: .author, image: self.$imageLoader.image, error: self.$imageLoader.errorLog, firstName: self.userFirstName, lastName: self.userLastName, reputation: self.userReputation)
 //                        .padding()
                     // MARK: - Date, comments & views
-                    HStack(alignment: .center) {
-                        Text(self.idea.dateOfPublish)
-                            .padding(.leading, 24)
-                            .robotoMono(.light, 12, color: Color(red: 0.80, green: 0.80, blue: 0.80))
-                    
-                        Spacer()
-                        HStack {
-                            Text("\(self.idea.comments.count)")
-                                .foregroundColor(.white)
-                                .robotoMono(.medium, 14)
-                            Image("chat")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 15, height: 15)
-                                .robotoMono(.light, 12, color: Color(red: 0.80, green: 0.80, blue: 0.80))
-//                                .padding(.trailing)
-                            Divider()
-                            Text("\(self.idea.views.count)")
-                                .foregroundColor(.white)
-                                .robotoMono(.medium, 14)
-                            Image(systemName: "eye")
-                                .robotoMono(.light, 12, color: Color(red: 0.80, green: 0.80, blue: 0.80))
-                        }
-                   
-                        .padding(2)
-                        .padding(.horizontal, 4)
-                        .background(Color("BubbleMessageRecievedColor"), in: RoundedRectangle(cornerRadius: 30))
-                        .overlay {
-                            RoundedRectangle(cornerRadius: 30)
-                                .stroke(Color(red: 0.80, green: 0.80, blue: 0.80), lineWidth: 1)
-                        }
-                        .padding(.trailing)
-                        .padding(4)
-                        .fixedSize()
-                        
-         
-                    }.padding(.top, -8)
+//                    HStack(alignment: .center) {
+//                        Text(self.idea.dateOfPublish)
+//                            .padding(.leading, 24)
+//                            .robotoMono(.light, 12, color: Color(red: 0.80, green: 0.80, blue: 0.80))
+//
+//                        Spacer()
+//                        HStack {
+//                            Text("\(self.idea.comments.count)")
+//                                .foregroundColor(.white)
+//                                .robotoMono(.medium, 14)
+//                            Image("chat")
+//                                .resizable()
+//                                .scaledToFit()
+//                                .frame(width: 15, height: 15)
+//                                .robotoMono(.light, 12, color: Color(red: 0.80, green: 0.80, blue: 0.80))
+////                                .padding(.trailing)
+//                            Divider()
+//                            Text("\(self.idea.views.count)")
+//                                .foregroundColor(.white)
+//                                .robotoMono(.medium, 14)
+//                            Image(systemName: "eye")
+//                                .robotoMono(.light, 12, color: Color(red: 0.80, green: 0.80, blue: 0.80))
+//                        }
+//
+//                        .padding(2)
+//                        .padding(.horizontal, 4)
+//                        .background(Color("BubbleMessageRecievedColor"), in: RoundedRectangle(cornerRadius: 30))
+//                        .overlay {
+//                            RoundedRectangle(cornerRadius: 30)
+//                                .stroke(Color(red: 0.80, green: 0.80, blue: 0.80), lineWidth: 1)
+//                        }
+//                        .padding(.trailing)
+//                        .padding(4)
+//                        .fixedSize()
+//
+//
+//                    }.padding(.top, -8)
                     
                     // MARK: - Previews
                     if !self.idea.images.isEmpty {
-                        ScrollView(.horizontal, showsIndicators: false) {
-                            HStack(spacing: 8) {
-                                ForEach(self.idea.images, id: \.self) { imageURL in
-                                    CachedImageView(with: imageURL, for: .Default)
-                                        .scaledToFill()
-                                        .frame(width: 250, height: 150)
-                                        .clipShape(RoundedRectangle(cornerRadius: 25))
+                        if self.idea.images.count == 1 {
+                            CachedImageView(with: idea.images[0], for: .Default)
+                                .frame(width: UIScreen.main.bounds.width, height: 200)
+                                .aspectRatio(contentMode: .fill)
+                                .padding(.top, 4)
+                        } else if self.idea.images.count > 1 {
+                            
+                            ZStack(alignment: .bottom) {
+                                Pager(page: self.page, data: self.idea.images, id: \.self) { image in
+                                    CachedImageView(with: image, for: .Default)
+                                        
+                                        .frame(width: UIScreen.main.bounds.width, height: 200)
+                                        .padding(.top, 4)
+                                }.loopPages()
+                                    .interactive(scale: 0.8)
+                                ZStack {
+                                   
+                                    PageControl(currentPageIndex: self.page.index, numberOfPages: self.idea.images.count)
+                                        
+                                        .frame(width: CGFloat(self.idea.images.count * 30) - 20, height: 20)
+                                        .background(Color.secondary)
+                                        .backgroundBlur()
+                                        .clipShape(RoundedRectangle(cornerRadius: 100))
+                                        .padding(.bottom, 4)
+                                        .opacity(self.controlOpacity)
+                                        .onAppear {
+                                            self.timer.startTimer {
+                                                withAnimation {
+                                                    self.controlOpacity = 0
+                                                }
+                                            }
+                                        }
+                                        
+                                        
+                                        
+                                }
+                             
                             }
-                        }.padding(.horizontal)
-                        }.frame(height: 175)
+                            
+                            .frame(height: 200)
+                    
+                        }
                     }
                     
                     
@@ -188,27 +438,282 @@ struct IdeaContentView: View {
                     .padding(.horizontal)
                     
                     // TODO: - Here must be comments
-                    // MARK: - Comments
+                    // MARK: - Idea's info
+                    Divider()
+                    HStack {
+            
+                            // MARK: - Stars
+                            HStack {
+                                Button {
+                                    withAnimation {
+                                        if self.theIdeaWasStarredByTheLoginUser {
+                                       
+                                            withAnimation(Animation.spring()) {
+                                                self.starYellowed = 0.5
+                                            }
+                                            DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(100)){
+                                                withAnimation(Animation.spring()) {
+                                                    self.starYellowed = 0
+                                                }
+                                                
+                                                DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(100)){
+                                                    self.fsmanager.unlike(idea: self.idea.id, user: self.loginUserID, owner: self.idea.author)
+                                                }
+                                            }
+                                        } else {
+                                            
+                                            withAnimation(Animation.spring()) {
+                                                self.starYellowed = 0.5
+                                            }
+                                            DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(100)){
+                                                withAnimation(Animation.spring()) {
+                                                    self.starYellowed = 1
+                                                    
+                                                }
+                                                DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(100)){
+                                                    self.fsmanager.like(idea: self.idea.id, user: self.loginUserID, owner: self.idea.author)
+                                                }
+                             
+                                            }
+                                        }
+                                    }
+                                } label: {
+                                    Image(systemName: "star\(self.theIdeaWasStarredByTheLoginUser ? ".fill" : "")")
+                                        .resizable()
+                                        .frame(width: 18, height: 18)
+                                        .foregroundColor(Color(red: 0.57 + 0.35 * self.starYellowed, green: 0.58 + self.starYellowed * 0.03, blue: 0.58 - 0.58 * self.starYellowed))
+                                        .font(.system(size: 15, weight: .semibold, design: .rounded))
+                                }
+                                Text("\(self.stars.count)")
+                            }
+                        Spacer()
+                        // MARK: - Comments
+                            HStack {
+                                Image(systemName: "bubble.left")
+                                    .resizable()
+                                    .frame(width: 18, height: 18)
+                                    .foregroundColor(.secondary)
+                                    .font(.system(size: 15, weight: .semibold, design: .rounded))
+                                Text("\(self.comments.count)")
+                            }
+                        // MARK: - Saves
+                        Spacer()
+                            HStack {
+                                Button {
+                                    print("add this idea to bookmarks")
+                                    
+                                    withAnimation {
+                                        if self.theIdeaWasSavedByTheLoginUser {
+                                            
+                                            withAnimation(Animation.spring()) {
+                                                self.bookmarkBlued = 0.5
+                                            }
+                                            DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(100)){
+                                                withAnimation(Animation.spring()) {
+                                                    self.bookmarkBlued = 0
+                                                }
+                                                DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(100)){
+                                                    self.fsmanager.removeFromFavs(idea: self.idea.id, user: self.loginUserID, owner: self.idea.author)
+                                                }
+                                            }
+                                        } else {
+                                            withAnimation(Animation.spring()) {
+                                                self.bookmarkBlued = 0.5
+                                            }
+                                            DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(100)){
+                                                withAnimation(Animation.spring()) {
+                                                    self.bookmarkBlued = 1
+                                                }
+                                                DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(100)){
+                                                    self.fsmanager.save(idea: self.idea.id, user: self.loginUserID, owner: self.idea.author)
+                                                }
+                                            }
+                                        }
+                                        
+                                    }
+                                    
+                                    
+                                    
+                                } label: {
+                                    Image(systemName: "bookmark\(self.bookmarkBlued == 1 ? ".fill" : "")")
+                                            .resizable()
+                                            .frame(width: 14, height: 18)
+                                            .foregroundColor(Color(red: 0.57 - 0.04 * self.bookmarkBlued, green: 0.58 + self.bookmarkBlued * 0.09, blue: 0.58 + 0.34 * self.bookmarkBlued))
+                                            .font(.system(size: 15, weight: .semibold, design: .rounded))
+                                }
+                                Text("\(self.saves.count)")
+                            }
+                        // MARK: - Views
+                        Spacer()
+                            HStack {
+                                Image(systemName: "eye")
+                                    .resizable()
+                                    .frame(width: 23, height: 17)
+                                    .foregroundColor(Color(red: 0.57, green: 0.58, blue: 0.58))
+                                    .font(.system(size: 15, weight: .semibold, design: .rounded))
+                                Text("\(self.views.count)")
+                            }
+                        
+                    }
+                    .padding(.horizontal)
+                    .padding(.bottom, 8)
+                    .robotoMono(.semibold, 17)
                     
-                    Text("")
-                        .frame(height: 55)
+            
+                }
+                .background {
+                    RoundedRectangle(cornerRadius: 15)
+                        .foregroundColor(Color("AdditionDarkBackground"))
+                }
+//                Text("")
+//                    .frame(height: 55)
+            }
+            .ignoresSafeArea(edges: .bottom)
+            .onTapGesture { UIApplication.shared.hideKeyboard(); self.position = .relativeBottom(0.125); self.commentsTextFieldIsFirstResponder = false }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(Color.black)
+            .onChange(of: self.position, perform: { newValue in
+                
+                print(newValue)
+                if newValue == .relativeTop(0.975) && self.textFieldHeight == 36 {
+                    self.forceTopPosition = true
+                }
+                if newValue == .relativeBottom(0.125) || newValue == .relativeBottom(0.55) {
+                    self.forceTopPosition = false
+                }
+                
+                if newValue == .relativeBottom(0.125) {
+                    UIApplication.shared.hideKeyboard()
+                    self.commentsTextFieldIsFirstResponder = false
+                } else {
+                    self.commentsTextFieldIsFirstResponder = true
+                }
+            })
+        .bottomSheet(bottomSheetPosition: self.$position, switchablePositions: [
+                           .relativeBottom(0.125),
+                           .relativeBottom(0.55),
+                           .relativeTop(0.975)
+                    ], headerContent: {
+                        //A SearchBar as headerContent.
+                        VStack {
+
+                            MultilineTextFieldRepresentable(placeholder: "Add a comment",
+                                                            text: self.$commentMessage,
+                                                            contentHeight: self.$textFieldHeight,
+                                                            maxContentHeight: 350.0,
+                                                            responder: self.$commentsTextFieldIsFirstResponder,
+                                                            onSend: {
+                                print("I've added a comment!")
+                            })
+                    
+                                .robotoMono(.semibold, 15)
+            
+                                .frame(maxWidth: .infinity)
+                                .frame(height: textFieldHeight)
+                                .multilineTextAlignment(TextAlignment.center)
+                                .fixedSize(horizontal: false, vertical: true)
+                        }
+                 
+                        .foregroundColor(Color(UIColor.secondaryLabel))
+                        .padding(.vertical, 8)
+                        .padding(.horizontal, 5)
+                
+                        .padding([.horizontal, .bottom])
+
+                        .onTapGesture {
+                            self.position = .relativeBottom(0.55)
+                        }
+                    }) {
+
+                        // MARK: - Content
+                       
+                    }
+                    .enableAppleScrollBehavior()
+                    .backgroundBlurMaterial(.systemDark)
+//
+        
+        .onChange(of: self.page.index, perform: { newValue in
+            if self.timer.isActive {
+                self.timer.resetTimer()
+            } else {
+                withAnimation {
+                    self.controlOpacity = 1
+                }
+                self.timer.startTimer {
+                    withAnimation {
+                        self.controlOpacity = 0
+                    }
                 }
             }
+         
             
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(Color("AdditionDarkBackground"))
+         
+        })
+        .onAppear {
+          
+            self.theIdeaWasStarredByTheLoginUser = self.idea.stars.contains(self.loginUserID)
+            self.starYellowed = self.idea.stars.contains(self.loginUserID) ? 1 : 0
+            
+            self.theIdeaWasSavedByTheLoginUser = self.idea.saves.contains(self.loginUserID)
+            self.bookmarkBlued = self.idea.saves.contains(self.loginUserID) ? 1 : 0
+            
         }
+        .onChange(of: self.commentMessage, perform: { _ in
+            print("""
+
+---------------------------------
+\(self.commentMessage.count(of: "\n")) \(self.commentMessage.count)
+---------------------------------
+
+""")
+        
+            if self.textFieldHeight > 36 {
+                self.position = .relativeTop(0.975)
+            } else if !self.forceTopPosition {
+                self.position = .relativeBottom(0.55)
+            }
+        })
+        .task {
+            if !self.idea.views.contains(self.loginUserID) {
+                self.fsmanager.view(idea: self.idea.id, user: self.loginUserID)
+            }
+            self.fsmanager.getIdeaInfo(id: self.idea.id) { result in
+                switch result {
+                case .success(let statisticsData):
+                    if let comments = statisticsData["comments"] as? Array<String>,
+                       let views = statisticsData["views"] as? Array<String>,
+                       let stars = statisticsData["stars"] as? Array<String>,
+                       let saves = statisticsData["saves"] as? Array<String> {
+                        
+                        self.stars = stars
+                        self.comments = comments
+                        self.views = views
+                        self.saves = saves
+                        
+                        self.theIdeaWasSavedByTheLoginUser = saves.contains(self.loginUserID)
+                        self.theIdeaWasStarredByTheLoginUser = stars.contains(self.loginUserID)
+                        self.starYellowed = stars.contains(self.loginUserID) ? 1 : 0
+                        self.bookmarkBlued = saves.contains(self.loginUserID) ? 1 : 0
+                    }
+                case .failure(let failure):
+                    print("IdeaContentView:  cannot load IdeasListener \(failure.localizedDescription)")
+                }
+            
+            }
+
+        }
+        .sheet(isPresented: self.$showCommentController, content: {
+            Text("hh")
+//                .presentationDetents([.medium, .large])
+        })
+      
+        .publishOnTabBarAppearence(self.hideTabBar)
         .navigationTitle("")
         .navigationBarTitleDisplayMode(.inline)
         .fullScreenCover(isPresented: self.$showAuthorProfileView, content: {
             ProfileView(with: self.idea.author, dismissable: true)
     
         })
-//        .toolbar {
-//            ToolbarItem(placement: .principal) {
-//                Text("")
-//            }
-//        }
     }
       
     private func getTags(from string: String) -> [String] {
@@ -221,6 +726,6 @@ let TestIdea = Idea(id: "fdsafdas", author: "fdafdsa", title: "Написать 
 
 struct IdeaContentView_Previews: PreviewProvider {
     static var previews: some View {
-        IdeaContentView(withIdea: TestIdea)
+        IdeaContentView(withIdea: TestIdea, hideTabBar: .constant(false))
     }
 }

@@ -202,6 +202,7 @@ struct Chat: View {
                             
                         }
                     }
+                    
                     VStack {
                         if self.editMessage {
                             HStack {
@@ -413,7 +414,6 @@ struct Chat: View {
                     
                 }.padding(.horizontal)
                         .padding(.bottom, 4)
-                        
                         .background(Color("TyperKeyPadColor"))
                         .overlay {
                             VStack {
@@ -451,7 +451,7 @@ struct Chat: View {
                 self.hideTabBar = true
 
             }
-            .navigationBarBackButtonHidden(true)
+     
             .toolbar {
                 ToolbarItem(placement: .principal) {
                     if let chatName = self.chatName {
@@ -487,6 +487,7 @@ struct Chat: View {
                     
                 }
             }
+            .navigationBarBackButtonHidden(true)
             .navigationBarItems(leading: Button(action : {
                 self.hideTabBar = false
                 self.mode.wrappedValue.dismiss()
@@ -505,7 +506,6 @@ struct Chat: View {
             })
             .task {
                 
-
                 self.tryToGetAll()
                 if self.members == nil, let members: Array<String> = Cachy.shared.get(forKey: "members:\(self.id)") { self.members = members }
                 if self.chatName == nil {

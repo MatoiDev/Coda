@@ -131,8 +131,8 @@ struct BusinessCardAsync: View {
 }
 
 
-//struct BusinessCardAsync_Previews: PreviewProvider {
-//    static var previews: some View {
-//        BusinessCardAsync()
-//    }
-//}
+struct BusinessCardAsync_Previews: PreviewProvider {
+    static var previews: some View {
+        BusinessCardAsync(withType: .author, userID: "sadf")
+    }
+}

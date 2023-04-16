@@ -35,8 +35,8 @@ enum UserMode {
 
 struct ProfileView: View {
     
-    @State var bottomSheetPosition: BottomSheetPosition = .bottom
-    @State var bottomSheetTranslation : CGFloat = BottomSheetPosition.bottom.rawValue
+    @State var bottomSheetPosition: BottomSheetPositions = .bottom
+    @State var bottomSheetTranslation : CGFloat = BottomSheetPositions.bottom.rawValue
     @State private var avatar: UIImage = UIImage(named: "default")!
     @State private var avatarTranslation : CGFloat = 0
     @State private var posts: [String] = []
@@ -105,7 +105,7 @@ struct ProfileView: View {
     
     // MARK: - Bottom Sheet Position
     var bottomSheetTranslationProrated : CGFloat {
-        return (bottomSheetTranslation - BottomSheetPosition.bottom.rawValue) / (BottomSheetPosition.top.rawValue - BottomSheetPosition.bottom.rawValue)
+        return (bottomSheetTranslation - BottomSheetPositions.bottom.rawValue) / (BottomSheetPositions.top.rawValue - BottomSheetPositions.bottom.rawValue)
     }
     
     // MARK: - Star Dynamic X Position

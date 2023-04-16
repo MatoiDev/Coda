@@ -97,10 +97,12 @@ struct IdeasView: View {
     @State private var linkToTheChosenController: Bool = false
     
     @State var selectedItem: Idea? = nil
-
+    
     
     private let headerCellBackgroundColor: Color = Color(red: 0.11, green: 0.11, blue: 0.12)
     private let headerCellTextColor: Color = Color(red: 0.57, green: 0.57, blue: 0.6)
+    
+//    @State private var hideTabBar: Bool = false
     
     
     var subcategoryLabel: String {
@@ -466,7 +468,18 @@ struct IdeasView: View {
                
             List {
                 if ideas.count == 0 {
-                    Text("Loading Ideas\nHere have to be a stubs")
+                    VStack(alignment: .center) {
+                        
+                        Image("EmptyBox")
+                            .resizable()
+                            .frame(width: 200, height: 200)
+                            .scaledToFill()
+                        Text("There is nothing here :(")
+                            .robotoMono(.bold, 20, color: .secondary)
+                        
+                    }
+                    .offset(y: UIScreen.main.bounds.height / 6)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
                 ForEach(self.ideas, id: \.self.id) { idea in
                     Group {
@@ -490,7 +503,7 @@ struct IdeasView: View {
                             
                             NavigationLink(
                                 isActive: self.$linkToTheChosenController,
-                                destination: { if let item = self.selectedItem { IdeaContentView(withIdea: item) } },
+                                destination: { if let item = self.selectedItem { IdeaContentView(withIdea: item, hideTabBar: self.$linkToTheChosenController) } },
                                 label: { EmptyView() }
                             )
                             .isDetailLink(false)
@@ -504,11 +517,14 @@ struct IdeasView: View {
                     }
                     
                 }
-                Text("")
-                    .frame(height: 50)
-                    .listRowBackground(Color.clear)
-                    .listRowSeparator(.hidden)
-                    .listRowSeparatorTint(Color.clear)
+                
+                    Text("")
+                        .frame(height: 50)
+                        .listRowBackground(Color.clear)
+                        .listRowSeparator(.hidden)
+                        .listRowSeparatorTint(Color.clear)
+                
+          
             }
             .listStyle(PlainListStyle())
             .onAppear {
@@ -537,14 +553,78 @@ struct IdeasView: View {
             
         Spacer()
         }
-     
+        .ignoresSafeArea(edges: .bottom)
         .onChange(of: self.category, perform: { newValue in
             self.subDevCategory = .all
             self.subTestCategory = .all
             self.subDesignCategory = .all
             self.subAdminCategory = .all
         })
-        .searchable(text: self.$searchText, placement: .navigationBarDrawer(displayMode: .always), prompt: "Search for new ideas...")
+        .searchable(text: self.$searchText, placement: .navigationBarDrawer(displayMode: .always), prompt: LocalizedStringKey("Search for new ideas..."))
+        .onChange(of: self.sortDescriptor, perform: { _ in
+            if self.searchText.isEmpty {
+                fsmanager.loadIdeas(sortBy: sortDescriptor, category: category, subDevCategory: subDevCategory, subAdminCategory: subAdminCategory, subDesignCategory: subDesignCategory, subTestCategory: subTestCategory, difficultLevel: difficultLevel, languages: languages, textStringQuery: self.searchText) { newIdeas in
+                    print(newIdeas)
+                    self.ideas = newIdeas
+                }
+            }
+        })
+        .onChange(of: self.category, perform: { _ in
+            if self.searchText.isEmpty {
+                fsmanager.loadIdeas(sortBy: sortDescriptor, category: category, subDevCategory: subDevCategory, subAdminCategory: subAdminCategory, subDesignCategory: subDesignCategory, subTestCategory: subTestCategory, difficultLevel: difficultLevel, languages: languages, textStringQuery: self.searchText) { newIdeas in
+                    print(newIdeas)
+                    self.ideas = newIdeas
+                }
+            }
+        })
+        .onChange(of: self.subDevCategory, perform: { _ in
+            if self.searchText.isEmpty {
+                fsmanager.loadIdeas(sortBy: sortDescriptor, category: category, subDevCategory: subDevCategory, subAdminCategory: subAdminCategory, subDesignCategory: subDesignCategory, subTestCategory: subTestCategory, difficultLevel: difficultLevel, languages: languages, textStringQuery: self.searchText) { newIdeas in
+                    print(newIdeas)
+                    self.ideas = newIdeas
+                }
+            }
+        })
+        .onChange(of: self.subAdminCategory, perform: { _ in
+            if self.searchText.isEmpty {
+                fsmanager.loadIdeas(sortBy: sortDescriptor, category: category, subDevCategory: subDevCategory, subAdminCategory: subAdminCategory, subDesignCategory: subDesignCategory, subTestCategory: subTestCategory, difficultLevel: difficultLevel, languages: languages, textStringQuery: self.searchText) { newIdeas in
+                    print(newIdeas)
+                    self.ideas = newIdeas
+                }
+            }
+        })
+        .onChange(of: self.subDesignCategory, perform: { _ in
+            if self.searchText.isEmpty {
+                fsmanager.loadIdeas(sortBy: sortDescriptor, category: category, subDevCategory: subDevCategory, subAdminCategory: subAdminCategory, subDesignCategory: subDesignCategory, subTestCategory: subTestCategory, difficultLevel: difficultLevel, languages: languages, textStringQuery: self.searchText) { newIdeas in
+                    print(newIdeas)
+                    self.ideas = newIdeas
+                }
+            }
+        })
+        .onChange(of: self.subTestCategory, perform: { _ in
+            if self.searchText.isEmpty {
+                fsmanager.loadIdeas(sortBy: sortDescriptor, category: category, subDevCategory: subDevCategory, subAdminCategory: subAdminCategory, subDesignCategory: subDesignCategory, subTestCategory: subTestCategory, difficultLevel: difficultLevel, languages: languages, textStringQuery: self.searchText) { newIdeas in
+                    print(newIdeas)
+                    self.ideas = newIdeas
+                }
+            }
+        })
+        .onChange(of: self.difficultLevel, perform: { _ in
+            if self.searchText.isEmpty {
+                fsmanager.loadIdeas(sortBy: sortDescriptor, category: category, subDevCategory: subDevCategory, subAdminCategory: subAdminCategory, subDesignCategory: subDesignCategory, subTestCategory: subTestCategory, difficultLevel: difficultLevel, languages: languages, textStringQuery: self.searchText) { newIdeas in
+                    print(newIdeas)
+                    self.ideas = newIdeas
+                }
+            }
+        })
+        .onChange(of: self.languages, perform: { _ in
+            if self.searchText.isEmpty {
+                fsmanager.loadIdeas(sortBy: sortDescriptor, category: category, subDevCategory: subDevCategory, subAdminCategory: subAdminCategory, subDesignCategory: subDesignCategory, subTestCategory: subTestCategory, difficultLevel: difficultLevel, languages: languages, textStringQuery: self.searchText) { newIdeas in
+                    print(newIdeas)
+                    self.ideas = newIdeas
+                }
+            }
+        })
         .onChange(of: self.searchText, perform: { _ in
             if self.searchText.isEmpty {
                 fsmanager.loadIdeas(sortBy: sortDescriptor, category: category, subDevCategory: subDevCategory, subAdminCategory: subAdminCategory, subDesignCategory: subDesignCategory, subTestCategory: subTestCategory, difficultLevel: difficultLevel, languages: languages, textStringQuery: self.searchText) { newIdeas in

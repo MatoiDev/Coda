@@ -45,7 +45,7 @@ struct ProfileSheet<Logo: View, LanguageAndReputation: View>: View {
     @ViewBuilder var landAndRep: LanguageAndReputation
     
     var bottomSheetTranslationProrated : CGFloat {
-        (headerPosition - BottomSheetPosition.bottom.rawValue) / (BottomSheetPosition.top.rawValue - BottomSheetPosition.bottom.rawValue)
+        (headerPosition - BottomSheetPositions.bottom.rawValue) / (BottomSheetPositions.top.rawValue - BottomSheetPositions.bottom.rawValue)
         
     }
     

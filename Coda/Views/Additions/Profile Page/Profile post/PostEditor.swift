@@ -93,19 +93,21 @@ struct PostEditor: View {
             
             
         }
+        .sheet(isPresented: self.$showImagePicker) {
+            ImagePicker(sourceType: .photoLibrary) { result in
+                switch result {
+                case .success(let img):
+                    self.postImage = img
+                case .failure(let err):
+                    self.alertLog = err.localizedDescription
+                    self.showingAlert.toggle()
+                }
+            }
+        }
         .robotoMono(.semibold, 16)
             .padding(.horizontal)
-            .sheet(isPresented: self.$showImagePicker) {
-                ImagePicker(sourceType: .photoLibrary) { result in
-                    switch result {
-                    case .success(let img):
-                        self.postImage = img
-                    case .failure(let err):
-                        self.alertLog = err.localizedDescription
-                        self.showingAlert.toggle()
-                    }
-                }
-            }.alert(alertLog, isPresented: $showingAlert) {
+       
+            .alert(alertLog, isPresented: $showingAlert) {
                 Button("OK", role: .cancel) { }
             }
         

@@ -32,21 +32,21 @@ struct IdeaCellView: View {
     @State private var stars: Array<String> = []
     
     
-    // -------------- Star Animation
+    // --------------- Star Animation
     @State private var starYPositionOffset: CGFloat = 0
     @State private var starXPositionOffset: CGFloat = 0
     @State private var starRotationEffect: CGFloat = 0
     @State private var starYellowed: CGFloat = 0
-    // --------------
+    // ---------------
     
     
     
-    // -------------- Bookmark Animation
+    // --------------- Bookmark Animation
     @State private var bookmarkYPositionOffset: CGFloat = 0
     @State private var bookmarkXPositionOffset: CGFloat = 0
     @State private var bookmarkRotationEffect: CGFloat = 0
     @State private var bookmarkBlued: CGFloat = 0
-    // --------------
+    // ---------------
     
     @State private var theIdeaWasStarredByTheLoginUser: Bool = false
     @State private var theIdeaWasSavedByTheLoginUser: Bool = false
@@ -70,7 +70,7 @@ struct IdeaCellView: View {
     
     var body: some View {
         VStack {
-            // MARK: - UserInfo
+            // MARK: - Previews
             
             if self.idea.images.count == 1 {
                 CachedImageView(with: idea.images[0], for: .Default)
@@ -78,14 +78,30 @@ struct IdeaCellView: View {
                     .aspectRatio(contentMode: .fill)
             } else if self.idea.images.count > 1 {
                 
-                Pager(page: self.page, data: self.idea.images, id: \.self) { image in
-                    CachedImageView(with: image, for: .Default)
-                    
-                        .frame(width: UIScreen.main.bounds.width, height: 200)
+                ZStack(alignment: .bottom) {
+                    Pager(page: self.page, data: self.idea.images, id: \.self) { image in
+                        CachedImageView(with: image, for: .Default)
+                        
+                            .frame(width: UIScreen.main.bounds.width, height: 200)
+                    }
+                    .loopPages()
+                    .interactive(scale: 0.8)
+                    .frame(height: 200)
+                    ZStack {
+                       
+                        PageControl(currentPageIndex: self.page.index, numberOfPages: self.idea.images.count)
+                            
+                            .frame(width: CGFloat(30 * self.idea.images.count) - 20, height: 20)
+                            .background(Color.secondary)
+                            .backgroundBlur()
+                            .clipShape(RoundedRectangle(cornerRadius: 100))
+                            .padding(.bottom, 4)
+
+                            
+                            
+                            
+                    }
                 }
-                .loopPages()
-                .interactive(scale: 0.8)
-                .frame(height: 200)
         
             }
             HStack {

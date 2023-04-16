@@ -245,6 +245,8 @@ class FSManager: ObservableObject {
         var uploadedURLs: [String] = []
         var uploadCount: Int = 0
         
+        var previewToURL: Dictionary<UIImage, String> = Dictionary<UIImage, String>()
+        
         var folderName: String {
             switch folder {
             case .order:
@@ -281,10 +283,13 @@ class FSManager: ObservableObject {
                 ref.downloadURL { url, error in
                     if let fileURL = url?.absoluteString {
                         print(fileURL)
-                        uploadedURLs.append(fileURL)
                         uploadCount += 1
                         print("Number of previews successfully uploaded: \(uploadCount)")
+                        previewToURL[preview] = fileURL
                         if uploadCount == previews.count {
+                            for prev in previews {
+                                uploadedURLs.append(previewToURL[prev]!)
+                            }
                             print("All previews are uploaded successfully, uploadedImageUrlsArray: \(uploadedURLs)")
                             completion(.success(uploadedURLs))
                         }
@@ -1341,6 +1346,19 @@ class FSManager: ObservableObject {
     }
     
     // MARK: - Increment & Decrement functions
+    
+    func view(idea ideaID: String, user userID: String) {
+        let ideaRef = db.collection("Ideas").document(ideaID)
+        
+        
+        ideaRef.updateData([
+            "views": FieldValue.arrayUnion([userID])
+        ]) { err in
+            if let err = err {
+                print(err)
+            }
+        }
+    }
     
     func unlike(profilePost postID: String, user userID: String, owner ownerID: String) {
         let postsRef = db.collection("Posts").document(postID)

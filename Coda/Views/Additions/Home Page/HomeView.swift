@@ -114,6 +114,7 @@ struct HomeView: View {
             }.navigationBarTitle("Home")
         }, accentColor: UIColor(Color.cyan)).edgesIgnoringSafeArea(.top)
             .background(Color.black)
+            .ignoresSafeArea(edges: .bottom)
             
         
     }

@@ -24,7 +24,6 @@ struct ChatsTableView: View {
     @State var hideTabBar: Bool = false
     
     
-    
     init(with id: String) {
         self.userID = id
         if let ids: Array<String> = Cachy.shared.get(forKey: "chats") {
