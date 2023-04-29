@@ -10,6 +10,13 @@ import MultilineTextField
 import CoreGraphics
 import Combine
 
+enum MessageState {
+    
+    case editing
+    case sending
+    case done
+}
+
 struct MultilineTextFieldRepresentable: UIViewRepresentable {
     
     let placeholder: String
@@ -27,6 +34,8 @@ struct MultilineTextFieldRepresentable: UIViewRepresentable {
     
     @State private var toolbarButton: UIBarButtonItem
     
+    @Binding var commentMessageState: MessageState
+    
     
     private func getAccessoryToolBar() -> UIToolbar {
         let flexSpace: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: self, action: nil)
@@ -42,19 +51,20 @@ struct MultilineTextFieldRepresentable: UIViewRepresentable {
     }
 
     
-    init(placeholder: String, text: Binding<String>, contentHeight: Binding<CGFloat>, maxContentHeight: CGFloat = 168.0, responder: Binding<Bool>? = nil, onSend: (() -> Void)? = nil) {
+    init(placeholder: String, text: Binding<String>, contentHeight: Binding<CGFloat>, maxContentHeight: CGFloat = 168.0, responder: Binding<Bool>? = nil, messageStateHandler: Binding<MessageState>, onSend: (() -> Void)? = nil) {
         self.placeholder = placeholder
         self._text = text
         self._contentHeight = contentHeight
         self.firstResponderIsFantom = responder == nil
         self._firstResponder = responder ?? .constant(false)
         self.maxContentHeight = maxContentHeight
+        self._commentMessageState = messageStateHandler
         self.onSend = onSend
         
   
         
-        let config = UIImage.SymbolConfiguration(hierarchicalColor: .cyan)
-        let image: UIImage = UIImage(systemName: "paperplane.circle.fill", withConfiguration: config)!
+        let config = UIImage.SymbolConfiguration(hierarchicalColor: .white)
+        let image: UIImage = UIImage(systemName: "bubble.right.circle.fill", withConfiguration: config)!
 
         let keyButtons: [KeyboardAccessoryButton] = [
             KeyboardAccessoryButton(image: image, position: .trailing, tapHandler: self.onSend)
@@ -73,7 +83,7 @@ struct MultilineTextFieldRepresentable: UIViewRepresentable {
         let currHeight = self.toolbarButton.customView?.heightAnchor.constraint(equalToConstant: 44)
         currHeight?.isActive = true
         self.toolbarButton.customView?.transform = CGAffineTransform(scaleX: 2, y: 2)
-        self.toolbarButton.isEnabled = !self.text.isEmpty
+        self.toolbarButton.isEnabled = self.validate(text: self.text)
         
         
         
@@ -99,8 +109,6 @@ struct MultilineTextFieldRepresentable: UIViewRepresentable {
         textField.textContainerInset = UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16)
         
         textField.layer.cornerRadius = 15.0
-//        textField.layer.borderWidth = 0.2
-//        textField.layer.borderColor = UIColor.secondaryLabel.cgColor
         
         textField.autocorrectionType = .no
         textField.autocapitalizationType = .none
@@ -120,12 +128,33 @@ struct MultilineTextFieldRepresentable: UIViewRepresentable {
     
     func updateUIView(_ uiView: MultilineTextField, context: Context) {
         uiView.text = self.text
-        if self.onSend != nil { // ТехtField не из чата
-            uiView.backgroundColor = uiView.isFirstResponder ? UIColor.clear : UIColor.black
+        
+        DispatchQueue.main.async {
+            if self.onSend != nil { // ТехtField не из чата
+                uiView.backgroundColor = uiView.isFirstResponder ? UIColor.clear : UIColor.black
+            }
         }
+   
 
 
-        context.coordinator.toolbarButton.isEnabled = self.text.count(of: "\n") != self.text.count
+        context.coordinator.toolbarButton.isEnabled = self.validate(text: self.text)
+        
+        if self.commentMessageState == .sending {
+            context.coordinator.toolbarButton.customView = UIActivityIndicatorView()
+        } else {
+            let config = UIImage.SymbolConfiguration(hierarchicalColor: .white)
+            let image: UIImage = UIImage(systemName: "bubble.right.circle.fill", withConfiguration: config)!
+
+            let menuBtn = UIButton(type: .custom)
+            menuBtn.frame = CGRect(x: 0.0, y: 0.0, width: 32, height: 32)
+            menuBtn.setImage(image, for: .normal)
+            menuBtn.onTap { _ in self.onSend?() }
+            context.coordinator.toolbarButton.customView = menuBtn
+            context.coordinator.toolbarButton.customView?.transform = CGAffineTransform(scaleX: 2, y: 2)
+            context.coordinator.toolbarButton.isEnabled = self.validate(text: self.text)
+            
+            
+        }
         
         uiView.selectedRange = NSMakeRange(uiView.text.count, 0)
         if !self.firstResponderIsFantom, self.firstResponder {
@@ -139,6 +168,10 @@ struct MultilineTextFieldRepresentable: UIViewRepresentable {
 
             
         }
+    }
+    
+    private func validate(text: String) -> Bool {
+        return text.count(of: " ") + text.count(of: "\n") != text.count
     }
     
     func makeCoordinator() -> Coordinator {
@@ -183,7 +216,7 @@ struct ChatMessageTyper: View {
     
     var body: some View {
 
-            MultilineTextFieldRepresentable(placeholder: "Write a message...", text: self.$messageText, contentHeight: self.$textFieldHeight)
+        MultilineTextFieldRepresentable(placeholder: "Write a message...", text: self.$messageText, contentHeight: self.$textFieldHeight, messageStateHandler: .constant(.editing))
                 .robotoMono(.semibold, 15)
 
                 .frame(height: textFieldHeight)

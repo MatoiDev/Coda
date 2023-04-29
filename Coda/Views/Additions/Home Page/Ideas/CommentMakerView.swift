@@ -12,7 +12,7 @@ struct CommentMakerView: View {
     @State private var alertTrigger: Bool = false
     var body: some View {
         ZStack(alignment: .top) {
-//
+
             if self.messageText.isEmpty {
                 Text("Add a comment")
            
@@ -22,7 +22,6 @@ struct CommentMakerView: View {
             }
             
             TextEditor(text: self.$messageText)
-//                .foregroundColor(.clear)
                 .font(.custom("Helvetica", size: 24))
                 .padding(.all)
                 .background(Color.clear)

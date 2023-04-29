@@ -10,6 +10,8 @@ import Firebase
 import Cachy
 
 @main
+
+
 struct CodaApp: App {
     
     @AppStorage("hideTabBar") var ASHideTabBar: Bool = false

@@ -13,6 +13,11 @@ import FirebaseFirestore
 import Firebase
 import FirebaseStorage
 
+enum PostType {
+    // TODO - some more
+    case Idea, Vacancy, TeamSearch, FreelanceOrder, News, CommentReply
+}
+
 
 protocol CloudFirestoreItemDelegate {
     var id: String { get }
@@ -157,6 +162,33 @@ class FSManager: ObservableObject {
                     return
                 }
                 completion(.success(url))
+            }
+        }
+    }
+    
+    func upload(commentPhoto: UIImage?, with id: String, completion: @escaping (Result<String, Error>) -> Void) -> Void {
+        
+        guard let commentPhoto = commentPhoto else { completion(.success("")); return }
+        
+        let ref = Storage.storage().reference().child("CommentPhotos").child(id)
+        
+        guard let imageData = commentPhoto.jpegData(compressionQuality: 0.4) else { return }
+        
+        let metadata = StorageMetadata()
+        metadata.contentType = "image/jpeg"
+        
+        ref.putData(imageData, metadata: metadata) { metadata, error in
+            guard let _ = metadata else {
+                completion(.failure(error!))
+                return
+            }
+            
+            ref.downloadURL { url, error in
+                guard let url = url else {
+                    completion(.failure(error!))
+                    return
+                }
+                completion(.success("\(url)"))
             }
         }
     }
@@ -763,6 +795,72 @@ class FSManager: ObservableObject {
 //            let percentComplete = 100.0 * Double(snapshot.progress!.completedUnitCount) / Double(snapshot.progress!.totalUnitCount)
 //            observeManager.filesProgressSnapshots[snapshot] = percentComplete
 //        }
+    }
+    
+    
+    
+    func sendComment(postType: PostType, postId: String, author: String, text: String, upvotes: [String] = [], downvotes: [String] = [], replies: Array<String> = [], image: UIImage?, completion: @escaping (Result<String, Error>) -> Void) -> Void {
+        guard Reachability.isConnectedToNetwork() else { return }
+        let commentID: String = "comment:" + FSManager.generate64CharactersLongID()
+        
+        self.upload(commentPhoto: image, with: commentID) { result in
+            switch result {
+            case .success(let imageURL):
+                
+                self.db.collection("Comments").document(commentID).setData([
+                    
+                    "id" : commentID,
+                    "author": author,
+                    "text": text,
+                    "upvotes": upvotes,
+                    "downvotes": downvotes,
+                    "replies":  replies,
+                    "image": imageURL,
+                    "time": Date().timeIntervalSince1970,
+                    "date": Date().getFormattedDate(format: "d MMM, HH:mm")
+                    
+                ]) { err in
+                    if let err = err {
+                        print("Error writing document: \(err)")
+                        self.showPV = false
+                        completion(.failure("Error with creating comment: \(err.localizedDescription)"))
+                    } else {
+                        
+                        // Добавить этот комментарий в массив поста под которым его ставят
+                        switch postType {
+                        case .Idea:
+                            self.db.collection("Ideas").document(postId).updateData([ "comments": FieldValue.arrayUnion([commentID]) ]) { err in
+                                if let err = err { completion(.failure(err)); return }
+                                else { completion(.success(commentID)); return }}
+                        case .Vacancy:
+                            self.db.collection("Vacancy").document(postId).updateData([ "comments": FieldValue.arrayUnion([commentID]) ]) { err in
+                                if let err = err { completion(.failure(err)); return }
+                                else { completion(.success(commentID)); return }}
+                        case .TeamSearch:
+                            self.db.collection("TeamAnnouncements").document(postId).updateData([ "comments": FieldValue.arrayUnion([commentID]) ]) { err in
+                                if let err = err { completion(.failure(err)); return }
+                                else { completion(.success(commentID)); return }}
+                        case .FreelanceOrder:
+                            self.db.collection("FreelanceOrder").document(postId).updateData([ "comments": FieldValue.arrayUnion([commentID]) ]) { err in
+                                if let err = err { completion(.failure(err)); return }
+                                else { completion(.success(commentID)); return }}
+                        case .News:
+                            self.db.collection("NewsPosts").document(postId).updateData([ "comments": FieldValue.arrayUnion([commentID]) ]) { err in
+                                if let err = err { completion(.failure(err)); return }
+                                else { completion(.success(commentID)); return }}
+                        case .CommentReply:
+                            self.db.collection("Comments").document(postId).updateData([ "comments": FieldValue.arrayUnion([commentID]) ]) { err in
+                                if let err = err { completion(.failure(err)); return }
+                                else { completion(.success(commentID)); return }}
+                        }
+                    }
+                }
+            case .failure(let failure):
+                completion(.failure(failure))
+            }
+        }
+    
+        
     }
     
     func createProject(
@@ -1727,6 +1825,37 @@ class FSManager: ObservableObject {
     
     // MARK: - Functions for getting stuff
 
+    
+    func getComment(withID id: String, completion: @escaping (Result<Dictionary<String, Any>, Error>) -> Void) -> Void {
+        
+        if id != "" {
+            var res: Dictionary<String, Any> = Dictionary<String, Any>()
+            self.db.collection("Comments").document(id).addSnapshotListener { documentSnapshot, error in
+                guard let document = documentSnapshot else {
+                    completion(.failure("Error fetching comment: \(error!.localizedDescription)"))
+                    return
+                }
+                
+                guard let data = document.data() else {
+                    completion(.failure("Comments's data was empty. for id: \(id)"))
+                    return
+                }
+                
+                res["author"] = (data["author"] as! String)
+                res["text"] = (data["text"] as! String)
+                res["upvotes"] = (data["upvotes"] as! Array<String>)
+                res["downvotes"] = (data["downvotes"] as! Array<String>)
+                res["replies"] = (data["replies"] as! Array<String>)
+                res["image"] = (data["image"] as! String)
+                res["time"] = (data["time"] as! Double)
+                res["date"] = (data["date"] as! String)
+                
+                completion(.success(res))
+            }
+        } else {
+            completion(.failure("The comment does not exists"))
+        }
+    }
     
     
     func getIdeaInfo(id: String, completion: @escaping (Result<Dictionary<String, Any>, Error>) -> Void) -> Void {

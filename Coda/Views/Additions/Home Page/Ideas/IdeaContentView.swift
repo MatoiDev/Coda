@@ -13,163 +13,10 @@ import Combine
 import SwiftUIPager
 import Introspect
 
+
+
+
 // TODO: Настроить отображение уровня сложности, а так же рейтинга идеи.
-
-
-
-
-
-
-
-//struct MultilineTextField: View {
-//
-//    private var placeholder: String
-//    private var onCommit: (() -> Void)?
-//    @State private var viewHeight: CGFloat = 40
-//    @State private var shouldShowPlaceholder = false
-//    @Binding private var text: String
-//
-//    private var internalText: Binding<String> {
-//        Binding<String>(get: { self.text } ) {
-//            self.text = $0
-//            self.shouldShowPlaceholder = $0.isEmpty
-//        }
-//    }
-//
-//    var body: some View {
-//        UITextViewWrapper(text: self.internalText, calculatedHeight: $viewHeight, onDone: onCommit)
-//            .frame(minHeight: viewHeight, maxHeight: viewHeight)
-//            .background(placeholderView, alignment: .topLeading)
-//    }
-//
-//    var placeholderView: some View {
-//        Group {
-//            if shouldShowPlaceholder {
-//                Text(placeholder).foregroundColor(.gray)
-//                    .padding(.leading, 4)
-//                    .padding(.top, 8)
-//            }
-//        }
-//    }
-//
-//    init (_ placeholder: String = "", text: Binding<String>, onCommit: (() -> Void)? = nil) {
-//        self.placeholder = placeholder
-//        self.onCommit = onCommit
-//        self._text = text
-//        self._shouldShowPlaceholder = State<Bool>(initialValue: self.text.isEmpty)
-//    }
-//
-//}
-//
-//
-//private struct UITextViewWrapper: UIViewRepresentable {
-//    typealias UIViewType = UITextView
-//
-//    @Binding var text: String
-//    @Binding var calculatedHeight: CGFloat
-//    var onDone: (() -> Void)?
-//
-//    func makeUIView(context: UIViewRepresentableContext<UITextViewWrapper>) -> UITextView {
-//        let textField = UITextView()
-//        textField.delegate = context.coordinator
-//
-//        textField.isEditable = true
-//        textField.font = UIFont.preferredFont(forTextStyle: .body)
-//        textField.isSelectable = true
-//        textField.isUserInteractionEnabled = true
-//        textField.isScrollEnabled = false
-//        textField.backgroundColor = UIColor.clear
-//        if nil != onDone {
-//            textField.returnKeyType = .done
-//        }
-//
-//        textField.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
-//        return textField
-//    }
-//
-//    func updateUIView(_ uiView: UITextView, context: UIViewRepresentableContext<UITextViewWrapper>) {
-//        if uiView.text != self.text {
-//            uiView.text = self.text
-//        }
-//        if uiView.window != nil, !uiView.isFirstResponder {
-//            uiView.becomeFirstResponder()
-//        }
-//        UITextViewWrapper.recalculateHeight(view: uiView, result: $calculatedHeight)
-//    }
-//
-//    private static func recalculateHeight(view: UIView, result: Binding<CGFloat>) {
-//        let newSize = view.sizeThatFits(CGSize(width: view.frame.size.width, height: CGFloat.greatestFiniteMagnitude))
-//        if result.wrappedValue != newSize.height {
-//            DispatchQueue.main.async {
-//                result.wrappedValue = newSize.height // call in next render cycle.
-//            }
-//        }
-//    }
-//
-//    func makeCoordinator() -> Coordinator {
-//        return Coordinator(text: $text, height: $calculatedHeight, onDone: onDone)
-//    }
-//
-//    final class Coordinator: NSObject, UITextViewDelegate {
-//        var text: Binding<String>
-//        var calculatedHeight: Binding<CGFloat>
-//        var onDone: (() -> Void)?
-//
-//        init(text: Binding<String>, height: Binding<CGFloat>, onDone: (() -> Void)? = nil) {
-//            self.text = text
-//            self.calculatedHeight = height
-//            self.onDone = onDone
-//        }
-//
-//        func textViewDidChange(_ uiView: UITextView) {
-//            text.wrappedValue = uiView.text
-//            UITextViewWrapper.recalculateHeight(view: uiView, result: calculatedHeight)
-//        }
-//
-//        func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-//            if let onDone = self.onDone, text == "\n" {
-//                textView.resignFirstResponder()
-//                onDone()
-//                return false
-//            }
-//            return true
-//        }
-//    }
-//
-//}
-
-//struct TextEditorView: View {
-//
-//    @Binding var string: String
-//    @State var textEditorHeight : CGFloat = 20
-//
-//
-//    var body: some View {
-//
-//        ZStack(alignment: .leading) {
-//            Text(string)
-//                .font(.system(.body))
-//                .foregroundColor(.clear)
-//                .padding(14)
-//                .background(GeometryReader {
-//                    Color.clear.preference(key: ViewHeightKey.self,
-//                                           value: $0.frame(in: .local).size.height)
-//                })
-//
-//            TextEditor(text: $string)
-//                .foregroundColor(.white)
-//                .font(.system(.body))
-//                .frame(height: max(40,textEditorHeight))
-//                .cornerRadius(10.0)
-//                            .shadow(radius: 1.0)
-//        }
-//        .background(Color.clear)
-//        .onPreferenceChange(ViewHeightKey.self) { textEditorHeight = $0 }
-//
-//    }
-//
-//}
-
 
 struct ViewHeightKey: PreferenceKey {
     static var defaultValue: CGFloat { 0 }
@@ -199,6 +46,9 @@ struct IdeaContentView: View {
     @State private var saves: Array<String> = []
     @State private var stars: Array<String> = []
     
+    // Используется для того, чтобы отображать отправку сообщения при его подгрузке или скрывать view комментария после его отправки
+    @State private var messageEditingHandler: MessageState = .editing
+    
     @Binding var hideTabBar: Bool
     
     @State var position: BottomSheetPosition = .relativeBottom(0.125)
@@ -207,6 +57,8 @@ struct IdeaContentView: View {
     @State private var commentsTextFieldIsFirstResponder: Bool = false
     
     @State private var forceTopPosition: Bool = false
+    
+    @State private var modelComments: Array<Comment> = []
 
     
     
@@ -241,11 +93,16 @@ struct IdeaContentView: View {
     
     @State var bottomSheetPosition: BottomSheetPositionPost = .bottom
     
+    @State var starScaledEffect: CGFloat = 1
+    @State var bookmarkScaledEffect: CGFloat = 1
+    
     
     var body: some View {
- 
+        ZStack {
+            Color("AdditionDarkBackground").ignoresSafeArea()
             
             ScrollView {
+                // MARK: - Post
                 VStack(alignment: .leading) {
                     
                     // MARK: - Business card
@@ -439,7 +296,7 @@ struct IdeaContentView: View {
                     
                     // TODO: - Here must be comments
                     // MARK: - Idea's info
-                    Divider()
+//                    Divider()
                     HStack {
             
                             // MARK: - Stars
@@ -464,10 +321,12 @@ struct IdeaContentView: View {
                                             
                                             withAnimation(Animation.spring()) {
                                                 self.starYellowed = 0.5
+                                                self.starScaledEffect = 2.5
                                             }
                                             DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(100)){
                                                 withAnimation(Animation.spring()) {
                                                     self.starYellowed = 1
+                                                    self.starScaledEffect = 1
                                                     
                                                 }
                                                 DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(100)){
@@ -478,13 +337,23 @@ struct IdeaContentView: View {
                                         }
                                     }
                                 } label: {
-                                    Image(systemName: "star\(self.theIdeaWasStarredByTheLoginUser ? ".fill" : "")")
-                                        .resizable()
-                                        .frame(width: 18, height: 18)
-                                        .foregroundColor(Color(red: 0.57 + 0.35 * self.starYellowed, green: 0.58 + self.starYellowed * 0.03, blue: 0.58 - 0.58 * self.starYellowed))
-                                        .font(.system(size: 15, weight: .semibold, design: .rounded))
+                                    HStack {
+                                        Image(systemName: "star\(self.theIdeaWasStarredByTheLoginUser ? ".fill" : "")")
+                                            .resizable()
+                                            .scaleEffect(self.starScaledEffect)
+                                            .frame(width: 18, height: 18)
+                                            .foregroundColor(Color(red: 0.57 + 0.35 * self.starYellowed, green: 0.58 + self.starYellowed * 0.03, blue: 0.58 - 0.58 * self.starYellowed))
+                                            .font(.system(size: 15, weight: .semibold, design: .rounded))
+                                        Text("\(self.stars.count)")
+                                          
+                                    
+                                    }.padding(2)
+                                        .padding(.horizontal, 8)
+                                        .background(Color(red: 0.137 + 0.79 * self.starYellowed, green: 0.137 + 0.79 * self.starYellowed, blue: 0.145 - 0.145 * self.starYellowed).opacity(1.0 - 0.8 * self.starYellowed))
+                                    .clipShape(RoundedRectangle(cornerRadius: 25))
+                                    
                                 }
-                                Text("\(self.stars.count)")
+                              
                             }
                         Spacer()
                         // MARK: - Comments
@@ -495,7 +364,10 @@ struct IdeaContentView: View {
                                     .foregroundColor(.secondary)
                                     .font(.system(size: 15, weight: .semibold, design: .rounded))
                                 Text("\(self.comments.count)")
-                            }
+                            }.padding(2)
+                            .padding(.horizontal, 8)
+                            .background(Color(red: 0.137, green: 0.137, blue: 0.145))
+                            .clipShape(RoundedRectangle(cornerRadius: 25))
                         // MARK: - Saves
                         Spacer()
                             HStack {
@@ -519,10 +391,12 @@ struct IdeaContentView: View {
                                         } else {
                                             withAnimation(Animation.spring()) {
                                                 self.bookmarkBlued = 0.5
+                                                self.bookmarkScaledEffect = 2.5
                                             }
                                             DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(100)){
                                                 withAnimation(Animation.spring()) {
                                                     self.bookmarkBlued = 1
+                                                    self.bookmarkScaledEffect = 1
                                                 }
                                                 DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(100)){
                                                     self.fsmanager.save(idea: self.idea.id, user: self.loginUserID, owner: self.idea.author)
@@ -535,13 +409,20 @@ struct IdeaContentView: View {
                                     
                                     
                                 } label: {
-                                    Image(systemName: "bookmark\(self.bookmarkBlued == 1 ? ".fill" : "")")
-                                            .resizable()
-                                            .frame(width: 14, height: 18)
-                                            .foregroundColor(Color(red: 0.57 - 0.04 * self.bookmarkBlued, green: 0.58 + self.bookmarkBlued * 0.09, blue: 0.58 + 0.34 * self.bookmarkBlued))
-                                            .font(.system(size: 15, weight: .semibold, design: .rounded))
+                                    HStack {
+                                        Image(systemName: "bookmark\(self.bookmarkBlued == 1 ? ".fill" : "")")
+                                                .resizable()
+                                                .scaleEffect(self.bookmarkScaledEffect)
+                                                .frame(width: 14, height: 17)
+                                                .foregroundColor(Color(red: 0.57 - 0.04 * self.bookmarkBlued, green: 0.58 + self.bookmarkBlued * 0.09, blue: 0.58 + 0.34 * self.bookmarkBlued))
+                                                .font(.system(size: 15, weight: .semibold, design: .rounded))
+                                        Text("\(self.saves.count)")
+                                    }.padding(2)
+                                        .padding(.horizontal, 8)
+                                        .background(Color(red: 0.137 + 0.4 * self.bookmarkBlued, green: 0.137 + 0.54 * self.bookmarkBlued, blue: 0.145 + 0.78 * self.bookmarkBlued).opacity(1.0 - 0.8 * self.bookmarkBlued))
+                                    .clipShape(RoundedRectangle(cornerRadius: 25))
                                 }
-                                Text("\(self.saves.count)")
+                           
                             }
                         // MARK: - Views
                         Spacer()
@@ -552,7 +433,10 @@ struct IdeaContentView: View {
                                     .foregroundColor(Color(red: 0.57, green: 0.58, blue: 0.58))
                                     .font(.system(size: 15, weight: .semibold, design: .rounded))
                                 Text("\(self.views.count)")
-                            }
+                            }.padding(2)
+                            .padding(.horizontal, 8)
+                            .background(Color(red: 0.137, green: 0.137, blue: 0.145))
+                            .clipShape(RoundedRectangle(cornerRadius: 25))
                         
                     }
                     .padding(.horizontal)
@@ -562,16 +446,25 @@ struct IdeaContentView: View {
             
                 }
                 .background {
-                    RoundedRectangle(cornerRadius: 15)
-                        .foregroundColor(Color("AdditionDarkBackground"))
+                    Color("AdditionDarkBackground")
                 }
-//                Text("")
-//                    .frame(height: 55)
+                Divider().padding(0)
+                
+                // MARK: - Comments
+                VStack(alignment: .leading) {
+                    ForEach(self.modelComments) { comment in
+                        CommentView(with: comment)
+                    }
+                }
+                
+                Text("")
+                    .frame(height: 100)
+
             }
             .ignoresSafeArea(edges: .bottom)
             .onTapGesture { UIApplication.shared.hideKeyboard(); self.position = .relativeBottom(0.125); self.commentsTextFieldIsFirstResponder = false }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(Color.black)
+            .background(Color("AdditionDarkBackground"))
             .onChange(of: self.position, perform: { newValue in
                 
                 print(newValue)
@@ -601,9 +494,29 @@ struct IdeaContentView: View {
                                                             text: self.$commentMessage,
                                                             contentHeight: self.$textFieldHeight,
                                                             maxContentHeight: 350.0,
-                                                            responder: self.$commentsTextFieldIsFirstResponder,
+                                                            responder: self.$commentsTextFieldIsFirstResponder, messageStateHandler: self.$messageEditingHandler,
                                                             onSend: {
-                                print("I've added a comment!")
+                                self.messageEditingHandler = .sending
+                                // MARK: - On send action
+                                self.fsmanager.sendComment(postType: .Idea, postId: self.idea.id, author: self.loginUserID, text: self.commentMessage, image: nil) { result in
+                                    switch result {
+                                    case .success(let succ):
+                                        self.messageEditingHandler = .done
+                                        print("IdeaContentView: The comment was added successfully! The id is \(succ)")
+                                        
+                                        self.commentMessage = ""
+                                        DispatchQueue.main.async {
+                                            UIApplication.shared.hideKeyboard();
+                                            self.position = .relativeBottom(0.125);
+                                            self.commentsTextFieldIsFirstResponder = false
+                                        }
+                                        
+                                    case .failure(let failure):
+                                        self.messageEditingHandler = .done
+                                        // TODO: - handle error
+                                        print("IdeaContentView: Failed with uploading th ecomment! Error: \(failure)")
+                                    }
+                                }
                             })
                     
                                 .robotoMono(.semibold, 15)
@@ -685,10 +598,36 @@ struct IdeaContentView: View {
                        let stars = statisticsData["stars"] as? Array<String>,
                        let saves = statisticsData["saves"] as? Array<String> {
                         
+                        if comments != self.comments {
+                            self.comments = comments
+                            for _id in self.comments {
+                                self.fsmanager.getComment(withID: _id) { result in
+                                    
+                                    switch result {
+                                    case .success(let comment):
+                                        let author = comment["author"] as? String
+                                        let text = comment["text"] as? String
+                                        let upvotes = comment["upvotes"] as? Array<String>
+                                        let downvotes = comment["downvotes"] as? Array<String>
+                                        let replies = comment["replies"] as? Array<String>
+                                        let image = comment["image"] as? String
+                                        let time = comment["time"] as? Double
+                                        let date = comment["date"] as? String
+                                        
+                                        self.modelComments.append(Comment(author: author, text: text, upvotes: upvotes, downvotes: downvotes, replies: replies, image: image, time: time, date: date))
+                                        
+                                    case .failure(let failure):
+                                        print("CommentView: Failed with getting comment: \(failure)")
+                                    }
+                                }
+                            }
+                        }
+                        
                         self.stars = stars
-                        self.comments = comments
                         self.views = views
                         self.saves = saves
+                        
+                        
                         
                         self.theIdeaWasSavedByTheLoginUser = saves.contains(self.loginUserID)
                         self.theIdeaWasStarredByTheLoginUser = stars.contains(self.loginUserID)
@@ -714,7 +653,7 @@ struct IdeaContentView: View {
             ProfileView(with: self.idea.author, dismissable: true)
     
         })
-    }
+    }}
       
     private func getTags(from string: String) -> [String] {
         return string.components(separatedBy: ", ")

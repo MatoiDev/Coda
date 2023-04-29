@@ -53,12 +53,23 @@ extension View { func grayedAnimated(_ offset: Binding<CGFloat>) -> some View { 
 struct ArticleStubView: View {
     @State private var offsetGray: CGFloat = -500
     var body: some View {
+        faceView
+            .overlay {
+                Rectangle()
+                  
+                    .grayedAnimated(self.$offsetGray)
+                    .mask(faceView)
+                    
+            }
+
+    }
+    private var faceView: some View {
         VStack {
             
             // MARK: - Title
             
             RoundedRectangle(cornerRadius: 10)
-                .grayedAnimated(self.$offsetGray)
+
                 .clipShape(RoundedRectangle(cornerRadius: 10))
                 .frame(maxWidth: .infinity)
                 .frame(height: 15)
@@ -70,7 +81,7 @@ struct ArticleStubView: View {
             // MARK: - Image
             
             RoundedRectangle(cornerRadius: 20)
-                .grayedAnimated(self.$offsetGray)
+
                 .clipShape(RoundedRectangle(cornerRadius: 20))
                 .frame(maxWidth: .infinity)
                 .frame(height: 170)
@@ -83,15 +94,15 @@ struct ArticleStubView: View {
             VStack(alignment: .leading) {
                 
                 RoundedRectangle(cornerRadius: 5)
-                    .grayedAnimated(self.$offsetGray)
+                    
                     .clipShape(RoundedRectangle(cornerRadius: 5))
                     .frame(height: 10)
                 RoundedRectangle(cornerRadius: 5)
-                    .grayedAnimated(self.$offsetGray)
+                    
                     .clipShape(RoundedRectangle(cornerRadius: 5))
                     .frame(height: 10)
                 RoundedRectangle(cornerRadius: 5)
-                    .grayedAnimated(self.$offsetGray)
+                    
                     .clipShape(RoundedRectangle(cornerRadius: 5))
                     .frame(width: 50, height: 10)
                 
@@ -116,7 +127,7 @@ struct ArticleStubView: View {
                     
                     // MARK: - Post rate
                     RoundedRectangle(cornerRadius: 2)
-                        .grayedAnimated(self.$offsetGray)
+                        
                         .clipShape(RoundedRectangle(cornerRadius: 2))
                         .frame(width: 15, height: 15)
                     // MARK: - Disrespect Button
@@ -142,13 +153,13 @@ struct ArticleStubView: View {
                         
                         VStack(alignment: .trailing) {
                             RoundedRectangle(cornerRadius: 5)
-                                .grayedAnimated(self.$offsetGray)
+                                
                                 .clipShape(RoundedRectangle(cornerRadius: 5))
                                 .frame(width: 45)
                                 .frame(height: 10)
                             
                             RoundedRectangle(cornerRadius: 5)
-                                .grayedAnimated(self.$offsetGray)
+                                
                                 .clipShape(RoundedRectangle(cornerRadius: 5))
                                 .frame(width: 30)
                                 .frame(height: 6)
