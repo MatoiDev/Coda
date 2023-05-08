@@ -93,6 +93,7 @@ class FSManager: ObservableObject {
     
     @AppStorage("UserID") private var userID : String = ""
     @AppStorage("LoginUserID") var loginUserID: String = ""
+    @AppStorage("LoginUserAvatarID") var loginUserAvatarID: String = ""
 
     @AppStorage("IsUserExists") var userExists : Bool = false
     
@@ -515,6 +516,63 @@ class FSManager: ObservableObject {
         }
     }
     
+    
+    func remove(comment id: String, post postID: String, completion: @escaping (Result<String, Error>) -> Void) -> Void {
+        print(id)
+        // TODO: - Удаление как на reddit, аватарка серая хз что, если есть картинка - удалить, если был текст, от заменить его на [deleted comment] вместо имени [deleted]
+        
+        guard Reachability.isConnectedToNetwork() else { return }
+        
+
+        
+        if id != "" {
+            self.db.collection("Comments").document(id).getDocument { documentSnapshot, error in
+                guard let document = documentSnapshot else {
+                    completion(.failure("Error fetching comment: \(error!.localizedDescription)"))
+                    return
+                }
+                
+                guard let data = document.data() else {
+                    completion(.failure("Comments's data was empty. for id: \(id)"))
+                    return
+                }
+                let commentType = (data["commentType"] as! String)
+                
+                
+                
+                self.db.collection("Comments").document(id).updateData([
+                    
+                    "commentType": commentType + " | Deleted",
+                    "text": "[deleted by user]",
+                    "image": "",
+                    
+                    
+                ]) { err in
+                    if let err = err {
+                        print("Error writing document: \(err)")
+                        self.showPV = false
+                        completion(.failure("Error with removing comment: \(err.localizedDescription)"))
+                    } else {
+                        self.db.collection("Ideas").document(postID).updateData([
+                            "commentsCount": FieldValue.increment(-1.0)
+                        ]) { _err in
+                            if let _err = _err {
+                                completion(.failure(_err))
+                                return
+                            }
+                            completion(.success("Comment removed successfully."))
+                        }
+
+                    }
+                }
+            }
+        } else {
+            completion(.failure("The comment does not exists"))
+        }
+        
+   
+    }
+    
     func remove(post id: String, userID: String, completion: @escaping (Result<String, Error>) -> Void) -> Void {
         
         // Delete post from FireBase
@@ -573,7 +631,8 @@ class FSManager: ObservableObject {
             "id": id,
             "upvotes": [],
             "downvotes": [],
-            "comments": []
+            "comments": [],
+            "commentsCount": 0
             
         ]) { error in
             if let error = error {
@@ -632,6 +691,7 @@ class FSManager: ObservableObject {
                         "time": Date().timeIntervalSince1970,
                         "views": [userID],
                         "comments": [],
+                        "commentsCount": 0,
                         "date": Date().getFormattedDate(format: "d MMM, HH:mm")
                         
                     ]) { err in
@@ -713,7 +773,8 @@ class FSManager: ObservableObject {
                         "views": [userID],
                         "comments": [],
                         "saves": [],
-                        "date": Date().getFormattedDate(format: "d MMM, HH:mm")
+                        "date": Date().getFormattedDate(format: "d MMM, HH:mm"),
+                        "commentsCount": 0
                         
                     ]) { err in
                         if let err = err {
@@ -776,6 +837,7 @@ class FSManager: ObservableObject {
             "responses": [],
             "views": [companyID],
             "comments": [],
+            "commentsCount": 0,
             "date": Date().getFormattedDate(format: "d MMM, HH:mm")
             
         ]) { err in
@@ -799,9 +861,28 @@ class FSManager: ObservableObject {
     
     
     
-    func sendComment(postType: PostType, postId: String, author: String, text: String, upvotes: [String] = [], downvotes: [String] = [], replies: Array<String> = [], image: UIImage?, completion: @escaping (Result<String, Error>) -> Void) -> Void {
+    func sendComment(type: CommentType, personBeingReplied: String? = nil, rootComment: String? = nil, postType: PostType, postId: String, author: String, text: String, upvotes: [String] = [], downvotes: [String] = [], replies: Array<String> = [], image: UIImage?, completion: @escaping (Result<String, Error>) -> Void) -> Void {
         guard Reachability.isConnectedToNetwork() else { return }
         let commentID: String = "comment:" + FSManager.generate64CharactersLongID()
+        
+        print("""
+
+
+type: \(type)
+personBeingReplied: \(personBeingReplied)
+rootComment: \(rootComment)
+postType: \(postType)
+postId: \(postId)
+author: \(author)
+text: \(text)
+upvotes: \(upvotes)
+downvotes: \(downvotes)
+replies: \(replies)
+image: \(image)
+
+
+
+""")
         
         self.upload(commentPhoto: image, with: commentID) { result in
             switch result {
@@ -810,6 +891,9 @@ class FSManager: ObservableObject {
                 self.db.collection("Comments").document(commentID).setData([
                     
                     "id" : commentID,
+                    "rootComment": rootComment ?? rootComment == "" ? commentID : rootComment!, // rootComment передаётся только если комментарий является ответом, иначе для него корнем является он же сам
+                    "personBeingReplied": personBeingReplied ?? "",
+                    "commentType": type.rawValue,
                     "author": author,
                     "text": text,
                     "upvotes": upvotes,
@@ -817,7 +901,8 @@ class FSManager: ObservableObject {
                     "replies":  replies,
                     "image": imageURL,
                     "time": Date().timeIntervalSince1970,
-                    "date": Date().getFormattedDate(format: "d MMM, HH:mm")
+                    "date": Date().getFormattedDate(format: "d MMM, HH:mm"),
+                    "commentsCount": 0
                     
                 ]) { err in
                     if let err = err {
@@ -826,32 +911,75 @@ class FSManager: ObservableObject {
                         completion(.failure("Error with creating comment: \(err.localizedDescription)"))
                     } else {
                         
-                        // Добавить этот комментарий в массив поста под которым его ставят
-                        switch postType {
-                        case .Idea:
-                            self.db.collection("Ideas").document(postId).updateData([ "comments": FieldValue.arrayUnion([commentID]) ]) { err in
+                        if let rootComment = rootComment, rootComment != "", type == .reply { // Если комментарий является ответом, то его нужно добавить в ответы корневого комментария
+                            self.db.collection("Comments").document(rootComment).updateData([
+                                "replies": FieldValue.arrayUnion([commentID]),
+                                "commentsCount": FieldValue.increment(1.0)
+                            ]) { err in
+                                
                                 if let err = err { completion(.failure(err)); return }
-                                else { completion(.success(commentID)); return }}
-                        case .Vacancy:
-                            self.db.collection("Vacancy").document(postId).updateData([ "comments": FieldValue.arrayUnion([commentID]) ]) { err in
-                                if let err = err { completion(.failure(err)); return }
-                                else { completion(.success(commentID)); return }}
-                        case .TeamSearch:
-                            self.db.collection("TeamAnnouncements").document(postId).updateData([ "comments": FieldValue.arrayUnion([commentID]) ]) { err in
-                                if let err = err { completion(.failure(err)); return }
-                                else { completion(.success(commentID)); return }}
-                        case .FreelanceOrder:
-                            self.db.collection("FreelanceOrder").document(postId).updateData([ "comments": FieldValue.arrayUnion([commentID]) ]) { err in
-                                if let err = err { completion(.failure(err)); return }
-                                else { completion(.success(commentID)); return }}
-                        case .News:
-                            self.db.collection("NewsPosts").document(postId).updateData([ "comments": FieldValue.arrayUnion([commentID]) ]) { err in
-                                if let err = err { completion(.failure(err)); return }
-                                else { completion(.success(commentID)); return }}
-                        case .CommentReply:
-                            self.db.collection("Comments").document(postId).updateData([ "comments": FieldValue.arrayUnion([commentID]) ]) { err in
-                                if let err = err { completion(.failure(err)); return }
-                                else { completion(.success(commentID)); return }}
+                                
+                                // А потом увеличить количество комментариев под постом, ведь replies - тоже комментарии
+                                switch postType {
+                                case .Idea:
+                                    self.db.collection("Ideas").document(postId).updateData(["commentsCount": FieldValue.increment(1.0)]) { err in
+                                        if let err = err { completion(.failure(err)); return }
+                                        else { completion(.success(commentID)); return }}
+                                case .Vacancy:
+                                    self.db.collection("Vacancy").document(postId).updateData(["commentsCount": FieldValue.increment(1.0)]) { err in
+                                        if let err = err { completion(.failure(err)); return }
+                                        else { completion(.success(commentID)); return }}
+                                case .TeamSearch:
+                                    self.db.collection("TeamAnnouncements").document(postId).updateData(["commentsCount": FieldValue.increment(1.0) ]) { err in
+                                        if let err = err { completion(.failure(err)); return }
+                                        else { completion(.success(commentID)); return }}
+                                case .FreelanceOrder:
+                                    self.db.collection("FreelanceOrder").document(postId).updateData(["commentsCount": FieldValue.increment(1.0)]) { err in
+                                        if let err = err { completion(.failure(err)); return }
+                                        else { completion(.success(commentID)); return }}
+                                case .News:
+                                    self.db.collection("NewsPosts").document(postId).updateData(["commentsCount": FieldValue.increment(1.0) ]) { err in
+                                        if let err = err { completion(.failure(err)); return }
+                                        else { completion(.success(commentID)); return }}
+                                case .CommentReply:
+                                    self.db.collection("Comments").document(postId).updateData([ "commentsCount": FieldValue.increment(1.0) ]) { err in
+                                        if let err = err { completion(.failure(err)); return }
+                                        else { completion(.success(commentID)); return }}
+                                }
+                                
+                                
+                            
+                                
+                            }
+                        } else {
+                            
+                            // Добавить этот комментарий (если он main) в массив поста под которым его ставят + увеличить количество комментарием
+                            switch postType {
+                            case .Idea:
+                                self.db.collection("Ideas").document(postId).updateData([ "comments": FieldValue.arrayUnion([commentID]), "commentsCount": FieldValue.increment(1.0) ]) { err in
+                                    if let err = err { completion(.failure(err)); return }
+                                    else { completion(.success(commentID)); return }}
+                            case .Vacancy:
+                                self.db.collection("Vacancy").document(postId).updateData([ "comments": FieldValue.arrayUnion([commentID]), "commentsCount": FieldValue.increment(1.0) ]) { err in
+                                    if let err = err { completion(.failure(err)); return }
+                                    else { completion(.success(commentID)); return }}
+                            case .TeamSearch:
+                                self.db.collection("TeamAnnouncements").document(postId).updateData([ "comments": FieldValue.arrayUnion([commentID]), "commentsCount": FieldValue.increment(1.0) ]) { err in
+                                    if let err = err { completion(.failure(err)); return }
+                                    else { completion(.success(commentID)); return }}
+                            case .FreelanceOrder:
+                                self.db.collection("FreelanceOrder").document(postId).updateData([ "comments": FieldValue.arrayUnion([commentID]), "commentsCount": FieldValue.increment(1.0) ]) { err in
+                                    if let err = err { completion(.failure(err)); return }
+                                    else { completion(.success(commentID)); return }}
+                            case .News:
+                                self.db.collection("NewsPosts").document(postId).updateData([ "comments": FieldValue.arrayUnion([commentID]), "commentsCount": FieldValue.increment(1.0) ]) { err in
+                                    if let err = err { completion(.failure(err)); return }
+                                    else { completion(.success(commentID)); return }}
+                            case .CommentReply:
+                                self.db.collection("Comments").document(postId).updateData([ "comments": FieldValue.arrayUnion([commentID]), "commentsCount": FieldValue.increment(1.0) ]) { err in
+                                    if let err = err { completion(.failure(err)); return }
+                                    else { completion(.success(commentID)); return }}
+                            }
                         }
                     }
                 }
@@ -922,6 +1050,7 @@ class FSManager: ObservableObject {
                         "upvotes": [],
                         "downvotes": [],
                         "comments": [],
+                        "commentsCount": 0,
                         "views": [author],
                         "date": Date().getFormattedDate(format: "d MMM, HH:mm")
                         
@@ -1006,7 +1135,8 @@ class FSManager: ObservableObject {
                         "stars": [],
                         "responses": [],
                         "views": [userID],
-                        "date": Date().getFormattedDate(format: "d MMM, HH:mm")
+                        "date": Date().getFormattedDate(format: "d MMM, HH:mm"),
+                        "commentsCount": 0
                         
                     ]) { err in
                         if let err = err {
@@ -1177,6 +1307,7 @@ class FSManager: ObservableObject {
                 
             case .success(let url):
                 self.avatarURL = url.absoluteString
+                self.loginUserAvatarID = url.absoluteString
                 self.db.collection("Users").document(id).setData([
                     
                     "email" : email,
@@ -1672,6 +1803,7 @@ class FSManager: ObservableObject {
                     
                 case .success(let url):
                     self.avatarURL = url.absoluteString
+                    self.loginUserAvatarID = url.absoluteString
                     self.db.collection("Users").document(id).updateData([
                         
                         "email" : email,
@@ -1841,6 +1973,7 @@ class FSManager: ObservableObject {
                     return
                 }
                 
+                res["commentID"] = (data["id"] as! String)
                 res["author"] = (data["author"] as! String)
                 res["text"] = (data["text"] as! String)
                 res["upvotes"] = (data["upvotes"] as! Array<String>)
@@ -1849,6 +1982,11 @@ class FSManager: ObservableObject {
                 res["image"] = (data["image"] as! String)
                 res["time"] = (data["time"] as! Double)
                 res["date"] = (data["date"] as! String)
+                res["commentType"] = (data["commentType"] as! String)
+                res["rootComment"] = (data["rootComment"] as! String)
+                res["personBeingReplied"] = (data["personBeingReplied"] as! String)
+                res["commentsCount"] = (data["commentsCount"] as! Int)
+                
                 
                 completion(.success(res))
             }
@@ -1875,6 +2013,7 @@ class FSManager: ObservableObject {
                 res["views"] = (data["views"] as! Array<String>)
                 res["comments"] = (data["comments"] as! Array<String>)
                 res["saves"] = (data["saves"] as! Array<String>)
+                res["commentsCount"] = (data["commentsCount"] as! Int)
                 
                 completion(.success(res))
             }
@@ -2101,6 +2240,7 @@ class FSManager: ObservableObject {
                 res["upvotes"] = (data["upvotes"] as! [String])
                 res["downvotes"] = (data["downvotes"] as! [String])
                 res["comments"] = (data["comments"] as! [String])
+                res["commentsCount"] = (data["commentsCount"] as! Int)
                 
                 completion(.success(res))
             }
@@ -2226,6 +2366,9 @@ class FSManager: ObservableObject {
                             self.userProjects = (data["projects"] as! [String])
                             self.userPosts = (data["posts"] as! [String]).reversed()
                             self.avatarURL = (data["avatarURL"] as! String)
+                            if self.loginUserAvatarID == "" {
+                                self.loginUserAvatarID = (data["avatarURL"] as! String)
+                            }
                             self.userRegisterDate = (data["registerDate"] as! String)
 
                 }
@@ -2313,7 +2456,7 @@ class FSManager: ObservableObject {
         }
     }
     
-    func getUserName(forID id: String, completion: @escaping (Result<String, Error>) -> Void) async {
+    func getUserName(forID id: String, completion: @escaping (Result<String, Error>) -> Void) {
         
         let docRef = db.collection("Users").document(id)
         docRef.getDocument { (document, error) in

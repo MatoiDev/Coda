@@ -137,6 +137,7 @@
 		95A3A61329A8DA6D00981E6F /* ServiceConstructor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A3A61229A8DA6D00981E6F /* ServiceConstructor.swift */; };
 		95A3A61629A8DC1500981E6F /* ServicePreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A3A61529A8DC1500981E6F /* ServicePreview.swift */; };
 		95A3A61829A8DC2800981E6F /* ServicePostPublishingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A3A61729A8DC2800981E6F /* ServicePostPublishingView.swift */; };
+		95A48F0F2A019F7200694A00 /* CommentsViewExpanded.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A48F0E2A019F7200694A00 /* CommentsViewExpanded.swift */; };
 		95AA82782919A4AD00B7975C /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95AA82772919A4AD00B7975C /* ImagePicker.swift */; };
 		95AA827A2919B21600B7975C /* ImageCropper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95AA82792919B21600B7975C /* ImageCropper.swift */; };
 		95BA4C5B2996D18A000590C3 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 95BA4C5D2996D18A000590C3 /* Localizable.strings */; };
@@ -144,6 +145,7 @@
 		95BBB29029B1DBC600131388 /* uploadToCloud.json in Resources */ = {isa = PBXBuildFile; fileRef = 95BBB28F29B1DBC600131388 /* uploadToCloud.json */; };
 		95BBB29229B1DD1300131388 /* uploadToCloud2.json in Resources */ = {isa = PBXBuildFile; fileRef = 95BBB29129B1DD1300131388 /* uploadToCloud2.json */; };
 		95BBB29429B1DD9400131388 /* uploadToCloud3.json in Resources */ = {isa = PBXBuildFile; fileRef = 95BBB29329B1DD9400131388 /* uploadToCloud3.json */; };
+		95BD3F1E2A01144C0041441F /* RefreshableScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95BD3F1D2A01144C0041441F /* RefreshableScrollView.swift */; };
 		95BF900729D470EB00CFF376 /* HomeViewRectActionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95BF900629D470EB00CFF376 /* HomeViewRectActionCell.swift */; };
 		95BF900929D4756300CFF376 /* fire.json in Resources */ = {isa = PBXBuildFile; fileRef = 95BF900829D4756300CFF376 /* fire.json */; };
 		95BF900B29D479A300CFF376 /* fire1.json in Resources */ = {isa = PBXBuildFile; fileRef = 95BF900A29D479A300CFF376 /* fire1.json */; };
@@ -374,6 +376,7 @@
 		95A3A61229A8DA6D00981E6F /* ServiceConstructor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceConstructor.swift; sourceTree = "<group>"; };
 		95A3A61529A8DC1500981E6F /* ServicePreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServicePreview.swift; sourceTree = "<group>"; };
 		95A3A61729A8DC2800981E6F /* ServicePostPublishingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServicePostPublishingView.swift; sourceTree = "<group>"; };
+		95A48F0E2A019F7200694A00 /* CommentsViewExpanded.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsViewExpanded.swift; sourceTree = "<group>"; };
 		95AA82772919A4AD00B7975C /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		95AA82792919B21600B7975C /* ImageCropper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCropper.swift; sourceTree = "<group>"; };
 		95BA4C5C2996D18A000590C3 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -382,6 +385,7 @@
 		95BBB28F29B1DBC600131388 /* uploadToCloud.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = uploadToCloud.json; sourceTree = "<group>"; };
 		95BBB29129B1DD1300131388 /* uploadToCloud2.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = uploadToCloud2.json; sourceTree = "<group>"; };
 		95BBB29329B1DD9400131388 /* uploadToCloud3.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = uploadToCloud3.json; sourceTree = "<group>"; };
+		95BD3F1D2A01144C0041441F /* RefreshableScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshableScrollView.swift; sourceTree = "<group>"; };
 		95BF900629D470EB00CFF376 /* HomeViewRectActionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewRectActionCell.swift; sourceTree = "<group>"; };
 		95BF900829D4756300CFF376 /* fire.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = fire.json; sourceTree = "<group>"; };
 		95BF900A29D479A300CFF376 /* fire1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = fire1.json; sourceTree = "<group>"; };
@@ -550,6 +554,7 @@
 				95864379298AB2DD00C2E59C /* ProjectConstructor */,
 				9586437E298AB73D00C2E59C /* FreelanceConstructor */,
 				95002E6C29FD40D200528865 /* CommentView.swift */,
+				95A48F0E2A019F7200694A00 /* CommentsViewExpanded.swift */,
 			);
 			path = "Home Page";
 			sourceTree = "<group>";
@@ -1013,6 +1018,7 @@
 				9507EFFB29DA3CCF001C475C /* SortDescriptorsPickerSheetView.swift */,
 				9548AED029E3FDCA0015824F /* PageControl.swift */,
 				95DD421C29E5CF7C00D7093C /* TextEditorWithPlaceHolder.swift */,
+				95BD3F1D2A01144C0041441F /* RefreshableScrollView.swift */,
 			);
 			path = Additions;
 			sourceTree = "<group>";
@@ -1433,6 +1439,7 @@
 				95DD421829E5AFD900D7093C /* BundleExtension.swift in Sources */,
 				95F6AF24298FC5DB00004545 /* DescriptionPreview.swift in Sources */,
 				95F1CD36290EDC8D000A3080 /* CodaTabBar.swift in Sources */,
+				95BD3F1E2A01144C0041441F /* RefreshableScrollView.swift in Sources */,
 				95DD420129E5AFD900D7093C /* BottomSheet+FlickThrough.swift in Sources */,
 				95DD420229E5AFD900D7093C /* BottomSheet+OnDismiss.swift in Sources */,
 				95471A8A29A54F2600ED354A /* WrappedHStack.swift in Sources */,
@@ -1537,6 +1544,7 @@
 				9503F3AF2989928300E1BDEA /* ExploreViewHeader.swift in Sources */,
 				951C8A3A2988395300F3BFE0 /* SearchNavigation.swift in Sources */,
 				952BCF71290949D50046FB02 /* AuthentificationType.swift in Sources */,
+				95A48F0F2A019F7200694A00 /* CommentsViewExpanded.swift in Sources */,
 				95E5ECA9297DE01000C82946 /* NewsViewMain.swift in Sources */,
 				95A3A61829A8DC2800981E6F /* ServicePostPublishingView.swift in Sources */,
 				9548AED129E3FDCA0015824F /* PageControl.swift in Sources */,

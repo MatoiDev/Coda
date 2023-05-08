@@ -199,7 +199,7 @@ struct ChatCell: View {
                             // Getting CHAT name and image
                             if self.id[0..<4] == "chat" {
                                 let interlocutorID = self.getInterlocutor(from: self.members!)
-                                await self.fsmanager.getUserName(forID: interlocutorID) { nameResult in
+                                self.fsmanager.getUserName(forID: interlocutorID) { nameResult in
                                     switch nameResult {
                                     case .success(let name):
                                         

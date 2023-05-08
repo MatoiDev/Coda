@@ -514,7 +514,7 @@ struct Chat: View {
                         let interlocutorID = self.getInterlocutor(from: members)
                         self.interlocutorID = interlocutorID
                         
-                        await self.fsmanager.getUserName(forID: interlocutorID, completion: { res in
+                        self.fsmanager.getUserName(forID: interlocutorID, completion: { res in
                             switch res {
                             case .success(let name):
                                 

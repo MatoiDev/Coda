@@ -7,7 +7,6 @@
 
 #warning ("IdeaConstructorMain.swift: TODO")
 
-// TODO: Сделать систему оценивания сложности идеи DifficultyLevel
 // TODO: Добавить разделы для создания коммерческих идей; Настроить оплату
 
 /*

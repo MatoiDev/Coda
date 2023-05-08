@@ -87,7 +87,7 @@ struct PostView<Logo: View>: View {
     
     // MARK: - Load Author's Name
     private func loadOwnerName(id: String) async {
-        await self.fsmanager.getUserName(forID: id, completion: { res in
+        self.fsmanager.getUserName(forID: id, completion: { res in
             switch res {
             case .success(let name):
                 self.ownerName = name

@@ -37,7 +37,10 @@ internal class KeyboardHeight: ObservableObject {
     }
     
     @objc private func keyboardWillHide(_ notification: Notification) {
-        value = 0
+        DispatchQueue.main.async {
+            self.value = 0
+        }
+ 
     }
 }
 #endif

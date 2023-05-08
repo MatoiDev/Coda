@@ -49,6 +49,7 @@ struct ProfileView: View {
     @AppStorage("UserLastName") var userLastName: String = ""
     @AppStorage("UserMates") var userMates: String = ""
     @AppStorage("avatarURL") var avatarURL: String = ""
+    @AppStorage("LoginUserAvatarID") var loginUserAvatarID: String = ""
     @AppStorage("UserReputation") var userReputation: String = ""
     @AppStorage("UserLanguage") var userLanguage: PLanguages.RawValue = ""
     @AppStorage("UserProjects") var userProjects : [String] = []
@@ -81,6 +82,7 @@ struct ProfileView: View {
         self.userID = userID
         self.fsmanager.getUsersData(withID: self.userID)
         self.loadAvatar = true
+     
        
         
 //        print(self.userID == self.loginUserID, self.userMode)

@@ -18,20 +18,15 @@ class ImageCache {
     }
     
     func get(forKey key: String) -> UIImage? {
-        print("_", key)
         if let image: UIImage = Cachy.shared.get(forKey: key) {
-            print("Load \(key) from cache")
             return image
         }
         return nil
-        
-//        return cache.object(forKey: NSString(string: key))
     }
     
     func set(forKey key: String, image: UIImage) {
         let imageObject = CachyObject(value: image as UIImage, key: key)
         Cachy.shared.add(object: imageObject)
-//        cache.setObject(image, forKey: NSString(string: key))
     }
 }
 

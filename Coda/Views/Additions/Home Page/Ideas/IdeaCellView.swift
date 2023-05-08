@@ -27,6 +27,7 @@ struct IdeaCellView: View {
     @StateObject private var page: Page = .first()
     
     @State private var comments: Array<String> = []
+    @State private var commentsCount: Int = 0
     @State private var views: Array<String> = []
     @State private var saves: Array<String> = []
     @State private var stars: Array<String> = []
@@ -168,7 +169,7 @@ struct IdeaCellView: View {
                             .frame(width: 15, height: 15)
                             .foregroundColor(.secondary)
                             .font(.system(size: 15, weight: .black, design: .rounded))
-                        Text("\(self.comments.count) ") + Text("comments")
+                        Text("\(self.commentsCount) ") + Text("comments")
                     }
                   
                 }.robotoMono(.medium, 15, color: Color(red: 0.57, green: 0.58, blue: 0.63))
@@ -346,12 +347,14 @@ struct IdeaCellView: View {
                     if let comments = statisticsData["comments"] as? Array<String>,
                        let views = statisticsData["views"] as? Array<String>,
                        let stars = statisticsData["stars"] as? Array<String>,
-                       let saves = statisticsData["saves"] as? Array<String> {
+                       let saves = statisticsData["saves"] as? Array<String>,
+                       let commentsCount = statisticsData["commentsCount"] as? Int  {
                         
                         self.stars = stars
                         self.comments = comments
                         self.views = views
                         self.saves = saves
+                        self.commentsCount = commentsCount
                         
                         self.theIdeaWasSavedByTheLoginUser = saves.contains(self.loginUserID)
                         self.theIdeaWasStarredByTheLoginUser = stars.contains(self.loginUserID)
@@ -372,7 +375,7 @@ struct IdeaCellView: View {
                 }
             }
             
-            await self.fsmanager.getUserName(forID: self.idea.author, completion: { result in
+            self.fsmanager.getUserName(forID: self.idea.author, completion: { result in
                 switch result {
                 case .success(let username):
                     self.authorUsername = username

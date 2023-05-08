@@ -12,6 +12,7 @@ import Foundation
 import Combine
 import SwiftUIPager
 import Introspect
+import TLPhotoPicker
 
 
 
@@ -60,7 +61,22 @@ struct IdeaContentView: View {
     
     @State private var modelComments: Array<Comment> = []
 
+    @State private var imagePickerTrigger: Bool = false
+    @State private var selectedAssets: [TLPHAsset] = [TLPHAsset]()
     
+    @State private var nameToReply: String = "" // Имя пользователя, которому отвечают, отображается в accessoryView (MultilineTextField) и не тратит время на подгрузку с бд
+    @State private var userIDToReply: String = "" // ID пользователя которому отвечают, чтобы потом тянуть имя для отображения у комментария-ответа, кому ответили
+    @State private var rootCommentID: String = "" // Все ответы являются подкомментариями главного комментария в ветке и каждого должен храниться его ID
+    
+    @State private var commentsCount: Int = 0
+    
+    @State private var showExpandedCommentsView: Bool = false
+    @State private var mainComment: Comment? = nil
+    @State private var mainCommentReplies: Array<Comment> = []
+    
+    @State private var authorIDToOpen: String = ""
+    
+    @State private var showIdeaAuthorsProfile: Bool = false // Показать профиль автора идеи (не комментариев)
     
     init(withIdea idea: Idea, hideTabBar: Binding<Bool>) {
         
@@ -76,7 +92,6 @@ struct IdeaContentView: View {
         
         self.theIdeaWasSavedByTheLoginUser =  self.idea.saves.contains(self.loginUserID)
         self.theIdeaWasStarredByTheLoginUser = self.idea.comments.contains(self.loginUserID)
-        
         
     }
     @State private var showCommentController: Bool = false
@@ -96,18 +111,22 @@ struct IdeaContentView: View {
     @State var starScaledEffect: CGFloat = 1
     @State var bookmarkScaledEffect: CGFloat = 1
     
+    @State private var commentState: CommentType = .main
+    
+    @State private var refreshScrollView: Bool = false
+    
     
     var body: some View {
         ZStack {
             Color("AdditionDarkBackground").ignoresSafeArea()
             
-            ScrollView {
+           ScrollView {
                 // MARK: - Post
                 VStack(alignment: .leading) {
                     
                     // MARK: - Business card
                     Button {
-                        self.showAuthorProfileView.toggle()
+                        self.showIdeaAuthorsProfile.toggle()
                     } label: {
 //                        BusinessCardAsync(withType: .author, userID: self.idea.author)
                         IdeaHeaderView(with: self.idea.author, time: self.idea.dateOfPublish)
@@ -363,7 +382,7 @@ struct IdeaContentView: View {
                                     .frame(width: 18, height: 18)
                                     .foregroundColor(.secondary)
                                     .font(.system(size: 15, weight: .semibold, design: .rounded))
-                                Text("\(self.comments.count)")
+                                Text("\(self.commentsCount)")
                             }.padding(2)
                             .padding(.horizontal, 8)
                             .background(Color(red: 0.137, green: 0.137, blue: 0.145))
@@ -451,11 +470,38 @@ struct IdeaContentView: View {
                 Divider().padding(0)
                 
                 // MARK: - Comments
-                VStack(alignment: .leading) {
-                    ForEach(self.modelComments) { comment in
-                        CommentView(with: comment)
-                    }
-                }
+                
+              ForEach(self.modelComments) { comment in
+                  CommentView(with: comment, postID: self.idea.id, openProfile: self.$showAuthorProfileView, authorToOpenID: self.$authorIDToOpen, onReply: { (authorID, authorName, rootCommentID) in
+                      
+                      self.position = .relativeBottom(0.55)
+                      self.commentsTextFieldIsFirstResponder = true
+                      self.commentState = .reply
+                      
+                      self.nameToReply = authorName
+                      self.rootCommentID = rootCommentID
+                      self.userIDToReply = authorID
+                      //                      self.fsmanager.getUserName(forID: authorID) { result in
+                      //                          switch result {
+                      //                          case .success(let username):
+                      //                              self.nameToReply = username
+                      //                          case .failure(let failure):
+                      //                              // TODO: - Handle error
+                      //                              print("Idea Content View: Error with loading username for comment reply: \(failure)")
+                      //                          }
+                      //
+                      //                      }
+                      
+                  }, onExpand: { (mainComment, replies) in
+                      
+                      self.mainComment = mainComment
+                      self.mainCommentReplies = replies
+                      self.showExpandedCommentsView.toggle()
+                      
+                  })
+              }
+                
+                
                 
                 Text("")
                     .frame(height: 100)
@@ -468,7 +514,7 @@ struct IdeaContentView: View {
             .onChange(of: self.position, perform: { newValue in
                 
                 print(newValue)
-                if newValue == .relativeTop(0.975) && self.textFieldHeight == 36 {
+                if newValue == .relativeTop(0.975) && self.textFieldHeight == 36 && !(self.selectedAssets.count == 1) {
                     self.forceTopPosition = true
                 }
                 if newValue == .relativeBottom(0.125) || newValue == .relativeBottom(0.55) {
@@ -489,26 +535,69 @@ struct IdeaContentView: View {
                     ], headerContent: {
                         //A SearchBar as headerContent.
                         VStack {
+                            
+                            // MARK: - Comment image
+                            
+                                if let image: UIImage = self.selectedAssets[safe: 0]?.fullResolutionImage {
+                                    HStack {
+                                        ZStack(alignment: .topTrailing) {
+                                            
+                                                Image(uiImage: image)
+                                                    .resizable()
+                                                    .scaledToFill()
+                                                    .frame(width: 150, height: 150, alignment: .center)
+                                                    .clipShape(RoundedRectangle(cornerRadius: 5))
+                                                Spacer()
+                                            
+                                            Button {
+                                                self.selectedAssets = []
+                                            } label: {
+                                                Image(systemName: "xmark.circle")
+                                                    
+                                                    .foregroundColor(.primary)
+                                                    .background(Color.secondary)
+                                                    .font(.system(size: 25))
+                                                    .clipShape(Circle())
+                                                    .offset(x: 8, y:-8)
+                                            }
+                                        }
+                                        Spacer()
+                                    }
+                                } else {
+                                EmptyView()
+                                }
 
                             MultilineTextFieldRepresentable(placeholder: "Add a comment",
                                                             text: self.$commentMessage,
                                                             contentHeight: self.$textFieldHeight,
-                                                            maxContentHeight: 350.0,
-                                                            responder: self.$commentsTextFieldIsFirstResponder, messageStateHandler: self.$messageEditingHandler,
+                                                            maxContentHeight: self.selectedAssets.count == 0 ? 350.0 : 200.0,
+                                                            responder: self.$commentsTextFieldIsFirstResponder,
+                                                            messageStateHandler: self.$messageEditingHandler,
+                                                            imagePickerTrigger: self.$imagePickerTrigger,
+                                                            imageAssets: self.$selectedAssets,
+                                                            commentState: self.$commentState, nameToReply: self.$nameToReply,
                                                             onSend: {
                                 self.messageEditingHandler = .sending
                                 // MARK: - On send action
-                                self.fsmanager.sendComment(postType: .Idea, postId: self.idea.id, author: self.loginUserID, text: self.commentMessage, image: nil) { result in
+                                
+                                self.fsmanager.sendComment(type: self.commentState, personBeingReplied: self.userIDToReply, rootComment: self.rootCommentID, postType: .Idea, postId: self.idea.id, author: self.loginUserID, text: self.commentMessage, upvotes: [self.loginUserID], downvotes: [], replies: [], image: self.selectedAssets[safe: 0]?.fullResolutionImage) { result in
                                     switch result {
                                     case .success(let succ):
                                         self.messageEditingHandler = .done
                                         print("IdeaContentView: The comment was added successfully! The id is \(succ)")
                                         
                                         self.commentMessage = ""
+                                        self.selectedAssets = []
+                                        self.rootCommentID = ""
+                                        self.userIDToReply = ""
+                                        self.commentState = .main
+                                        self.nameToReply = ""
                                         DispatchQueue.main.async {
                                             UIApplication.shared.hideKeyboard();
                                             self.position = .relativeBottom(0.125);
                                             self.commentsTextFieldIsFirstResponder = false
+                                            self.messageEditingHandler = .done
+                                          
                                         }
                                         
                                     case .failure(let failure):
@@ -571,18 +660,18 @@ struct IdeaContentView: View {
             self.bookmarkBlued = self.idea.saves.contains(self.loginUserID) ? 1 : 0
             
         }
+        .onChange(of: self.selectedAssets, perform: { _ in
+            print(self.selectedAssets)
+            if self.selectedAssets.count == 1 {
+                self.position = .relativeTop(0.975)
+            } else if !self.forceTopPosition && !(self.textFieldHeight > 36) {
+                self.position = .relativeBottom(0.55)
+            }
+        })
         .onChange(of: self.commentMessage, perform: { _ in
-            print("""
-
----------------------------------
-\(self.commentMessage.count(of: "\n")) \(self.commentMessage.count)
----------------------------------
-
-""")
-        
             if self.textFieldHeight > 36 {
                 self.position = .relativeTop(0.975)
-            } else if !self.forceTopPosition {
+            } else if !self.forceTopPosition && !(self.selectedAssets.count == 1) {
                 self.position = .relativeBottom(0.55)
             }
         })
@@ -596,15 +685,19 @@ struct IdeaContentView: View {
                     if let comments = statisticsData["comments"] as? Array<String>,
                        let views = statisticsData["views"] as? Array<String>,
                        let stars = statisticsData["stars"] as? Array<String>,
-                       let saves = statisticsData["saves"] as? Array<String> {
+                       let saves = statisticsData["saves"] as? Array<String>,
+                       let commentsCount = statisticsData["commentsCount"] as? Int {
                         
-                        if comments != self.comments {
+                        if comments != self.comments || commentsCount != self.commentsCount  {
                             self.comments = comments
+                            self.modelComments = []
                             for _id in self.comments {
                                 self.fsmanager.getComment(withID: _id) { result in
                                     
                                     switch result {
                                     case .success(let comment):
+                                        
+                                        let commentID = comment["commentID"] as? String
                                         let author = comment["author"] as? String
                                         let text = comment["text"] as? String
                                         let upvotes = comment["upvotes"] as? Array<String>
@@ -613,8 +706,11 @@ struct IdeaContentView: View {
                                         let image = comment["image"] as? String
                                         let time = comment["time"] as? Double
                                         let date = comment["date"] as? String
+                                        let commentType = comment["commentType"] as? String
+                                        let rootComment = comment["rootComment"] as? String
                                         
-                                        self.modelComments.append(Comment(author: author, text: text, upvotes: upvotes, downvotes: downvotes, replies: replies, image: image, time: time, date: date))
+                                        let personBeingReplied = comment["personBeingReplied"] as? String
+                                        self.modelComments.append(Comment(commentID: commentID, personBeingReplied: personBeingReplied, rootComment: rootComment, commentType: commentType, author: author, text: text, upvotes: upvotes, downvotes: downvotes, replies: replies, image: image, time: time, date: date))
                                         
                                     case .failure(let failure):
                                         print("CommentView: Failed with getting comment: \(failure)")
@@ -626,7 +722,7 @@ struct IdeaContentView: View {
                         self.stars = stars
                         self.views = views
                         self.saves = saves
-                        
+                        self.commentsCount = commentsCount
                         
                         
                         self.theIdeaWasSavedByTheLoginUser = saves.contains(self.loginUserID)
@@ -641,19 +737,23 @@ struct IdeaContentView: View {
             }
 
         }
-        .sheet(isPresented: self.$showCommentController, content: {
-            Text("hh")
-//                .presentationDetents([.medium, .large])
-        })
-      
         .publishOnTabBarAppearence(self.hideTabBar)
         .navigationTitle("")
         .navigationBarTitleDisplayMode(.inline)
         .fullScreenCover(isPresented: self.$showAuthorProfileView, content: {
+            ProfileView(with: self.authorIDToOpen, dismissable: true)
+    
+        })
+        .fullScreenCover(isPresented: self.$showIdeaAuthorsProfile, content: {
             ProfileView(with: self.idea.author, dismissable: true)
     
         })
-    }}
+    } .fullScreenCover(isPresented: self.$imagePickerTrigger, content: {
+        TLPhotosPickerViewControllerRepresentable(assets: self.$selectedAssets, maxAssetsCount: 1)
+    })
+        
+    }
+       
       
     private func getTags(from string: String) -> [String] {
         return string.components(separatedBy: ", ")

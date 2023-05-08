@@ -41,6 +41,7 @@ class AuthenticationState: NSObject, ObservableObject {
     @AppStorage("UserRegisterDate") var userRegisterDate: String = ""
     
     @AppStorage("LoginUserID") var loginUserID: String = ""
+    @AppStorage("LoginUserAvatarID") var loginUserAvatarID: String = ""
     
     
     @ObservedObject var fsmanager : FSManager = FSManager()
@@ -78,6 +79,7 @@ class AuthenticationState: NSObject, ObservableObject {
         self.userProjects = []
         self.userPosts = []
         self.loginUserID = ""
+        self.loginUserAvatarID = ""
         self.userRegisterDate = ""
         
     }

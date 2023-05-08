@@ -17,6 +17,12 @@ extension TLPHAsset: Identifiable {
 struct TLPhotosPickerViewControllerRepresentable: UIViewControllerRepresentable {
     
     @Binding var assets: [TLPHAsset]
+    let maxAssetsCount: Int
+    
+    init(assets: Binding<[TLPHAsset]>, maxAssetsCount: Int = 3) {
+        self._assets = assets
+        self.maxAssetsCount = maxAssetsCount
+    }
     
     private func setupViewController() -> TLPhotosPickerViewController {
         let viewController = TLPhotosPickerViewController()
@@ -30,6 +36,7 @@ struct TLPhotosPickerViewControllerRepresentable: UIViewControllerRepresentable 
         configure.selectedColor = UIColor(named: "Register2")!
         configure.allowedVideo = false
         configure.previewAtForceTouch = true
+        configure.maxSelectedAssets = maxAssetsCount
         viewController.configure = configure
     }
     
