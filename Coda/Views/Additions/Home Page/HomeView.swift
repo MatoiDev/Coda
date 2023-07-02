@@ -59,7 +59,7 @@ struct HomeView: View {
                             }
                             
                             HomeViewRectActionCell(withText: "Projects", icon: "boxOutline") { active in
-                                ProjectsView()
+//                                ProjectsView()
                             }
                             
                         }

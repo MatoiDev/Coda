@@ -21,9 +21,13 @@ struct CommentView: View {
     let comment: Comment
     let postID: String
     let type: CommentType
+    let postType: PostType
+    
     
     @Binding var openProfile: Bool
     @Binding var authorToOpenID: String
+    @Binding var bottonSheetPosition: BottomSheetPosition
+    @Binding var commentsTextFieldIsFirstResponder: Bool
     
     let onReplyAction: (_ author: String, _ name: String, _ rootCommentID: String) -> () // id пользователя, на чей комментарий отвечают, его имя, id комментария, который является главным в ветке
     let onRepliesExpandAction: (_ mainComment: Comment, _ replies: Array<Comment>) -> ()
@@ -33,6 +37,7 @@ struct CommentView: View {
     private let fsmanager: FSManager = FSManager()
     
     @State private var authorUsername: String = "Author Username"
+    @State private var replierUsername: String = ""
     @State private var avatar: String? = nil
     
     @State private var replies: Array<String> = []
@@ -43,23 +48,33 @@ struct CommentView: View {
     
     @State private var showConfirmationDialog: Bool = false
     
+    @State private var scaleEffect: CGFloat = 1.0
+    
         
 
-    init(with comment: Comment, postID: String, type: CommentType = .main, openProfile: Binding<Bool>, authorToOpenID: Binding<String>,
+    init(with comment: Comment, postID: String, type: CommentType = .main, postType: PostType, openProfile: Binding<Bool>, authorToOpenID: Binding<String>, BSPosition: Binding<BottomSheetPosition>, keyBoardResponder: Binding<Bool>,
          onReply: @escaping (_ author: String, _ name: String, _ rootCommentID: String) -> (),
          onExpand: @escaping (_ mainComment: Comment, _ replies: Array<Comment>) -> ()) {
         
         self.comment = comment
         self.type = type
         self.postID = postID
+        self.postType = postType
         
         self._openProfile = openProfile
         self._authorToOpenID = authorToOpenID
+        self._bottonSheetPosition = BSPosition
+        self._commentsTextFieldIsFirstResponder = keyBoardResponder
         
         self.onReplyAction = onReply
         self.onRepliesExpandAction = onExpand
         
     }
+    
+    private var isDeleted: Bool {
+        if let _type: String = self.comment.commentType, _type.components(separatedBy: " | ").count == 1 { return false }; return true
+    }
+    
     var body: some View {
         VStack(alignment: .leading) {
             
@@ -68,27 +83,36 @@ struct CommentView: View {
                     Text("").frame(width: 44)
                 }
                     // MARK: - Avatar
+                if self.isDeleted {
+                    Image("deleted")
+                        .resizable()
+                        .frame(width: self.type == .main ? 35 : 25, height: self.type == .main ? 35 : 25, alignment: .center)
+                        .cornerRadius(20)
+                        .padding(self.comment.commentType == "main" ? 4 : 0)
+                } else {
                     CachedImageView(with: self.avatar, for: .Default)
                     .frame(width: self.type == .main ? 35 : 25, height: self.type == .main ? 35 : 25, alignment: .center)
                         .cornerRadius(20)
                         .padding(self.comment.commentType == "main" ? 4 : 0)
+                }
+               
                 VStack(alignment: .leading, spacing: 4) {
                     HStack {
-                        Text(self.authorUsername)
-                        Text(self.repliedName)
+                        Text(self.isDeleted ? "[comment deleted]" : self.authorUsername)
+                        Text(self.isDeleted ? "": self.repliedName)
                             .robotoMono(.light, 16, color: .secondary)
                             
                     }
-                        .robotoMono(.bold, 16, color: .primary)
+                    .robotoMono(self.isDeleted ? .semibold : .bold, 16, color: self.isDeleted ? .secondary : .primary)
                         .minimumScaleFactor(0.01)
                         .lineLimit(1)
                         .padding(.top, 4)
-                    if let text = self.comment.text {
+                    if !self.isDeleted, let text = self.comment.text {
                         // MARK: - Comment Body
                         Text(text)
                             .robotoMono(.medium, 14, color: .primary)
                     }
-                    if let imageURL = self.comment.image, imageURL != "" {
+                    if !self.isDeleted, let imageURL = self.comment.image, imageURL != "" {
                         if self.type == .reply {
                           CachedImageView(with: imageURL, for: .Default)
                                 .scaledToFit()
@@ -109,7 +133,7 @@ struct CommentView: View {
                         }
                             
                     }
-                    if let date = self.comment.date {
+                    if !self.isDeleted, let date = self.comment.date {
                         HStack {
                             // MARK: - Date
                             Text(date)
@@ -129,43 +153,47 @@ struct CommentView: View {
                             Spacer()
                             
                             // MARK: - Upvotes && Downvotes
-                            if let _type: String = self.comment.commentType, _type.components(separatedBy: " | ").count == 1 {
+                            if !self.isDeleted {
                                 HStack {
-                                    // MARK: - Respect Button
-                                    Button { print("Respect button \(self.comment.text!) pressed")
-                                        
-                                    } label: {
-                                        Image("arrowshape")
-                                            .resizable()
-                                            .frame(width: 18, height: 18)
-                                            .rotationEffect(Angle(radians: .pi / 2))
-                                    }
-                                    .font(.system(size: 12).bold())
-                                    .foregroundColor(.secondary)
+                                
                                     
                                     // MARK: - Post rate
                                     if let upvotes = self.comment.upvotes, let downvotes = self.comment.downvotes {
+                                        // MARK: - Respect Button
+                                        Button {
+                                            self.fsmanager.like(comment: self.comment, user: self.loginUserID, postID: self.postID, type: self.postType)
+                                        } label: {
+                                            Image("arrowshape\(upvotes.contains(self.loginUserID) ? ".fill" : "")")
+                                                .resizable()
+                                                .frame(width: 18, height: 18)
+                                                .rotationEffect(Angle(radians: .pi / 2))
+                                                .foregroundColor(upvotes.contains(self.loginUserID) ? Color.purple : Color.secondary)
+                                        }
+                                        .font(.system(size: 12).bold())
+                                        
                                         Text("\(upvotes.count - downvotes.count)")
                                             .font(.system(size: 14).bold())
                                             .foregroundColor(.secondary)
+                                        // MARK: - Disrespect Button
+                                        Button {
+                                            self.fsmanager.unlike(comment: self.comment, user: self.loginUserID, postID: self.postID, type: self.postType)
+                                        } label: {
+                                
+                                            Image("arrowshape\(downvotes.contains(self.loginUserID) ? ".fill" : "")")
+                                                .resizable()
+                                                .renderingMode(.template)
+                                                .frame(width: 18, height: 18)
+                                                .rotationEffect(Angle(radians: .pi / -2))
+                                                .foregroundColor(downvotes.contains(self.loginUserID) ? Color.purple : Color.secondary)
+                                            
+                                        }
+                                        .font(.system(size: 12).bold())
                                     }
                                    
-                                    // MARK: - Disrespect Button
-                                    Button {
-                                        
-                                    } label: {
-                                        Image("arrowshape")
-                                            .resizable()
-                                            .renderingMode(.template)
-                                            .frame(width: 18, height: 18)
-                                            .rotationEffect(Angle(radians: .pi / -2))
-                                        
-                                    }
-                                    .font(.system(size: 12).bold())
-                                    .foregroundColor(.secondary)
+                                 
                                     
                                 }
-                                .padding(.bottom, 2)
+                               
                                 .fixedSize()
                             }
                         }
@@ -175,25 +203,35 @@ struct CommentView: View {
                     }
                 }
                 Spacer()
-            }.padding(.bottom, 4)
-            HStack{
+            }
+            .scaleEffect(self.scaleEffect)
+            .padding(.bottom, 8)
+            
+            
+            HStack {
                 VStack {
                     if !self.repliesModel.isEmpty {
                         ForEach(0..<(self.repliesModel.count > 2 && !self.expandReplies ? 2 : self.repliesModel.count), id: \.self) { replyIndex in
-                            CommentView(with: self.repliesModel[replyIndex], postID: self.postID, type: .reply, openProfile: self.$openProfile, authorToOpenID: self.$authorToOpenID, onReply: self.onReplyAction, onExpand: self.onRepliesExpandAction)
+                            CommentView(with: self.repliesModel[replyIndex], postID: self.postID, type: .reply, postType: .Idea, openProfile: self.$openProfile, authorToOpenID: self.$authorToOpenID, BSPosition: self.$bottonSheetPosition, keyBoardResponder: self.$commentsTextFieldIsFirstResponder, onReply: self.onReplyAction, onExpand: self.onRepliesExpandAction)
                         }
                         if self.replies.count > 2 {
-                            Button {
-                                self.expandReplies.toggle()
-                            } label: {
-                                HStack {
-                                    Image(systemName: "chevron.compact.\(self.expandReplies ? "up" : "down")")
-                                        .resizable()
-                                        .frame(width: 15, height: 5)
-                                        .foregroundColor(.secondary)
-                                    Text(self.expandReplies ? "Collapse" : "Show All Replies")
-                                        .robotoMono(.bold, 13)
+                            HStack {
+                                Text("").frame(width: 55)
+                                Button {
+                                    self.expandReplies.toggle()
+                                } label: {
+                                    HStack {
+                                        Image(systemName: "chevron.compact.\(self.expandReplies ? "up" : "down")")
+                                            .resizable()
+                                            .frame(width: 15, height: 5)
+                                            .foregroundColor(.secondary)
+                                        Text(self.expandReplies ? "Collapse" : "Show All Replies")
+                                            .robotoMono(.bold, 13)
+                
+                                    }
+                              
                                 }.fixedSize()
+                                Spacer()
                             }
                         }
                         // MARK: - Comment Reply Button
@@ -232,24 +270,86 @@ struct CommentView: View {
             
           
         }
-        .confirmationDialog("HELLO", isPresented: self.$showConfirmationDialog, actions: {
-            // MARK: - Open Profile button
-            Button {
-                if let authorID = self.comment.author {
-                    self.authorToOpenID = authorID
-                    self.openProfile = true
+        .confirmationDialog("__comment_View_arg_dialog", isPresented: self.$showConfirmationDialog, actions: {
+            
+            if let authorID = self.comment.author, authorID == self.loginUserID {
+                // MARK: - Edit Button
+                Button {
+                    
+                } label: {
+                    Text("Edit")
                 }
-            } label: {
-                Text(self.authorUsername)
+            }
+          
+            // MARK: - Like/dislike
+            if let upvotes = self.comment.upvotes, let downvotes = self.comment.downvotes {
+                if !upvotes.contains(self.loginUserID) && !downvotes.contains(self.loginUserID) {
+                    Button {
+                        self.fsmanager.like(comment: self.comment, user: self.loginUserID, postID: self.postID, type: self.postType)
+                    } label: {
+                        Text("Like")
+                    }
+                    Button {
+                        self.fsmanager.unlike(comment: self.comment, user: self.loginUserID, postID: self.postID, type: self.postType)
+                    } label: {
+                        Text("Dislike")
+                    }
+                } else if upvotes.contains(self.loginUserID) {
+                    Button {
+                        self.fsmanager.unlike(comment: self.comment, user: self.loginUserID, postID: self.postID, type: self.postType)
+                    } label: {
+                        Text("Dislike")
+                    }
+                } else {
+                    Button {
+                        self.fsmanager.like(comment: self.comment, user: self.loginUserID, postID: self.postID, type: self.postType)
+                    } label: {
+                        Text("Like")
+                    }
+                }
+             
+            }
+     
+            if let text = self.comment.text, !text.isEmpty {
+                Button {
+                    UIPasteboard.general.string = text
+                } label: {
+                    Text("Copy")
+                }
+            }
+      
+
+            
+            // MARK: - Open Profile button
+            if let authorID = self.comment.author {
+                Button {
+                   
+                        self.authorToOpenID = authorID
+                        self.openProfile = true
+              
+                } label: {
+                    Text(self.authorUsername)
+                }
+            }
+            
+            if let _ = self.comment.author, let replierID = self.comment.personBeingReplied, !self.replierUsername.isEmpty, self.authorUsername != self.replierUsername {
+            Button {
+         
+                self.authorToOpenID = replierID
+                    self.openProfile = true
+                    
+                } label: {
+                    Text(self.replierUsername)
+                }
             }
             
             // MARK: - Delete
-            if let _type: String = self.comment.commentType, _type.components(separatedBy: " | ").count == 1,
+            if !self.isDeleted,
                let authorID: String = self.comment.author, authorID == self.loginUserID {
                 Button("Delete", role: .destructive) {
                     self.showConfirmationDialog = false
                     if let id = self.comment.commentID {
-                        self.fsmanager.remove(comment: id, post: self.postID) { result in
+                        self.fsmanager.remove(comment: id, post: self.postID, type: self.postType) { result in
                             switch result {
                             case .success(let success):
                                 print(success)
@@ -315,6 +415,8 @@ struct CommentView: View {
                     }
         }
         .task {
+            
+            // получение имени автора текущего комментария
             if let authorID =  self.comment.author {
                 await self.fsmanager.getUserInfo(forID: authorID) { res in
                     switch res {
@@ -330,14 +432,48 @@ struct CommentView: View {
                 
             }
             
+            // Получение имени человека, на комментарий которого мы ответили
+            if self.type == .reply {
+                if let rootCommentAuthorID = self.comment.personBeingReplied, !rootCommentAuthorID.isEmpty {
+                    await self.fsmanager.getUserInfo(forID: rootCommentAuthorID) { res in
+                        switch res {
+                        case .success(let userData):
+                            
+                            self.replierUsername = (userData["username"] as! String)
+                            
+                        case .failure(let failure):
+                            print("CommentView: \(failure.localizedDescription)")
+                        }
+                    }
+                }
+            }
+            
         }
-        .simultaneousGesture(TapGesture(count: 2).onEnded({ _ in
-            self.showConfirmationDialog = true
-        }))
-//        .onLongPressGesture {
-//            print("Long pressing")
-//            self.showConfirmationDialog.toggle()
-//        }
+    
+        .onTapGesture {
+            
+            if self.commentsTextFieldIsFirstResponder {
+                UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder),
+                                                    to: nil, from: nil, for: nil)
+                self.bottonSheetPosition = .relativeBottom(0.125)
+                self.commentsTextFieldIsFirstResponder = false
+                print("Hey")
+            } else {
+                if !self.isDeleted {
+                    withAnimation(Animation.easeInOut(duration: 1)) {
+                        self.scaleEffect = 0.2
+                        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(100)) {
+                            withAnimation {
+                                self.scaleEffect = 1
+                            }
+                           
+                        }
+                    }
+                    self.showConfirmationDialog = true
+                    
+                }
+            }
+        }
     }
 }
 
@@ -346,7 +482,7 @@ struct CommentView_Previews: PreviewProvider {
     @State private var toggleExample: Bool = false
 
     static var previews: some View {
-        CommentView(with: Comment(commentID: "", personBeingReplied: "", rootComment: "self", commentType: "main", author: "fsafas", text: "The comment's body", upvotes: ["fdsfsa"], downvotes: [], replies: [], image: "dfs", time: 17712747172.00042, date: "9 Apr at 21:05"), postID: "", openProfile: .constant(false), authorToOpenID: .constant("")) { authorID, authorName, rootCommentID  in
+        CommentView(with: Comment(commentID: "", personBeingReplied: "", rootComment: "self", commentType: "main", author: "fsafas", text: "The comment's body", upvotes: ["fdsfsa"], downvotes: [], replies: [], image: "dfs", time: 17712747172.00042, date: "9 Apr at 21:05"), postID: "", postType: .Idea, openProfile: .constant(false), authorToOpenID: .constant(""), BSPosition: .constant(BottomSheetPosition.relativeBottom(0.125)), keyBoardResponder: .constant(false)) { authorID, authorName, rootCommentID  in
             print(authorID, authorName, rootCommentID)
         } onExpand: { mainComment, replies in
             print(mainComment.text ?? "log")

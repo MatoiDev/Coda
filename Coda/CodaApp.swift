@@ -9,7 +9,7 @@ import SwiftUI
 import Firebase
 import Cachy
 
-@main
+ @main
 
 
 struct CodaApp: App {

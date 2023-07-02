@@ -517,13 +517,27 @@ class FSManager: ObservableObject {
     }
     
     
-    func remove(comment id: String, post postID: String, completion: @escaping (Result<String, Error>) -> Void) -> Void {
+    func remove(comment id: String, post postID: String, type: PostType, completion: @escaping (Result<String, Error>) -> Void) -> Void {
         print(id)
         // TODO: - Удаление как на reddit, аватарка серая хз что, если есть картинка - удалить, если был текст, от заменить его на [deleted comment] вместо имени [deleted]
         
         guard Reachability.isConnectedToNetwork() else { return }
+        var postType: String = ""
         
-
+        switch type {
+        case .Idea:
+            postType = "Ideas"
+        case .Vacancy:
+            postType = "Vacancy"
+        case .TeamSearch:
+            postType = "TeamAnnouncements"
+        case .FreelanceOrder:
+            postType = "FreelanceOrder"
+        case .News:
+            postType = "NewsPosts"
+        case .CommentReply:
+            postType = "Comments"
+        }
         
         if id != "" {
             self.db.collection("Comments").document(id).getDocument { documentSnapshot, error in
@@ -541,19 +555,14 @@ class FSManager: ObservableObject {
                 
                 
                 self.db.collection("Comments").document(id).updateData([
-                    
                     "commentType": commentType + " | Deleted",
-                    "text": "[deleted by user]",
-                    "image": "",
-                    
-                    
                 ]) { err in
                     if let err = err {
                         print("Error writing document: \(err)")
                         self.showPV = false
                         completion(.failure("Error with removing comment: \(err.localizedDescription)"))
                     } else {
-                        self.db.collection("Ideas").document(postID).updateData([
+                        self.db.collection(postType).document(postID).updateData([
                             "commentsCount": FieldValue.increment(-1.0)
                         ]) { _err in
                             if let _err = _err {
@@ -864,7 +873,9 @@ class FSManager: ObservableObject {
     func sendComment(type: CommentType, personBeingReplied: String? = nil, rootComment: String? = nil, postType: PostType, postId: String, author: String, text: String, upvotes: [String] = [], downvotes: [String] = [], replies: Array<String> = [], image: UIImage?, completion: @escaping (Result<String, Error>) -> Void) -> Void {
         guard Reachability.isConnectedToNetwork() else { return }
         let commentID: String = "comment:" + FSManager.generate64CharactersLongID()
-        
+        if type == .main {
+            
+        }
         print("""
 
 
@@ -891,8 +902,8 @@ image: \(image)
                 self.db.collection("Comments").document(commentID).setData([
                     
                     "id" : commentID,
-                    "rootComment": rootComment ?? rootComment == "" ? commentID : rootComment!, // rootComment передаётся только если комментарий является ответом, иначе для него корнем является он же сам
-                    "personBeingReplied": personBeingReplied ?? "",
+                    "rootComment": type == .main ? commentID : rootComment ?? rootComment == "" ? commentID : rootComment!, // rootComment передаётся только если комментарий является ответом, иначе для него корнем является он же сам
+                    "personBeingReplied": type == .main ? "" : personBeingReplied ?? "",
                     "commentType": type.rawValue,
                     "author": author,
                     "text": text,
@@ -1032,7 +1043,7 @@ image: \(image)
                         subtopic = "All"
                     }
                     
-                    self.db.collection("FreelanceOrder").document(orderID).setData([
+                    self.db.collection("ProjectsExpanded").document(orderID).setData([
                         
                         "id" : orderID,
                         "author": author,
@@ -1051,6 +1062,7 @@ image: \(image)
                         "downvotes": [],
                         "comments": [],
                         "commentsCount": 0,
+                        "saves": [],
                         "views": [author],
                         "date": Date().getFormattedDate(format: "d MMM, HH:mm")
                         
@@ -1621,6 +1633,123 @@ image: \(image)
         }
     }
     
+    func unlike(comment: Comment, user userID: String, postID: String, type: PostType) {
+        if let commentID = comment.commentID, let ownerID = comment.author {
+            var postType: String = ""
+            switch type {
+            case .Idea:
+                postType = "Ideas"
+            case .Vacancy:
+                postType = "Vacancy"
+            case .TeamSearch:
+                postType = "TeamAnnouncements"
+            case .FreelanceOrder:
+                postType = "FreelanceOrder"
+            case .News:
+                postType = "NewsPosts"
+            case .CommentReply:
+                postType = "Comments"
+            }
+            let commentRef = db.collection("Comments").document(commentID)
+            let ownerRef = db.collection("Users").document(ownerID)
+            let postRef = db.collection(postType).document(postID)
+            
+            commentRef.updateData([
+                "upvotes": FieldValue.arrayRemove([userID]),
+                "downvotes": FieldValue.arrayUnion([userID])
+            ]) { err in
+                if let err = err {
+                    print(err)
+                } else {
+                    ownerRef.updateData([
+                        "reputation": FieldValue.increment(Int64(-1))
+                    ]) { err in
+                        if let err = err {
+                            print("ERROR: \(err)")
+                        }
+                        self.db.collection(postType).document(postID).updateData([
+                            "commentsCount": FieldValue.increment(-1.0)
+                        ]) { _err in
+                            if let _err = _err {
+              
+                                return
+                            }
+                            self.db.collection(postType).document(postID).updateData([
+                                "commentsCount": FieldValue.increment(1.0)
+                            ]) { _err in
+                                if let _err = _err {
+                                    return
+                                }
+
+                            }
+                        }
+                        
+                    }
+                }
+            }
+        }
+  
+    }
+    
+    
+    func like(comment: Comment, user userID: String, postID: String, type: PostType) {
+        if let commentID = comment.commentID, let ownerID = comment.author {
+            var postType: String = ""
+            switch type {
+            case .Idea:
+                postType = "Ideas"
+            case .Vacancy:
+                postType = "Vacancy"
+            case .TeamSearch:
+                postType = "TeamAnnouncements"
+            case .FreelanceOrder:
+                postType = "FreelanceOrder"
+            case .News:
+                postType = "NewsPosts"
+            case .CommentReply:
+                postType = "Comments"
+            }
+            let commentRef = db.collection("Comments").document(commentID)
+            let ownerRef = db.collection("Users").document(ownerID)
+            let postRef = db.collection(postType).document(postID)
+            
+            commentRef.updateData([
+                "upvotes": FieldValue.arrayUnion([userID]),
+                "downvotes": FieldValue.arrayRemove([userID])
+            ]) { err in
+                if let err = err {
+                    print(err)
+                } else {
+                    ownerRef.updateData([
+                        "reputation": FieldValue.increment(Int64(1))
+                    ]) { err in
+                        if let err = err {
+                            print("ERROR: \(err)")
+                        }
+                        postRef.updateData([
+                            "commentsCount": FieldValue.increment(-1.0)
+                        ]) { _err in
+                            if let _err = _err {
+              
+                                return
+                            }
+                            self.db.collection(postType).document(postID).updateData([
+                                "commentsCount": FieldValue.increment(1.0)
+                            ]) { _err in
+                                if let _err = _err {
+                                    return
+                                }
+
+                            }
+                        }
+                        
+                    }
+                }
+            }
+        }
+  
+    }
+        
     func like(idea ideaID: String, user userID: String, owner ownerID: String) {
         let ideaRef = db.collection("Ideas").document(ideaID)
         

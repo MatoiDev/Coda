@@ -24,7 +24,7 @@ struct ExploreView: View {
             Pages(currentPage: self.$page) {
                 NewsViewMain().tag(0)
                 TrendsView().tag(1)
-                ProjectsView().tag(2)
+//                ProjectsView().tag(2)
                 IdeasView().tag(3)
                 JobView().tag(4)
             }

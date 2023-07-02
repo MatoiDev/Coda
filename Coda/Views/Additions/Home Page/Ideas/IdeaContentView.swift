@@ -472,7 +472,7 @@ struct IdeaContentView: View {
                 // MARK: - Comments
                 
               ForEach(self.modelComments) { comment in
-                  CommentView(with: comment, postID: self.idea.id, openProfile: self.$showAuthorProfileView, authorToOpenID: self.$authorIDToOpen, onReply: { (authorID, authorName, rootCommentID) in
+                  CommentView(with: comment, postID: self.idea.id, postType: .Idea, openProfile: self.$showAuthorProfileView, authorToOpenID: self.$authorIDToOpen, BSPosition: self.$position, keyBoardResponder: self.$commentsTextFieldIsFirstResponder, onReply: { (authorID, authorName, rootCommentID) in
                       
                       self.position = .relativeBottom(0.55)
                       self.commentsTextFieldIsFirstResponder = true
@@ -481,16 +481,6 @@ struct IdeaContentView: View {
                       self.nameToReply = authorName
                       self.rootCommentID = rootCommentID
                       self.userIDToReply = authorID
-                      //                      self.fsmanager.getUserName(forID: authorID) { result in
-                      //                          switch result {
-                      //                          case .success(let username):
-                      //                              self.nameToReply = username
-                      //                          case .failure(let failure):
-                      //                              // TODO: - Handle error
-                      //                              print("Idea Content View: Error with loading username for comment reply: \(failure)")
-                      //                          }
-                      //
-                      //                      }
                       
                   }, onExpand: { (mainComment, replies) in
                       

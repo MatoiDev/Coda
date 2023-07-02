@@ -263,7 +263,7 @@ struct ProjectPreview: View {
                         Spacer()
                         Button {
                             self.MBProgressHook.toggle()
-                            self.fsmanager.createProject(author: self.loginUserID, title: self.title, description: self.description, category: self.category, devSubtopic: self.devSubtopic, adminSubtopic: self.adminSubtopic, designSubtopic: self.designSubtopic, testSubtopic: self.testSubtopic, languages: self.languages, projectDetails: self.projectDetails, linkToTheSource: self.linkToTheSource, observeManager: self.observeManager) { res in
+                            self.fsmanager.createProject(author: self.loginUserID, title: self.title, description: self.description, category: self.category, devSubtopic: self.devSubtopic, adminSubtopic: self.adminSubtopic, designSubtopic: self.designSubtopic, testSubtopic: self.testSubtopic, languages: self.languages, projectDetails: self.projectDetails, linkToTheSource: self.linkToTheSource, previews: self.previews, files: self.files, observeManager: self.observeManager) { res in
                                 switch res {
                                 case .success(let success):
                                     print(success)
